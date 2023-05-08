@@ -1,0 +1,22 @@
+#spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+#spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+#spring.datasource.username=admin
+#spring.datasource.password=admin
+#
+#spring.mvc.view.prefix=/WEB-INF/view/
+#spring.mvc.view.suffix=.jsp
+
+#mybatis:
+#  mapper-locations: classpath:mapper/**/*.xml
+#  type-aliases-package: kh.petmily.domain
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: petmily
+    password: petmily
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
