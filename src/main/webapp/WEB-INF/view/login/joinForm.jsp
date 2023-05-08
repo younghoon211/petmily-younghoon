@@ -28,39 +28,31 @@
                 	<span class="brand">
                         <a href="${pageContext.request.contextPath}/"
                            style="text-decoration: none; color: black">
-                            <h4><b>Petmily</b></h4>
+                            <h4><b>Petmily</b></h4><br>
                         </a>
                 	</span>
                     <form action="/join" method="post">
                         <div class="form-inputs">
-                            <input type="text" name="id" placeholder="아이디" required="required">
+                            <input type="text" name="id" placeholder="아이디 (대문자 및 특수문자 불가)" required="required"
+                                   pattern="^[a-z0-9]+$"
+                                   oninput="this.value = this.value.replace(/[^0-9a-z]/g, '');">
                             <div class="password">
                                 <input id="pw" name="pw" type="password" placeholder="비밀번호" required="required">
-                                <span class="showpass" onclick="toggle()">
-                            		<img id="changepasseye" src="https://i.imgur.com/d1M6y1W.jpg">
-                            	</span>
-                                <p class="random_password"></p>
                                 <input id="passwordCheck" name="confirmPw" type="password" placeholder="비밀번호 확인"
                                        required="required">
-                                <span class="showpass" onclick="toggle()">
-                            		<img id="changepasseyecheck" src="https://i.imgur.com/d1M6y1W.jpg">
-                            	</span>
-                                <p class="random_password"></p>
                             </div>
-                            <input type="text" name="name" placeholder="이름(닉네임)" required="required">
+                            <input type="text" name="name" placeholder="이름 (닉네임)" required="required">
                             <input type="date" name="birth" placeholder="생년월일" required="required">
-                            <input type="text" name="gender" placeholder="성별(F or M 입력)" required="required"
+                            <input type="text" name="gender" placeholder="성별 (F 또는 M)" required="required"
                                    oninput="this.value = this.value.replace(/[^FM]/g, '');" maxlength="1">
-                            <input type="text" name="email" placeholder="이메일 주소" required="required"
+                            <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)" required="required"
                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-                            <p class="login-text">이메일 형식으로 입력하세요</p>
-                            <input type="tel" name="phone" placeholder="연락처" required="required"
-                                   pattern="^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$"
+                            <input type="tel" name="phone" placeholder="연락처 (예: 010-1234-5678)" required="required"
+                                   pattern="^010-\d{4}-\d{4}$"
                                    oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
-                            <p class="login-text">핸드폰 번호 형식으로 입력하세요</p>
                             <div class="login">
-                                <button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
-                            </div>
+                                <br><button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
+                            </div><br>
                             <p class="login-text">계정이 이미 있습니까? <a href="/login">login</a></p>
                         </div>
                     </form>
