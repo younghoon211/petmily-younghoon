@@ -42,7 +42,7 @@
                                        required="required">
                             </div>
                             <input type="text" name="name" placeholder="이름 (닉네임)" required="required">
-                            <input type="date" name="birth" placeholder="생년월일" required="required">
+                            <input type="date" name="birth" placeholder="생년월일" required="required" min="1900-01-01" max="2023-12-31">
                             <input type="text" name="gender" placeholder="성별 (F 또는 M)" required="required"
                                    oninput="this.value = this.value.replace(/[^FM]/g, '');" maxlength="1">
                             <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)" required="required"
