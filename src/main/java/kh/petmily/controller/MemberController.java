@@ -49,7 +49,7 @@ public class MemberController {
 
         memberService.join(joinRequest);
 
-        return "/login/loginForm";
+        return "login/joinSuccess";
     }
 
     // 로그인

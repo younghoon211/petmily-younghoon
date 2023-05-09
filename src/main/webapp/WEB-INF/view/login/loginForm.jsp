@@ -27,12 +27,8 @@
                         </div>
                         <div class="form-inputs">
                             <input type="text" name="id" placeholder="아이디" required="required"/>
-                            <%--                        <input type="text" placeholder="Email Address">--%>
                             <div class="password">
                                 <input id="password" name="pw" type="password" placeholder="비밀번호" required="required"/>
-                                    <span class="showpass" onclick="toggle()">
-                            <img id="changepasseye" src="https://i.imgur.com/d1M6y1W.jpg"> </span>
-                                <p class="random_password"></p>
                             </div>
                             <br>
                             <div class="login">
