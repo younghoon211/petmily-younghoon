@@ -24,42 +24,48 @@
     <div class="container">
         <div class="form">
             <div class="left-side">
-                <div>
-                	<span class="brand">
+<span class="brand">
                         <a href="${pageContext.request.contextPath}/"
                            style="text-decoration: none; color: black">
                             <h4><b>Petmily</b></h4><br>
                         </a>
                 	</span>
-                    <form action="/join" method="post">
-                        <div class="form-inputs">
+
+    <div>
+        <form action="/join" method="post">
+            <div class="form-inputs">
                             <input type="text" name="id" placeholder="아이디 (대문자 및 특수문자 불가)" required="required"
                                    pattern="^[a-z0-9]+$"
                                    oninput="this.value = this.value.replace(/[^0-9a-z]/g, '');">
-                            <div class="password">
-                                <input id="pw" name="pw" type="password" placeholder="비밀번호" required="required">
-                                <input id="passwordCheck" name="confirmPw" type="password" placeholder="비밀번호 확인"
+                        <div class="password">
+                            <input id="pw" name="pw" type="password" placeholder="비밀번호" required="required">
+                            <input id="passwordCheck" name="confirmPw" type="password" placeholder="비밀번호 확인"
                                        required="required">
-                            </div>
-                            <input type="text" name="name" placeholder="이름 (닉네임)" required="required">
+                        </div>
+                            <input type="text" name="name" placeholder="이름" required="required">
+
                             <input type="date" name="birth" placeholder="생년월일" required="required" min="1900-01-01" max="2023-12-31">
-                            <input type="text" name="gender" placeholder="성별 (F 또는 M)" required="required"
-                                   oninput="this.value = this.value.replace(/[^FM]/g, '');" maxlength="1">
+
+                            <select name="gender" class="form-control" style="font-size: 15px; padding-left: 10px">
+                                <option value="" selected>성별</option>
+                                <option value="M">남자</option>
+                                <option value="F">여자</option>
+                            </select>
+
                             <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)" required="required"
                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
                             <input type="tel" name="phone" placeholder="연락처 (예: 010-1234-5678)" required="required"
                                    pattern="^010-\d{4}-\d{4}$"
                                    oninput="this.value = this.value.replace(/[^0-9-]/g, '');">
-                            <div class="login">
-                                <br><button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
-                            </div><br>
+
+                        <div class="login">
+                            <br><button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
+                        </div><br>
                             <p class="login-text">계정이 이미 있습니까? <a href="/login">login</a></p>
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="right-side" OnClick="location.href ='/'"  style="cursor:pointer;">
-                <h2>Petmily</h2>
             </div>
         </div>
     </div>
