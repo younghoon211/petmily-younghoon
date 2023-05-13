@@ -138,8 +138,13 @@ public class MemberServiceImpl implements MemberService {
         Date birth = joinReq.getBirth();
         String gender = joinReq.getGender();
         String email = joinReq.getEmail();
-        String phone = joinReq.getPhone();
+        String phone = extractDashPhoneNumber(joinReq);
 
         return new Member(id, pw, name, birth, gender, email, phone);
+    }
+
+    private String extractDashPhoneNumber(JoinRequest joinReq) {
+        String phone = joinReq.getPhone();
+        return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
     }
 }
