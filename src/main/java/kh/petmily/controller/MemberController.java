@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -62,23 +63,25 @@ public class MemberController {
     public String login(
             @RequestParam("id") String id,
             @RequestParam("pw") String pw,
-            HttpServletRequest request) {
+            HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         Member authUser;
 
         try {
             authUser = memberService.login(id, pw);
         } catch (Exception e) {
-            return "/login/loginForm";
+            redirectAttributes.addAttribute("error", true);
+            return "redirect:/login";
         }
 
         if (authUser == null) {
-            return "/login/loginForm";
+            redirectAttributes.addAttribute("error", true);
+            return "redirect:/login";
         }
 
         request.getSession().setAttribute("authUser", authUser);
 
-        return "/main/index";
+        return "redirect:/";
     }
 
     // 로그아웃
@@ -86,7 +89,7 @@ public class MemberController {
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
 
-        return "/main/index";
+        return "redirect:/";
     }
 
     @RequestMapping("/")

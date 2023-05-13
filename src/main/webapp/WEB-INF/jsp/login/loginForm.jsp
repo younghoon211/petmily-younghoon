@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
@@ -15,21 +16,25 @@
 </head>
 <body>
 
+<style>
+    .error {color:red; font-size: 11px}
+</style>
+
 <div class="section">
     <div class="container">
         <div class="form">
             <div class="left-side">
-                <div>
                     <form action="/login" method="post">
                      <div class="login" id="login">
                         <b><a href="${pageContext.request.contextPath}/"
                              style="text-decoration: none; color: black"><h2>Petmily</h2></a></b>
                         </div>
                         <div class="form-inputs">
-                            <input type="text" name="id" placeholder="아이디" required="required"/>
+                            <input type="text" name="id" placeholder="아이디" required="required" style="padding-left: 10px"/>
                             <div class="password">
-                                <input id="password" name="pw" type="password" placeholder="비밀번호" required="required"/>
+                                <input id="password" name="pw" type="password" placeholder="비밀번호" required="required" style="padding-left: 10px"/>
                             </div>
+                            <div class="error"><c:if test="${param.error == 'true'}">아이디 또는 비밀번호가 일치하지 않습니다.</c:if></div>
                             <br>
                             <div class="login">
                                 <div>
@@ -40,10 +45,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="right-side" OnClick="location.href ='/'" style="cursor:pointer;">
-                <h2>Petmily</h2>
             </div>
         </div>
     </div>
