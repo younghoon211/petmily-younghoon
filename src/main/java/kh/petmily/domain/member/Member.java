@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Date;
-
 @Data
 @NoArgsConstructor
 @ToString
@@ -15,13 +13,13 @@ public class Member implements DomainObj {
     private String id;
     private String pw;
     private String name;
-    private Date birth;
+    private String birth;
     private String gender;
     private String email;
     private String phone;
     private String grade;
 
-    public Member(int mNumber, String id, String pw, String name, Date birth, String gender, String email, String phone, String grade) {
+    public Member(int mNumber, String id, String pw, String name, String birth, String gender, String email, String phone, String grade) {
         this.mNumber = mNumber;
         this.id = id;
         this.pw = pw;
@@ -33,7 +31,7 @@ public class Member implements DomainObj {
         this.grade = grade;
     }
 
-    public Member(String id, String pw, String name, Date birth, String gender, String email, String phone) {
+    public Member(String id, String pw, String name, String birth, String gender, String email, String phone) {
         this.id = id;
         this.pw = pw;
         this.name = name;

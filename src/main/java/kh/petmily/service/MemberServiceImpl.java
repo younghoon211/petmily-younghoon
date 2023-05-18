@@ -112,13 +112,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private Member toMember(MemberCreateForm memberCreateForm) {
-        Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), (Date) memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
+        Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
 
         return member;
     }
 
     private Member toMember(MemberModifyForm memberModifyForm) {
-        Member member = new Member(memberModifyForm.getMNumber(), memberModifyForm.getId(), memberModifyForm.getPw(), memberModifyForm.getName(), (Date) memberModifyForm.getBirth(), memberModifyForm.getGender(), memberModifyForm.getEmail(), memberModifyForm.getPhone(), memberModifyForm.getGrade());
+        Member member = new Member(memberModifyForm.getMNumber(), memberModifyForm.getId(), memberModifyForm.getPw(), memberModifyForm.getName(), memberModifyForm.getBirth(), memberModifyForm.getGender(), memberModifyForm.getEmail(), memberModifyForm.getPhone(), memberModifyForm.getGrade());
 
         return member;
     }
@@ -135,7 +135,7 @@ public class MemberServiceImpl implements MemberService {
         String id = joinReq.getId();
         String pw = joinReq.getPw();
         String name = joinReq.getName();
-        Date birth = joinReq.getBirth();
+        String birth = extractyyyymmdd(joinReq);
         String gender = joinReq.getGender();
         String email = joinReq.getEmail();
         String phone = extractDashPhoneNumber(joinReq);
@@ -147,4 +147,10 @@ public class MemberServiceImpl implements MemberService {
         String phone = joinReq.getPhone();
         return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
     }
+
+    private String extractyyyymmdd(JoinRequest joinReq) {
+        String birth = joinReq.getBirth();
+        return birth.substring(0, 10);
+    }
+
 }
