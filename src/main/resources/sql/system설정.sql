@@ -1,23 +1,13 @@
 -- Petmily 스키마
-create user petmily identified by KHproject123;
-grant connect, resource to petmily;
-
--- user 생성
-CREATE USER jjb1 IDENTIFIED BY Petmilymember1;
-CREATE USER psh2 IDENTIFIED BY Petmilymember2;
-CREATE USER kcm3 IDENTIFIED BY Petmilymember3;
-CREATE USER ysk4 IDENTIFIED BY Petmilymember4;
-CREATE USER kej5 IDENTIFIED BY Petmilymember5;
-CREATE USER syh6 IDENTIFIED BY Petmilymember6;
-CREATE USER jsj7 IDENTIFIED BY Petmilymember7;
+create user petmily identified by petmily;
+grant connect, resource, CREATE synonym to petmily;
 
 -- system 권한 부여
-grant create session to jjb1;
-grant select any table to jjb1;
-grant insert any table to jjb1;
-grant update any table to jjb1;
-grant delete any table to jjb1;
-
+grant create session to petmily;
+grant select any table to petmily;
+grant insert any table to petmily;
+grant update any table to petmily;
+grant delete any table to petmily;
 
 
 -- ddl 작성 후
