@@ -26,9 +26,11 @@ public class JoinRequest {
     private String name;
 
     @NotBlank
+    @Size(min = 10, max = 10)
     private String birth;
 
     @NotBlank
+    @Size(min = 1, max = 1)
     private String gender;
 
     @NotBlank

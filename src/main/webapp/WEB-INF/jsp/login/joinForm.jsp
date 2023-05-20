@@ -89,9 +89,8 @@
                                    value="${param.birth}">
                         </div>
                         <div>
-                            <select name="gender" class="form-control" style="font-size: 14.5px; padding-left: 10px"
-                                    required="required">
-                                <option value="<c:out value=""/>">성별</option>
+                            <select name="gender" class="form-control" style="font-size: 14.5px; padding-left: 10px">
+                                <option value="<c:out value="UNSELECTED"/>">성별</option>
                                 <option value="<c:out value="M"/>"
                                         <c:if test="${param.gender eq 'M'}">selected="selected"</c:if>>남자
                                 </option>
@@ -99,6 +98,11 @@
                                         <c:if test="${param.gender eq 'F'}">selected="selected"</c:if>>여자
                                 </option>
                             </select>
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('gender')}">
+                                    <span class="field-error"><form:errors path="joinRequest.gender"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                         <div>
                             <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)"

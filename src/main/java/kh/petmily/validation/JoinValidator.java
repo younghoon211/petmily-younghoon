@@ -26,16 +26,21 @@ public class JoinValidator implements Validator {
         String pwPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,16}$";
         Boolean securePw = Pattern.matches(pwPattern, joinRequest.getPw());
 
-        // ID 중복 검증
+        // ID 중복체크
         if (memberService.checkDuplicatedId(joinRequest.getId())) {
             errors.rejectValue("id", "duplicated");
         }
 
-        // 안전하지 않은 비번 & 비번!=비번 확인 검증
+        // 안전하지 않은 비번 & 비번!=비번 확인
         if (!securePw) {
             errors.rejectValue("pw", "securePw");
         } else if (joinRequest.getPw() != null && !joinRequest.getPw().equals(joinRequest.getConfirmPw())) {
             errors.rejectValue("confirmPw", "pwIsNotEqualConfirmPw");
+        }
+
+        // 성별 미선택 시
+        if (!(joinRequest.getGender().equals("M") || joinRequest.getGender().equals("F"))) {
+            errors.rejectValue("gender", "unSelectedGender");
         }
     }
 }
