@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
@@ -22,23 +23,19 @@ public class JoinValidator implements Validator {
     public void validate(Object target, Errors errors) {
         JoinRequest joinRequest = (JoinRequest) target;
 
-//        int idLength = joinRequest.getId().trim().length();
+        String pwPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,16}$";
+        Boolean securePw = Pattern.matches(pwPattern, joinRequest.getPw());
 
+        // ID 중복 검증
         if (memberService.checkDuplicatedId(joinRequest.getId())) {
             errors.rejectValue("id", "duplicated");
-            System.out.println("sout: ID 중복 validation 발생!!!!!!!!!!!!");
         }
 
-//        if (joinRequest.getPw()) {
-//            errors.rejectValue("pw", "security");
-//            System.out.println("sout: PW security validation 발생!!!!!!!!!!!!");
-//        }
-
-//        else if (CustomMethod.isNullOrEmpty(joinRequest.getId()) || idLength == 1 || idLength == 2) {
-//            errors.rejectValue("id", "required");
-//            System.out.println("sout: id 공백 또는 1~2자 validation 발생!!!!!!!!!!!!");
-//        }
-
-
+        // 안전하지 않은 비번 & 비번!=비번 확인 검증
+        if (!securePw) {
+            errors.rejectValue("pw", "securePw");
+        } else if (joinRequest.getPw() != null && !joinRequest.getPw().equals(joinRequest.getConfirmPw())) {
+            errors.rejectValue("confirmPw", "pwIsNotEqualConfirmPw");
+        }
     }
 }

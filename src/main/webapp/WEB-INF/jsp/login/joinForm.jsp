@@ -31,7 +31,7 @@
         .field-error {
             color: #dc3545;
             font-size: 13px;
-            padding-top: 3px;
+            vertical-align: top;
         }
     </style>
 </head>
@@ -48,57 +48,80 @@
                         </a>
                 	</span>
                 <form action="/join" method="post">
-                        <div class="form-inputs">
-                            <div>
-                                <input type="text" name="id" placeholder="아이디 (3-15자, 소문자+숫자)" pattern="^[a-z0-9]+$"
-                                minlength="3" maxlength="15" value="<c:out value="${param.id}"/>" >
-                                <spring:hasBindErrors name="joinRequest">
-                                    <c:if test="${errors.hasFieldErrors('id')}">
-                                        <div class="field-error"><form:errors path="joinRequest.id"/></div>
-                                    </c:if>
-                                </spring:hasBindErrors>
-                            </div>
-                            <div class="password">
-                                <input id="pw" name="pw" type="password" placeholder="비밀번호 (영문+숫자 필수, 7-20자)"
-                                       minlength="7" maxlength="20" required="required" value="<c:out value="${param.pw}"/>">
-                                <input id="passwordCheck" name="confirmPw" type="password" placeholder="비밀번호 확인"
-                                       minlength="7" maxlength="20" required="required" value="<c:out value="${param.confirmPw}"/>">
-                            </div>
-                            <div>
-                                <input type="text" name="name" placeholder="이름(닉네임)" maxlength="15" required="required" value="<c:out value="${param.name}"/>">
-                            </div>
-                            <div>
-                                <input type="date" name="birth" placeholder="생년월일" required="required" min="1900-01-01"
-                                       max="2023-12-31" value="${param.birth}">
-                            </div>
-                            <div>
-                                <select name="gender" class="form-control" style="font-size: 14.5px; padding-left: 10px" required="required">
-                                    <option value="<c:out value=""/>">성별</option>
-                                    <option value="<c:out value="M"/>" <c:if test="${param.gender eq 'M'}">selected="selected"</c:if>>남자</option>
-                                    <option value="<c:out value="F"/>" <c:if test="${param.gender eq 'F'}">selected="selected"</c:if>>여자</option>
-                                </select>
-                            </div>
-                            <div>
-                                <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)"
-                                       maxlength="30" required="required" value="<c:out value="${param.email}"/>"
-                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-                            </div>
-                            <div>
-                                <input type="tel" name="phone" placeholder="연락처 (예: 01012345678)" required="required"
-                                       pattern="^010\d{8}$" maxlength="11" value="<c:out value="${param.phone}"/>"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                            </div>
-                            <div class="login">
-                                <br>
-                                <button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
-                            </div>
-                            <br>
-                            <p class="login-text">계정이 이미 있습니까? <a href="/login">login</a></p>
+                    <div class="form-inputs">
+                        <div>
+                            <input type="text" name="id" placeholder="아이디 (3-15자, 소문자+숫자)" pattern="^[a-z0-9]+$"
+                                   minlength="3" maxlength="15" required="required"
+                                   value="<c:out value="${param.id}"/>">
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('id')}">
+                                    <span class="field-error"><form:errors path="joinRequest.id"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
-                    </form>
-                </div>
+                        <div class="password">
+                            <input id="pw" name="pw" type="password" placeholder="비밀번호 (8-16자, 영문+숫자+특수문자)"
+                                   minlength="8" maxlength="16" required="required"
+                                   value="<c:out value="${param.pw}"/>">
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('pw')}">
+                                    <span class="field-error"><form:errors path="joinRequest.pw"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
+
+                            <input id="passwordCheck" name="confirmPw" type="password" placeholder="비밀번호 확인"
+                                   minlength="8" maxlength="16" required="required"
+                                   value="<c:out value="${param.confirmPw}"/>">
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('confirmPw')}">
+                                    <span class="field-error"><form:errors path="joinRequest.confirmPw"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
+                        </div>
+                        <div>
+                            <input type="text" name="name" placeholder="이름 (닉네임)"
+                                   minlength="3" maxlength="15" required="required"
+                                   value="<c:out value="${param.name}"/>">
+                        </div>
+                        <div>
+                            <input type="date" name="birth" placeholder="생년월일"
+                                   min="1900-01-01" max="2023-12-31" required="required"
+                                   value="${param.birth}">
+                        </div>
+                        <div>
+                            <select name="gender" class="form-control" style="font-size: 14.5px; padding-left: 10px"
+                                    required="required">
+                                <option value="<c:out value=""/>">성별</option>
+                                <option value="<c:out value="M"/>"
+                                        <c:if test="${param.gender eq 'M'}">selected="selected"</c:if>>남자
+                                </option>
+                                <option value="<c:out value="F"/>"
+                                        <c:if test="${param.gender eq 'F'}">selected="selected"</c:if>>여자
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)"
+                                   maxlength="30" required="required" value="<c:out value="${param.email}"/>"
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        </div>
+                        <div>
+                            <input type="tel" name="phone" placeholder="연락처 (예: 01012345678)" required="required"
+                                   maxlength="11" value="<c:out value="${param.phone}"/>"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            <%--                                pattern="^010\d{8}$"--%>
+                        </div>
+                        <div class="login">
+                            <br>
+                            <button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
+                        </div>
+                        <br>
+                        <p class="login-text">계정이 이미 있습니까? <a href="/login">login</a></p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
