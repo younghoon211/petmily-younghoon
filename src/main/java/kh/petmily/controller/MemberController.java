@@ -12,10 +12,14 @@ import kh.petmily.service.AdoptTempService;
 import kh.petmily.service.FindBoardService;
 import kh.petmily.service.LookBoardService;
 import kh.petmily.service.MemberService;
+import kh.petmily.validation.JoinValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,6 +37,12 @@ public class MemberController {
     private final FindBoardService findBoardService;
     private final LookBoardService lookBoardService;
     private final AdoptTempService adoptTempService;
+    private final JoinValidator joinValidator;
+
+    @InitBinder
+    public void joinInit(WebDataBinder dataBinder) {
+        dataBinder.addValidators(joinValidator);
+    }
 
     // 회원 가입
     @GetMapping("/join")
@@ -41,16 +51,22 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@ModelAttribute("joinRequest") JoinRequest joinRequest) {
+    public String join(@Validated @ModelAttribute("joinRequest") JoinRequest joinRequest, BindingResult bindingResult) {
         log.info("넘어온 joinRequest : {}", joinRequest);
 
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult에러 발생 = {}", bindingResult);
+
+            return "/login/joinForm";
+        }
+
         if (!joinRequest.isPwEqualToConfirm()) {
-            return "login/joinPwFail";
+            return "/login/joinForm";
         }
 
         memberService.join(joinRequest);
 
-        return "login/joinSuccess";
+        return "/login/joinSuccess";
     }
 
     // 로그인
@@ -130,11 +146,11 @@ public class MemberController {
     }
 
     // 회원탈퇴
-
     @GetMapping("/member/auth/withdraw")
     public String withdrawForm() {
         return "/member/withdrawForm";
     }
+
     @PostMapping("/member/auth/withdraw")
     public String withdraw(HttpServletRequest request, @RequestParam String pw, @RequestParam String confirmPw) {
 

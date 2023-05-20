@@ -38,4 +38,6 @@ public interface MemberMapper {
     String selectMemberId(int pk);
 
     List<Member> selectAll();
+
+    int selectIdCheck(String id);
 }

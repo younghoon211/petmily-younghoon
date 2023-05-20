@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -111,6 +110,12 @@ public class MemberServiceImpl implements MemberService {
         memberDao.update(member);
     }
 
+    @Override
+    public boolean checkDuplicatedId(String id) {
+        int idCount = memberDao.selectIdCheck(id);
+        return idCount == 1;
+    }
+
     private Member toMember(MemberCreateForm memberCreateForm) {
         Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
 
@@ -152,5 +157,4 @@ public class MemberServiceImpl implements MemberService {
         String birth = joinReq.getBirth();
         return birth.substring(0, 10);
     }
-
 }

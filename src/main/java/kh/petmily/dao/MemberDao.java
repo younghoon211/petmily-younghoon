@@ -62,7 +62,6 @@ public class MemberDao implements BasicDao {
         return mapper.selectAll();
     }
 
-
     public int selectCount() {
         return mapper.selectCount();
     }
@@ -77,5 +76,9 @@ public class MemberDao implements BasicDao {
         }
 
         return result;
+    }
+
+    public int selectIdCheck(String id) {
+        return mapper.selectIdCheck(id);
     }
 }

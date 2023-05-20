@@ -33,4 +33,6 @@ public interface MemberService {
 
     public void modify(MemberModifyForm memberModifyForm);
 
+    public boolean checkDuplicatedId(String id);
+
 }

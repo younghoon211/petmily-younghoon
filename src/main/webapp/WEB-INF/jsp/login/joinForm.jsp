@@ -1,5 +1,6 @@
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -22,6 +23,17 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/join.css">
+
+    <style>
+        /*.container {*/
+        /*    max-width: 560px;*/
+        /*}*/
+        .field-error {
+            color: #dc3545;
+            font-size: 13px;
+            padding-top: 3px;
+        }
+    </style>
 </head>
 <body>
 
@@ -35,15 +47,16 @@
                             <h4><b>Petmily</b></h4><br>
                         </a>
                 	</span>
-                <%--                ${pageContext.request.contextPath}--%>
-                <div>
-                    <form action="/join" method="post">
+                <form action="/join" method="post">
                         <div class="form-inputs">
                             <div>
-                                <input type="text" name="id" placeholder="아이디 (대문자 및 특수문자 불가)" required="required"
-                                       minlength="3" maxlength="15" pattern="^[a-z0-9]+$"
-                                       value="<c:out value="${param.id}"/>"
-                                       oninput="this.value = this.value.replace(/[^0-9a-z]/g, '');">
+                                <input type="text" name="id" placeholder="아이디 (3-15자, 소문자+숫자)" pattern="^[a-z0-9]+$"
+                                minlength="3" maxlength="15" value="<c:out value="${param.id}"/>" >
+                                <spring:hasBindErrors name="joinRequest">
+                                    <c:if test="${errors.hasFieldErrors('id')}">
+                                        <div class="field-error"><form:errors path="joinRequest.id"/></div>
+                                    </c:if>
+                                </spring:hasBindErrors>
                             </div>
                             <div class="password">
                                 <input id="pw" name="pw" type="password" placeholder="비밀번호 (영문+숫자 필수, 7-20자)"
@@ -87,6 +100,5 @@
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
