@@ -35,4 +35,6 @@ public interface MemberService {
 
     public boolean checkDuplicatedId(String id);
 
+    public boolean checkDuplicatedEmail(String email);
+
 }

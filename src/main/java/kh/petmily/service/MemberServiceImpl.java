@@ -116,6 +116,12 @@ public class MemberServiceImpl implements MemberService {
         return idCount == 1;
     }
 
+    @Override
+    public boolean checkDuplicatedEmail(String email) {
+        int emailCount = memberDao.selectEmailCheck(email);
+        return emailCount == 1;
+    }
+
     private Member toMember(MemberCreateForm memberCreateForm) {
         Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
 

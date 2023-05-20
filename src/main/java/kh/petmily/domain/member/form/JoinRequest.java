@@ -34,7 +34,7 @@ public class JoinRequest {
     private String gender;
 
     @NotBlank
-    @Email
+    @Email(message = "유효하지 않은 이메일 형식입니다.", regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
     @Size(min = 5, max = 30)
     private String email;
 

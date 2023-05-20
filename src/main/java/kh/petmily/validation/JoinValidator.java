@@ -28,7 +28,7 @@ public class JoinValidator implements Validator {
 
         // ID 중복체크
         if (memberService.checkDuplicatedId(joinRequest.getId())) {
-            errors.rejectValue("id", "duplicated");
+            errors.rejectValue("id", "duplicatedId");
         }
 
         // 안전하지 않은 비번 & 비번!=비번 확인
@@ -41,6 +41,11 @@ public class JoinValidator implements Validator {
         // 성별 미선택 시
         if (!(joinRequest.getGender().equals("M") || joinRequest.getGender().equals("F"))) {
             errors.rejectValue("gender", "unSelectedGender");
+        }
+
+        // 이메일 중복체크
+        if (memberService.checkDuplicatedEmail(joinRequest.getEmail())) {
+            errors.rejectValue("email", "duplicatedEmail");
         }
     }
 }

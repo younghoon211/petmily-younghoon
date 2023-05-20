@@ -106,8 +106,13 @@
                         </div>
                         <div>
                             <input type="text" name="email" placeholder="이메일 주소 (예: petmily@naver.com)"
-                                   maxlength="30" required="required" value="<c:out value="${param.email}"/>"
-                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                                   maxlength="30" value="<c:out value="${param.email}"/>"
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$" required="required">
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('email')}">
+                                    <span class="field-error"><form:errors path="joinRequest.email"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                         <div>
                             <input type="tel" name="phone" placeholder="연락처 (예: 01012345678)" required="required"

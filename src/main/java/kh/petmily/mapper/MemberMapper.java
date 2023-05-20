@@ -40,4 +40,6 @@ public interface MemberMapper {
     List<Member> selectAll();
 
     int selectIdCheck(String id);
+
+    int selectEmailCheck(String email);
 }
