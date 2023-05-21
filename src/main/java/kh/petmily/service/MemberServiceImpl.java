@@ -122,6 +122,12 @@ public class MemberServiceImpl implements MemberService {
         return emailCount == 1;
     }
 
+    @Override
+    public boolean checkDuplicatedPhoneNumber(JoinRequest joinRequest) {
+        int phoneCount = memberDao.selectPhoneCheck(extractDashPhoneNumber(joinRequest));
+        return phoneCount == 1;
+    }
+
     private Member toMember(MemberCreateForm memberCreateForm) {
         Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
 
@@ -154,8 +160,8 @@ public class MemberServiceImpl implements MemberService {
         return new Member(id, pw, name, birth, gender, email, phone);
     }
 
-    private String extractDashPhoneNumber(JoinRequest joinReq) {
-        String phone = joinReq.getPhone();
+    private String extractDashPhoneNumber(JoinRequest joinRequest) {
+        String phone = joinRequest.getPhone();
         return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
     }
 

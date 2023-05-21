@@ -115,10 +115,14 @@
                             </spring:hasBindErrors>
                         </div>
                         <div>
-                            <input type="tel" name="phone" placeholder="연락처 (예: 01012345678)" required="required"
-                                   maxlength="11" value="<c:out value="${param.phone}"/>"
+                            <input type="tel" name="phone" placeholder="연락처 (예: 01012345678)" pattern="^010\d{8}$"
+                                   maxlength="11" value="<c:out value="${param.phone}"/>" required="required"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                            <%--                                pattern="^010\d{8}$"--%>
+                            <spring:hasBindErrors name="joinRequest">
+                                <c:if test="${errors.hasFieldErrors('phone')}">
+                                    <span class="field-error"><form:errors path="joinRequest.phone"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                         <div class="login">
                             <br>

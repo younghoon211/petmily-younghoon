@@ -42,4 +42,6 @@ public interface MemberMapper {
     int selectIdCheck(String id);
 
     int selectEmailCheck(String email);
+
+    int selectPhoneCheck(String phone);
 }

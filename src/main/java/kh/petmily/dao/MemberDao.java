@@ -85,4 +85,8 @@ public class MemberDao implements BasicDao {
     public int selectEmailCheck(String email) {
         return mapper.selectEmailCheck(email);
     }
+
+    public int selectPhoneCheck(String phone) {
+        return mapper.selectPhoneCheck(phone);
+    }
 }

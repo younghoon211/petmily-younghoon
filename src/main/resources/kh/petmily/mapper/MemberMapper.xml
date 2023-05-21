@@ -99,4 +99,10 @@
         from MEMBER
         where EMAIL = #{EMAIL}
     </select>
+
+    <select id="selectPhoneCheck" resultType="java.lang.Integer">
+        select count(PHONE)
+        from MEMBER
+        where PHONE = #{PHONE}
+    </select>
 </mapper>

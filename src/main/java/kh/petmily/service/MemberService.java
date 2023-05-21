@@ -37,4 +37,5 @@ public interface MemberService {
 
     public boolean checkDuplicatedEmail(String email);
 
+    public boolean checkDuplicatedPhoneNumber(JoinRequest joinRequest);
 }

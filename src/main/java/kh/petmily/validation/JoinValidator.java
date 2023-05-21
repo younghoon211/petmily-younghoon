@@ -47,5 +47,10 @@ public class JoinValidator implements Validator {
         if (memberService.checkDuplicatedEmail(joinRequest.getEmail())) {
             errors.rejectValue("email", "duplicatedEmail");
         }
+
+        // 전화번호 중복체크
+        if (memberService.checkDuplicatedPhoneNumber(joinRequest)) {
+            errors.rejectValue("phone", "duplicatedPhoneNumber");
+        }
     }
 }
