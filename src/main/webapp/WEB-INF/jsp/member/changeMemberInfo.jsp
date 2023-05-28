@@ -1,8 +1,8 @@
-\
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Petmily-Don't buy, Do Adopt</title>
     <meta charset="utf-8">
@@ -20,28 +20,27 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
 </head>
-
 <%@ include file="../include/header.jspf" %>
-
-<div class="row no-gutters">
+<div class="row no-gutters" style="display: flex; justify-content: center; align-items: center">
     <div class="col-md-7">
         <div class="contact-wrap w-100 p-md-5 p-4">
-            <h3 class="mb-4">회원 정보 변경</h3>
-            <form action="/member/auth/change_info" method="POST" id="contactForm"
-                  name="contactForm" class="contactForm">
+                <h3 class="mb-4">회원 정보 변경</h3>
+                <form action="/member/auth/change_info" method="POST" id="contactForm"
+                      name="contactForm" class="contactForm"></form>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="label" for="name">이름</label> <input type="text"
                                                                               class="form-control" name="name" id="name"
-                                                                              value="${memberInfo.name}">
+                                                                              value="${memberInfo.name}"
+                                                                              readonly>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="label" for="id">아이디</label> <input type="text"
                                                                              class="form-control" name="id" id="id"
-                                                                             value="${memberInfo.id}*"
+                                                                             value="${memberInfo.id}"
                                                                              readonly>
                         </div>
                     </div>
@@ -68,14 +67,6 @@
                                 value="${memberInfo.phone}">
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="label" for="grade">회원 등급</label> <input type="text"
-                                                                                  class="form-control" name="grade"
-                                                                                  id="grade"
-                                                                                  value="${memberInfo.grade}*" readonly>
-                        </div>
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="submit" value="저장" onclick="alert('수정 완료')"
@@ -83,14 +74,14 @@
                             <div class="submitting"></div>
                         </div>
                     </div>
+                    </div>
                 </div>
-            </form>
         </div>
     </div>
-    <div class="col-md-5 d-flex align-items-stretch">
-        <div class="info-wrap w-100 p-5 img"
-             style="background-image: url(images/img.jpg);"></div>
-    </div>
+<div class="col-md-5 d-flex align-items-stretch">
+    <div class="info-wrap w-100 p-5 img"
+         style="background-image: url(images/img.jpg);"></div>
+</div>
 </div>
 
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
