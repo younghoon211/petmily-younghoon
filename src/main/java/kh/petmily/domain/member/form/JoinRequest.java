@@ -30,7 +30,6 @@ public class JoinRequest {
     private String birth;
 
     @NotBlank
-    @Size(min = 1, max = 1)
     private String gender;
 
     @NotBlank

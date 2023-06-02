@@ -49,7 +49,7 @@ public class JoinValidator implements Validator {
         }
 
         // 전화번호 중복체크
-        if (memberService.checkDuplicatedPhoneNumber(joinRequest)) {
+        if (memberService.checkDuplicatedPhone(joinRequest)) {
             errors.rejectValue("phone", "duplicatedPhoneNumber");
         }
     }
