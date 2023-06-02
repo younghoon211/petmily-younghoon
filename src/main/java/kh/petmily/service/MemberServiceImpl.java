@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void join(JoinRequest joinReq) {
-        Member member = toMember(joinReq);
+        Member member = toMemberJoin(joinReq);
         memberDao.insert(member);
     }
 
@@ -123,10 +123,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkDuplicatedPhoneNumber(JoinRequest joinRequest) {
-        int phoneCount = memberDao.selectPhoneCheck(extractDashPhoneNumber(joinRequest));
+    public boolean checkDuplicatedPhone(String phone) {
+        int phoneCount = memberDao.selectPhoneCheck(phone);
         return phoneCount == 1;
     }
+
+    @Override
+    public boolean checkDuplicatedEmailMemberChange(String email, String id) {
+        int emailCount = memberDao.selectEmailCheckMemberChange(email, id);
+        return emailCount == 0;
+    }
+
+    @Override
+    public boolean checkDuplicatedPhoneMemberChange(MemberChangeForm memberChangeForm) {
+        int phoneCount = memberDao.selectPhoneCheckMemberChange(memberChangeForm.getPhone(), memberChangeForm.getId());
+        return phoneCount == 1;
+    }
+
 
     private Member toMember(MemberCreateForm memberCreateForm) {
         Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
@@ -148,21 +161,16 @@ public class MemberServiceImpl implements MemberService {
         return new Member(member.getMNumber(), member.getId(), memberChangeForm.getPw(), memberChangeForm.getName(), member.getBirth(), member.getGender(), memberChangeForm.getEmail(), memberChangeForm.getPhone(), member.getGrade());
     }
 
-    private Member toMember(JoinRequest joinReq) {
+    private Member toMemberJoin(JoinRequest joinReq) {
         String id = joinReq.getId();
         String pw = joinReq.getPw();
         String name = joinReq.getName();
         String birth = extractyyyymmdd(joinReq);
         String gender = joinReq.getGender();
         String email = joinReq.getEmail();
-        String phone = extractDashPhoneNumber(joinReq);
+        String phone = joinReq.getPhone();
 
         return new Member(id, pw, name, birth, gender, email, phone);
-    }
-
-    private String extractDashPhoneNumber(JoinRequest joinRequest) {
-        String phone = joinRequest.getPhone();
-        return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
     }
 
     private String extractyyyymmdd(JoinRequest joinReq) {

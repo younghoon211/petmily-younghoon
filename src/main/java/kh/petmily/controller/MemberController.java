@@ -13,6 +13,7 @@ import kh.petmily.service.FindBoardService;
 import kh.petmily.service.LookBoardService;
 import kh.petmily.service.MemberService;
 import kh.petmily.validation.JoinValidator;
+import kh.petmily.validation.MemberChangeValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -38,10 +39,16 @@ public class MemberController {
     private final LookBoardService lookBoardService;
     private final AdoptTempService adoptTempService;
     private final JoinValidator joinValidator;
+    private final MemberChangeValidator memberChangeValidator;
 
-    @InitBinder
+    @InitBinder("joinRequest")
     public void joinInit(WebDataBinder dataBinder) {
         dataBinder.addValidators(joinValidator);
+    }
+
+    @InitBinder("memberChangeForm")
+    public void memberChangeInit(WebDataBinder dataBinder) {
+        dataBinder.addValidators(memberChangeValidator);
     }
 
     // 회원 가입
@@ -55,18 +62,13 @@ public class MemberController {
         log.info("넘어온 joinRequest : {}", joinRequest);
 
         if (bindingResult.hasErrors()) {
-            log.info("bindingResult에러 발생 = {}", bindingResult);
-
-            return "/login/joinForm";
-        }
-
-        if (!joinRequest.isPwEqualToConfirm()) {
+            log.info("join bindingResult= {}", bindingResult);
             return "/login/joinForm";
         }
 
         memberService.join(joinRequest);
 
-        return "/login/joinSuccess";
+        return "/success/joinSuccess";
     }
 
     // 로그인
@@ -113,7 +115,7 @@ public class MemberController {
         return "/main/index";
     }
 
-    // mypage
+    // 마이페이지
     @GetMapping("/member/auth/mypage")
     public String mypage(HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
@@ -123,8 +125,8 @@ public class MemberController {
         return "/member/mypage";
     }
 
-    //change member Info
-    @GetMapping(value = "/member/auth/change_info")
+    // 마이페이지 수정
+    @GetMapping("/member/auth/change_info")
     public String changeInfo(HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
 
@@ -133,16 +135,18 @@ public class MemberController {
         return "/member/changeMemberInfo";
     }
 
-    @PostMapping(value = "/member/auth/change_info")
-    public String changeInfoPost(HttpServletRequest request, Model model, MemberChangeForm memberChangeForm) {
+    @PostMapping("/member/auth/change_info")
+    public String changeInfoPost(HttpServletRequest request, @Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm, BindingResult bindingResult) {
         Member member = getAuthMember(request);
 
-        Member mem = memberService.modify(member, memberChangeForm);
+        if (bindingResult.hasErrors()) {
+            log.info("changeInfo bindingResult= {}", bindingResult);
+            return "/member/changeMemberInfo";
+        }
 
-        model.addAttribute("member", mem);
-        model.addAttribute("authUser", mem);
+        memberService.modify(member, memberChangeForm);
 
-        return "/member/mypage";
+        return "/success/changeMemberSuccess";
     }
 
     // 회원탈퇴
@@ -174,7 +178,7 @@ public class MemberController {
         memberService.withdraw(mNumber);
         request.getSession().invalidate();
 
-        return "/member/withdrawSuccess";
+        return "/success/withdrawSuccess";
     }
 
     @GetMapping("/member/auth/checkMatching")

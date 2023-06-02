@@ -1,8 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Petmily-Don't buy, Do Adopt</title>
     <meta charset="utf-8">
@@ -19,65 +21,113 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/jquery.timepicker.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
+    <style>
+        .field-error {
+            color: #dc3545;
+            border-color: #dc3545;
+            font-size: 13px;
+            vertical-align: top;
+        }
+    </style>
 </head>
+
 <%@ include file="../include/header.jspf" %>
 <div class="row no-gutters" style="display: flex; justify-content: center; align-items: center">
     <div class="col-md-7">
         <div class="contact-wrap w-100 p-md-5 p-4">
-                <h3 class="mb-4">회원 정보 변경</h3>
-                <form action="/member/auth/change_info" method="POST" id="contactForm"
-                      name="contactForm" class="contactForm"></form>
+            <h3 class="mb-4">회원 정보 변경</h3>
+            <form action="/member/auth/change_info" method="POST"
+                  class="contactForm">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="label" for="name">이름</label> <input type="text"
-                                                                              class="form-control" name="name" id="name"
-                                                                              value="${memberInfo.name}"
-                                                                              readonly>
+                            <label class="label" for="name">이름</label>
+                            <input type="text" placeholder="이름 (닉네임)"
+                                   class="form-control" name="name" id="name"
+                                   minlength="3" maxlength="15"
+                                   value="${empty param.name ? memberInfo.name : param.name}"
+                                   required="required">
+                            <spring:hasBindErrors name="memberChangeForm">
+                                <c:if test="${errors.hasFieldErrors('name')}">
+                                    <span class="field-error"><form:errors path="memberChangeForm.name"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="label" for="id">아이디</label> <input type="text"
-                                                                             class="form-control" name="id" id="id"
-                                                                             value="${memberInfo.id}"
-                                                                             readonly>
+                            <label class="label" for="id">아이디</label>
+                            <input type="text"
+                                   class="form-control" name="id" id="id"
+                                   value="${empty param.id ? memberInfo.id : param.id}"
+                                   readonly>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="label" for="pw">비밀번호</label> <input type="password"
-                                                                              class="form-control" name="pw" id="pw"
-                                                                              placeholder="pw"
-                                                                              value="${memberInfo.pw}">
+                            <label class="label" for="pw">비밀번호</label>
+                            <input type="password" placeholder="비밀번호 (8-16자, 영문+숫자+특수문자)"
+                                   class="form-control" name="pw" id="pw"
+                                   minlength="8" maxlength="16" required="required"
+                                   value="${empty param.pw ? memberInfo.pw : param.pw}">
+                            <spring:hasBindErrors name="memberChangeForm">
+                                <c:if test="${errors.hasFieldErrors('pw')}">
+                                    <span class="field-error"><form:errors path="memberChangeForm.pw"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="label" for="email">이메일</label> <input type="email"
-                                                                                class="form-control" name="email"
-                                                                                id="email"
-                                                                                value="${memberInfo.email}">
+                            <label class="label" for="email">이메일</label>
+                            <input type="email"
+                                   class="form-control" name="email" id="email"
+                                   placeholder="이메일 주소 (예: petmily@naver.com)" minlength="5" maxlength="30"
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$"
+                                   value="${empty param.email ? memberInfo.email : param.email}"
+                                   required="required"
+                            <spring:hasBindErrors name="memberChangeForm">
+                                   <c:if test="${errors.hasFieldErrors('email')}">style="border-color: #dc3545"</c:if>
+                            </spring:hasBindErrors>
+                            >
+                            <spring:hasBindErrors name="memberChangeForm">
+                                <c:if test="${errors.hasFieldErrors('email')}">
+                                    <span class="field-error"><form:errors path="memberChangeForm.email"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="label" for="phone">핸드폰 번호</label> <input
-                                type="text" class="form-control" name="phone" id="phone"
-                                value="${memberInfo.phone}">
+                            <label class="label" for="phone">연락처</label>
+                            <input type="text" class="form-control" name="phone" id="phone"
+                                   maxlength="11" placeholder="연락처 (예: 01012345678)"
+                                   value="${empty param.phone ? memberInfo.phone : param.phone}"
+                                   pattern="^010\d{8}$" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                   required="required"
+                            <spring:hasBindErrors name="memberChangeForm">
+                                   <c:if test="${errors.hasFieldErrors('phone')}">style="border-color: #dc3545"</c:if>
+                            </spring:hasBindErrors>
+                            >
+                            <spring:hasBindErrors name="memberChangeForm">
+                                <c:if test="${errors.hasFieldErrors('phone')}">
+                                    <span class="field-error"><form:errors path="memberChangeForm.phone"/></span>
+                                </c:if>
+                            </spring:hasBindErrors>
                         </div>
                     </div>
+                    <br>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="submit" value="저장" onclick="alert('수정 완료')"
-                                   class="btn btn-primary">
+                            <input type="submit" value="변경하기" class="btn btn-primary">
                             <div class="submitting"></div>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </form>
         </div>
     </div>
+</div>
 <div class="col-md-5 d-flex align-items-stretch">
     <div class="info-wrap w-100 p-5 img"
          style="background-image: url(images/img.jpg);"></div>

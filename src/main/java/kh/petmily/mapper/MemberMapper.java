@@ -44,4 +44,8 @@ public interface MemberMapper {
     int selectEmailCheck(String email);
 
     int selectPhoneCheck(String phone);
+
+    int selectEmailCheckMemberChange(@Param("email") String email, @Param("id") String id);
+
+    int selectPhoneCheckMemberChange(@Param("phone") String phone, @Param("id") String id);
 }

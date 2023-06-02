@@ -91,18 +91,32 @@
     <select id="selectIdCheck" resultType="java.lang.Integer">
         select count(ID)
         from MEMBER
-        where ID = #{ID}
+        where ID = #{id}
     </select>
 
     <select id="selectEmailCheck" resultType="java.lang.Integer">
         select count(EMAIL)
         from MEMBER
-        where EMAIL = #{EMAIL}
+        where EMAIL = #{email}
     </select>
 
     <select id="selectPhoneCheck" resultType="java.lang.Integer">
         select count(PHONE)
         from MEMBER
-        where PHONE = #{PHONE}
+        where PHONE = #{phone}
+    </select>
+
+    <select id="selectEmailCheckMemberChange" resultType="java.lang.Integer">
+        select count(*)
+        from MEMBER
+        where EMAIL = #{email}
+        and ID != #{id}
+    </select>
+
+    <select id="selectPhoneCheckMemberChange" resultType="java.lang.Integer">
+        select count(*)
+        from MEMBER
+        where PHONE = #{phone}
+        and ID != #{id}
     </select>
 </mapper>
