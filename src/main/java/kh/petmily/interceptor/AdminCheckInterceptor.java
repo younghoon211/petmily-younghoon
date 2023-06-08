@@ -19,7 +19,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         Member userGrade = getUserGrade(request);
 
         if (requestURI.contains("/admin") && userGrade.getGrade().equals("일반")) {
-            response.sendRedirect("/error-page");
+            response.sendRedirect("/error");
 
             return false;
         }
