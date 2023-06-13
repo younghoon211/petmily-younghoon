@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Petmily-Don't buy, Do Adopt</title>
+  <title>Petmily - Don't buy, Do Adopt</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="/css/freeBoard.css">
@@ -95,14 +95,34 @@
               <th>관리 버튼</th>
             </tr>
             </thead>
+
             <c:forEach var="board" items="${boardForm}">
               <tbody>
-
               <tr>
                 <td class="col-md-1">${board.pk}</td>
+                <c:if test="${param.kindOfBoard == '자유' || param.kindOfBoard == '문의' || param.kindOfBoard == '입양후기'}">
                 <td class="col-md-3">
-                  ${board.title}
+                  <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.pk}" class="text-body">
+                      ${board.title}
+                  </a>
                 </td>
+                </c:if>
+
+                <c:if test="${param.kindOfBoard == 'find'}">
+                  <td class="col-md-3">
+                    <a href="/findBoard/detail?faNumber=${board.pk}" class="text-body">
+                        ${board.title}
+                    </a>
+                  </td>
+                </c:if>
+
+                <c:if test="${param.kindOfBoard == 'look'}">
+                  <td class="col-md-3">
+                    <a href="/lookBoard/detail?laNumber=${board.pk}" class="text-body">
+                        ${board.title}
+                    </a>
+                  </td>
+                </c:if>
                 <td class="col-md-2">${board.name}</td>
                 <td class="col-md-2">${board.wrTime}</td>
                 <td class="col-md-2">
@@ -110,9 +130,9 @@
                   <input type="button" id="delete" class="btn btn-primary" value="삭제" onclick="location.href='/admin/board/delete?kindOfBoard=${param.kindOfBoard}&pk=${board.pk}'">
                 </td>
               </tr>
-
               </tbody>
             </c:forEach>
+
           </table>
         </div>
       </div>
