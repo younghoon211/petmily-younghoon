@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Petmily-Don't buy, Do Adopt</title>
+    <title>Petmily - Don't buy, Do Adopt</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -83,17 +83,17 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div><a href="#">${findBoard.species}</a></div>
+                                <div>종: ${findBoard.species}</div>
                                 <br/>
-                                <div><a href="#">상태: ${findBoard.animalState}</a></div>
+                                <div>상태: ${findBoard.animalState}</div>
                                 <br/>
-                                <div><a href="#">장소: ${findBoard.location}</a></div>
+                                <div>장소: ${findBoard.location}</div>
                                 <br/>
-                                <div><a href="#">작성일: ${findBoard.wrTime}</a></div>
+                                <div>작성일: ${findBoard.wrTime}</div>
                                 <br/>
-                                <div><a href="#">작성자: ${findBoard.name}</a></div>
+                                <div>작성자: ${findBoard.name}</div>
                             </div>
-                            <h3 class="heading"><a href="#">${findBoard.title}</a></h3>
+                            <h3 class="heading"><a href="${pageContext.request.contextPath}/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a></h3>
                         </div>
                     </div>
                 </div>

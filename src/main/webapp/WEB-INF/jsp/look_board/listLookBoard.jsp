@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Petmily-Don't buy, Do Adopt</title>
+    <title>Petmily - Don't buy, Do Adopt</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -97,17 +97,17 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                 <div><a href="#">${lookBoard.species}</a></div>
-                                 <br/>
-                                 <div><a href="#">상태: ${lookBoard.animalState}</a></div>
-                                 <br/>
-                                 <div><a href="#">장소: ${lookBoard.location}</a></div>
-                                 <br/>
-                                 <div><a href="#">작성일: ${lookBoard.wrTime}</a></div>
-                                 <br/>
-                                 <div><a href="#">작성자: ${lookBoard.name}</a></div>
+                                <div>종: ${lookBoard.species}</div>
+                                <br/>
+                                <div>상태: ${lookBoard.animalState}</div>
+                                <br/>
+                                <div>장소: ${lookBoard.location}</div>
+                                <br/>
+                                <div>작성일: ${lookBoard.wrTime}</div>
+                                <br/>
+                                <div>작성자: ${lookBoard.name}</div>
                             </div>
-                            <h3 class="heading"><a href="#">${lookBoard.title}</a></h3>
+                            <h3 class="heading"><a href="${pageContext.request.contextPath}/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a></h3>
                         </div>
                     </div>
                 </div>
