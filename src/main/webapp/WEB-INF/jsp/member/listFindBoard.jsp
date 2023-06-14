@@ -40,7 +40,7 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-        <div>
+        <div style="text-align: center">
             <input type="button" class="btn btn-primary" id="matched" name="matched"
                <c:if test="${matched == null}">
                        value="매칭됨만 보기"
@@ -50,16 +50,19 @@
                 </c:if>
                    onclick="matchedButton()">
         </div>
-        <br/>
-        <div class="row d-flex">
+        <br/><br/>
+        <div class="row d-flex" style="transform: translateX(100px);">
             <c:forEach var="findBoard" items="${Finds.content}">
                 <div class="col-md-4 d-flex ftco-animate" id="d-flex-out">
                     <div class="blog-entry align-self-stretch" id="d-flex-in">
                         <a  <c:if test="${findBoard.animalState == '매칭됨'}">
                                 href="${pageContext.request.contextPath}/member/auth/checkMatching/lookList?faNumber=${findBoard.faNumber}"
                             </c:if>
+                                <c:if test="${findBoard.animalState != '매칭됨'}">
+                                    href="${pageContext.request.contextPath}/findBoard/detail?faNumber=${findBoard.faNumber}"
+                                </c:if>
                            class="block-20 rounded"
-                           style="background-image: url('/upload/${findBoard.imgPath}');">
+                           style="background-image: url('/findBoard/upload?filename=${findBoard.imgPath}');">
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
