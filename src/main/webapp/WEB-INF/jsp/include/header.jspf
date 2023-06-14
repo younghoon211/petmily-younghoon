@@ -36,7 +36,7 @@
                             <a class="text-white" href="/logout">로그아웃</a>
                         </div>
 
-						<c:if test="${authUser.getMNumber() == 1}">
+						<c:if test="${authUser.getGrade() == '관리자'}">
 							<div>
 								<a class="text-white" href="/admin" style="padding: 15px">관리자 페이지</a>
 							</div>
@@ -70,7 +70,7 @@
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						게시판
 					</a>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="min-width: 6rem">
 						<li><a class="dropdown-item" href="/board/list?kindOfBoard=자유&sort=bno">자유 게시판</a></li>
 						<li><a class="dropdown-item" href="/board/list?kindOfBoard=문의&sort=bno">문의 게시판</a></li>
 						<li><a class="dropdown-item" href="/adopt_review/list?kindOfBoard=입양후기">입양 후기 게시판</a></li>
