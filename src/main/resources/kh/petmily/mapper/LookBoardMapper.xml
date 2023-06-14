@@ -119,11 +119,11 @@
         from FINDANIMALBOARD
         <where>
             SPECIES = #{species}
-            <if test="kind != '모름'">
-                and (KIND = #{kind} or KIND = '모름')
+            <if test="kind != '모름' and location != '모름'">
+                and KIND = #{kind} and LOCATION = #{location}
             </if>
-            <if test="location != '모름'">
-                and (LOCATION = #{location} or LOCATION = '모름')
+            <if test="kind == '모름' or location == '모름'">
+                and 1 = 0
             </if>
         </where>
     </select>

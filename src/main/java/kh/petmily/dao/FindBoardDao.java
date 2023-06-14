@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,19 +28,22 @@ public class FindBoardDao implements BasicDao {
     public void insert(DomainObj obj) {
         FindBoard findBoard = (FindBoard) obj;
 
-        List<Integer> list = mapper.selectMatchedLa(findBoard);
-        log.info("insert : list = {}", list);
+        List<Integer> list = mapper.selectMatchedLa(findBoard); // 종,품종,장소가 같은 laNumber를 가져옴. 단, 하나라도 모름일 경우 null 받아옴
 
-        if (list.size() != 0) {
+        list.removeIf(Objects::isNull); // npe방지 위해 list중 null값 선택적 제거
+
+        log.info("find insert : list = {}", list);
+
+        if (!list.isEmpty()) { // selectMatchedLa(find랑 종,품종,장소가 일치하는 look리스트)가 존재하면
             mapper.insert(findBoard);
 
-            int laNumber = mapper.selectByPkMax();
-            log.info("insert : MAX laNumber = {}", laNumber);
+            int faNumber = mapper.selectByPkMax(); // 지금 insert된 find pk값 가져와서 faNumber에 초기화하고
+            log.info("find insert : MAX faNumber = {}", faNumber);
 
-            mapper.changeState(laNumber);
+            mapper.changeState(faNumber); // 최근 업로드하는 find pk값의 animalstate를 매칭됨 으로 바꿈
 
             for (Integer i : list) {
-                mapper.changeStateLook(i);
+                mapper.changeStateLook(i); // look부분도 매칭됨 으로 바꿈
             }
         } else {
             mapper.insert(findBoard);

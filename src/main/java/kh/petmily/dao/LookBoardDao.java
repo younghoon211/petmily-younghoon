@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,13 +32,16 @@ public class LookBoardDao implements BasicDao {
         LookBoard lookBoard = (LookBoard) obj;
 
         List<Integer> list = mapper.selectMatchedFa(lookBoard);
-        log.info("insert : list = {}", list);
 
-        if (list.size() != 0) {
+        list.removeIf(Objects::isNull);
+
+        log.info("look insert : list = {}", list);
+
+        if (!list.isEmpty()) {
             mapper.insert(lookBoard);
 
             int laNumber = mapper.selectByPkMax();
-            log.info("insert : MAX laNumber = {}", laNumber);
+            log.info("look insert : MAX laNumber = {}", laNumber);
 
             mapper.changeState(laNumber);
 

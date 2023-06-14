@@ -31,7 +31,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Look Animal Board<i class="ion-ios-arrow-forward"></i></span></p>
+                <p class="breadcrumbs mb-2"><span>Look Animal Board - 현재 보호 중인 동물이 있다면 글을 작성해주세요<i class="ion-ios-arrow-forward"></i></span></p>
                 <h1 class="mb-0 bread">유기동물 봤어요</h1>
             </div>
         </div>
