@@ -108,6 +108,9 @@
                                 <div>작성자: ${lookBoard.name}</div>
                             </div>
                             <h3 class="heading"><a href="${pageContext.request.contextPath}/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a></h3>
+                            <div class="meta mb-2">
+                                <div>조회수: ${lookBoard.viewCount}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

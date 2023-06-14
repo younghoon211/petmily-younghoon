@@ -154,7 +154,7 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     private LookBoardDetailForm toDetailForm(LookBoard lookBoard) {
-        return new LookBoardDetailForm(lookBoard.getLaNumber(), lookBoard.getMNumber(), findLookBoardName(lookBoard.getLaNumber()), lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation(), lookBoard.getAnimalState(), lookBoard.getImgPath(), lookBoard.getWrTime(), lookBoard.getTitle(), lookBoard.getContent());
+        return new LookBoardDetailForm(lookBoard.getLaNumber(), lookBoard.getMNumber(), findLookBoardName(lookBoard.getLaNumber()), lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation(), lookBoard.getAnimalState(), lookBoard.getImgPath(), lookBoard.getWrTime(), lookBoard.getTitle(), lookBoard.getContent(), lookBoard.getViewCount());
     }
 
     private LookBoardModifyForm toModifyForm(LookBoard lookBoard) {

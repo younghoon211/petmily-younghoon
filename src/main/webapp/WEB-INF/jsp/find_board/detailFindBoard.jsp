@@ -48,6 +48,7 @@
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
                     <h2 class="mb-4">${findIn.title}</h2>
+                    <p>조회수: ${findIn.viewCount}</p>
                 </div>
                 <div class="row">
                     <div class="col-md-6 services-2 w-100 d-flex">

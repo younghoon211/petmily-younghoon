@@ -94,6 +94,9 @@
                                 <div>작성자: ${findBoard.name}</div>
                             </div>
                             <h3 class="heading"><a href="${pageContext.request.contextPath}/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a></h3>
+                            <div class="meta mb-2">
+                                <div>조회수: ${findBoard.viewCount}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

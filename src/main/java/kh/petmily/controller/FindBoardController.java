@@ -78,11 +78,10 @@ public class FindBoardController {
 
     @GetMapping("/detail")
     public String detail(@RequestParam("faNumber") int faNumber, Model model) {
+        findBoardService.updateViewCount(faNumber);
+
         FindBoardDetailForm detailForm = findBoardService.getDetailForm(faNumber);
         log.info("FindDetailForm = {}", detailForm);
-
-        // 조회수
-        findBoardService.updateViewCount(faNumber);
 
         model.addAttribute("findIn", detailForm);
 

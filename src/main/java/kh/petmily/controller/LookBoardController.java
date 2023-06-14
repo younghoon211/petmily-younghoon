@@ -83,11 +83,10 @@ public class LookBoardController {
 
     @GetMapping("/detail")
     public String detail(@RequestParam("laNumber") int laNumber, Model model) {
+        lookBoardService.updateViewCount(laNumber);
+
         LookBoardDetailForm detailForm = lookBoardService.getDetailForm(laNumber);
         log.info("LookDetailForm = {}", detailForm);
-
-        // ====== 조회수 추가된 부분 ======
-        lookBoardService.updateViewCount(laNumber);
 
         model.addAttribute("lookIn", detailForm);
 

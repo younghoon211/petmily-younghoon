@@ -19,20 +19,6 @@ public class FindBoardDetailForm {
     private String content;
     private int viewCount;
 
-    public FindBoardDetailForm(int faNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content) {
-        this.faNumber = faNumber;
-        this.mNumber = mNumber;
-        this.name = name;
-        this.species = species;
-        this.kind = kind;
-        this.location = location;
-        this.animalState = animalState;
-        this.imgPath = imgPath;
-        this.wrTime = wrTime;
-        this.title = title;
-        this.content = content;
-    }
-
     public FindBoardDetailForm(int faNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content, int viewCount) {
         this.faNumber = faNumber;
         this.mNumber = mNumber;

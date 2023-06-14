@@ -17,24 +17,8 @@ public class LookBoardDetailForm {
     private Date wrTime;
     private String title;
     private String content;
-    // ====== 조회수 추가 ======
     private int viewCount;
 
-    public LookBoardDetailForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content) {
-        this.laNumber = laNumber;
-        this.mNumber = mNumber;
-        this.name = name;
-        this.species = species;
-        this.kind = kind;
-        this.location = location;
-        this.animalState = animalState;
-        this.imgPath = imgPath;
-        this.wrTime = wrTime;
-        this.title = title;
-        this.content = content;
-    }
-
-    // ====== 조회수 추가 ======
     public LookBoardDetailForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content, int viewCount) {
         this.laNumber = laNumber;
         this.mNumber = mNumber;
