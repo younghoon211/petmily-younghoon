@@ -5,7 +5,7 @@
 
 <head>
 
-    <title>Petmily-Don't buy, Do Adopt</title>
+    <title>Petmily - Don't buy, Do Adopt</title>
 
     <meta charset="utf-8">
     <meta name="viewport"

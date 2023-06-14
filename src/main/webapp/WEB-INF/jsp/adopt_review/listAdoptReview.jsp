@@ -4,7 +4,7 @@ pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Petmily-Don't buy, Do Adopt</title>
+  <title>Petmily - Don't buy, Do Adopt</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="/css/freeBoard.css">
@@ -88,7 +88,7 @@ pageEncoding="UTF-8" %>
                             <div><i class="far fa-eye"></i>date ${board.wrTime}</div><br/>
                             <div><i class="far fa-eye"></i>by<a href="javascript:void(0)"> ${board.name}</a></div>
                         </div>
-                            <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"><h3 class="heading">${board.title}</h6></a>
+                            <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"><h3 class="heading">${board.title}</h3></a>
                     </div>
                 </div>
             </div>

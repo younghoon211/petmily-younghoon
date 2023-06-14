@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <title>Petmily-Don't buy, Do Adopt</title>
+    <title>Petmily - Don't buy, Do Adopt</title>
     <link rel="stylesheet" href="/resources/css/join.css">
     <script src="/resources/js/joinCheck.js"></script>
 </head>

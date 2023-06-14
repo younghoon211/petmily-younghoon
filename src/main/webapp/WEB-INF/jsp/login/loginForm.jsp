@@ -38,7 +38,7 @@
                             <input id="password" name="pw" type="password" placeholder="비밀번호" required="required"
                                    style="padding-left: 10px"/>
                         </div>
-                        <span class="error"><c:if test="${param.error == 'true'}">아이디 또는 비밀번호가 일치하지 않습니다.</c:if></span>
+                        <span class="error"><c:if test="${param.error == 'true'}"><br>아이디 또는 비밀번호가 일치하지 않습니다.<br></c:if></span>
                         <br>
                         <div class="login">
                             <div>
