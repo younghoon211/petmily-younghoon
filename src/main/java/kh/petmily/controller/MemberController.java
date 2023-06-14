@@ -68,7 +68,7 @@ public class MemberController {
 
         memberService.join(joinRequest);
 
-        return "/success/joinSuccess";
+        return "/login/joinSuccess";
     }
 
     // 로그인
@@ -150,7 +150,7 @@ public class MemberController {
 
         memberService.modify(member, memberChangeForm);
 
-        return "/success/changeMemberSuccess";
+        return "/member/changeMemberSuccess";
     }
 
     // 회원탈퇴
@@ -182,7 +182,7 @@ public class MemberController {
         memberService.withdraw(mNumber);
         request.getSession().invalidate();
 
-        return "/success/withdrawSuccess";
+        return "/member/withdrawSuccess";
     }
 
     @GetMapping("/member/auth/checkMatching")
