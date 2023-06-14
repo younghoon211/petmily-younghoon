@@ -49,8 +49,8 @@ public class JoinValidator implements Validator {
         }
 
         // 전화번호 중복체크
-        if (memberService.checkDuplicatedPhone(joinRequest)) {
-            errors.rejectValue("phone", "duplicatedPhoneNumber");
+        if (memberService.checkDuplicatedPhone(joinRequest.getPhone())) {
+            errors.rejectValue("phone", "duplicatedPhone");
         }
     }
 }
