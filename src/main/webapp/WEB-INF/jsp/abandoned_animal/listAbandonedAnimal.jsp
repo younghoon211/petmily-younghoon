@@ -54,32 +54,36 @@
 
                     <div class="col">
                         <select name="species" class="form-control">
-                            <option value="allSpecies" selected>모든 동물</option>
-                            <option value="개">강아지</option>
-                            <option value="고양이">고양이</option>
-                            <option value="기타">기타</option>
+                            <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
+                                <option value="${animal}" <c:if test="${species == animal}">selected</c:if>>
+                                    <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
+                                </option>
+                            </c:forEach>
                         </select>
                     </div>
 
                     <div class="col">
                         <select name="gender" class="form-control">
-                            <option value="allGender" selected>모든 성별</option>
-                            <option value="-">모름</option>
-                            <option value="M">수컷</option>
-                            <option value="F">암컷</option>
+                            <option value="allGender" <c:if test="${gender == 'allGender'}">selected</c:if>>모든 성별
+                            </option>
+                            <option value="-" <c:if test="${gender == '-'}">selected</c:if>>모름</option>
+                            <option value="M" <c:if test="${gender == 'M'}">selected</c:if>>수컷</option>
+                            <option value="F" <c:if test="${gender == 'F'}">selected</c:if>>암컷</option>
                         </select>
                     </div>
 
                     <div class="col">
                         <select name="animalState" class="form-control">
-                            <option value="allAnimalState" selected>모든 상태</option>
-                            <option value="보호">보호중</option>
-                            <option value="임보">임시 보호중</option>
+                            <option value="allAnimalState" <c:if test="${animalState == 'allAnimalState'}">selected</c:if>>모든 상태
+                            </option>
+                            <option value="보호" <c:if test="${animalState == '보호'}">selected</c:if>>보호중</option>
+                            <option value="임보" <c:if test="${animalState == '임보'}">selected</c:if>>임시보호중</option>
                         </select>
                     </div>
 
                     <div class="col">
-                        <input type="text" name="keyword" class="form-control" placeholder="검색어">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${keyword eq 'allKeyword' ? '' : keyword}">
                     </div>
 
                     <div class="col">
@@ -90,7 +94,6 @@
             </form>
         </div>
         <br>
-
 
 
         <div class="row">

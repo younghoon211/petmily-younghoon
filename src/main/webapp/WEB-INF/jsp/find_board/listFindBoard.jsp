@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,25 +48,29 @@
 
                     <div class="col">
                         <select name="species" class="form-control">
-                            <option value="allSpecies" selected>모든 동물</option>
-                            <option value="개">강아지</option>
-                            <option value="고양이">고양이</option>
-                            <option value="기타">기타</option>
+                            <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
+                                <option value="${animal}" <c:if test="${species == animal}">selected</c:if>>
+                                    <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
+                                </option>
+                            </c:forEach>
                         </select>
                     </div>
 
                     <div class="col">
                         <select name="animalState" class="form-control">
-                            <option value="allAnimalState" selected>모든 상태</option>
-                            <option value="실종">실종</option>
-                            <option value="매칭됨">매칭</option>
-                            <option value="완료">완료</option>
+                            <c:forEach var="state" items="${['allAnimalState', '실종', '매칭됨', '완료']}">
+                                <option value="${state}" <c:if test="${animalState == state}">selected</c:if>>
+                                    <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
+                                </option>
+                            </c:forEach>
                         </select>
                     </div>
 
                     <div class="col">
-                        <input type="text" name="keyword" class="form-control" placeholder="검색어">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${keyword eq 'allKeyword' ? '' : keyword}">
                     </div>
+
                     <div class="col">
                         <input type="submit" class="btn btn-primary" value="검색">
                     </div>
@@ -93,7 +98,9 @@
                                 <br/>
                                 <div>작성자: ${findBoard.name}</div>
                             </div>
-                            <h3 class="heading"><a href="${pageContext.request.contextPath}/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a></h3>
+                            <h3 class="heading">
+                                <a href="${pageContext.request.contextPath}/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a>
+                            </h3>
                             <div class="meta mb-2">
                                 <div>조회수: ${findBoard.viewCount}</div>
                             </div>
