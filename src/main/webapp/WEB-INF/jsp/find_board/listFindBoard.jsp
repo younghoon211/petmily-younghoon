@@ -88,7 +88,7 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div>종: ${findBoard.species}</div>
+                                <div>종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
                                 <br/>
                                 <div>상태: ${findBoard.animalState}</div>
                                 <br/>

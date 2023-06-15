@@ -91,7 +91,7 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div>종: ${lookBoard.species}</div>
+                                <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
                                 <br/>
                                 <div>상태: ${lookBoard.animalState}</div>
                                 <br/>
