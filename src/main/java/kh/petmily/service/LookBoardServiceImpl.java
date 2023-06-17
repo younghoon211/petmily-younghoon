@@ -68,9 +68,9 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     @Override
-    public LookBoardPageForm getLookPage(int pageNo, String species, String animalState, String keyword) {
+    public LookBoardPageForm getLookPage(int pageNo, String species, String animalState, String keyword, String sort) {
         int total = lookBoardDao.selectCount(species, animalState, keyword);
-        List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword);
+        List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
 
         return new LookBoardPageForm(total, pageNo, size, content);
     }
@@ -101,7 +101,6 @@ public class LookBoardServiceImpl implements LookBoardService {
         return memberDao.selectName(mNumber);
     }
 
-    //====== 조회수 추가 ======
     @Override
     public int updateViewCount(int laNumber) {
         return lookBoardDao.updateViewCount(laNumber);

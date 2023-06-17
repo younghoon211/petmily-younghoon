@@ -20,7 +20,7 @@ public interface LookBoardService {
 
     public void delete(int laNumber);
 
-    public LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword);
+    public LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword, String sort);
 
     public LookBoardDetailForm getDetailForm(int laNumber);
 
@@ -30,7 +30,6 @@ public interface LookBoardService {
 
     public String findMemberName(int mNumber);
 
-    //====== 조회수 추가 ======
     public int updateViewCount(int laNumber);
 
     public LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard);

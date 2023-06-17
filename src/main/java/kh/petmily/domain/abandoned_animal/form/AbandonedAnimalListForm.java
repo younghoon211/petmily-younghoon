@@ -8,7 +8,7 @@ import java.sql.Date;
 @Data
 public class AbandonedAnimalListForm {
     private int abNumber;
-    private int sNumber;    // 보호소 번호
+    private int sNumber; // 보호소 번호
     private String name;
     private String species;
     private String kind;
@@ -22,8 +22,9 @@ public class AbandonedAnimalListForm {
     private String description;
     private String animalState;
     private Blob video;
+    private String sort;
 
-    public AbandonedAnimalListForm(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AbandonedAnimalListForm(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState, String sort) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.name = name;
@@ -38,5 +39,6 @@ public class AbandonedAnimalListForm {
         this.uniqueness = uniqueness;
         this.description = description;
         this.animalState = animalState;
+        this.sort = sort;
     }
 }

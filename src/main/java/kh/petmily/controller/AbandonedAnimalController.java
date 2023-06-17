@@ -31,6 +31,7 @@ public class AbandonedAnimalController {
                        @RequestParam(required = false) String gender,
                        @RequestParam(required = false) String animalState,
                        @RequestParam(required = false) String keyword,
+                       @RequestParam String sort,
                        HttpServletRequest request,
                        Model model) {
 
@@ -53,7 +54,7 @@ public class AbandonedAnimalController {
         log.info("animalState = {}", animalState);
         log.info("keyword = {}", keyword);
 
-        AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo, species, gender, animalState, keyword);
+        AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo, species, gender, animalState, keyword, sort);
         model.addAttribute("abandonedAnimals", abandonedAnimals);
 
         return "/abandoned_animal/listAbandonedAnimal";

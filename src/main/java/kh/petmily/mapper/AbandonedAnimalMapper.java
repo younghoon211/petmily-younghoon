@@ -25,7 +25,7 @@ public interface AbandonedAnimalMapper {
 
     List<AbandonedAnimal> selectIndex(@Param("start") int start, @Param("end") int end);
 
-    List<AbandonedAnimal> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("gender") String gender, @Param("animalState") String animalState, @Param("keyword") String keyword);
+    List<AbandonedAnimal> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("gender") String gender, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
 
     String selectName(int pk);
 

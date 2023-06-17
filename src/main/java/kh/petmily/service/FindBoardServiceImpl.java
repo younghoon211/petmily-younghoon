@@ -73,9 +73,9 @@ public class FindBoardServiceImpl implements FindBoardService {
     }
 
     @Override
-    public FindBoardPageForm getFindPage(int pageNo, String species, String animalState, String keyword) {
+    public FindBoardPageForm getFindPage(int pageNo, String species, String animalState, String keyword, String sort) {
         int total = findBoardDao.selectCount(species, animalState, keyword);
-        List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword);
+        List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
 
         return new FindBoardPageForm(total, pageNo, size, content);
     }

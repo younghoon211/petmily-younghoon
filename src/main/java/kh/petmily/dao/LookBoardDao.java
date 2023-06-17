@@ -103,18 +103,13 @@ public class LookBoardDao implements BasicDao {
         return mapper.selectCountWithCondition(species, animalState, keyword);
     }
 
-    public List<LookBoard> selectIndex(int start, int end) {
-        return mapper.selectIndex(start, end);
-    }
-
-    public List<LookBoardListForm> selectIndex(int start, int end, String species, String animalState, String keyword) {
+    public List<LookBoardListForm> selectIndex(int start, int end, String species, String animalState, String keyword, String sort) {
         List<LookBoardListForm> result = new ArrayList<>();
 
-        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(start, end, species, animalState, keyword);
+        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(start, end, species, animalState, keyword, sort);
 
         for (LookBoard board : lookBoards) {
-            // ====== 조회수 추가된 부분 ======
-            LookBoardListForm li = new LookBoardListForm(board.getLaNumber(), selectName(board.getLaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
+            LookBoardListForm li = new LookBoardListForm(board.getLaNumber(), selectName(board.getLaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount(), board.getSort());
             result.add(li);
         }
 

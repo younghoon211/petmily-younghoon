@@ -8,12 +8,12 @@ import java.util.List;
 public class AbandonedAnimalPageForm {
     private int total;
     private int currentPage;
-    private List<AbandonedAnimalDetailForm> content;
+    private List<AbandonedAnimalListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public AbandonedAnimalPageForm(int total, int currentPage, int size, List<AbandonedAnimalDetailForm> content) {
+    public AbandonedAnimalPageForm(int total, int currentPage, int size, List<AbandonedAnimalListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;

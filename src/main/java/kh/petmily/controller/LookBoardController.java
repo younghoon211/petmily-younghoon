@@ -55,6 +55,7 @@ public class LookBoardController {
                        @RequestParam(required = false) String species,
                        @RequestParam(required = false) String animalState,
                        @RequestParam(required = false) String keyword,
+                       @RequestParam String sort,
                        HttpServletRequest request,
                        Model model) {
 
@@ -75,7 +76,7 @@ public class LookBoardController {
         log.info("animalState = {}", animalState);
         log.info("keyword = {}", keyword);
 
-        LookBoardPageForm lookBoardPageForm = lookBoardService.getLookPage(pageNo, species, animalState, keyword);
+        LookBoardPageForm lookBoardPageForm = lookBoardService.getLookPage(pageNo, species, animalState, keyword, sort);
         model.addAttribute("Looks", lookBoardPageForm);
 
         return "/look_board/listLookBoard";

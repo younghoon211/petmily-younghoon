@@ -15,8 +15,8 @@ public class LookBoardListForm {
     private String imgPath;
     private Date wrTime;
     private String title;
-    // ====== 조회수 추가 ======
     private int viewCount;
+    private String sort;
 
     public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title) {
         this.laNumber = laNumber;
@@ -30,8 +30,7 @@ public class LookBoardListForm {
         this.title = title;
     }
 
-    // ====== 조회수 추가 ======
-    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount, String sort) {
         this.laNumber = laNumber;
         this.name = name;
         this.species = species;
@@ -42,5 +41,6 @@ public class LookBoardListForm {
         this.wrTime = wrTime;
         this.title = title;
         this.viewCount = viewCount;
+        this.sort = sort;
     }
 }

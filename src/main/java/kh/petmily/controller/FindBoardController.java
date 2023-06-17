@@ -55,6 +55,7 @@ public class FindBoardController {
                        @RequestParam(required = false) String species,
                        @RequestParam(required = false) String animalState,
                        @RequestParam(required = false) String keyword,
+                       @RequestParam String sort,
                        HttpServletRequest request,
                        Model model) {
         HttpSession session = request.getSession();
@@ -70,7 +71,7 @@ public class FindBoardController {
         animalState = (String) session.getAttribute("animalState");
         keyword = (String) session.getAttribute("keyword");
 
-        FindBoardPageForm findBoardPageForm = findBoardService.getFindPage(pageNo, species, animalState, keyword);
+        FindBoardPageForm findBoardPageForm = findBoardService.getFindPage(pageNo, species, animalState, keyword, sort);
         model.addAttribute("Finds", findBoardPageForm);
 
         return "/find_board/listFindBoard";

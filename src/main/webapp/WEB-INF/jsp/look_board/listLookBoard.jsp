@@ -31,7 +31,8 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Look Animal Board - 현재 보호 중인 동물이 있다면 글을 작성해주세요<i class="ion-ios-arrow-forward"></i></span></p>
+                <p class="breadcrumbs mb-2"><span>Look Animal Board - 현재 보호 중인 동물이 있다면 글을 작성해주세요<i
+                        class="ion-ios-arrow-forward"></i></span></p>
                 <h1 class="mb-0 bread">유기동물 봤어요</h1>
             </div>
         </div>
@@ -41,43 +42,41 @@
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="modal-header">
-
-            <!-- 검색 바 -->
             <form action="/lookBoard/list" method="get">
                 <div class="form-group row">
-
-                    <div class="col">
-                        <select name="species" class="form-control">
-                            <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
-                                <option value="${animal}" <c:if test="${species == animal}">selected</c:if>>
-                                    <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
-                                </option>
+                    <div>
+                        <c:if test="${empty param.species && empty param.animalState}">
+                            <c:forEach var="sort" items="${['lno', 'lnoAsc', 'viewCount']}">
+                                <a href="${pageContext.request.contextPath}/lookBoard/list?sort=${sort}">
+                                    <button class="btn btn-primary" type="button">
+                                        <c:choose>
+                                            <c:when test="${sort eq 'lno'}">최신순</c:when>
+                                            <c:when test="${sort eq 'lnoAsc'}">오래된순</c:when>
+                                            <c:when test="${sort eq 'viewCount'}">조회순</c:when>
+                                        </c:choose>
+                                    </button>&nbsp;
+                                </a>
                             </c:forEach>
-                        </select>
-                    </div>
+                        </c:if>
 
-                    <div class="col">
-                        <select name="animalState" class="form-control">
-                            <c:forEach var="state" items="${['allAnimalState', '실종', '매칭됨', '완료']}">
-                                <option value="${state}" <c:if test="${animalState == state}">selected</c:if>>
-                                    <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
-                                </option>
+                        <c:if test="${not empty param.species && not empty param.animalState}">
+                            <c:set var="linkParams"
+                                   value="?species=${param.species}&amp;animalState=${param.animalState}&amp;keyword=${param.keyword}&amp;sort="/>
+                            <c:forEach var="sort" items="${['lno', 'lnoAsc', 'viewCount']}">
+                                <a href="${pageContext.request.contextPath}/lookBoard/list${linkParams}${sort}">
+                                    <button class="btn btn-primary" type="button">
+                                        <c:choose>
+                                            <c:when test="${sort eq 'lno'}">최신순</c:when>
+                                            <c:when test="${sort eq 'lnoAsc'}">오래된순</c:when>
+                                            <c:when test="${sort eq 'viewCount'}">조회순</c:when>
+                                        </c:choose>
+                                    </button>&nbsp;
+                                </a>
                             </c:forEach>
-                        </select>
+                        </c:if>
                     </div>
-
-                    <div class="col">
-                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
-                               value="${keyword eq 'allKeyword' ? '' : keyword}">
-                    </div>
-
-                    <div class="col">
-                        <input type="submit" class="btn btn-primary" value="검색">
-                    </div>
-
                 </div>
             </form>
-
         </div>
         <br>
 
@@ -101,7 +100,9 @@
                                 <br/>
                                 <div>작성자: ${lookBoard.name}</div>
                             </div>
-                            <h3 class="heading"><a href="${pageContext.request.contextPath}/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a></h3>
+                            <h3 class="heading"><a
+                                    href="${pageContext.request.contextPath}/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
+                            </h3>
                             <div class="meta mb-2">
                                 <div>조회수: ${lookBoard.viewCount}</div>
                             </div>
@@ -112,36 +113,102 @@
         </div>
 
         <span class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="location.href='/lookBoard/auth/write'">글쓰기</button>
+                <button type="button" class="btn btn-primary"
+                        onclick="location.href='/lookBoard/auth/write'">글쓰기</button>
         </span>
 
+        <div style="display: flex; justify-content: center;">
+            <form action="/lookBoard/list" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <select name="species" class="form-control">
+                            <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
+                                <option value="${animal}" <c:if test="${species == animal}">selected</c:if>>
+                                    <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <select name="animalState" class="form-control">
+                            <c:forEach var="state" items="${['allAnimalState', '보호', '매칭됨', '완료']}">
+                                <option value="${state}" <c:if test="${animalState == state}">selected</c:if>>
+                                    <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${keyword eq 'allKeyword' ? '' : keyword}">
+                    </div>
+
+                    <div class="col">
+                        <button name="sort" type="submit" class="btn btn-primary"
+                                value="${param.sort}">검색
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-                        <li>
-                            <c:if test="${Looks.startPage > 5}">
-                                <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage - 5}">&lt;</a>
-                            </c:if>
-                        </li>
-                        <c:forEach var="pNo" begin="${Looks.startPage}" end="${Looks.endPage}">
-                            <c:if test="${Looks.currentPage == pNo}">
-                                <li class="active">
-                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}">${pNo}</a>
-                                </li>
-                            </c:if>
-                            <c:if test="${Looks.currentPage != pNo}">
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}">${pNo}</a>
-                                </li>
-                            </c:if>
-                        </c:forEach>
-                        <li>
-                            <c:if test="${Looks.endPage < Looks.totalPages}">
-                                <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage + 5}">&gt;</a>
-                            </c:if>
-                        </li>
+
+                        <c:if test="${not empty param.species && not empty param.animalState}">
+                            <li>
+                                <c:if test="${Looks.startPage > 5}">
+                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage - 5}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <c:forEach var="pNo" begin="${Looks.startPage}" end="${Looks.endPage}">
+                                <c:if test="${Looks.currentPage == pNo}">
+                                    <li class="active">
+                                        <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${Looks.currentPage != pNo}">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            <li>
+                                <c:if test="${Looks.endPage < Looks.totalPages}">
+                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage + 5}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+
+                        <c:if test="${empty param.species && empty param.animalState}">
+                            <li>
+                                <c:if test="${Looks.startPage > 5}">
+                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage - 5}&sort=${param.sort}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <c:forEach var="pNo" begin="${Looks.startPage}" end="${Looks.endPage}">
+                                <c:if test="${Looks.currentPage == pNo}">
+                                    <li class="active">
+                                        <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${Looks.currentPage != pNo}">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            <li>
+                                <c:if test="${Looks.endPage < Looks.totalPages}">
+                                    <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage + 5}&sort=${param.sort}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+
                     </ul>
                 </div>
             </div>

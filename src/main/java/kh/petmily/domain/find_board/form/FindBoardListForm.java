@@ -16,6 +16,7 @@ public class FindBoardListForm {
     private Date wrTime;
     private String title;
     private int viewCount;
+    private String sort;
 
     public FindBoardListForm(int faNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title) {
         this.faNumber = faNumber;
@@ -29,7 +30,7 @@ public class FindBoardListForm {
         this.title = title;
     }
 
-    public FindBoardListForm(int faNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+    public FindBoardListForm(int faNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount, String sort) {
         this.faNumber = faNumber;
         this.name = name;
         this.species = species;
@@ -40,5 +41,6 @@ public class FindBoardListForm {
         this.wrTime = wrTime;
         this.title = title;
         this.viewCount = viewCount;
+        this.sort = sort;
     }
 }

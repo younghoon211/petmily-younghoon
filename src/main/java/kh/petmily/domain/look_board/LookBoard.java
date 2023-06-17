@@ -22,6 +22,7 @@ public class LookBoard implements DomainObj {
     private String title;
     private String content;
     private int viewCount;
+    private String sort;
 
     public LookBoard(int mNumber, String species, String kind, String location, String imgPath, String title, String content) {
         this.mNumber = mNumber;

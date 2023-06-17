@@ -18,7 +18,7 @@ public interface AbandonedAnimalService {
 
     public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo);
 
-    public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword);
+    public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword, String sort);
 
     PetPageForm getPetPage(int pageNo);
 

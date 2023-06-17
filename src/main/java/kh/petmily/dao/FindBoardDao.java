@@ -100,13 +100,13 @@ public class FindBoardDao implements BasicDao {
         return mapper.selectCountWithCondition(species, animalState, keyword);
     }
 
-    public List<FindBoardListForm> selectIndex(int start, int end, String species, String animalState, String keyword) {
+    public List<FindBoardListForm> selectIndex(int start, int end, String species, String animalState, String keyword, String sort) {
         List<FindBoardListForm> fiList = new ArrayList<>();
 
-        List<FindBoard> findBoards = mapper.selectIndexWithCondition(start, end, species, animalState, keyword);
+        List<FindBoard> findBoards = mapper.selectIndexWithCondition(start, end, species, animalState, keyword, sort);
 
         for (FindBoard board : findBoards) {
-            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
+            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount(), board.getSort());
             fiList.add(fi);
         }
 

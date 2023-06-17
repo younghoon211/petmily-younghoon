@@ -107,9 +107,19 @@
                 or DESCRIPTION like '%' || #{keyword} || '%' )
             </if>
         </where>
-        order by ABNUMBER DESC) A)
+        <include refid="sort"/>
+        ) A)
         where NUM between #{start} and #{end}
     </select>
+
+    <sql id="sort">
+        <if test="sort == 'abNo'">
+            order by ABNUMBER desc
+        </if>
+        <if test="sort == 'abNoAsc'">
+            order by ABNUMBER asc
+        </if>
+    </sql>
 
     <select id="selectName" resultType="java.lang.String">
         select NAME

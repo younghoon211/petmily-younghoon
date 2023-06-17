@@ -68,9 +68,8 @@
 
     <select id="selectIndexWithCondition" resultType="kh.petmily.domain.find_board.FindBoard">
         select *
-        from (select ROWNUM as NUM, A.*
-        FROM (select *
-        from FINDANIMALBOARD
+        from (select ROWNUM as NUM, A.* from
+        (select * from FINDANIMALBOARD
         <where>
             <if test="species != null and species != 'allSpecies'">
                 and SPECIES = #{species}
@@ -87,9 +86,22 @@
                 or LOCATION like '%' || #{keyword} || '%')
             </if>
         </where>
-        order by FANUMBER DESC) A)
+        <include refid="sort"/>
+        ) A)
         where NUM between #{start} and #{end}
     </select>
+
+    <sql id="sort">
+        <if test="sort == 'fno'">
+            order by FANUMBER desc
+        </if>
+        <if test="sort == 'fnoAsc'">
+            order by FANUMBER asc
+        </if>
+        <if test="sort == 'viewCount'">
+            order by VIEWCOUNT desc
+        </if>
+    </sql>
 
     <select id="selectFindWriteForm" resultType="kh.petmily.domain.find_board.FindBoard">
         select *

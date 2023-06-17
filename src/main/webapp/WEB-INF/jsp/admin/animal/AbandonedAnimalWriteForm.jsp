@@ -74,7 +74,7 @@
                             <label for="genderInput">성별:</label><br>
                             <div id="genderInput" class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" name="gender" id="genderInput1" value="F"/>F<span>&emsp;</span>
-                                <input type="radio" class="form-check-input" name="gender" id="sgenderInput2" value="M"/>M<span>&emsp;</span>
+                                <input type="radio" class="form-check-input" name="gender" id="genderInput2" value="M"/>M<span>&emsp;</span>
                                 <input type="radio" class="form-check-input" name="gender" id="genderInput3" value="-" checked="checked"/>-
                             </div>
                         </div>

@@ -58,13 +58,13 @@
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="/abandoned_animal/list">유기동물 조회</a>
+					<a class="nav-link" href="/abandoned_animal/list?sort=abNo">유기동물 조회</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/findBoard/list">반려동물 찾아요</a>
+					<a class="nav-link" href="/findBoard/list?sort=fno">반려동물 찾아요</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/lookBoard/list">유기동물 봤어요</a>
+					<a class="nav-link" href="/lookBoard/list?sort=lno">유기동물 봤어요</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -43,7 +43,6 @@
         from LOOKANIMALBOARD
         where LANUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드=======-->
 
     <select id="selectCountWithCondition" resultType="java.lang.Integer">
         select count(*)
@@ -66,12 +65,12 @@
         </where>
     </select>
 
-    <select id="selectIndex" resultType="kh.petmily.domain.look_board.LookBoard">
-        select *
-        from (select ROWNUM as NUM, A.*
-              FROM (select * from LOOKANIMALBOARD order by LANUMBER DESC) A)
-        where NUM between #{start} and #{end}
-    </select>
+<!--    <select id="selectIndex" resultType="kh.petmily.domain.look_board.LookBoard">-->
+<!--        select *-->
+<!--        from (select ROWNUM as NUM, A.*-->
+<!--              FROM (select * from LOOKANIMALBOARD order by LANUMBER DESC) A)-->
+<!--        where NUM between #{start} and #{end}-->
+<!--    </select>-->
 
     <select id="selectIndexWithCondition" resultType="kh.petmily.domain.look_board.LookBoard">
         select *
@@ -94,9 +93,22 @@
                 or LOCATION like '%' || #{keyword} || '%' )
             </if>
         </where>
-        order by LANUMBER DESC) A)
+        <include refid="sort"/>
+        ) A)
         where NUM between #{start} and #{end}
     </select>
+
+    <sql id="sort">
+        <if test="sort == 'lno'">
+            order by LANUMBER desc
+        </if>
+        <if test="sort == 'lnoAsc'">
+            order by LANUMBER asc
+        </if>
+        <if test="sort == 'viewCount'">
+            order by VIEWCOUNT desc
+        </if>
+    </sql>
 
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
@@ -105,7 +117,6 @@
         where L.LANUMBER = #{pk}
     </select>
 
-    <!--====== 조회수 추가 ======-->
     <update id="updateViewCount">
         update LOOKANIMALBOARD
         set VIEWCOUNT = VIEWCOUNT + 1

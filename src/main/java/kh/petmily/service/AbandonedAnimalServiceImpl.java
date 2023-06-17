@@ -2,10 +2,7 @@ package kh.petmily.service;
 
 import kh.petmily.dao.AbandonedAnimalDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalDetailForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalModifyForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalWriteForm;
+import kh.petmily.domain.abandoned_animal.form.*;
 import kh.petmily.domain.pet.Pet;
 import kh.petmily.domain.pet.form.PetPageForm;
 import lombok.RequiredArgsConstructor;
@@ -62,17 +59,17 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     @Override
     public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo) {
         int total = abandonedAnimalDao.selectCount();
-        List<AbandonedAnimalDetailForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size, size);
+        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size, size);
 
         return new AbandonedAnimalPageForm(total, pageNo, size, content);
     }
 
     @Override
-    public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword) {
+    public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword, String sort) {
         int total = abandonedAnimalDao.selectCount(species, gender, animalState, keyword);
         log.info("total = {}", total);
 
-        List<AbandonedAnimalDetailForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, gender, animalState, keyword);
+        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, gender, animalState, keyword, sort);
 
         AbandonedAnimalPageForm result = new AbandonedAnimalPageForm(total, pageNo, size, content);
         log.info("start = {}, end = {}", result.getStartPage(), result.getEndPage());

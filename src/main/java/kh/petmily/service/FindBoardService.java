@@ -23,7 +23,7 @@ public interface FindBoardService {
 
     public FindBoardModifyForm getModifyForm(int faNumber);
 
-    public FindBoardPageForm getFindPage(int pageNo, String animalType, String stateType, String keyword);
+    public FindBoardPageForm getFindPage(int pageNo, String animalType, String stateType, String keyword, String sort);
 
     public FindBoardPageForm getMembersFindPage(int pageNo, int mNumber, String matched);
 

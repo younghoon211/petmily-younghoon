@@ -19,7 +19,7 @@ public interface FindBoardMapper {
 
     int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
 
-    List<FindBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
+    List<FindBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
 
     FindBoard selectFindWriteForm(int pk);
 

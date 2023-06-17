@@ -23,7 +23,7 @@ class LookBoardMapperTest {
 
     @Test
     void 조건부_검색() {
-        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(1, 3, "allSpecies", "보호", "weg");
+        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(1, 3, "allSpecies", "보호", "weg", "lno");
 
         for (LookBoard lookBoard : lookBoards) {
             System.out.println("lookBoard = " + lookBoard);
