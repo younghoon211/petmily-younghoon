@@ -123,7 +123,7 @@
                     <div class="col">
                         <select name="species" class="form-control">
                             <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
-                                <option value="${animal}" <c:if test="${species == animal}">selected</c:if>>
+                                <option value="${animal}" <c:if test="${param.species == animal}">selected</c:if>>
                                     <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
                                 </option>
                             </c:forEach>
@@ -133,7 +133,7 @@
                     <div class="col">
                         <select name="animalState" class="form-control">
                             <c:forEach var="state" items="${['allAnimalState', '보호', '매칭됨', '완료']}">
-                                <option value="${state}" <c:if test="${animalState == state}">selected</c:if>>
+                                <option value="${state}" <c:if test="${param.animalState == state}">selected</c:if>>
                                     <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
                                 </option>
                             </c:forEach>
@@ -142,14 +142,14 @@
 
                     <div class="col">
                         <input type="text" name="keyword" class="form-control" placeholder="검색어"
-                               value="${keyword eq 'allKeyword' ? '' : keyword}">
+                               value="${keyword eq 'allKeyword' ? '' : param.keyword}">
                     </div>
 
                     <div class="col">
-                        <button name="sort" type="submit" class="btn btn-primary"
-                                value="${param.sort}">검색
-                        </button>
+                        <button type="submit" class="btn btn-primary">검색</button>
                     </div>
+
+                    <input type="hidden" name="sort" value="${param.sort}"/>
                 </div>
             </form>
         </div>
@@ -158,8 +158,8 @@
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-
-                        <c:if test="${not empty param.species && not empty param.animalState}">
+                        <!-- 조건부 검색에 조건 또는 검색값 중 하나라도 있을 시 -->
+                        <c:if test="${not empty param.species || not empty param.animalState || not empty param.keyword}">
                             <li>
                                 <c:if test="${Looks.startPage > 5}">
                                     <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage - 5}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
@@ -184,7 +184,8 @@
                             </li>
                         </c:if>
 
-                        <c:if test="${empty param.species && empty param.animalState}">
+                        <!-- 조건부 검색에 조건, 검색값 전부 없을 시 -->
+                        <c:if test="${empty param.species && empty param.animalState && empty param.keyword}">
                             <li>
                                 <c:if test="${Looks.startPage > 5}">
                                     <a href="${pageContext.request.contextPath}/lookBoard/list?pageNo=${Looks.startPage - 5}&sort=${param.sort}">&lt;</a>
