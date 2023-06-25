@@ -89,11 +89,13 @@ public class MemberController {
             authUser = memberService.login(id, pw);
         } catch (Exception e) {
             redirectAttributes.addAttribute("error", true);
+            redirectAttributes.addAttribute("id", id);
             return "redirect:/login";
         }
 
         if (authUser == null) {
             redirectAttributes.addAttribute("error", true);
+            redirectAttributes.addAttribute("id", id);
             return "redirect:/login";
         }
 

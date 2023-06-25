@@ -13,13 +13,24 @@
 
     <!-- Loding font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+    <script>
+        window.onload = function() {
+            var input = document.getElementById('myInput');
+            input.focus();
+
+            setInterval(function() {
+                input.classList.toggle('blink');
+            }, 500);
+        };
+    </script>
 </head>
 <body>
 
 <style>
     .error {
         color: red;
-        font-size: 11px
+        font-size: 11.5px;
+        position: fixed;
     }
 </style>
 
@@ -33,12 +44,18 @@
                               style="text-decoration: none; color: black"><h2>Petmily</h2></a></b>
                     </div>
                     <div class="form-inputs">
-                        <input type="text" name="id" placeholder="아이디" required="required" style="padding-left: 10px"/>
+                        <input type="text" name="id" placeholder="아이디" required="required" style="padding-left: 10px"
+                        value="${param.id}"/>
                         <div class="password">
-                            <input id="password" name="pw" type="password" placeholder="비밀번호" required="required"
-                                   style="padding-left: 10px"/>
+                            <input type="password" name="pw" placeholder="비밀번호" required="required"
+                                   style="padding-left: 10px"
+                                    <c:if test="${param.error == 'true'}">
+                                        id="myInput"
+                                    </c:if>
+                            />
                         </div>
-                        <span class="error"><c:if test="${param.error == 'true'}"><br>아이디 또는 비밀번호가 일치하지 않습니다.<br></c:if></span>
+                        <span class="error">
+                            <c:if test="${param.error == 'true'}"><strong>아이디 또는 비밀번호가 일치하지 않습니다.</strong><br></c:if></span>
                         <br>
                         <div class="login">
                             <div>
