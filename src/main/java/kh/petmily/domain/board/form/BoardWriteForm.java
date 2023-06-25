@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class WriteBoardForm implements DomainObj {
+public class BoardWriteForm implements DomainObj {
     private int mNumber;
     private String kindOfBoard;
     private String title;
     private String content;
     private String checkPublic;
 
-    public WriteBoardForm(int mNumber, String kindOfBoard, String title, String content, String checkPublic) {
+    public BoardWriteForm(int mNumber, String kindOfBoard, String title, String content, String checkPublic) {
         this.mNumber = mNumber;
         this.kindOfBoard = kindOfBoard;
         this.title = title;

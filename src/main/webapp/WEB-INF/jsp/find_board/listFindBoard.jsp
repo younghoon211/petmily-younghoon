@@ -119,6 +119,8 @@
         <div style="display: flex; justify-content: center;">
             <form action="/findBoard/list" method="get">
                 <div class="form-group row">
+                    <input type="hidden" name="sort" value="${param.sort}"/>
+
                     <div class="col">
                         <select name="species" class="form-control">
                             <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
@@ -147,8 +149,6 @@
                     <div class="col">
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
-
-                    <input type="hidden" name="sort" value="${param.sort}"/>
                 </div>
             </form>
         </div>

@@ -1,32 +1,36 @@
-package kh.petmily.domain.board.form;
+package kh.petmily.domain.adopt_review.form;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
-public class ReadBoardForm {
+public class AdoptReviewListForm {
     private int bNumber;
     private int mNumber;
     private String name;
     private String kindOfBoard;
     private String title;
     private String content;
+    private String imgPath;
     private Date wrTime;
     private String checkPublic;
     private int viewCount;
-    private String sort;
+    private int replyCount;
 
-    public ReadBoardForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, String sort) {
+    public AdoptReviewListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, String imgPath, Date wrTime, String checkPublic, int viewCount, int replyCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.name = name;
         this.kindOfBoard = kindOfBoard;
         this.title = title;
         this.content = content;
+        this.imgPath = imgPath;
         this.wrTime = wrTime;
         this.checkPublic = checkPublic;
         this.viewCount = viewCount;
-        this.sort = sort;
+        this.replyCount = replyCount;
     }
+
+
 }

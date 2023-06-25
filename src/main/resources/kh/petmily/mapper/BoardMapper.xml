@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.petmily.mapper.BoardMapper">
 
-    <!--=======BasicMapper 메소드=======-->
     <select id="selectByPk" resultType="kh.petmily.domain.board.Board">
         select *
         from BOARD
@@ -18,29 +17,77 @@
 
     <update id="update">
         update BOARD
-        set TITLE = #{title}, CONTENT = #{content}, CHECKPUBLIC = #{checkPublic}, WRTIME = SYSDATE
+        set TITLE       = #{title},
+            CONTENT     = #{content},
+            CHECKPUBLIC = #{checkPublic},
+            WRTIME      = SYSDATE
         where BNUMBER = #{bNumber}
     </update>
 
     <delete id="delete">
-        delete from BOARD
+        delete
+        from BOARD
         where BNUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드=======-->
 
-    <select id="selectCount" resultType="int">
+    <select id="selectCountWithCondition" resultType="java.lang.Integer">
         select count(*)
         from BOARD
-        where KINDOFBOARD = #{kindOfBoard}
+        <where>
+            KINDOFBOARD = #{kindOfBoard}
+
+            <if test="condition == 'title' and keyword != null and keyword != 'allKeyword'">
+                and TITLE like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'content' and keyword != null and keyword != 'allKeyword'">
+                and CONTENT like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'titleAndContent' and keyword != null and keyword != 'allKeyword'">
+                and (TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%')
+            </if>
+
+            <if test="condition == 'writer' and keyword != null and keyword != 'allKeyword'">
+                and (MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%'))
+            </if>
+        </where>
     </select>
 
-    <select id="selectIndex" resultType="kh.petmily.domain.board.Board">
-        select * from
-        (select ROWNUM as NUM, A.* from
-        (select * from BOARD
-        where KINDOFBOARD = #{kindOfBoard}
-        <include refid="sort" />
-            ) A)
+    <select id="selectIndexWithCondition" resultType="kh.petmily.domain.board.Board">
+        select *
+        from (select ROWNUM as NUM, A.*
+        from (select *
+        from BOARD
+        <where>
+            KINDOFBOARD = #{kindOfBoard}
+
+            <if test="condition == 'title' and keyword != null and keyword != 'allKeyword'">
+                and TITLE like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'content' and keyword != null and keyword != 'allKeyword'">
+                and CONTENT like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'titleAndContent' and keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%' )
+            </if>
+
+            <if test="condition == 'writer' and keyword != null and keyword != 'allKeyword'">
+                and ( MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%' ) )
+            </if>
+        </where>
+        <include refid="sort"/>
+        ) A)
         where NUM between #{start} and #{end}
     </select>
 
@@ -57,16 +104,19 @@
     </sql>
 
     <select id="selectName" resultType="java.lang.String">
-            select M.NAME
-            from BOARD B inner join MEMBER M
-            on B.MNUMBER = M.MNUMBER
-            where B.BNUMBER = #{pk}
+        select M.NAME
+        from BOARD B
+                 inner join MEMBER M
+                            on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
     </select>
 
     <select id="selectByContent" resultType="kh.petmily.domain.board.Board">
         select B.*, M.ID, M.NAME
-        from BOARD B, MEMBER M
-        where B.MNUMBER = M.MNUMBER and BNUMBER = #{bNumber}
+        from BOARD B,
+             MEMBER M
+        where B.MNUMBER = M.MNUMBER
+          and BNUMBER = #{bNumber}
     </select>
 
     <update id="updateViewCount">

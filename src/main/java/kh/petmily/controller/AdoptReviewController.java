@@ -1,9 +1,9 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.adopt_review.form.AdoptReviewForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewWriteForm;
-import kh.petmily.domain.adopt_review.form.BoardPage;
+import kh.petmily.domain.adopt_review.form.AdoptReviewBoardPageForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.AdoptReviewService;
 import lombok.RequiredArgsConstructor;
@@ -52,40 +52,22 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/list")
-    public String list(@RequestParam(required = false) Integer pbNumber,
-                       @RequestParam(required = false) String kindOfBoard,
+    public String list(@RequestParam(defaultValue = "1") Integer pbNumber,
+                       @RequestParam String kindOfBoard,
                        @RequestParam(required = false) String searchType,
                        @RequestParam(required = false) String keyword,
-                       HttpServletRequest request,
+                       @RequestParam String sort,
                        Model model) {
-        HttpSession session = request.getSession();
 
-        //====== 검색 추가 ======
-        if (pbNumber == null) {
-            initCondition(kindOfBoard, searchType, keyword, session);
-            pbNumber = 1;
-        }
-
-        saveCondition(kindOfBoard, searchType, keyword, session);
-
-        kindOfBoard = (String) session.getAttribute("kindOfBoard");
-        searchType = (String) session.getAttribute("searchType");
-        keyword = (String) session.getAttribute("keyword");
-
-        BoardPage boardPage = adoptReviewService.getAdoptReviewPage(pbNumber, kindOfBoard, searchType, keyword);
-        model.addAttribute("boardList", boardPage);
-        model.addAttribute("kindOfBoard", kindOfBoard);
-
-        log.info("kindOfBoard = {}", kindOfBoard);
-        log.info("searchType = {}", searchType);
-        log.info("keyword = {}", keyword);
+        AdoptReviewBoardPageForm adoptReviewBoardPageForm = adoptReviewService.getAdoptReviewPage(pbNumber, kindOfBoard, searchType, keyword, sort);
+        model.addAttribute("boardList", adoptReviewBoardPageForm);
 
         return "/adopt_review/listAdoptReview";
     }
 
     @GetMapping("/detail")
     public String detail(@RequestParam("bNumber") int bNumber, Model model) {
-        AdoptReviewForm detailForm = adoptReviewService.getAdoptReview(bNumber);
+        AdoptReviewListForm detailForm = adoptReviewService.getAdoptReview(bNumber);
 
         // ====== 조회수 추가 ======
         adoptReviewService.updateViewCount(bNumber);
@@ -185,36 +167,6 @@ public class AdoptReviewController {
         adoptReviewService.delete(bNumber);
 
         return "/adopt_review/deleteSuccess";
-    }
-
-    private void saveCondition(String kindOfBoard, String searchType, String keyword, HttpSession session) {
-        if (kindOfBoard != null) {
-            if (!kindOfBoard.equals("")) {
-                session.setAttribute("kindOfBoard", kindOfBoard);
-            } else {
-                session.setAttribute("kindOfBoard", "유기동물");
-            }
-        }
-
-        if (searchType != null) {
-            session.setAttribute("searchType", searchType);
-        }
-
-        if (keyword != null) {
-            if (!keyword.equals("")) {
-                session.setAttribute("keyword", keyword);
-            } else {
-                session.setAttribute("keyword", "allKeyword");
-            }
-        }
-    }
-
-    private void initCondition(String kindOfBoard, String searchType, String keyword, HttpSession session) {
-        if (kindOfBoard != null && searchType == null && keyword == null) {
-            session.removeAttribute("kindOfBoard");
-            session.removeAttribute("searchType");
-            session.removeAttribute("keyword");
-        }
     }
 
     private Member getAuthMember(HttpServletRequest request) {

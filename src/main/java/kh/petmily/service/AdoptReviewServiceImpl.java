@@ -4,10 +4,10 @@ import kh.petmily.dao.AdoptReviewDao;
 import kh.petmily.dao.MemberDao;
 import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.adopt_review.AdoptReview;
-import kh.petmily.domain.adopt_review.form.AdoptReviewForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewWriteForm;
-import kh.petmily.domain.adopt_review.form.BoardPage;
+import kh.petmily.domain.adopt_review.form.AdoptReviewBoardPageForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,19 +31,18 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     private int size = 6;
 
     @Override
-    public BoardPage getAdoptReviewPage(int pageNum, String kindOfBoard, String searchType, String keyword) {
-        int total = adoptReviewDao.selectCount(kindOfBoard, searchType, keyword);
+    public AdoptReviewBoardPageForm getAdoptReviewPage(int pageNum, String kindOfBoard, String searchType, String keyword, String sort) {
+        int total = adoptReviewDao.selectCountWithCondition(kindOfBoard, searchType, keyword);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, searchType, keyword, sort);
 
-        List<AdoptReviewForm> content = adoptReviewDao.selectIndex((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, searchType, keyword);
-
-        return new BoardPage(total, pageNum, size, content);
+        return new AdoptReviewBoardPageForm(total, pageNum, size, content);
     }
 
     @Override
-    public AdoptReviewForm getAdoptReview(int bNumber) {
+    public AdoptReviewListForm getAdoptReview(int bNumber) {
         AdoptReview arForm = adoptReviewDao.findByPk(bNumber);
 
-        return new AdoptReviewForm(
+        return new AdoptReviewListForm(
                 arForm.getBNumber(),
                 arForm.getMNumber(),
                 boardName(arForm.getBNumber()),

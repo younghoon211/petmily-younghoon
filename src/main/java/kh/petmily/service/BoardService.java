@@ -2,19 +2,19 @@ package kh.petmily.service;
 
 import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.board.form.BoardModifyForm;
-import kh.petmily.domain.board.form.BoardPage;
-import kh.petmily.domain.board.form.ReadBoardForm;
-import kh.petmily.domain.board.form.WriteBoardForm;
+import kh.petmily.domain.board.form.BoardPageForm;
+import kh.petmily.domain.board.form.BoardDetailForm;
+import kh.petmily.domain.board.form.BoardWriteForm;
 
 import java.util.List;
 
 public interface BoardService {
 
-    public BoardPage getBoardPage(int pbNumber, String kindOfBoard, String sort);
+    public BoardPageForm getBoardPage(int pbNumber, String kindOfBoard, String condition, String keyword, String sort);
 
-    public void write(WriteBoardForm writeBoardForm);
+    public void write(BoardWriteForm boardWriteForm);
 
-    public ReadBoardForm getBoard(int bNumber);
+    public BoardDetailForm getBoard(int bNumber);
 
     public BoardModifyForm getBoardModify(int bNumber);
 

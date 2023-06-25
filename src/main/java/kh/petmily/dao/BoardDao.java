@@ -2,7 +2,7 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.board.Board;
-import kh.petmily.domain.board.form.ReadBoardForm;
+import kh.petmily.domain.board.form.BoardListForm;
 import kh.petmily.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,6 @@ public class BoardDao implements BasicDao {
 
     private final BoardMapper mapper;
 
-    // =======BasicDao 메소드=======
     @Override
     public Board findByPk(int pk) {
         return mapper.selectByPk(pk);
@@ -36,22 +35,23 @@ public class BoardDao implements BasicDao {
     public void delete(int pk) {
         mapper.delete(pk);
     }
-    // =======BasicDao 메소드=======
 
-    public int selectCount(String kindOfBoard) {
-        return mapper.selectCount(kindOfBoard);
+    // 조건부 검색 게시글 개수
+    public int selectCountWithCondition(String kindOfBoard, String condition, String keyword) {
+        return mapper.selectCountWithCondition(kindOfBoard, condition, keyword);
     }
 
-    public List<ReadBoardForm> selectIndex(int start, int end, String kindOfBoard, String sort) {
-        List<Board> list = mapper.selectIndex(start, end, kindOfBoard, sort);
-        List<ReadBoardForm> readBoardFormList = new ArrayList<>();
+    // 조건부 검색
+    public List<BoardListForm> selectIndexWithCondition(int start, int end, String kindOfBoard, String condition, String keyword, String sort) {
+        List<Board> list = mapper.selectIndexWithCondition(start, end, kindOfBoard, condition, keyword, sort);
+        List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {
-            ReadBoardForm bd = new ReadBoardForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), b.getSort());
-            readBoardFormList.add(bd);
+            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), b.getCondition(), b.getKeyword(), b.getSort());
+            boardListForm.add(bd);
         }
 
-        return readBoardFormList;
+        return boardListForm;
     }
 
     public String selectName(int pk) {

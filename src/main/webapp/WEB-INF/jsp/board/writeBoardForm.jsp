@@ -47,7 +47,7 @@
     </div>
 </section>
 
-<!-- writeBoardForm 시작 -->
+<!-- boardWriteForm 시작 -->
 
 <section class="ftco-section bg-light">
     <div class="container">

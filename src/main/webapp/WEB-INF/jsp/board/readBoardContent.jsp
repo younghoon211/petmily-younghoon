@@ -52,16 +52,16 @@
                     <!-- content title, name, wrTime, checkPublic -->
 
                     <div class="media-body ml-3">
-                        <b> <span style="font-size: 2em;">${readBoardForm.title}</span> </b>
+                        <b> <span style="font-size: 2em;">${boardPageForm.title}</span> </b>
                         <h6 class="mt-1"></h6>
-                        <small><a href="javascript:void(0)">${readBoardForm.name}</a></small>
-                        <small><i class="far fa-comment ml-2"></i> date ${readBoardForm.wrTime} </small>
+                        <small><a href="javascript:void(0)">${boardPageForm.name}</a></small>
+                        <small><i class="far fa-comment ml-2"></i> date ${boardPageForm.wrTime} </small>
 
                         <c:if test="${param.kindOfBoard eq '문의'}">
-                            <c:if test="${readBoardForm.checkPublic eq 'Y'}">
+                            <c:if test="${boardPageForm.checkPublic eq 'Y'}">
                                 <span><small><i class="far fa-comment ml-2"></i> 공개</small></span>
                             </c:if>
-                            <c:if test="${readBoardForm.checkPublic eq 'N'}">
+                            <c:if test="${boardPageForm.checkPublic eq 'N'}">
                                 <span><small><i class="far fa-comment ml-2"></i> 비공개</small></span>
                             </c:if>
                         </c:if>
@@ -70,7 +70,7 @@
 
                         <!-- content 내용 -->
 
-                        <div class="mt-3 font-size-lg">${readBoardForm.content}</div>
+                        <div class="mt-3 font-size-lg">${boardPageForm.content}</div>
                         <h1 class="mt-1"></h1>
 
                         <div class="modal-header"></div>
@@ -78,15 +78,15 @@
 
                             <!-- content 수정, 삭제 -->
 
-                            <c:if test="${authUser.mNumber == readBoardForm.mNumber}">
+                            <c:if test="${authUser.mNumber == boardPageForm.mNumber}">
                                 <button type="button" class="btn btn-light"
-                                        onclick="location.href='/board/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${readBoardForm.getBNumber()}'">
+                                        onclick="location.href='/board/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${boardPageForm.getBNumber()}'">
                                     수정
                                 </button>
 
                                 <button type="button" class="btn btn-light"
                                         onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                {return location.href='/board/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${readBoardForm.getBNumber()}';}">
+                                                {return location.href='/board/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${boardPageForm.getBNumber()}';}">
                                     삭제
                                 </button>
                             </c:if>
@@ -113,7 +113,7 @@
 
         <!-- 댓글 리스트 -->
 
-        <c:forEach var="reply" items="${readBoardForm.replies}">
+        <c:forEach var="reply" items="${boardPageForm.replies}">
             <div class="card mb-2">
                 <div class="card-body">
                     <div class="media forum-item">
@@ -124,7 +124,7 @@
 								<c:if test="${authUser.mNumber == reply.mNumber}">
                                 <button class="btn btn-light" onclick="if(confirm('정말로 삭제하시겠습니까?'))
                                         {return location.href=
-                                        '/board/replyDelete?kindOfBoard=${param.kindOfBoard}&bNumber=${readBoardForm.getBNumber()}&brNumber=${reply.brNumber}';}">
+                                        '/board/replyDelete?kindOfBoard=${param.kindOfBoard}&bNumber=${boardPageForm.getBNumber()}&brNumber=${reply.brNumber}';}">
                                         삭제</button>
                                 </c:if>
                             </span>
@@ -149,7 +149,7 @@
                         <div class="panel panel-info">
                             <div class="panel-body">
 
-                                <form action="/board/reply?kindOfBoard=${param.kindOfBoard}&bNumber=${readBoardForm.getBNumber()}"
+                                <form action="/board/reply?kindOfBoard=${param.kindOfBoard}&bNumber=${boardPageForm.getBNumber()}"
                                       method="post">
                                     <div class="form-group">
                                         <label for="message">댓글</label>

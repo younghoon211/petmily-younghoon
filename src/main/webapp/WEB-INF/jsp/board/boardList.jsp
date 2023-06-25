@@ -23,14 +23,13 @@
 
 
 <!-- 헤더 -->
-
 <%@ include file="/WEB-INF/jsp/include/header.jspf" %>
 
 
 <!-- 현재 페이지 -->
-
 <section class="hero-wrap hero-wrap-2"
-         style="background-image: url('/resources/petsitting-master/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+         style="background-image: url('/resources/petsitting-master/images/bg_2.jpg');"
+         data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
@@ -54,19 +53,18 @@
 
 
 <!-- 게시판 List -->
-
 <section class="ftco-section bg-light">
     <div class="container">
 
         <div class="modal-header">
             <div class="float-left">
-                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno">
+                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno&condition=${param.condition}&keyword=${param.keyword}">
                     <button class="btn btn-primary" type="button">최신순</button>
                 </a> &nbsp;
-                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=bnoAsc">
+                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=bnoAsc&condition=${param.condition}&keyword=${param.keyword}">
                     <button class="btn btn-primary" type="button">오래된순</button>
                 </a> &nbsp;
-                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=viewCount">
+                <a href="/board/list?kindOfBoard=${param.kindOfBoard}&sort=viewCount&condition=${param.condition}&keyword=${param.keyword}">
                     <button class="btn btn-primary" type="button">조회순</button>
                 </a> &nbsp;
             </div>
@@ -75,19 +73,16 @@
         <br class="inner-main-body p-2 p-sm-3 collapse forum-content show">
 
         <!-- 목록 출력 -->
-
-        <c:forEach var="board" items="${readBoardForm.title}">
+        <c:forEach var="board" items="${boardPageForm.content}">
             <div class="card mb-2">
                 <div class="card-body p-2 p-sm-3">
                     <div class="media forum-item">
 
                         <!-- 글 번호 -->
-
                         <div class="media-body">
                             <small><i class="far fa-eye"></i>글번호 ${board.getBNumber()}</small>
 
                             <!-- 제목 -->
-
                             <div class="text-secondary">
                                 <c:if test="${param.kindOfBoard eq '자유'}">
                                     <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
@@ -107,7 +102,6 @@
                             </div>
 
                             <!-- 작성자, 작성 날짜 -->
-
                             <div class="text-muted">
                                 <small><a href="javascript:void(0)">by ${board.name}</a><span>
 									<i class="far fa-comment ml-2"></i>
@@ -117,7 +111,6 @@
                         </div>
 
                         <!-- list 공개 / 비공개 -->
-
                         <div class="text-muted small text-center align-self-center">
                             <c:if test="${param.kindOfBoard eq '자유'}"></c:if>
                             <c:if test="${param.kindOfBoard eq '문의'}">
@@ -148,35 +141,95 @@
                         onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'">글쓰기</button>
 			</span>
 
-        <!-- 페이징 처리 -->
+        <!-- 조건부 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/board/list" method="get">
+                <div class="form-group row">
+                    <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}"/>
+                    <input type="hidden" name="sort" value="${param.sort}"/>
 
+                    <div class="col">
+                        <select name="condition" class="form-control">
+                            <option value="title" <c:if test="${param.condition == 'title'}">selected</c:if>>제목</option>
+                            <option value="content" <c:if test="${param.condition == 'content'}">selected</c:if>>내용
+                            </option>
+                            <option value="titleAndContent"
+                                    <c:if test="${param.condition == 'titleAndContent'}">selected</c:if>>제목+내용
+                            </option>
+                            <option value="writer" <c:if test="${param.condition == 'writer'}">selected</c:if>>작성자
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 페이징 처리 -->
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-                        <c:if test="${readBoardForm.hasBoard()}">
+                        <!-- 조건부 검색에 조건 또는 검색값 중 하나라도 있을 시 -->
+                        <c:if test="${not empty param.condition || not empty param.keyword}">
                             <li>
-                                <c:if test="${readBoardForm.startPage > 5}">
-                                    <a href="/board/list?kindOfBoard=${param.kindOfBoard}&pbNumber=${readBoardForm.startPage - 5}&sort=${param.sort}">&lt;</a>
+                                <c:if test="${boardPageForm.startPage > 5}">
+                                    <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${boardPageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
-                            <c:forEach var="pbNum" begin="${readBoardForm.startPage}" end="${readBoardForm.endPage}">
-                                <c:if test="${readBoardForm.currentPage == pbNum}">
+                            <c:forEach var="pbNum" begin="${boardPageForm.startPage}" end="${boardPageForm.endPage}">
+                                <c:if test="${boardPageForm.currentPage == pbNum}">
                                     <li class="active">
-                                        <a href="/board/list?kindOfBoard=${param.kindOfBoard}&pbNumber=${pbNum}&sort=${param.sort}">${pbNum}</a>
+                                        <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${pbNum}">${pbNum}</a>
                                     </li>
                                 </c:if>
-                                <c:if test="${readBoardForm.currentPage != pbNum}">
+                                <c:if test="${boardPageForm.currentPage != pbNum}">
                                     <li>
-                                        <a href="/board/list?kindOfBoard=${param.kindOfBoard}&pbNumber=${pbNum}&sort=${param.sort}">${pbNum}</a>
+                                        <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${pbNum}">${pbNum}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             </li>
                             <li>
-                                <c:if test="${readBoardForm.endPage < readBoardForm.totalPages}">
-                                    <a href="/board/list?kindOfBoard=${param.kindOfBoard}&pbNumber=${readBoardForm.startPage + 5}&sort=${param.sort}">&gt;</a>
+                                <c:if test="${boardPageForm.endPage < boardPageForm.totalPages}">
+                                    <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${boardPageForm.startPage + 5}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+
+                        <!-- 조건부 검색에 조건, 검색값 둘다 없을 시 -->
+                        <c:if test="${empty param.condition && empty param.keyword}">
+                            <li>
+                                <c:if test="${boardPageForm.startPage > 5}">
+                                    <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${boardPageForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <li>
+                            <c:forEach var="pbNum" begin="${boardPageForm.startPage}" end="${boardPageForm.endPage}">
+                                <c:if test="${boardPageForm.currentPage == pbNum}">
+                                    <li class="active">
+                                        <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${pbNum}">${pbNum}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${boardPageForm.currentPage != pbNum}">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${pbNum}">${pbNum}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            </li>
+                            <li>
+                                <c:if test="${boardPageForm.endPage < boardPageForm.totalPages}">
+                                    <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${boardPageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
@@ -191,11 +244,9 @@
 <!-- 게시판 List 끝 -->
 
 <!-- 풋터 -->
-
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
 
 <!-- loader -->
-
 <div id="ftco-loader" class="show fullscreen">
     <svg class="circular" width="48px" height="48px">
         <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>

@@ -31,60 +31,80 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
-    <!--====== 검색 추가 ======-->
+    <!--======= 조건부 검색 게시글 개수 =======-->
     <select id="selectCountWithCondition" resultType="java.lang.Integer">
         select count(*)
-        from BOARD B inner join MEMBER M
-        on B.MNUMBER = M.MNUMBER
+        from BOARD
         <where>
+            KINDOFBOARD = #{kindOfBoard}
+
             <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'title'.equals( searchType )">
-                and B.TITLE like '%' || #{keyword} || '%'
+                and TITLE like '%' || #{keyword} || '%'
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'content'.equals( searchType )">
-                and B.CONTENT like '%' || #{keyword} || '%'
+                and CONTENT like '%' || #{keyword} || '%'
             </if>
 
-            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'name'.equals( searchType )">
-                and M.NAME like '%' || #{keyword} || '%'
+            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'titleAndContent'.equals( searchType )">
+                and (TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%')
             </if>
 
-            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'allSearch'.equals( searchType )">
-                and (B.TITLE like '%' || #{keyword} || '%'
-                or B.CONTENT like '%' || #{keyword} || '%')
+            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'writer'.equals( searchType )">
+                and (MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%'))
             </if>
-            and B.KINDOFBOARD = #{kindOfBoard}
         </where>
     </select>
 
-    <!--====== 검색 추가 ======-->
+    <!--======= 조건부 검색 =======-->
     <select id="selectIndexWithCondition" resultType="kh.petmily.domain.adopt_review.AdoptReview">
         select *
         from (select ROWNUM as NUM, A.*
-        from (select * from BOARD B inner join MEMBER M
-        on B.MNUMBER = M.MNUMBER
+        from (select *
+        from BOARD
         <where>
+            KINDOFBOARD = #{kindOfBoard}
+
             <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'title'.equals( searchType )">
-                and B.TITLE like '%' || #{keyword} || '%'
+                and TITLE like '%' || #{keyword} || '%'
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'content'.equals( searchType )">
-                and B.CONTENT like '%' || #{keyword} || '%'
+                and CONTENT like '%' || #{keyword} || '%'
             </if>
 
-            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'name'.equals( searchType )">
-                and M.NAME like '%' || #{keyword} || '%'
+            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'titleAndContent'.equals( searchType )">
+                and (TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%')
             </if>
 
-            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'allSearch'.equals( searchType )">
-                and (B.TITLE like '%' || #{keyword} || '%'
-                or B.CONTENT like '%' || #{keyword} || '%')
+            <if test="keyword != null and keyword != 'allKeyword' and searchType != null and 'writer'.equals( searchType )">
+                and (MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%'))
             </if>
-            and B.KINDOFBOARD = #{kindOfBoard}
         </where>
-        order by B.BNUMBER desc) A)
+        <include refid="sort"/>
+        ) A)
         where NUM between #{start} and #{end}
     </select>
+
+    <sql id="sort">
+        <if test="sort == 'adoptReviewNo'">
+            order by BNUMBER desc
+        </if>
+        <if test="sort == 'adoptReviewNoAsc'">
+            order by BNUMBER asc
+        </if>
+        <if test="sort == 'viewCount'">
+            order by VIEWCOUNT desc
+        </if>
+    </sql>
 
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
@@ -100,7 +120,6 @@
         order by BNUMBER desc
     </select>
 
-    <!--====== 조회수 추가 ======-->
     <update id="updateViewCount">
         update BOARD
         set VIEWCOUNT = VIEWCOUNT + 1

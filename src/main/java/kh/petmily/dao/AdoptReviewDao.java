@@ -2,7 +2,7 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.adopt_review.AdoptReview;
-import kh.petmily.domain.adopt_review.form.AdoptReviewForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.mapper.AdoptReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -39,16 +39,16 @@ public class AdoptReviewDao implements BasicDao {
     // =======BasicDao 메소드=======
 
     //====== 검색 추가 ======
-    public int selectCount(String kindOfBoard, String searchType, String keyword) {
+    public int selectCountWithCondition(String kindOfBoard, String searchType, String keyword) {
         return mapper.selectCountWithCondition(kindOfBoard, searchType, keyword);
     }
 
-    public List<AdoptReviewForm> selectIndex(int start, int end, String kindOfBoard, String searchType, String keyword) {
-        List<AdoptReview> list = mapper.selectIndexWithCondition(start, end, kindOfBoard, searchType, keyword);
-        List<AdoptReviewForm> adoptReviewFormList = new ArrayList<>();
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String kindOfBoard, String searchType, String keyword, String sort) {
+        List<AdoptReview> list = mapper.selectIndexWithCondition(start, end, kindOfBoard, searchType, keyword, sort);
+        List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
 
         for (AdoptReview a : list) {
-            AdoptReviewForm ar = new AdoptReviewForm(
+            AdoptReviewListForm ar = new AdoptReviewListForm(
                     a.getBNumber(),
                     a.getMNumber(),
                     selectName(a.getBNumber()),
@@ -61,10 +61,10 @@ public class AdoptReviewDao implements BasicDao {
                     a.getViewCount(),
                     a.getReplyCount());
 
-            adoptReviewFormList.add(ar);
+            adoptReviewListForm.add(ar);
         }
 
-        return adoptReviewFormList;
+        return adoptReviewListForm;
     }
 
     public String selectName(int pk) {

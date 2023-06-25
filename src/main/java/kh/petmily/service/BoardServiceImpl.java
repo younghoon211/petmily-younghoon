@@ -4,10 +4,7 @@ import kh.petmily.dao.BoardDao;
 import kh.petmily.dao.MemberDao;
 import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.board.Board;
-import kh.petmily.domain.board.form.BoardModifyForm;
-import kh.petmily.domain.board.form.BoardPage;
-import kh.petmily.domain.board.form.ReadBoardForm;
-import kh.petmily.domain.board.form.WriteBoardForm;
+import kh.petmily.domain.board.form.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,36 +22,38 @@ public class BoardServiceImpl implements BoardService {
     private int size = 5;
 
     @Override
-    public BoardPage getBoardPage(int pageNum, String kindOfBoard, String sort) {
-        int total = boardDao.selectCount(kindOfBoard);
-        List<ReadBoardForm> content = boardDao.selectIndex((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, sort);
+    public BoardPageForm getBoardPage(int pageNum, String kindOfBoard, String condition, String keyword, String sort) {
+        int total = boardDao.selectCountWithCondition(kindOfBoard, condition, keyword);
+        List<BoardListForm> content = boardDao.selectIndexWithCondition((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, condition, keyword, sort);
 
-        return new BoardPage(total, pageNum, size, content);
+        return new BoardPageForm(total, pageNum, size, content);
     }
 
     @Override
-    public void write(WriteBoardForm writeBoardForm) {
-        Board board = toBoard(writeBoardForm);
+    public void write(BoardWriteForm boardWriteForm) {
+        Board board = toBoard(boardWriteForm);
         boardDao.insert(board);
     }
 
     @Override
-    public ReadBoardForm getBoard(int bNumber) {
-        Board readBoardForm = boardDao.findByPk(bNumber);
-        String memberName = memberDao.selectName(readBoardForm.getMNumber());
-        readBoardForm.setName(memberName);
+    public BoardDetailForm getBoard(int bNumber) {
+        Board boardDetailForm = boardDao.findByPk(bNumber);
+        String memberName = memberDao.selectName(boardDetailForm.getMNumber());
+        boardDetailForm.setName(memberName);
 
-        return new ReadBoardForm(
-                readBoardForm.getBNumber(),
-                readBoardForm.getMNumber(),
-                readBoardForm.getName(),
-                readBoardForm.getKindOfBoard(),
-                readBoardForm.getTitle(),
-                readBoardForm.getContent(),
-                readBoardForm.getWrTime(),
-                readBoardForm.getCheckPublic(),
-                readBoardForm.getViewCount(),
-                readBoardForm.getSort()
+        return new BoardDetailForm(
+                boardDetailForm.getBNumber(),
+                boardDetailForm.getMNumber(),
+                boardDetailForm.getName(),
+                boardDetailForm.getKindOfBoard(),
+                boardDetailForm.getTitle(),
+                boardDetailForm.getContent(),
+                boardDetailForm.getWrTime(),
+                boardDetailForm.getCheckPublic(),
+                boardDetailForm.getViewCount(),
+                boardDetailForm.getCondition(),
+                boardDetailForm.getKeyword(),
+                boardDetailForm.getSort()
         );
     }
 
@@ -100,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
         return memberDao.selectName(mNumber);
     }
 
-    private Board toBoard(WriteBoardForm req) {
+    private Board toBoard(BoardWriteForm req) {
         return new Board(
                 req.getMNumber(),
                 req.getKindOfBoard(),

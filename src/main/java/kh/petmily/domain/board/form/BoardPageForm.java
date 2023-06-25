@@ -5,19 +5,19 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BoardPage {
+public class BoardPageForm {
 
     private int total;
     private int currentPage;
-    private List<ReadBoardForm> title;
+    private List<BoardListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public BoardPage(int total, int currentPage, int size, List<ReadBoardForm> title) {
+    public BoardPageForm(int total, int currentPage, int size, List<BoardListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
-        this.title = title;
+        this.content = content;
 
         if (total == 0) {
             totalPages = 0;
@@ -44,37 +44,5 @@ public class BoardPage {
                 endPage = totalPages;
             }
         }
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public boolean hasNoBoard() {
-        return total == 0;
-    }
-
-    public boolean hasBoard() {
-        return total > 0;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public List<ReadBoardForm> getTitle() {
-        return title;
-    }
-
-    public int getStartPage() {
-        return startPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
     }
 }

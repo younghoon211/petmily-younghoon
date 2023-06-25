@@ -1,9 +1,10 @@
 package kh.petmily.controller;
 
+import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.BoardModifyForm;
-import kh.petmily.domain.board.form.BoardPage;
-import kh.petmily.domain.board.form.ReadBoardForm;
-import kh.petmily.domain.board.form.WriteBoardForm;
+import kh.petmily.domain.board.form.BoardPageForm;
+import kh.petmily.domain.board.form.BoardDetailForm;
+import kh.petmily.domain.board.form.BoardWriteForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ public class BoardController {
     @GetMapping("/list")
     public String list(@RequestParam String kindOfBoard,
                        @RequestParam(defaultValue = "1") int pbNumber,
+                       @RequestParam(required = false) String condition,
+                       @RequestParam(required = false) String keyword,
                        @RequestParam String sort,
                        Model model) {
 
@@ -35,16 +38,16 @@ public class BoardController {
         log.info("pbNumber = {}", pbNumber);
         log.info("sort = {}", sort);
 
-        BoardPage boardPage = boardService.getBoardPage(pbNumber, kindOfBoard, sort);
-
-        model.addAttribute("readBoardForm", boardPage);
+        BoardPageForm boardPageForm = boardService.getBoardPage(pbNumber, kindOfBoard, condition, keyword, sort);
+        model.addAttribute("boardPageForm", boardPageForm);
 
         return "/board/boardList";
     }
 
+
     @GetMapping("/detail")
     public String detail(@RequestParam("bNumber") int bNumber, Model model) {
-        ReadBoardForm detailForm = boardService.getBoard(bNumber);
+        BoardDetailForm detailForm = boardService.getBoard(bNumber);
         boardService.updateViewCount(bNumber);
 
         model.addAttribute("detailForm", detailForm);
@@ -58,17 +61,17 @@ public class BoardController {
     }
 
     @PostMapping("/auth/write")
-    public String write(@ModelAttribute WriteBoardForm writeBoardForm, HttpServletRequest request) {
-        if (writeBoardForm.getMNumber() == 0) {
+    public String write(@ModelAttribute BoardWriteForm boardWriteForm, HttpServletRequest request) {
+        if (boardWriteForm.getMNumber() == 0) {
             Member member = getAuthMember(request);
 
             int mNumber = member.getMNumber();
-            writeBoardForm.setMNumber(mNumber);
+            boardWriteForm.setMNumber(mNumber);
         }
 
-        log.info("WriteBoardForm = {}", writeBoardForm);
+        log.info("WriteBoardForm = {}", boardWriteForm);
 
-        boardService.write(writeBoardForm);
+        boardService.write(boardWriteForm);
 
         return "/board/writeBoardSuccess";
     }

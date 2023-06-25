@@ -21,6 +21,8 @@ public class Board implements DomainObj {
     private Date wrTime;
     private String checkPublic;
     private int viewCount;
+    private String condition;
+    private String keyword;
     private String sort;
 
     public Board(int mNumber, int bNumber, String kindOfBoard, String title, String content, String imgPath, Blob video, Date wrTime, String checkPublic, int viewCount) {
