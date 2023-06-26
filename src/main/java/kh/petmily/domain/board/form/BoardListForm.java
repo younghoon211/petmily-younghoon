@@ -18,8 +18,9 @@ public class BoardListForm {
     private String condition;
     private String keyword;
     private String sort;
+    private int replyCount;
 
-    public BoardListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, String condition, String keyword, String sort) {
+    public BoardListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, String condition, String keyword, String sort, int replyCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.name = name;
@@ -32,5 +33,6 @@ public class BoardListForm {
         this.condition = condition;
         this.keyword = keyword;
         this.sort = sort;
+        this.replyCount = replyCount;
     }
 }

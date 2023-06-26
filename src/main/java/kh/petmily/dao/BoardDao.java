@@ -47,7 +47,7 @@ public class BoardDao implements BasicDao {
         List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {
-            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), b.getCondition(), b.getKeyword(), b.getSort());
+            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), b.getCondition(), b.getKeyword(), b.getSort(), selectReplyCount(b.getBNumber()));
             boardListForm.add(bd);
         }
 
@@ -64,5 +64,9 @@ public class BoardDao implements BasicDao {
 
     public List<Board> selectAll(String kindOfBoard) {
         return mapper.selectAll(kindOfBoard);
+    }
+
+    public int selectReplyCount(int bNumber) {
+        return mapper.selectReplyCount(bNumber);
     }
 }

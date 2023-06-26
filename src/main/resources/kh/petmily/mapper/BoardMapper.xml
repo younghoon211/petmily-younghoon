@@ -131,4 +131,10 @@
         where KINDOFBOARD = #{kindOfBoard}
         order by BNUMBER desc
     </select>
+
+    <select id="selectReplyCount" resultType="java.lang.Integer">
+        select count(*)
+        from BOARD B inner join BOARDREPLY BR on B.BNUMBER = BR.BNUMBER
+        where B.BNUMBER = #{bNumber}
+    </select>
 </mapper>

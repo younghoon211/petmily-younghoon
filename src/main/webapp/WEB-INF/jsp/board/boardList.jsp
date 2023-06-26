@@ -87,15 +87,18 @@
                                 <c:if test="${param.kindOfBoard eq '자유'}">
                                     <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                                        class="text-body" style="font-size: 1.3em;">${board.title}</a>
+                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
                                 </c:if>
                                 <c:if test="${param.kindOfBoard eq '문의'}">
                                     <c:choose>
                                         <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
                                             <a class="text-body" style="font-size: 1.3em;">${board.title}</a>
+                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
                                         </c:when>
                                         <c:otherwise>
                                             <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                                                class="text-body" style="font-size: 1.3em;">${board.title}</a>
+                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:if>
