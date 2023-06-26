@@ -78,6 +78,9 @@
                             </div>
                             <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
                                 <h3 class="heading">${board.title}</h3></a>
+                            <div class="meta mb-2">
+                                <div>조회수: ${board.viewCount}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
