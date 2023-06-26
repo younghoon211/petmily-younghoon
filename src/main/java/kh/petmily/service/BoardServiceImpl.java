@@ -37,23 +37,23 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDetailForm getBoard(int bNumber) {
-        Board boardDetailForm = boardDao.findByPk(bNumber);
-        String memberName = memberDao.selectName(boardDetailForm.getMNumber());
-        boardDetailForm.setName(memberName);
+        Board board = boardDao.findByPk(bNumber);
+        String memberName = memberDao.selectName(board.getMNumber());
+        board.setName(memberName);
 
         return new BoardDetailForm(
-                boardDetailForm.getBNumber(),
-                boardDetailForm.getMNumber(),
-                boardDetailForm.getName(),
-                boardDetailForm.getKindOfBoard(),
-                boardDetailForm.getTitle(),
-                boardDetailForm.getContent(),
-                boardDetailForm.getWrTime(),
-                boardDetailForm.getCheckPublic(),
-                boardDetailForm.getViewCount(),
-                boardDetailForm.getCondition(),
-                boardDetailForm.getKeyword(),
-                boardDetailForm.getSort()
+                board.getBNumber(),
+                board.getMNumber(),
+                board.getName(),
+                board.getKindOfBoard(),
+                board.getTitle(),
+                board.getContent(),
+                board.getWrTime(),
+                board.getCheckPublic(),
+                board.getViewCount(),
+                board.getCondition(),
+                board.getKeyword(),
+                board.getSort()
         );
     }
 
