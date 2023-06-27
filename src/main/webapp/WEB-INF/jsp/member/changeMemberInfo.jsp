@@ -32,10 +32,18 @@
 </head>
 
 <%@ include file="../include/header.jspf" %>
-<div class="row no-gutters" style="display: flex; justify-content: center; align-items: center">
-    <div class="col-md-7">
+
+<section class="ftco-section bg-light">
+<div class="container">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">회원정보 변경</h2>
+        </div>
+    </div>
+    <div class="row no-gutters" style="margin: 0 auto; width:50%">
         <div class="contact-wrap w-100 p-md-5 p-4">
-            <h3 class="mb-4">회원 정보 변경</h3>
+
             <form action="/member/auth/change_info" method="POST"
                   class="contactForm">
                 <div class="row">
@@ -116,9 +124,8 @@
                             </spring:hasBindErrors>
                         </div>
                     </div>
-                    <br>
-                    <div class="col-md-6">
-                        <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="form-group" style="text-align: center">
                             <input type="submit" value="변경하기" class="btn btn-primary">
                             <div class="submitting"></div>
                         </div>
@@ -133,6 +140,7 @@
          style="background-image: url(images/img.jpg);"></div>
 </div>
 </div>
+</section>
 
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
 

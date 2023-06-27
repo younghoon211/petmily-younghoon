@@ -41,7 +41,7 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-        <div>
+        <div style="text-align: center">
             <input type="radio" id="adopt" name="type" value="adopt" onclick="selectType(this.value)"
                 <c:if test="${type == 'adopt'}">
                     checked

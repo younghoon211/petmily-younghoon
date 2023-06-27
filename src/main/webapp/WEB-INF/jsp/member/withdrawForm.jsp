@@ -27,56 +27,52 @@
                 <h2 class="heading-section">회원 탈퇴</h2>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="wrapper">
-                    <div class="row no-gutters">
-                        <div class="col-md-7">
-                            <div class="contact-wrap w-100 p-md-5 p-4">
-                                <h3 class="mb-4">정말 탈퇴하시겠습니까?</h3>
-                                <form action="/member/auth/withdraw" method="POST" id="contactForm" name="contactForm"
-                                      class="contactForm">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label">비밀번호를 입력해주세요.</label>
-                                                <input type="password" class="form-control" name="pw"
-                                                       placeholder="비밀번호" required="required">
-                                                <span style="color: red"> <c:if
-                                                        test="${errors.pw}">비밀번호를 입력해주세요</c:if></span>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label">비밀번호를 확인해주세요.</label>
-                                                <input type="password" class="form-control" name="confirmPw"
-                                                       placeholder="비밀번호 확인" required="required">
-                                                <span style="color: red"> <c:if
-                                                        test="${errors.confirmPw}">비밀번호 확인을 입력해주세요</c:if></span>
-                                            </div>
-                                        </div>
-                                        <span style="color: red">
+        <div class="row no-gutters" style="margin: 0 auto; width:50%">
+            <div class="contact-wrap w-100 p-md-5 p-4">
+
+                <form action="/member/auth/withdraw" method="POST" id="contactForm" name="contactForm"
+                      class="contactForm">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label">비밀번호를 입력해주세요.</label>
+                                <input type="password" class="form-control" name="pw"
+                                       placeholder="비밀번호" required="required">
+                                <span style="color: red"> <c:if
+                                        test="${errors.pw}">비밀번호를 입력해주세요</c:if></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label">비밀번호를 확인해주세요.</label>
+                                <input type="password" class="form-control" name="confirmPw"
+                                       placeholder="비밀번호 확인" required="required">
+                                <span style="color: red"> <c:if
+                                        test="${errors.confirmPw}">비밀번호 확인을 입력해주세요</c:if></span>
+                            </div>
+                        </div>
+                        <span style="color: red">
         	                                    <c:if test="${errors.notMatch}">비밀번호와 확인이 일치하지 않습니다.</c:if>
                                                 <c:if test="${errors.notCorrect}">비밀번호가 틀렸습니다.</c:if>
                                         </span>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="submit" value="탈퇴하기" class="btn btn-primary">
-                                                <div class="submitting"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align: center">
+                                <input type="submit" value="탈퇴하기" class="btn btn-primary">
+                                <div class="submitting"></div>
                             </div>
                         </div>
-                        <div class="col-md-5 d-flex align-items-stretch">
-                            <div class="info-wrap w-100 p-5 img"
-                                 style="background-image: url(/petsitting-master/images/img.jpg);">
-                            </div>
-                        </div>
+
                     </div>
-                </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-5 d-flex align-items-stretch">
+            <div class="info-wrap w-100 p-5 img"
+                 style="background-image: url(/petsitting-master/images/img.jpg);">
             </div>
         </div>
     </div>
