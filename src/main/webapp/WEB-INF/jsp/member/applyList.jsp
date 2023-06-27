@@ -92,26 +92,26 @@
                         <ul>
                             <li>
                                 <c:if test="${applyListForm.startPage > 5}">
-                                    <a href="/member/checkMatching/lookList?pageNo=${applyListForm.startPage - 5}">&lt;</a>
+                                    <a href="/member/auth/myApply/${type}?pageNo=${applyListForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
                                 <c:forEach var="pNo" begin="${applyListForm.startPage}" end="${applyListForm.endPage}">
                                 <c:if test="${applyListForm.currentPage == pNo}">
                             <li class="active">
-                                <a href="/member/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
+                                <a href="/member/auth/myApply/${type}?pageNo=${pNo}">${pNo}</a>
                             </li>
                             </c:if>
                             <c:if test="${applyListForm.currentPage != pNo}">
                                 <li>
-                                    <a href="/member/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
+                                    <a href="/member/auth/myApply/${type}?pageNo=${pNo}">${pNo}</a>
                                 </li>
                             </c:if>
                             </c:forEach>
                             </li>
                             <li>
                                 <c:if test="${applyListForm.endPage < applyListForm.totalPages}">
-                                    <a href="/member/checkMatching/lookList?pageNo=${applyListForm.startPage + 5}">&gt;</a>
+                                    <a href="/member/auth/myApply/${type}?pageNo=${applyListForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </ul>
