@@ -102,7 +102,7 @@
                     </c:if>
                     <button type="button" class="btn btn-primary"
                         <c:if test="${authUser.grade == '일반'}">
-                            onclick="location.href='/lookBoard/list'"
+                            onclick="location.href='/lookBoard/list?sort=lno'"
                         </c:if>
                         <c:if test="${authUser.grade == '관리자'}">
                             onclick="location.href='/admin/board?kindOfBoard=look'"
