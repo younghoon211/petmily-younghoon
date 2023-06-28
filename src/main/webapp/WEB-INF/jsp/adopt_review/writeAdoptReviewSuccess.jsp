@@ -8,6 +8,6 @@
         location.href = "/admin/board?kindOfBoard=${param.kindOfBoard}";
     </c:if>
     <c:if test="${authUser.grade == '일반'}">
-        location.href = "/adopt_review/list?kindOfBoard=${param.kindOfBoard}";
+        location.href = "/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=adoptReviewNo";
     </c:if>
 </script>
