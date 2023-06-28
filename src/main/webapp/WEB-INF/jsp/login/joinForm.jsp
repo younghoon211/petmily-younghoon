@@ -42,14 +42,16 @@
 <div class="section">
     <div class="container">
         <div class="form">
-            <div class="left-side"> <!-- 간격조정 : left-side margin -->
-                <span class="brand">
+            <div class="left-side">
+                <form action="/join" method="post">
+
+                    <div class="brand2" style="text-align: center">
                         <a href="${pageContext.request.contextPath}/"
                            style="text-decoration: none; color: black">
                             <h4><b>Petmily</b></h4><br>
                         </a>
-                	</span>
-                <form action="/join" method="post">
+                	</div>
+
                     <div class="form-inputs">
                         <div>
                             <input type="text" name="id" placeholder="아이디 (3-15자, 소문자+숫자)" pattern="^[a-z0-9]+$"

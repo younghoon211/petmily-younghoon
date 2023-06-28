@@ -48,7 +48,15 @@
     top: 30px;
     left: 26px;
     font-weight:bold;
-    letter-spacing: 2px
+    letter-spacing: 2px;
+}
+
+.section .container .left-side .brand2 {
+    position: absolute;
+    top: 30px;
+    left: 110px;
+    font-weight:bold;
+    letter-spacing: 2px;
 }
 
 .section .container .left-side .form-inputs {

@@ -39,13 +39,13 @@
         <div class="form">
             <div class="left-side">
                 <form action="/login" method="post">
-                    <div class="login" id="login">
+                    <div class="login" id="login" >
                         <b><a href="${pageContext.request.contextPath}/"
                               style="text-decoration: none; color: black"><h2>Petmily</h2></a></b>
                     </div>
                     <div class="form-inputs">
                         <input type="text" name="id" placeholder="아이디" required="required" style="padding-left: 10px"
-                        value="${param.id}"/>
+                        value="${param.id}" autofocus />
                         <div class="password">
                             <input type="password" name="pw" placeholder="비밀번호" required="required"
                                    style="padding-left: 10px"
