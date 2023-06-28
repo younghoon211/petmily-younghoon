@@ -6,8 +6,8 @@ import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewWriteForm;
-import kh.petmily.domain.adopt_review.form.AdoptReviewBoardPageForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,11 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     private int size = 6;
 
     @Override
-    public AdoptReviewBoardPageForm getAdoptReviewPage(int pageNum, String kindOfBoard, String searchType, String keyword, String sort) {
+    public AdoptReviewPageForm getAdoptReviewPage(int pageNum, String kindOfBoard, String searchType, String keyword, String sort) {
         int total = adoptReviewDao.selectCountWithCondition(kindOfBoard, searchType, keyword);
         List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, searchType, keyword, sort);
 
-        return new AdoptReviewBoardPageForm(total, pageNum, size, content);
+        return new AdoptReviewPageForm(total, pageNum, size, content);
     }
 
     @Override
@@ -52,8 +52,7 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
                 arForm.getImgPath(),
                 arForm.getWrTime(),
                 arForm.getCheckPublic(),
-                arForm.getViewCount(),
-                arForm.getReplyCount()
+                arForm.getViewCount()
         );
     }
 
@@ -92,6 +91,14 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     @Override
     public int updateViewCount(int bNumber) {
         return adoptReviewDao.updateViewCount(bNumber);
+    }
+
+    @Override
+    public AdoptReviewPageForm getAdoptReviewMyPost(int pageNo, int mNumber, String kindOfBoard) {
+        int total = adoptReviewDao.selectCountBymNumber(mNumber, kindOfBoard);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, kindOfBoard);
+
+        return new AdoptReviewPageForm(total, pageNo, size, content);
     }
 
     private AdoptReview toAdoptReview(AdoptReviewWriteForm req) {

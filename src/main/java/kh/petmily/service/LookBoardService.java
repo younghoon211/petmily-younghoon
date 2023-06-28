@@ -39,4 +39,6 @@ public interface LookBoardService {
     public List<AdminBoardListForm> selectAll();
 
     public LookBoard getLookBoard(int laNumber);
+
+    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type);
 }

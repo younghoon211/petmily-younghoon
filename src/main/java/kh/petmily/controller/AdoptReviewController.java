@@ -3,7 +3,7 @@ package kh.petmily.controller;
 import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewWriteForm;
-import kh.petmily.domain.adopt_review.form.AdoptReviewBoardPageForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.AdoptReviewService;
 import lombok.RequiredArgsConstructor;
@@ -59,8 +59,8 @@ public class AdoptReviewController {
                        @RequestParam String sort,
                        Model model) {
 
-        AdoptReviewBoardPageForm adoptReviewBoardPageForm = adoptReviewService.getAdoptReviewPage(pbNumber, kindOfBoard, searchType, keyword, sort);
-        model.addAttribute("boardList", adoptReviewBoardPageForm);
+        AdoptReviewPageForm adoptReviewPageForm = adoptReviewService.getAdoptReviewPage(pbNumber, kindOfBoard, searchType, keyword, sort);
+        model.addAttribute("boardList", adoptReviewPageForm);
 
         return "/adopt_review/listAdoptReview";
     }

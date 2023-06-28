@@ -45,6 +45,19 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
+    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+        select count(*)
+        from FINDANIMALBOARD
+        where MNUMBER = #{mNumber}
+    </select>
+
+    <select id="selectIndexBymNumber" resultType="kh.petmily.domain.find_board.FindBoard">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from FINDANIMALBOARD where MNUMBER = #{mNumber} order by FANUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
     <select id="selectCountWithCondition" resultType="java.lang.Integer">
         select count(*)
         from FINDANIMALBOARD

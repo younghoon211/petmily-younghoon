@@ -36,4 +36,6 @@ public interface FindBoardService {
     public String storeFile(MultipartFile file, String filePath) throws IOException;
 
     public List<AdminBoardListForm> selectAll();
+
+    public FindBoardPageForm getFindMyPost(int pageNo, int mNumber, String type);
 }

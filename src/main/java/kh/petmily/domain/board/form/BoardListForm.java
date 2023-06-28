@@ -35,4 +35,17 @@ public class BoardListForm {
         this.sort = sort;
         this.replyCount = replyCount;
     }
+
+    public BoardListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, int replyCount) {
+        this.bNumber = bNumber;
+        this.mNumber = mNumber;
+        this.name = name;
+        this.kindOfBoard = kindOfBoard;
+        this.title = title;
+        this.content = content;
+        this.wrTime = wrTime;
+        this.checkPublic = checkPublic;
+        this.viewCount = viewCount;
+        this.replyCount = replyCount;
+    }
 }

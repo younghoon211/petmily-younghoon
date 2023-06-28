@@ -36,6 +36,22 @@ public class BoardDao implements BasicDao {
         mapper.delete(pk);
     }
 
+    public int selectCountBymNumber(int mNumber, String kindOfBoard) {
+        return mapper.selectCountBymNumber(mNumber, kindOfBoard);
+    }
+
+    public List<BoardListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
+        List<Board> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
+        List<BoardListForm> boardListForm = new ArrayList<>();
+
+        for (Board b : list) {
+            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
+            boardListForm.add(bd);
+        }
+
+        return boardListForm;
+    }
+
     // 조건부 검색 게시글 개수
     public int selectCountWithCondition(String kindOfBoard, String condition, String keyword) {
         return mapper.selectCountWithCondition(kindOfBoard, condition, keyword);

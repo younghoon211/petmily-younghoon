@@ -19,7 +19,9 @@ public interface LookBoardMapper {
 
     int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
 
-//    List<LookBoard> selectIndex(@Param("start") int start, @Param("end") int end);
+    int selectCountBymNumber(int mNumber);
+
+    List<LookBoard> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
 
     List<LookBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
 

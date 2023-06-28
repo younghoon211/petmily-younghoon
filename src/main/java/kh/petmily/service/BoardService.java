@@ -27,4 +27,6 @@ public interface BoardService {
     public List<AdminBoardListForm> selectAll(String kindOfBoard);
 
     public String findName(int mNumber);
+
+    public BoardPageForm getBoardMyPost(int pageNo, int mNumber, String type, String kindOfBoard);
 }

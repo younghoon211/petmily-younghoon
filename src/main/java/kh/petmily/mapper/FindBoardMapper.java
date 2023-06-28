@@ -17,6 +17,10 @@ public interface FindBoardMapper {
 
     void delete(int pk);
 
+    int selectCountBymNumber(int mNumber);
+
+    List<FindBoard> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
+
     int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
 
     List<FindBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);

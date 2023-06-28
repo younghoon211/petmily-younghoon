@@ -69,8 +69,8 @@ public class LookBoardServiceImpl implements LookBoardService {
 
     @Override
     public LookBoardPageForm getLookPage(int pageNo, String species, String animalState, String keyword, String sort) {
-        int total = lookBoardDao.selectCount(species, animalState, keyword);
-        List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
+        int total = lookBoardDao.selectCountWithCondition(species, animalState, keyword);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
 
         return new LookBoardPageForm(total, pageNo, size, content);
     }
@@ -132,6 +132,14 @@ public class LookBoardServiceImpl implements LookBoardService {
     @Override
     public LookBoard getLookBoard(int laNumber) {
         return lookBoardDao.findByPk(laNumber);
+    }
+
+    @Override
+    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type) {
+        int total = lookBoardDao.selectCountBymNumber(mNumber);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
+
+        return new LookBoardPageForm(total, pageNo, size, content);
     }
 
     private String getFullPath(String filename, String filePath) {

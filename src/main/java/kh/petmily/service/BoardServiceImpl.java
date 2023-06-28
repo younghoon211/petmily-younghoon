@@ -99,6 +99,14 @@ public class BoardServiceImpl implements BoardService {
         return memberDao.selectName(mNumber);
     }
 
+    @Override
+    public BoardPageForm getBoardMyPost(int pageNo, int mNumber, String type, String kindOfBoard) {
+        int total = boardDao.selectCountBymNumber(mNumber, kindOfBoard);
+        List<BoardListForm> content = boardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, kindOfBoard);
+
+        return new BoardPageForm(total, pageNo, size, content);
+    }
+
     private Board toBoard(BoardWriteForm req) {
         return new Board(
                 req.getMNumber(),

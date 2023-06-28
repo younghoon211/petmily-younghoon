@@ -110,7 +110,7 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">내가 쓴 게시글</h3>
-                                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span
+                                        <a href="/member/auth/myPost/find" class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>

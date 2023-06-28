@@ -17,7 +17,11 @@ public interface AdoptReviewMapper {
     void update(AdoptReview board);
 
     void delete(int pk);
-    // =======BasicMapper 메소드=======
+    // =======BasicMapper 메소드 끝=======
+
+    int selectCountBymNumber(@Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
+
+    List<AdoptReview> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
 
     int selectCountWithCondition(@Param("kindOfBoard") String kindOfBoard, @Param("searchType") String searchType, @Param("keyword") String keyword);
 

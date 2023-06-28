@@ -1,6 +1,8 @@
 package kh.petmily.controller;
 
 import kh.petmily.domain.adopt.form.AdoptApplyPageForm;
+import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
+import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
@@ -8,10 +10,7 @@ import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.JoinRequest;
 import kh.petmily.domain.member.form.MemberChangeForm;
 import kh.petmily.domain.temp.form.TempApplyPageForm;
-import kh.petmily.service.AdoptTempService;
-import kh.petmily.service.FindBoardService;
-import kh.petmily.service.LookBoardService;
-import kh.petmily.service.MemberService;
+import kh.petmily.service.*;
 import kh.petmily.validation.JoinValidator;
 import kh.petmily.validation.MemberChangeValidator;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +37,8 @@ public class MemberController {
     private final FindBoardService findBoardService;
     private final LookBoardService lookBoardService;
     private final AdoptTempService adoptTempService;
+    private final BoardService boardService;
+    private final AdoptReviewService adoptReviewService;
     private final JoinValidator joinValidator;
     private final MemberChangeValidator memberChangeValidator;
 
@@ -250,7 +251,41 @@ public class MemberController {
 
         request.getSession().setAttribute("type", type);
 
-        return "/member/applyList";
+        return "/member/listApply";
+    }
+
+    // 내가 쓴 게시글
+    @GetMapping("/member/auth/myPost/{type}")
+    public String getMyPost(@PathVariable("type") String type, @RequestParam(defaultValue = "1") int pageNo, @RequestParam(required = false) String kindOfBoard, HttpServletRequest request, Model model) {
+        Member member = getAuthMember(request);
+        int mNumber = member.getMNumber();
+
+        model.addAttribute("type", type);
+
+        if (type.equals("find")) {
+            FindBoardPageForm findMyPost = findBoardService.getFindMyPost(pageNo, mNumber, type);
+
+            model.addAttribute("myPost", findMyPost);
+
+            return "/member/listMyPostFind";
+        } else if (type.equals("look")) {
+            LookBoardPageForm lookMyPost = lookBoardService.getLookMyPost(pageNo, mNumber, type);
+            model.addAttribute("myPost", lookMyPost);
+
+            return "/member/listMyPostLook";
+        } else if (type.equals("board")) { // 자유,문의(?kindOfBoard로 구분)
+            BoardPageForm boardMyPost = boardService.getBoardMyPost(pageNo, mNumber, type, kindOfBoard);
+            model.addAttribute("myPost", boardMyPost);
+
+            return "/member/listMyPostBoard";
+        } else if (type.equals("입양후기")) { //입양후기
+            AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getAdoptReviewMyPost(pageNo, mNumber, type);
+            model.addAttribute("myPost", adoptReviewMyPost);
+
+            return "/member/listMyPostAdoptReview";
+        } else {
+            return null;
+        }
     }
 
     private Member getAuthMember(HttpServletRequest request) {

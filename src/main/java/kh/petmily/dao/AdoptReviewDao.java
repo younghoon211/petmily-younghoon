@@ -38,6 +38,33 @@ public class AdoptReviewDao implements BasicDao {
     }
     // =======BasicDao 메소드=======
 
+    public int selectCountBymNumber(int mNumber, String kindOfBoard) {
+        return mapper.selectCountBymNumber(mNumber, kindOfBoard);
+    }
+
+    public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
+        List<AdoptReview> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
+        List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
+
+        for (AdoptReview a : list) {
+            AdoptReviewListForm ar = new AdoptReviewListForm(
+                    a.getBNumber(),
+                    a.getMNumber(),
+                    selectName(a.getBNumber()),
+                    a.getKindOfBoard(),
+                    a.getTitle(),
+                    a.getContent(),
+                    a.getImgPath(),
+                    a.getWrTime(),
+                    a.getCheckPublic(),
+                    a.getViewCount());
+
+            adoptReviewListForm.add(ar);
+        }
+
+        return adoptReviewListForm;
+    }
+
     //====== 검색 추가 ======
     public int selectCountWithCondition(String kindOfBoard, String searchType, String keyword) {
         return mapper.selectCountWithCondition(kindOfBoard, searchType, keyword);
@@ -58,8 +85,7 @@ public class AdoptReviewDao implements BasicDao {
                     a.getImgPath(),
                     a.getWrTime(),
                     a.getCheckPublic(),
-                    a.getViewCount(),
-                    a.getReplyCount());
+                    a.getViewCount());
 
             adoptReviewListForm.add(ar);
         }

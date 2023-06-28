@@ -30,6 +30,19 @@
         where BNUMBER = #{pk}
     </delete>
 
+    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+        select count(*)
+        from BOARD
+        where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard}
+    </select>
+
+    <select id="selectIndexBymNumber" resultType="kh.petmily.domain.board.Board">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from BOARD where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard} order by BNUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
     <select id="selectCountWithCondition" resultType="java.lang.Integer">
         select count(*)
         from BOARD

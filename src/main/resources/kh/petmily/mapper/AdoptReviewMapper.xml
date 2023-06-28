@@ -29,7 +29,19 @@
         delete from BOARD
         where BNUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드=======-->
+
+    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+        select count(*)
+        from BOARD
+        where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard}
+    </select>
+
+    <select id="selectIndexBymNumber" resultType="kh.petmily.domain.adopt_review.AdoptReview">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from BOARD where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard} order by BNUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
 
     <!--======= 조건부 검색 게시글 개수 =======-->
     <select id="selectCountWithCondition" resultType="java.lang.Integer">
