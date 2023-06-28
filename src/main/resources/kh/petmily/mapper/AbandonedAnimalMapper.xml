@@ -172,4 +172,10 @@
         from pet
         where CPNUMBER = #{cpNumber}
     </delete>
+
+    <select id="selectGroupName" resultType="java.lang.String">
+        select S.GROUPNAME
+        from SHELTER S inner join ABANDONEDANIMAL AB
+        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+    </select>
 </mapper>

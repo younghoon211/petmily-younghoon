@@ -43,4 +43,6 @@ public interface AbandonedAnimalService {
     void deletePet(int cpNumber);
 
     public AbandonedAnimal getAnimal(int abNumber);
+
+    public String getGroupName(int abNumber);
 }

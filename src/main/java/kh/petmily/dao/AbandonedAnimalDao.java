@@ -103,4 +103,8 @@ public class AbandonedAnimalDao implements BasicDao {
     public void deletePet(int cpNumber) {
         mapper.deletePet(cpNumber);
     }
+
+    public String selectGroupName(int abNumber) {
+        return mapper.selectGroupName(abNumber);
+    }
 }

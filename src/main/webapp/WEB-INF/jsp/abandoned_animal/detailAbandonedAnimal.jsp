@@ -107,7 +107,7 @@
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
                             <h4>보호중인 보호소</h4>
-                            <p>${detailForm.getSNumber()}</p>
+                            <p>${detailForm.getGroupName()}</p>
                         </div>
                     </div>
                 </div>

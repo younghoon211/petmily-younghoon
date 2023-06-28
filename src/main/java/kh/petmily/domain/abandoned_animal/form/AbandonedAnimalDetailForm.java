@@ -21,13 +21,12 @@ public class AbandonedAnimalDetailForm {
     private String animalState;
     private String imgPath;
     private Date admissionDate;
-    //    private Blob video;
-
+    private String groupName;
 
     public AbandonedAnimalDetailForm() {
     }
 
-    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate) {
+    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.age = age;
@@ -42,5 +41,6 @@ public class AbandonedAnimalDetailForm {
         this.animalState = animalState;
         this.imgPath = imgPath;
         this.admissionDate = admissionDate;
+        this.groupName = groupName;
     }
 }
