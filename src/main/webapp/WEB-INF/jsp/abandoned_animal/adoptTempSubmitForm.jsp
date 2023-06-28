@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -115,13 +116,12 @@
         <div class="form-group">
             <label id="name-label">* 가족이 될 동물</label> <input id="name"
                                                              type="name" name="name" class="form-control"
-                                                             value=${animalName
-                                                                     } readonly>
+                                                             value="${animal.getName()}" readonly>
         </div>
 
         <div class="form-group">
             <label id="name-label">* 이름</label> <input id="name" type="name"
-                                                       name="name" class="form-control" value=${memberName } readonly>
+                                                       name="name" class="form-control" value=${memberName} readonly>
         </div>
 
         <br/>
@@ -129,12 +129,26 @@
         <div class="radiobuttons">
             <p>1. 선택</p>
             <ul style="list-style: none;">
-                <li class="radio"><input name="adoptOrTemp" value="adopt"
-                                         type="radio" class="userRatings" required><label>입양</label></li>
-                <li class="radio"><input name="adoptOrTemp" value="temp"
-                                         type="radio" class="userRatings" required><label>임시보호</label></li>
+                <c:if test="${animal.getAnimalState() != '임보'}">
+                    <li class="radio"><input name="adoptOrTemp" value="adopt" id="adopt"
+                                             type="radio" class="userRatings" required checked><label for="adopt">&nbsp;입양</label>
+                    </li>
+                    <li class="radio"><input name="adoptOrTemp" value="temp" id="temp"
+                                             type="radio" class="userRatings" required><label
+                            for="temp">&nbsp;임시보호</label></li>
+                </c:if>
+                <c:if test="${animal.getAnimalState() == '임보'}">
+                    <li class="radio"><input name="adoptOrTemp" value="adopt"
+                                             type="radio" class="userRatings" required checked><label for="adopt">&nbsp;입양</label>
+                        <span style="color: red">&nbsp;${animal.getName()}(이)는 현재 임시보호중이기 때문에 입양만 가능합니다.</span></li>
+                    <li class="radio"><input name="adoptOrTemp" value="temp"
+                                             type="radio" class="userRatings" required disabled><label for="temp">&nbsp;임시보호</label>
+                    </li>
+                </c:if>
+
             </ul>
         </div>
+        <br>
 
         <div class="form-group">
             <label for="exampleFormControlSelect2">2. 거주 지역</label> <select
@@ -159,13 +173,16 @@
         </select>
         </div>
 
+        <br>
         <div class="radiobuttons">
             <p>3. 결혼 여부</p>
             <ul style="list-style: none;">
-                <li class="radio"><input name="maritalStatus" value="married"
-                                         type="radio" class="userRatings" required><label>기혼</label></li>
-                <li class="radio"><input name="maritalStatus" value="single"
-                                         type="radio" class="userRatings" required><label>미혼</label></li>
+                <li class="radio"><input name="maritalStatus" value="married" id="married"
+                                         type="radio" class="userRatings" required checked><label
+                        for="married">&nbsp;기혼</label></li>
+                <li class="radio"><input name="maritalStatus" value="single" id="single"
+                                         type="radio" class="userRatings" required><label for="single">&nbsp;미혼</label>
+                </li>
             </ul>
         </div>
 

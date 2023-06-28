@@ -41,4 +41,6 @@ public interface AbandonedAnimalService {
     void modifyPet(Pet pet);
 
     void deletePet(int cpNumber);
+
+    public AbandonedAnimal getAnimal(int abNumber);
 }

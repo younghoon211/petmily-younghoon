@@ -91,6 +91,11 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     }
 
     @Override
+    public AbandonedAnimal getAnimal(int abNumber) {
+        return abandonedAnimalDao.findByPk(abNumber);
+    }
+
+    @Override
     public List<AbandonedAnimal> selectAll() {
         return abandonedAnimalDao.selectAll();
     }

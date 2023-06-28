@@ -1,5 +1,6 @@
 package kh.petmily.controller;
 
+import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.*;
@@ -108,21 +109,14 @@ public class AbandonedAnimalController {
 
     //=======입양/임보하기=======
     @GetMapping("/auth/adopt_temp")
-    public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request) {
-
+    public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
         int mNumber = member.getMNumber();
 
-        String animalName = abandonedAnimalService.findName(abNumber);
-        String memberName = memberService.findName(mNumber);
+        AbandonedAnimal animal = abandonedAnimalService.getAnimal(abNumber);
 
-        if (animalName != null) {
-            request.setAttribute("animalName", animalName);
-        }
-
-        if (memberName != null) {
-            request.setAttribute("memberName", memberName);
-        }
+        model.addAttribute("animal", animal);
+        model.addAttribute("memberName", memberService.findName(mNumber));
 
         return "/abandoned_animal/adoptTempSubmitForm";
     }
