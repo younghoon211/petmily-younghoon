@@ -71,7 +71,8 @@
                                                                                         name="title" id="threadTitle"
                                                                                         placeholder="제목을 입력해주세요"
                                                                                         autofocus=""
-                                                                                        required="required"/>
+                                                                                        required="required"
+                                                                                        maxlength="50"/>
                                             </div>
 
                                             <hr color="#6c757d" width="100%">
@@ -90,13 +91,15 @@
                                                                                              class="form-control"
                                                                                              name="kind" id="kindInput"
                                                                                              placeholder="모르는 경우 '모름' 작성"
-                                                                                             required="required"/>
+                                                                                             required="required"
+                                                                                             maxlength="16"/>
                                                     <label for="locationInput">발견 장소:</label><input type="text"
                                                                                                     class="form-control"
                                                                                                     name="location"
                                                                                                     id="locationInput"
                                                                                                     placeholder="모르는 경우 '모름' 작성"
-                                                                                                    required="required"/>
+                                                                                                    required="required"
+                                                                                                    maxlength="16"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -104,7 +107,7 @@
                                         <hr color="#6c757d" width="100%">
 
                                         <textarea rows="20" class="form-control" name="content" id="content"
-                                                  placeholder=" 내용을 입력해주세요" required="required"></textarea>
+                                                  placeholder=" 내용을 입력해주세요" required="required" maxlength="1300"></textarea>
 
                                         <div class="custom-file form-control-sm mt-3" style="max-width: 300px;">
                                             <input type="file" name="imgPath" id="file" accept="image/*">

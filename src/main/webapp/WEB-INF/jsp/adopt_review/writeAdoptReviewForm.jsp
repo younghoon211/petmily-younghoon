@@ -76,11 +76,11 @@
 
                                     <div>
                                         <input type="text" class="form-control" name="title"
-                                               placeholder="제목을 입력해주세요" autofocus="" required="required"/>
+                                               placeholder="제목을 입력해주세요" autofocus="" required="required" maxlength="50"/>
                                     </div>
                                 </div>
                                 <textarea rows="20" name="content" class="form-control"
-                                          placeholder="내용을 입력해주세요" required="required"/></textarea>
+                                          placeholder="내용을 입력해주세요" required="required" maxlength="1300"/></textarea>
                                 <input type="hidden" name="kindOfBoard" id="kindOfBoard" value="${param.kindOfBoard}"/>
                             </div>
                         </div>
