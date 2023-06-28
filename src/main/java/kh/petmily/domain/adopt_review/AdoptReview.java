@@ -24,7 +24,6 @@ public class AdoptReview implements DomainObj {
     private Date wrTime;
     private String checkPublic;
     private int viewCount;
-    private int replyCount;
 
     public AdoptReview(int mNumber, String kindOfBoard, String title, String content, String imgPath, String checkPublic) {
         this.mNumber = mNumber;

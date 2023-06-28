@@ -16,9 +16,8 @@ public class AdoptReviewListForm {
     private Date wrTime;
     private String checkPublic;
     private int viewCount;
-    private int replyCount;
 
-    public AdoptReviewListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, String imgPath, Date wrTime, String checkPublic, int viewCount, int replyCount) {
+    public AdoptReviewListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, String imgPath, Date wrTime, String checkPublic, int viewCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.name = name;
@@ -29,8 +28,5 @@ public class AdoptReviewListForm {
         this.wrTime = wrTime;
         this.checkPublic = checkPublic;
         this.viewCount = viewCount;
-        this.replyCount = replyCount;
     }
-
-
 }

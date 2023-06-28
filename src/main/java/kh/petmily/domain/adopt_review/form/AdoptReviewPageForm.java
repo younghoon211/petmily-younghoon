@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AdoptReviewBoardPageForm {
+public class AdoptReviewPageForm {
 
     private int total;
     private int currentPage;
@@ -14,7 +14,7 @@ public class AdoptReviewBoardPageForm {
     private int startPage;
     private int endPage;
 
-    public AdoptReviewBoardPageForm(int total, int currentPage, int size, List<AdoptReviewListForm> content) {
+    public AdoptReviewPageForm(int total, int currentPage, int size, List<AdoptReviewListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;
