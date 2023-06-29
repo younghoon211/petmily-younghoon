@@ -179,7 +179,7 @@ public class AbandonedAnimalController {
             model.addAttribute("memberEmail", memberEmail);
         }
 
-        return "/abandoned_animal/volunteerAbandonedAnimal";
+        return "/abandoned_animal/volunteerSubmitForm";
     }
 
     @PostMapping("/auth/volunteer")

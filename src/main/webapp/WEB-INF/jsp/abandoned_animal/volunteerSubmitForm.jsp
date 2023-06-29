@@ -110,7 +110,7 @@
 <div class="container survey">
     <h1 id="title" class="text-center">봉사 신청서</h1>
     <small class="form-text text-muted text-center"><span
-            style="color: red">※자원봉사희망자 정보는 신청자와 관리센터만 볼 수 있습니다.</span></small><br>
+            style="color: red">※ 신청서를 제출하시면 일정 확인 후에 연락드리겠습니다.</span></small><br>
     <form id="submit-form"
           action="/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}"
           method="POST">
