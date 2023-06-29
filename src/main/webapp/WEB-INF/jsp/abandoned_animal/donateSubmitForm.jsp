@@ -111,13 +111,16 @@
             </div>
         </div>
     </div>
+
 </section>
 <br>
 
 <div class="container survey">
+    <h1 id="title" class="text-center">후원하기</h1><br>
 
-    <h1 id="title" class="text-center">후원하기</h1>
-    <p id="description" class="text-center"></p> <br><br>
+    <span class="form-text text-muted text-center" style="font-family: -apple-system">1233-45-6787910 카카오뱅크(예금주: petmily)</span>
+    <small class="form-text text-muted text-center"><span
+            style="color: red">※ 입금주 명을 [후원받을 동물/이름] (예: 초코/김지훈) 으로 입금 후 후원 신청서를 제출하시면 후원이 완료됩니다.</span></small><br><br>
 
     <div class="form-group">
         <label id="name-label">후원받을 동물</label> <input id="name"
