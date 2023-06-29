@@ -22,11 +22,11 @@ public class BoardServiceImpl implements BoardService {
     private int size = 5;
 
     @Override
-    public BoardPageForm getBoardPage(int pageNum, String kindOfBoard, String condition, String keyword, String sort) {
+    public BoardPageForm getBoardPage(int pageNo, String kindOfBoard, String condition, String keyword, String sort) {
         int total = boardDao.selectCountWithCondition(kindOfBoard, condition, keyword);
-        List<BoardListForm> content = boardDao.selectIndexWithCondition((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, condition, keyword, sort);
+        List<BoardListForm> content = boardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard, condition, keyword, sort);
 
-        return new BoardPageForm(total, pageNum, size, content);
+        return new BoardPageForm(total, pageNo, size, content);
     }
 
     @Override

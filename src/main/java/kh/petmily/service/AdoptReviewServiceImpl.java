@@ -31,11 +31,11 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     private int size = 6;
 
     @Override
-    public AdoptReviewPageForm getAdoptReviewPage(int pageNum, String kindOfBoard, String searchType, String keyword, String sort) {
+    public AdoptReviewPageForm getAdoptReviewPage(int pageNo, String kindOfBoard, String searchType, String keyword, String sort) {
         int total = adoptReviewDao.selectCountWithCondition(kindOfBoard, searchType, keyword);
-        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((pageNum - 1) * size + 1, (pageNum - 1) * size + size, kindOfBoard, searchType, keyword, sort);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard, searchType, keyword, sort);
 
-        return new AdoptReviewPageForm(total, pageNum, size, content);
+        return new AdoptReviewPageForm(total, pageNo, size, content);
     }
 
     @Override

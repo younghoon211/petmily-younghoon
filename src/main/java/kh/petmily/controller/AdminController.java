@@ -348,8 +348,8 @@ public class AdminController {
     }
 
     @GetMapping("/animal/pet")
-    public String petBoard(@RequestParam(defaultValue = "1") int pageNum, Model model) {
-        PetPageForm petPage = abandonedAnimalService.getPetPage(pageNum);
+    public String petBoard(@RequestParam(defaultValue = "1") int pageNo, Model model) {
+        PetPageForm petPage = abandonedAnimalService.getPetPage(pageNo);
         model.addAttribute("petPage", petPage);
         return "/admin/animal/petBoard";
     }

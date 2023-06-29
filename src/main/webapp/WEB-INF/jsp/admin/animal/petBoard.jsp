@@ -97,26 +97,26 @@ pageEncoding="UTF-8" %>
 						<ul>
 							<li>
 								<c:if test="${petPage.startPage > 5}">
-									<a href="/admin/animal/pet?pageNum=${petPage.startPage - 5}">&lt;</a>
+									<a href="/admin/animal/pet?pageNo=${petPage.startPage - 5}">&lt;</a>
 								</c:if>
 							</li>
 							<li>
 								<c:forEach var="pbNum" begin="${petPage.startPage}" end="${petPage.endPage}">
 									<c:if test="${petPage.currentPage == pbNum}">
 							<li class="active">
-								<a href="/admin/animal/pet?pageNum=${pbNum}">${pbNum}</a>
+								<a href="/admin/animal/pet?pageNo=${pbNum}">${pbNum}</a>
 							</li>
 							</c:if>
 							<c:if test="${petPage.currentPage != pbNum}">
 								<li>
-									<a href="/admin/animal/pet?pageNum=${pbNum}">${pbNum}</a>
+									<a href="/admin/animal/pet?pageNo=${pbNum}">${pbNum}</a>
 								</li>
 							</c:if>
 							</c:forEach>
 							</li>
 							<li>
 								<c:if test="${petPage.endPage < petPage.totalPages}">
-									<a href="/admin/animal/pet?pageNum=${petPage.startPage + 5}">&gt;</a>
+									<a href="/admin/animal/pet?pageNo=${petPage.startPage + 5}">&gt;</a>
 								</c:if>
 							</li>
 						</ul>
