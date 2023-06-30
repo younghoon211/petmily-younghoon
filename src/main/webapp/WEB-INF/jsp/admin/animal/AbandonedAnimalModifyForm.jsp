@@ -58,7 +58,7 @@
                             </div>
                             <div class="form-group col-md-6 col-lg-6">
                                 <label for="admissionDateInput">입소 날짜:</label>
-                                <input type="date" class="form-control" name="admissionDate" id="admissionDateInput" required="required"/>
+                                <input type="date" class="form-control" value="${modReq.admissionDate}" name="admissionDate" id="admissionDateInput" required="required"/>
                             </div>
                         </div>
 
