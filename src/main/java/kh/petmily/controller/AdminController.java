@@ -144,11 +144,11 @@ public class AdminController {
     }
 
     @GetMapping("/animal/abandoned")
-    public String adminAbandonedList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
+    public String abandonedAnimalList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo);
         model.addAttribute("abandonedAnimals", abandonedAnimals);
 
-        return "/admin/animal/adminAbandonedList";
+        return "/admin/animal/abandonedAnimalList";
     }
 
     @GetMapping("/detail")
@@ -164,7 +164,7 @@ public class AdminController {
 
     @GetMapping("/animal/abandoned/write")
     public String adminAbandonedWriteForm() {
-        return "/admin/animal/AbandonedAnimalWriteForm";
+        return "/admin/animal/abandonedAnimalWriteForm";
     }
 
     @PostMapping("/animal/abandoned/write")
@@ -190,7 +190,7 @@ public class AdminController {
 
         abandonedAnimalService.write(abandonedAnimalWriteForm);
 
-        return "/admin/animal/writeSuccess";
+        return "/admin/animal/abandonedAnimalWriteSuccess";
     }
 
     @GetMapping("/animal/abandoned/modify")
@@ -199,7 +199,7 @@ public class AdminController {
 
         model.addAttribute("modReq", modReq);
 
-        return "/admin/animal/AbandonedAnimalModifyForm";
+        return "/admin/animal/abandonedAnimalModifyForm";
     }
 
     @PostMapping("/animal/abandoned/modify")
@@ -345,7 +345,7 @@ public class AdminController {
     public String petBoard(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         PetPageForm petPage = abandonedAnimalService.getPetPage(pageNo);
         model.addAttribute("petPage", petPage);
-        return "/admin/animal/petBoard";
+        return "/admin/animal/petList";
     }
 
     @ResponseBody
