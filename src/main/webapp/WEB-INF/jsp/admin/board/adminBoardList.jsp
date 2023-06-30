@@ -51,32 +51,32 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-        <div>
-            <input type="radio" id="free" name="kind" value="free" onclick="selectKind(this.value)"
+        <div style="text-align: center">
+            <input type="radio" id="free" value="free" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard == '자유'}">
                    checked
             </c:if>>
             <label for="free">자유 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="inquiry" name="kind" value="inquiry" onclick="selectKind(this.value)"
+            <input type="radio" id="inquiry" value="inquiry" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard == '문의'}">
                    checked
             </c:if>>
             <label for="inquiry">문의 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="review" name="kind" value="review" onclick="selectKind(this.value)"
+            <input type="radio" id="review" value="review" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard == '입양후기'}">
                    checked
             </c:if>>
             <label for="review">입양 후기 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="find" name="kind" value="find" onclick="selectKind(this.value)"
+            <input type="radio" id="find" value="find" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard == 'find'}">
                    checked
             </c:if>>
             <label for="find">반려 동물 찾아요 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="look" name="kind" value="look" onclick="selectKind(this.value)"
+            <input type="radio" id="look" value="look" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard == 'look'}">
                    checked
             </c:if>> <label for="look">유기 동물 봤어요 게시판 관리</label>

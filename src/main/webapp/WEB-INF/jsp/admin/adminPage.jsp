@@ -55,7 +55,7 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">동물 관리</h3>
-                                        <a href="/admin/animal"
+                                        <a href="/admin/animal/abandoned"
                                            class="btn-custom d-flex align-items-center justify-content-center">
                                             <span class="fa fa-chevron-right"></span>
                                             <i class="sr-only">Read more</i></a>
