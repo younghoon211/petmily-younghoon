@@ -52,6 +52,24 @@ public class BoardDao implements BasicDao {
         return boardListForm;
     }
 
+    // 관리자 페이지 게시글 개수
+    public int selectCount(String kindOfBoard) {
+        return mapper.selectCount(kindOfBoard);
+    }
+
+    // 관리자 페이지 리스트
+    public List<BoardListForm> selectIndex(int start, int end, String kindOfBoard) {
+        List<Board> list = mapper.selectIndex(start, end, kindOfBoard);
+        List<BoardListForm> boardListForm = new ArrayList<>();
+
+        for (Board b : list) {
+            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
+            boardListForm.add(bd);
+        }
+
+        return boardListForm;
+    }
+
     // 조건부 검색 게시글 개수
     public int selectCountWithCondition(String kindOfBoard, String condition, String keyword) {
         return mapper.selectCountWithCondition(kindOfBoard, condition, keyword);
@@ -76,10 +94,6 @@ public class BoardDao implements BasicDao {
 
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
-    }
-
-    public List<Board> selectAll(String kindOfBoard) {
-        return mapper.selectAll(kindOfBoard);
     }
 
     public int selectReplyCount(int bNumber) {

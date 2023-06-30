@@ -29,4 +29,12 @@ public class AdoptReviewListForm {
         this.checkPublic = checkPublic;
         this.viewCount = viewCount;
     }
+
+    public int getbNumber() {
+        return bNumber;
+    }
+
+    public int getBNumber() {
+        return bNumber;
+    }
 }

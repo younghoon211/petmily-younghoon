@@ -21,6 +21,10 @@ public interface BoardMapper {
 
     List<Board> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
 
+    int selectCount(String kindOfBoard);
+
+    List<Board> selectIndex(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard);
+
     int selectCountWithCondition(@Param("kindOfBoard") String kindOfBoard, @Param("condition") String condition, @Param("keyword") String keyword);
 
     List<Board> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard, @Param("condition") String condition, @Param("keyword") String keyword, @Param("sort") String sort);
@@ -28,8 +32,6 @@ public interface BoardMapper {
     String selectName(int pk);
 
     int updateViewCount(int pk);
-
-    List<Board> selectAll(String kindOfBoard);
 
     int selectReplyCount(int bNumber);
 }

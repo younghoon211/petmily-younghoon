@@ -25,7 +25,9 @@ public interface FindBoardMapper {
 
     List<FindBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
 
-    FindBoard selectFindWriteForm(int pk);
+    int selectCount();
+
+    List<FindBoard> selectIndex(@Param("start") int start, @Param("end") int end);
 
     String selectName(int pk);
 
@@ -46,6 +48,4 @@ public interface FindBoardMapper {
     int selectMemberCount(@Param("mNumber") int mNumber, @Param("matched") String matched);
 
     List<FindBoard> selectMemberIndex(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("matched") String matched);
-
-    List<FindBoard> selectAll();
 }

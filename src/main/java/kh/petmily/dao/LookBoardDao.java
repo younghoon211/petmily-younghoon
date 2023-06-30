@@ -133,6 +133,23 @@ public class LookBoardDao implements BasicDao {
         return result;
     }
 
+    public int selectCount() {
+        return mapper.selectCount();
+    }
+
+    public List<LookBoardListForm> selectIndex(int start, int end) {
+        List<LookBoardListForm> result = new ArrayList<>();
+
+        List<LookBoard> lookBoards = mapper.selectIndex(start, end);
+
+        for (LookBoard board : lookBoards) {
+            LookBoardListForm li = new LookBoardListForm(board.getLaNumber(), selectName(board.getLaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
+            result.add(li);
+        }
+
+        return result;
+    }
+
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
@@ -161,9 +178,5 @@ public class LookBoardDao implements BasicDao {
         }
 
         return liList;
-    }
-
-    public List<LookBoard> selectAll() {
-        return mapper.selectAll();
     }
 }

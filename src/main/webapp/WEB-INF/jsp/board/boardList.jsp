@@ -188,7 +188,6 @@
                                     <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${boardPageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
-                            <li>
                             <c:forEach var="pbNum" begin="${boardPageForm.startPage}" end="${boardPageForm.endPage}">
                                 <c:if test="${boardPageForm.currentPage == pbNum}">
                                     <li class="active">
@@ -201,7 +200,6 @@
                                     </li>
                                 </c:if>
                             </c:forEach>
-                            </li>
                             <li>
                                 <c:if test="${boardPageForm.endPage < boardPageForm.totalPages}">
                                     <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pbNumber=${boardPageForm.startPage + 5}">&gt;</a>
@@ -216,7 +214,6 @@
                                     <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${boardPageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
-                            <li>
                             <c:forEach var="pbNum" begin="${boardPageForm.startPage}" end="${boardPageForm.endPage}">
                                 <c:if test="${boardPageForm.currentPage == pbNum}">
                                     <li class="active">
@@ -229,7 +226,6 @@
                                     </li>
                                 </c:if>
                             </c:forEach>
-                            </li>
                             <li>
                                 <c:if test="${boardPageForm.endPage < boardPageForm.totalPages}">
                                     <a href="${pageContext.request.contextPath}/board/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pbNumber=${boardPageForm.startPage + 5}">&gt;</a>
@@ -240,7 +236,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 </section>

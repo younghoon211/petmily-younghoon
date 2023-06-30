@@ -43,4 +43,17 @@ public class LookBoardListForm {
         this.viewCount = viewCount;
         this.sort = sort;
     }
+
+    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+        this.laNumber = laNumber;
+        this.name = name;
+        this.species = species;
+        this.kind = kind;
+        this.location = location;
+        this.animalState = animalState;
+        this.imgPath = imgPath;
+        this.wrTime = wrTime;
+        this.title = title;
+        this.viewCount = viewCount;
+    }
 }

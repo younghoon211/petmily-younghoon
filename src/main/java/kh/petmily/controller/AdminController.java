@@ -5,7 +5,6 @@ import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalDetailForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalModifyForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalWriteForm;
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.adopt.form.AdoptPageForm;
 import kh.petmily.domain.adopt.form.TempPageForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
@@ -40,7 +39,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -242,22 +240,18 @@ public class AdminController {
     }
 
     @GetMapping("/board")
-    public String boardPage(@RequestParam("kindOfBoard") String kind, Model model) {
-        List<AdminBoardListForm> boardForm = new ArrayList<>();
-
+    public String boardPage(@RequestParam("kindOfBoard") String kind, @RequestParam(defaultValue = "1") int pageNo, Model model) {
         if (kind.equals("자유")) {
-            boardForm = boardService.selectAll("자유");
+            model.addAttribute("boardForm", boardService.getAdminBoardPage("자유", pageNo));
         } else if (kind.equals("문의")) {
-            boardForm = boardService.selectAll("문의");
+            model.addAttribute("boardForm", boardService.getAdminBoardPage("문의", pageNo));
         } else if (kind.equals("입양후기")) {
-            boardForm = adoptReviewService.selectAll("입양후기");
+            model.addAttribute("boardForm", adoptReviewService.getAdminAdoptReviewPage("입양후기", pageNo));
         } else if (kind.equals("find")) {
-            boardForm = findBoardService.selectAll();
+            model.addAttribute("boardForm", findBoardService.getAdminFindPage(pageNo));
         } else if (kind.equals("look")) {
-            boardForm = lookBoardService.selectAll();
+            model.addAttribute("boardForm", lookBoardService.getAdminLookPage(pageNo));
         }
-
-        model.addAttribute("boardForm", boardForm);
 
         return "/admin/board/adminBoardList";
     }

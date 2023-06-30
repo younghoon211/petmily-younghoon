@@ -1,6 +1,5 @@
 package kh.petmily.service;
 
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardDetailForm;
 import kh.petmily.domain.find_board.form.FindBoardModifyForm;
@@ -9,7 +8,6 @@ import kh.petmily.domain.find_board.form.FindBoardWriteForm;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface FindBoardService {
 
@@ -25,6 +23,8 @@ public interface FindBoardService {
 
     public FindBoardPageForm getFindPage(int pageNo, String animalType, String stateType, String keyword, String sort);
 
+    public FindBoardPageForm getAdminFindPage(int pageNo);
+
     public FindBoardPageForm getMembersFindPage(int pageNo, int mNumber, String matched);
 
     String findName(int faNumber);
@@ -34,8 +34,6 @@ public interface FindBoardService {
     public FindBoard getFindBoard(int faNumber);
 
     public String storeFile(MultipartFile file, String filePath) throws IOException;
-
-    public List<AdminBoardListForm> selectAll();
 
     public FindBoardPageForm getFindMyPost(int pageNo, int mNumber, String type);
 }

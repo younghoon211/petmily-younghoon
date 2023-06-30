@@ -23,6 +23,10 @@ public interface AdoptReviewMapper {
 
     List<AdoptReview> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
 
+    int selectCount(String kindOfBoard);
+
+    List<AdoptReview> selectIndex(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard);
+
     int selectCountWithCondition(@Param("kindOfBoard") String kindOfBoard, @Param("searchType") String searchType, @Param("keyword") String keyword);
 
     List<AdoptReview> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard, @Param("searchType") String searchType, @Param("keyword") String keyword, @Param("sort") String sort);
@@ -30,6 +34,4 @@ public interface AdoptReviewMapper {
     String selectName(int pk);
 
     int updateViewCount(int pk);
-
-    List<AdoptReview> selectAll(String kindOfBoard);
 }

@@ -1,6 +1,5 @@
 package kh.petmily.service;
 
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.LookBoardDetailForm;
@@ -10,7 +9,6 @@ import kh.petmily.domain.look_board.form.LookBoardWriteForm;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface LookBoardService {
 
@@ -21,6 +19,8 @@ public interface LookBoardService {
     public void delete(int laNumber);
 
     public LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword, String sort);
+
+    public LookBoardPageForm getAdminLookPage(int pageNo);
 
     public LookBoardDetailForm getDetailForm(int laNumber);
 
@@ -35,8 +35,6 @@ public interface LookBoardService {
     public LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard);
 
     public String storeFile(MultipartFile file, String filePath) throws IOException;
-
-    public List<AdminBoardListForm> selectAll();
 
     public LookBoard getLookBoard(int laNumber);
 

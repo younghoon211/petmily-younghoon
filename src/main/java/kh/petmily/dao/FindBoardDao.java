@@ -130,6 +130,23 @@ public class FindBoardDao implements BasicDao {
         return fiList;
     }
 
+    public int selectCount() {
+        return mapper.selectCount();
+    }
+
+    public List<FindBoardListForm> selectIndex(int start, int end) {
+        List<FindBoardListForm> fiList = new ArrayList<>();
+
+        List<FindBoard> findBoards = mapper.selectIndex(start, end);
+
+        for (FindBoard board : findBoards) {
+            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
+            fiList.add(fi);
+        }
+
+        return fiList;
+    }
+
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
@@ -152,9 +169,5 @@ public class FindBoardDao implements BasicDao {
         }
 
         return fiList;
-    }
-
-    public List<FindBoard> selectAll() {
-        return mapper.selectAll();
     }
 }

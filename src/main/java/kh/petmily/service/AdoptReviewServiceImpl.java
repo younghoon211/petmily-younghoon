@@ -2,7 +2,6 @@ package kh.petmily.service;
 
 import kh.petmily.dao.AdoptReviewDao;
 import kh.petmily.dao.MemberDao;
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +27,7 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     private final AdoptReviewDao adoptReviewDao;
     private final MemberDao memberDao;
     private int size = 6;
+    private int adminSize = 10;
 
     @Override
     public AdoptReviewPageForm getAdoptReviewPage(int pageNo, String kindOfBoard, String searchType, String keyword, String sort) {
@@ -36,6 +35,14 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
         List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard, searchType, keyword, sort);
 
         return new AdoptReviewPageForm(total, pageNo, size, content);
+    }
+
+    @Override
+    public AdoptReviewPageForm getAdminAdoptReviewPage(String kindOfBoard, int pageNo) {
+        int total = adoptReviewDao.selectCount(kindOfBoard);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize, kindOfBoard);
+
+        return new AdoptReviewPageForm(total, pageNo, adminSize, content);
     }
 
     @Override
@@ -158,19 +165,6 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
         file.transferTo(new File(fullPath));
 
         return storeFileName;
-    }
-
-    @Override
-    public List<AdminBoardListForm> selectAll(String kindOfBoard) {
-        List<AdminBoardListForm> list = new ArrayList<>();
-        List<AdoptReview> adoptReviewList = adoptReviewDao.selectAll(kindOfBoard);
-
-        for (AdoptReview b : adoptReviewList) {
-            AdminBoardListForm ad = new AdminBoardListForm(b.getBNumber(), findName(b.getMNumber()), b.getWrTime(), b.getTitle());
-            list.add(ad);
-        }
-
-        return list;
     }
 
     @Override

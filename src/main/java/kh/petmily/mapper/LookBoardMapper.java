@@ -17,9 +17,13 @@ public interface LookBoardMapper {
 
     void delete(int pk);
 
+    int selectCount();
+
     int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
 
     int selectCountBymNumber(int mNumber);
+
+    List<LookBoard> selectIndex(@Param("start") int start, @Param("end") int end);
 
     List<LookBoard> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
 
@@ -40,6 +44,4 @@ public interface LookBoardMapper {
     void backStateFind(int faNumber);
 
     int selectByPkMax();
-
-    List<LookBoard> selectAll();
 }

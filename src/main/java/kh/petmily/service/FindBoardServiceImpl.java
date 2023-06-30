@@ -1,7 +1,6 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.FindBoardDao;
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.*;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +22,7 @@ public class FindBoardServiceImpl implements FindBoardService {
 
     private final FindBoardDao findBoardDao;
     private int size = 6;
+    private int adminSize = 10;
 
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
@@ -81,6 +80,14 @@ public class FindBoardServiceImpl implements FindBoardService {
     }
 
     @Override
+    public FindBoardPageForm getAdminFindPage(int pageNo) {
+        int total = findBoardDao.selectCount();
+        List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
+
+        return new FindBoardPageForm(total, pageNo, adminSize, content);
+    }
+
+    @Override
     public FindBoardModifyForm getModifyForm(int faNumber) {
         FindBoard findBoard = findBoardDao.findByPk(faNumber);
         FindBoardModifyForm modifyForm = toModifyForm(findBoard);
@@ -110,20 +117,6 @@ public class FindBoardServiceImpl implements FindBoardService {
     @Override
     public FindBoard getFindBoard(int faNumber) {
         return findBoardDao.findByPk(faNumber);
-    }
-
-    @Override
-    public List<AdminBoardListForm> selectAll() {
-        List<AdminBoardListForm> list = new ArrayList<>();
-
-        List<FindBoard> findList = findBoardDao.selectAll();
-
-        for (FindBoard f : findList) {
-            AdminBoardListForm ad = new AdminBoardListForm(f.getFaNumber(), findName(f.getMNumber()), f.getWrTime(), f.getTitle());
-            list.add(ad);
-        }
-
-        return list;
     }
 
     @Override

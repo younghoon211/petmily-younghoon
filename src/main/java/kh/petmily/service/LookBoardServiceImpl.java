@@ -2,7 +2,6 @@ package kh.petmily.service;
 
 import kh.petmily.dao.LookBoardDao;
 import kh.petmily.dao.MemberDao;
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.*;
@@ -14,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +25,7 @@ public class LookBoardServiceImpl implements LookBoardService {
     private final LookBoardDao lookBoardDao;
     private final MemberDao memberDao;
     private int size = 6;
+    private int adminSize = 10;
 
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
@@ -76,6 +75,14 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     @Override
+    public LookBoardPageForm getAdminLookPage(int pageNo) {
+        int total = lookBoardDao.selectCount();
+        List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
+
+        return new LookBoardPageForm(total, pageNo, adminSize, content);
+    }
+
+    @Override
     public LookBoardDetailForm getDetailForm(int laNumber) {
         LookBoard lookBoard = lookBoardDao.findByPk(laNumber);
         LookBoardDetailForm detailForm = toDetailForm(lookBoard);
@@ -113,20 +120,6 @@ public class LookBoardServiceImpl implements LookBoardService {
         List<LookBoardListForm> content = lookBoardDao.selectMatchedIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, findBoard);
 
         return new LookBoardPageForm(total, pageNo, size, content);
-    }
-
-    @Override
-    public List<AdminBoardListForm> selectAll() {
-        List<AdminBoardListForm> list = new ArrayList<>();
-
-        List<LookBoard> lookList = lookBoardDao.selectAll();
-
-        for (LookBoard l : lookList) {
-            AdminBoardListForm ad = new AdminBoardListForm(l.getLaNumber(), findMemberName(l.getMNumber()), l.getWrTime(), l.getTitle());
-            list.add(ad);
-        }
-
-        return list;
     }
 
     @Override

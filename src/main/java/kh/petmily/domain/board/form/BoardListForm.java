@@ -1,10 +1,12 @@
 package kh.petmily.domain.board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class BoardListForm {
     private int bNumber;
     private int mNumber;
@@ -47,5 +49,13 @@ public class BoardListForm {
         this.checkPublic = checkPublic;
         this.viewCount = viewCount;
         this.replyCount = replyCount;
+    }
+
+    public int getbNumber() {
+        return bNumber;
+    }
+
+    public int getBNumber() {
+        return bNumber;
     }
 }

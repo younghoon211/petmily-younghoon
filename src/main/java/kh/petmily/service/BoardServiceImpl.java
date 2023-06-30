@@ -2,14 +2,12 @@ package kh.petmily.service;
 
 import kh.petmily.dao.BoardDao;
 import kh.petmily.dao.MemberDao;
-import kh.petmily.domain.admin.form.AdminBoardListForm;
 import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,12 +17,20 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardDao boardDao;
     private final MemberDao memberDao;
-    private int size = 5;
+    private int size = 10;
 
     @Override
     public BoardPageForm getBoardPage(int pageNo, String kindOfBoard, String condition, String keyword, String sort) {
         int total = boardDao.selectCountWithCondition(kindOfBoard, condition, keyword);
         List<BoardListForm> content = boardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard, condition, keyword, sort);
+
+        return new BoardPageForm(total, pageNo, size, content);
+    }
+
+    @Override
+    public BoardPageForm getAdminBoardPage(String kindOfBoard, int pageNo) {
+        int total = boardDao.selectCount(kindOfBoard);
+        List<BoardListForm> content = boardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard);
 
         return new BoardPageForm(total, pageNo, size, content);
     }
@@ -78,20 +84,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int updateViewCount(int bNumber) {
         return boardDao.updateViewCount(bNumber);
-    }
-
-    @Override
-    public List<AdminBoardListForm> selectAll(String kindOfBoard) {
-        List<AdminBoardListForm> list = new ArrayList<>();
-
-        List<Board> boardList = boardDao.selectAll(kindOfBoard);
-
-        for (Board b : boardList) {
-            AdminBoardListForm ad = new AdminBoardListForm(b.getBNumber(), findName(b.getMNumber()), b.getWrTime(), b.getTitle());
-            list.add(ad);
-        }
-
-        return list;
     }
 
     @Override
