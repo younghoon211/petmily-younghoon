@@ -14,11 +14,11 @@
     <!-- Loding font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
     <script>
-        window.onload = function() {
+        window.onload = function () {
             var input = document.getElementById('myInput');
             input.focus();
 
-            setInterval(function() {
+            setInterval(function () {
                 input.classList.toggle('blink');
             }, 500);
         };
@@ -39,13 +39,17 @@
         <div class="form">
             <div class="left-side">
                 <form action="/login" method="post">
-                    <div class="login" id="login" >
+                    <div class="login" id="login">
                         <b><a href="${pageContext.request.contextPath}/"
                               style="text-decoration: none; color: black"><h2>Petmily</h2></a></b>
                     </div>
                     <div class="form-inputs">
                         <input type="text" name="id" placeholder="아이디" required="required" style="padding-left: 10px"
-                        value="${param.id}" autofocus />
+                               value="${param.id}"
+                                <c:if test="${param.error != 'true'}">
+                                    autofocus
+                                </c:if>
+                        />
                         <div class="password">
                             <input type="password" name="pw" placeholder="비밀번호" required="required"
                                    style="padding-left: 10px"
