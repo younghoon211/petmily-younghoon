@@ -38,23 +38,8 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
 
     <style>
-        .checkboxlabel {
-            display: flex;
-            justify-content: space-between;
-            text-align: justify;
-        }
-
-        .message {
-            display: flex;
-            justify-content: space-between;
-        }
-
         textarea {
             width: 82%;
-        }
-
-        .radiobuttons {
-            display: flex;
         }
 
         .survey {
@@ -64,16 +49,6 @@
 
         h1 {
             font-weight: 400;
-            font-family: 'Merriweather', serif
-        }
-
-        .arr {
-            margin: auto;
-            display: block;
-            width: 100px;
-        }
-
-        #description {
             font-family: 'Merriweather', serif
         }
 
@@ -97,7 +72,7 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>Volunteer Abandoned Animal - Submit<i
+                    <span class="mr-2"><span>Volunteer Abandoned Animal<i
                             class="ion-ios-arrow-forward"></i></span></span>
                 </p>
                 <h1 class="mb-0 bread">봉사하기</h1>
@@ -108,73 +83,56 @@
 
 
 <div class="container survey">
-    <h1 id="title" class="text-center">봉사 신청서</h1>
-    <small class="form-text text-muted text-center"><span
-            style="color: red">※ 신청서를 제출하시면 일정 확인 후에 연락드리겠습니다.</span></small><br>
-    <form id="submit-form"
-          action="/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}"
-          method="POST">
-
-        <div class="form-row">
-            <div class="col">
-                <label id="name-label">유기동물 이름</label> <input readonly id="name"
-                                                              type="text" value=${animalName } class="form-control">
+    <h1 id="title" class="text-center">봉사 신청</h1>
+    <div class="container">
+        <br>
+        <div class="row d-flex no-gutters">
+            <div class="col-md-5 d-flex">
+                <img src="/admin/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
+            </div>
+            <div class="col-md-7 pl-md-5 py-md-5">
+                <div class="heading-section pt-md-5">
+                    <h2 class="mb-4">${detailForm.name} (${detailForm.getGroupName()}에서 보호중)</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 services-2 w-100 d-flex">
+                        <div class="icon d-flex align-items-center justify-content-center"><span
+                                class="flaticon-stethoscope"></span></div>
+                        <div class="text pl-3">
+                            <h4>종</h4>
+                            <p>${detailForm.species} (${detailForm.kind})</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 services-2 w-100 d-flex">
+                        <div class="icon d-flex align-items-center justify-content-center"><span
+                                class="flaticon-customer-service"></span></div>
+                        <div class="text pl-3">
+                            <h4>나이</h4>
+                            <p>${detailForm.age}살</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 services-2 w-100 d-flex">
+                        <div class="icon d-flex align-items-center justify-content-center"><span
+                                class="flaticon-emergency-call"></span></div>
+                        <div class="text pl-3">
+                            <h4>몸무게</h4>
+                            <p>${detailForm.weight} Kg</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 services-2 w-100 d-flex">
+                        <div class="icon d-flex align-items-center justify-content-center"><span
+                                class="flaticon-veterinarian"></span></div>
+                        <div class="text pl-3">
+                            <h4>성별</h4>
+                            <p>${detailForm.gender}</p>
+                        </div>
+                    </div>
+                </div><br>
+                <small><span style="color: red">※ 해당 기관에 연락하셔서 일정을 조율해 주세요.</span></small>
+                    <br>${detailForm.getGroupName()} 연락처 : ${detailForm.phone}
             </div>
         </div>
-        <br/>
-        <div class="form-group">
-            <label id="member-name">이름</label> <input readonly id="name"
-                                                      type="text" value=${memberName } class="form-control"
-                                                      aria-describedby="emailHelp">
-        </div>
-
-
-        <div class="form-group">
-            <label id="member-age">생년월일</label> <input readonly id="birth"
-                                                       type="text" value=${memberBirth} min="15" max="125"
-                                                       class="form-control" id="text">
-        </div>
-
-        <div class="form-group">
-            <label id="member-phone">연락처</label> <input readonly id="phone"
-                                                        type="text" value=${memberPhone} class="form-control"
-                                                        aria-describedby="emailHelp"
-        >
-        </div>
-
-        <div class="form-group">
-            <label id="member-email">이메일</label> <input readonly id="email"
-                                                        type="text" value=${memberEmail} class="form-control"
-                                                        aria-describedby="emailHelp"
-        >
-        </div>
-
-
-        <div class="form-row">
-            <div class="col">
-                <label for="formGroupExampleInput">봉사활동 기간</label>
-                <input
-                        id="volunteerPeriod" type="number" class="form-control"
-                        name="volunteerPeriod" placeholder="희망하는 봉사 활동 일 수를 기입해 주세요." required>
-            </div>
-            <div class="col">
-                <label for="formGroupExampleInput">봉사 시작날짜</label>
-                <input
-                        id="volunteerStartDate" type="date" class="form-control"
-                        name="volunteerStartDay" placeholder="입력" min="2023-07-01" max="2024-12-31" required>
-            </div>
-        </div>
-
-        <br><br>
-        <div class="arr">
-            <button id="submit" type="submit" class="btn btn-secondary"
-                    style="float: center">신청하기
-            </button>
-        </div>
-    </form>
-
-    <br/>
-
+    </div>
 </div>
 <!--Apply form end -->
 

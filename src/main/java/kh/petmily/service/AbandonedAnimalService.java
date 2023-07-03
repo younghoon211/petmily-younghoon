@@ -45,4 +45,6 @@ public interface AbandonedAnimalService {
     public AbandonedAnimal getAnimal(int abNumber);
 
     public String getGroupName(int abNumber);
+
+    public String getPhone(int abNumber);
 }

@@ -47,4 +47,6 @@ public interface AbandonedAnimalMapper {
     void deletePet(int cpNumber);
 
     String selectGroupName(int abNumber);
+
+    String selectPhone(int abNumber);
 }

@@ -176,6 +176,12 @@
     <select id="selectGroupName" resultType="java.lang.String">
         select S.GROUPNAME
         from SHELTER S inner join ABANDONEDANIMAL AB
-        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+    </select>
+
+    <select id="selectPhone" resultType="java.lang.String">
+        select S.PHONE
+        from SHELTER S inner join ABANDONEDANIMAL AB
+                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
     </select>
 </mapper>

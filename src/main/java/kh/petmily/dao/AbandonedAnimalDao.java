@@ -107,4 +107,8 @@ public class AbandonedAnimalDao implements BasicDao {
     public String selectGroupName(int abNumber) {
         return mapper.selectGroupName(abNumber);
     }
+
+    public String selectPhone(int abNumber) {
+        return mapper.selectPhone(abNumber);
+    }
 }

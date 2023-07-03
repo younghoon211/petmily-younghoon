@@ -22,11 +22,12 @@ public class AbandonedAnimalDetailForm {
     private String imgPath;
     private Date admissionDate;
     private String groupName;
+    private String phone;
 
     public AbandonedAnimalDetailForm() {
     }
 
-    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName) {
+    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName, String phone) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.age = age;
@@ -42,5 +43,6 @@ public class AbandonedAnimalDetailForm {
         this.imgPath = imgPath;
         this.admissionDate = admissionDate;
         this.groupName = groupName;
+        this.phone = phone;
     }
 }

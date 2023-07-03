@@ -139,7 +139,8 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
                 domain.getAnimalState(),
                 domain.getImgPath(),
                 domain.getAdmissionDate(),
-                getGroupName(domain.getAbNumber()));
+                getGroupName(domain.getAbNumber()),
+                getPhone(domain.getAbNumber()));
     }
 
     @Override
@@ -171,6 +172,11 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     @Override
     public String getGroupName(int abNumber) {
         return abandonedAnimalDao.selectGroupName(abNumber);
+    }
+
+    @Override
+    public String getPhone(int abNumber) {
+        return abandonedAnimalDao.selectPhone(abNumber);
     }
 
     private AbandonedAnimal toAbandonedAnimalWriteForm(AbandonedAnimalWriteForm req) {

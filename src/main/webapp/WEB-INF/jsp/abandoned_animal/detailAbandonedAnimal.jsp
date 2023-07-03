@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -31,6 +32,7 @@
 
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <%@ include file="/WEB-INF/jsp/include/header.jspf" %>
@@ -43,7 +45,8 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>Abandoned Animal - Detail<i class="ion-ios-arrow-forward"></i></span></span>
+                    <span class="mr-2"><span>Abandoned Animal - Detail<i
+                            class="ion-ios-arrow-forward"></i></span></span>
                 </p>
                 <h1 class="mb-0 bread">유기동물 - 상세보기</h1>
             </div>
@@ -55,7 +58,7 @@
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/admin/upload?filename=${detailForm.imgPath}"  style='width: 100%; object-fit: contain'/>
+                <img src="/admin/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
@@ -121,39 +124,25 @@
         <div class="row mb-5 pb-5">
             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                 <div class="d-block services text-center">
-                    <%--                    <div class="icon d-flex align-items-center justify-content-center">--%>
-                    <%--                        <span class="flaticon-blind"></span>--%>
-                    <%--                    </div>--%>
                     <div class="media-body p-4">
                         <h3 class="heading">특이사항</h3>
                         <p>${detailForm.uniqueness}</p>
-                        <%--                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center">--%>
-                        <%--                            <span class="fa fa-chevron-right"></span>--%>
-                        <%--                            <i class="sr-only">Read more</i></a>--%>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                 <div class="d-block services text-center">
-                    <%--                    <div class="icon d-flex align-items-center justify-content-center">--%>
-                    <%--                        <span class="flaticon-dog-eating"></span>--%>
-                    <%--                    </div>--%>
                     <div class="media-body p-4">
                         <h3 class="heading">소개글</h3>
                         <p>${detailForm.description}</p>
-                        <%--                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>--%>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                 <div class="d-block services text-center">
-                    <%--                    <div class="icon d-flex align-items-center justify-content-center">--%>
-                    <%--                        <span class="flaticon-grooming"></span>--%>
-                    <%--                    </div>--%>
                     <div class="media-body p-4">
                         <h3 class="heading">입소 날짜</h3>
                         <p>${detailForm.admissionDate}</p>
-                        <%--                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>--%>
                     </div>
                 </div>
             </div>
@@ -196,9 +185,14 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">봉사하기</h3>
-                        <p>봉사해주세요.</p>
+                        <p>이 동물에게 봉사해주세요!<br><small>(보호중인 동물만 가능)</small></p>
                         <a
-                                href="/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}"
+                                <c:if test="${detailForm.animalState == '보호'}">
+                                    href="/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}"
+                                </c:if>
+                                <c:if test="${detailForm.animalState != '보호'}">
+                                    href=""  id="myLink"
+                                </c:if>
                                 class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read
                             more</i></a>
@@ -208,6 +202,22 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(document).ready(function() {
+        $('#myLink').click(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}',
+                type: 'GET',
+                success: function() {
+                    alert('보호중인 동물에게만 봉사할 수 있습니다.');
+                },
+            });
+        });
+    });
+</script>
 
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
 
