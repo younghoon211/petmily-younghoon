@@ -3,7 +3,6 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalListForm;
-import kh.petmily.domain.pet.Pet;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -82,26 +81,6 @@ public class AbandonedAnimalDao implements BasicDao {
 
     public int selectsNumber(int pk) {
         return mapper.selectsNumber(pk);
-    }
-
-    public int selectPetCount() {
-        return mapper.selectPetCount();
-    }
-
-    public List<Pet> selectPetIndex(int start, int end) {
-        return mapper.selectPetIndex(start, end);
-    }
-
-    public void insertPet(Pet pet) {
-        mapper.insertPet(pet);
-    }
-
-    public void updatePet(Pet pet) {
-        mapper.updatePet(pet);
-    }
-
-    public void deletePet(int cpNumber) {
-        mapper.deletePet(cpNumber);
     }
 
     public String selectGroupName(int abNumber) {

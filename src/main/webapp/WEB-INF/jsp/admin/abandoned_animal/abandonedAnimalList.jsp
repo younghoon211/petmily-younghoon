@@ -46,22 +46,6 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-
-        <c:set var="url" value="${pageContext.request.requestURL}"/>
-        <div style="text-align: center">
-            <input type="radio" id="abandoned" value="abandoned" onclick="selectKind(this.value)"
-            <c:if test="${fn:contains(url, 'abandoned')}">
-                   checked
-            </c:if>>
-            <label for="abandoned">유기동물 관리</label>
-            &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="pet" value="pet" onclick="selectKind(this.value)"
-            <c:if test="${fn:contains(url, 'pet')}">
-                   checked
-            </c:if>>
-            <label for="pet">반려동물 관리</label>
-        </div>
-
         <div class="inner-main-body p-sm-3 collapse forum-content show">
 
             <!-- 목록 출력 -->
@@ -92,9 +76,9 @@
                                     <input type="button" id="detail" class="btn btn-primary" value="상세"
                                            onclick="location.href='/abandoned_animal/detail?abNumber=${abandonedAnimal.abNumber}'">
                                     <input type="button" id="modify" class="btn btn-primary" value="수정"
-                                           onclick="location.href='/admin/animal/abandoned/modify?abNumber=${abandonedAnimal.abNumber}'">
+                                           onclick="location.href='/admin/abandoned_animal/modify?abNumber=${abandonedAnimal.abNumber}'">
                                     <input type="button" id="delete" class="btn btn-primary" value="삭제"
-                                           onclick="location.href='/admin/animal/abandoned/delete?abNumber=${abandonedAnimal.abNumber}'">
+                                           onclick="location.href='/admin/abandoned_animal/delete?abNumber=${abandonedAnimal.abNumber}'">
                                 </td>
                             </tr>
 
@@ -109,7 +93,7 @@
 
             <span class="modal-footer">
 				<button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/animal/abandoned/write'">글쓰기</button>
+                        onclick="location.href='/admin/abandoned_animal/write'">글쓰기</button>
 			</span>
 
             <!-- 페이징 처리 -->
@@ -120,25 +104,25 @@
                         <ul>
                             <li>
                                 <c:if test="${abandonedAnimals.startPage > 5}">
-                                    <a href="/admin/animal/abandoned?pageNo=${abandonedAnimals.startPage - 5}">&lt;</a>
+                                    <a href="/admin/abandoned_animal?pageNo=${abandonedAnimals.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${abandonedAnimals.startPage}"
                                        end="${abandonedAnimals.endPage}">
                                 <c:if test="${abandonedAnimals.currentPage == pNo}">
                                     <li class="active">
-                                        <a href="/admin/animal/abandoned?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/admin/abandoned_animal?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${abandonedAnimals.currentPage != pNo}">
                                     <li>
-                                        <a href="/admin/animal/abandoned?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/admin/abandoned_animal?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${abandonedAnimals.endPage < abandonedAnimals.totalPages}">
-                                    <a href="/admin/animal/abandoned?pageNo=${abandonedAnimals.startPage + 5}">&gt;</a>
+                                    <a href="/admin/abandoned_animal?pageNo=${abandonedAnimals.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </ul>
@@ -150,16 +134,6 @@
 
 </section>
 <!-- 게시판 List 끝 -->
-
-<script>
-    function selectKind(kind) {
-        if (kind == "abandoned") {
-            window.location.href = "/admin/animal/abandoned";
-        } else if (kind == "pet") {
-            window.location.href = "/admin/animal/pet";
-        }
-    }
-</script>
 
 <!-- 풋터 -->
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>

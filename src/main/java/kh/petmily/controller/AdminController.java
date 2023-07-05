@@ -19,18 +19,13 @@ import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.JoinRequest;
 import kh.petmily.domain.member.form.MemberModifyForm;
 import kh.petmily.domain.member.form.MemberPageForm;
-import kh.petmily.domain.pet.Pet;
-import kh.petmily.domain.pet.form.PetForm;
-import kh.petmily.domain.pet.form.PetPageForm;
 import kh.petmily.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -138,36 +133,21 @@ public class AdminController {
         return "/admin/member/deleteMemberSuccess";
     }
 
-    @GetMapping("/animal")
-    public String animalPage() {
-        return "/admin/animal/animalPage";
-    }
-
-    @GetMapping("/animal/abandoned")
+    // =============== 유기동물 관리 시작 ===============
+    @GetMapping("/abandoned_animal")
     public String abandonedAnimalList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo);
         model.addAttribute("abandonedAnimals", abandonedAnimals);
 
-        return "/admin/animal/abandonedAnimalList";
+        return "/admin/abandoned_animal/abandonedAnimalList";
     }
 
-    @GetMapping("/detail")
-    public String detail(@RequestParam("abNumber") int abNumber, Model model) {
-        AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailForm(abNumber);
-        log.info("detailForm = {}", detailForm);
-
-        model.addAttribute("detailForm", detailForm);
-
-        return "/abandoned_animal/detailAbandonedAnimal";
-    }
-
-
-    @GetMapping("/animal/abandoned/write")
+    @GetMapping("/abandoned_animal/write")
     public String adminAbandonedWriteForm() {
-        return "/admin/animal/abandonedAnimalWriteForm";
+        return "/admin/abandoned_animal/abandonedAnimalWriteForm";
     }
 
-    @PostMapping("/animal/abandoned/write")
+    @PostMapping("/abandoned_animal/write")
     public String adminAbandonedWrite(@ModelAttribute AbandonedAnimalWriteForm abandonedAnimalWriteForm, HttpServletRequest request) {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
@@ -190,19 +170,19 @@ public class AdminController {
 
         abandonedAnimalService.write(abandonedAnimalWriteForm);
 
-        return "/admin/animal/abandonedAnimalWriteSuccess";
+        return "/admin/abandoned_animal/abandonedAnimalWriteSuccess";
     }
 
-    @GetMapping("/animal/abandoned/modify")
+    @GetMapping("/abandoned_animal/modify")
     public String adminAbandonedModifyForm(@RequestParam("abNumber") int abNumber, Model model) {
         AbandonedAnimalModifyForm modReq = abandonedAnimalService.getAbandonedModify(abNumber);
 
         model.addAttribute("modReq", modReq);
 
-        return "/admin/animal/abandonedAnimalModifyForm";
+        return "/admin/abandoned_animal/abandonedAnimalModifyForm";
     }
 
-    @PostMapping("/animal/abandoned/modify")
+    @PostMapping("/abandoned_animal/modify")
     public String adminAbandonedModify(@RequestParam("abNumber") int abNumber,
                                        @ModelAttribute AbandonedAnimalModifyForm modReq,
                                        HttpServletRequest request,
@@ -228,17 +208,19 @@ public class AdminController {
 
         log.info("ModifyForm = {}", modReq);
 
-        return "redirect:/admin/animal/abandoned";
+        return "redirect:/admin/abandoned_animal";
     }
 
-    @GetMapping("/animal/abandoned/delete")
+    @GetMapping("/abandoned_animal/delete")
     public String adminAbandonedDelete(@RequestParam("abNumber") int abNumber, RedirectAttributes redirectAttributes) {
         abandonedAnimalService.delete(abNumber);
         redirectAttributes.addAttribute("abNumber", abNumber);
 
-        return "redirect:/admin/animal/abandoned";
+        return "redirect:/admin/abandoned_animal";
     }
+    // =============== 유기동물 관리 끝 ===============
 
+    // =============== 게시판 관리 시작 ===============
     @GetMapping("/board")
     public String boardPage(@RequestParam("kindOfBoard") String kind, @RequestParam(defaultValue = "1") int pageNo, Model model) {
         if (kind.equals("자유")) {
@@ -340,63 +322,19 @@ public class AdminController {
 
         return "redirect:/admin/board?kindOfBoard={kindOfBoard}";
     }
+    // =============== 게시판 관리 끝 ===============
 
-    @GetMapping("/animal/pet")
-    public String petBoard(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        PetPageForm petPage = abandonedAnimalService.getPetPage(pageNo);
-        model.addAttribute("petPage", petPage);
-        return "/admin/animal/petList";
-    }
-
-    @ResponseBody
-    @PostMapping("/animal/pet")
-    public String petBoard(PetForm pet) {
-        try {
-            abandonedAnimalService.savePet(new Pet(pet));
-        } catch (DataIntegrityViolationException e) {
-            e.printStackTrace();
-            return "없는 회원 아이디거나 등록할수없는 종입니다.";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-        return "성공";
-    }
-
-    @ResponseBody
-    @PostMapping("/animal/pet/update")
-    public String petUpdate(PetForm pet) {
-        try {
-            abandonedAnimalService.modifyPet(new Pet(pet));
-        } catch (DataIntegrityViolationException e) {
-            e.printStackTrace();
-            return "등록할수없는 종입니다.";
-        } catch (UncategorizedSQLException e) {
-            e.printStackTrace();
-            return "없는 회원아이디입니다.";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-        return "성공";
-    }
-
-    @GetMapping("/animal/pet/delete/{cpNumber}")
-    public String animalDelete(@PathVariable int cpNumber) {
-        abandonedAnimalService.deletePet(cpNumber);
-        return "redirect:/admin/animal/pet";
-    }
 
     // 입양/임보 관리 메인 페이지
     @GetMapping("/adopt_temp")
     public String adoptTempTotalList() {
-        return "/admin/adoptTemp/adoptTempTotalList";
+        return "/admin/adopt_temp/adoptTempTotalList";
     }
 
     // 입양/임보 대기 선택 페이지
     @GetMapping("/adopt_temp/wait")
     public String adoptTempWaitList() {
-        return "/admin/adoptTemp/adoptTempWaitList";
+        return "/admin/adopt_temp/adoptTempWaitList";
     }
 
     // 입양 대기 페이지
@@ -408,7 +346,7 @@ public class AdminController {
         AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adoptTemp/waitAdoptDetail";
+        return "/admin/adopt_temp/waitAdoptDetail";
     }
 
     // 입양 승인 버튼
@@ -417,7 +355,7 @@ public class AdminController {
 
         adoptTempService.adoptApprove(adNumber);
 
-        return "/admin/adoptTemp/adoptSuccess";
+        return "/admin/adopt_temp/adoptSuccess";
     }
 
     // 입양 거절 버튼
@@ -426,7 +364,7 @@ public class AdminController {
 
         adoptTempService.adoptRefuse(adNumber);
 
-        return "/admin/adoptTemp/adoptRefuse";
+        return "/admin/adopt_temp/adoptRefuse";
     }
 
     // 임보 대기 페이지
@@ -438,7 +376,7 @@ public class AdminController {
         TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
         model.addAttribute("temp", temp);
 
-        return "/admin/adoptTemp/waitTempPetDetail";
+        return "/admin/adopt_temp/waitTempPetDetail";
     }
 
     // 임보 승인 버튼
@@ -447,7 +385,7 @@ public class AdminController {
 
         adoptTempService.tempApprove(tNumber);
 
-        return "/admin/adoptTemp/tempSuccess";
+        return "/admin/adopt_temp/tempSuccess";
     }
 
     // 임보 거절 버튼
@@ -456,13 +394,13 @@ public class AdminController {
 
         adoptTempService.tempRefuse(tNumber);
 
-        return "/admin/adoptTemp/tempRefuse";
+        return "/admin/adopt_temp/tempRefuse";
     }
 
     // 입양/임보 완료 선택 페이지
     @GetMapping("/adopt_temp/complete")
     public String adoptTempCompleteList() {
-        return "/admin/adoptTemp/adoptTempCompleteList";
+        return "/admin/adopt_temp/adoptTempCompleteList";
     }
 
     // 입양 완료된 리스트
@@ -474,7 +412,7 @@ public class AdminController {
         AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adoptTemp/completeAdoptDetail";
+        return "/admin/adopt_temp/completeAdoptDetail";
     }
 
     // 임보 완료된 리스트
@@ -486,13 +424,13 @@ public class AdminController {
         TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
         model.addAttribute("temp", temp);
 
-        return "/admin/adoptTemp/completeTempPetDetail";
+        return "/admin/adopt_temp/completeTempPetDetail";
     }
 
     // 입양/임보 거절 선택 페이지
     @GetMapping("/adopt_temp/refuse")
     public String adoptTempRefuseList() {
-        return "/admin/adoptTemp/adoptTempRefuseList";
+        return "/admin/adopt_temp/adoptTempRefuseList";
     }
 
     // 입양 거절된 리스트
@@ -504,7 +442,7 @@ public class AdminController {
         AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adoptTemp/refuseAdoptDetail";
+        return "/admin/adopt_temp/refuseAdoptDetail";
     }
 
     // 임보 거절된 리스트
@@ -516,7 +454,7 @@ public class AdminController {
         TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
         model.addAttribute("temp", temp);
 
-        return "/admin/adoptTemp/refuseTempPetDetail";
+        return "/admin/adopt_temp/refuseTempPetDetail";
     }
 
     @GetMapping("/donation")

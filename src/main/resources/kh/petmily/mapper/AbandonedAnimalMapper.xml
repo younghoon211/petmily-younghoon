@@ -140,39 +140,6 @@
     </select>
 
 
-    <select id="selectPetCount" resultType="int">
-        select count(*)
-        from Pet
-    </select>
-
-    <select id="selectPetIndex" resultType="kh.petmily.domain.pet.Pet">
-        select *
-        from (select ROWNUM as NUM, a.*
-              FROM (select p.*,m.Id as userId from Pet p left join MEMBER m on p.MNUMBER=m.MNUMBER order by CPNUMBER DESC) a)
-        where NUM between #{start} and #{end}
-    </select>
-
-    <insert id="insertPet">
-        insert into Pet(MNUMBER, NAME, SPECIES, KIND, GENDER)
-        values ((select  m.MNUMBER from MEMBER m where m.ID=#{userId}), #{name}, #{species}, #{kind}, #{gender})
-    </insert>
-
-    <update id="updatePet">
-        update Pet
-        set MNUMBER =(select  m.MNUMBER from MEMBER m where m.ID=#{userId}),
-            NAME=#{name},
-            SPECIES=#{species},
-            KIND=#{kind},
-            GENDER=#{gender}
-        where CPNUMBER = #{cpNumber}
-    </update>
-
-    <delete id="deletePet">
-        delete
-        from pet
-        where CPNUMBER = #{cpNumber}
-    </delete>
-
     <select id="selectGroupName" resultType="java.lang.String">
         select S.GROUPNAME
         from SHELTER S inner join ABANDONEDANIMAL AB

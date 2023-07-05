@@ -1,7 +1,6 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.pet.Pet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,8 +18,8 @@ public interface AbandonedAnimalMapper {
     void update(AbandonedAnimal abandonedAnimal);
 
     void delete(int pk);
+    // =======BasicMapper 메소드 끝=======
 
-    // =======BasicMapper 메소드=======
     int selectCountWithCondition(@Param("species") String species, @Param("gender") String gender, @Param("animalState") String animalState, @Param("keyword") String keyword);
 
     List<AbandonedAnimal> selectIndex(@Param("start") int start, @Param("end") int end);
@@ -33,18 +32,8 @@ public interface AbandonedAnimalMapper {
 
     int selectsNumber(int pk);
 
-    List<Pet> selectPetIndex(@Param("start") int start, @Param("end") int end);
-
-    int selectPetCount();
-
     @Select("select count(*) from ABANDONEDANIMAL ")
     int selectCount();
-
-    void insertPet(Pet pet);
-
-    void updatePet(Pet pet);
-
-    void deletePet(int cpNumber);
 
     String selectGroupName(int abNumber);
 

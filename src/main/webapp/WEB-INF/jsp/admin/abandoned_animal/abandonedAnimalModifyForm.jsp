@@ -48,7 +48,7 @@
 
                 <!-- 폼 시작 -->
 
-                <form class="form" name="enq" method="post" action="/admin/animal/abandoned/modify?abNumber=${modReq.abNumber}" enctype='multipart/form-data'>
+                <form class="form" name="enq" method="post" action="/admin/abandoned_animal/modify?abNumber=${modReq.abNumber}" enctype='multipart/form-data'>
                     <div class="modal-body">
 
                         <div class="row justify-content-start">

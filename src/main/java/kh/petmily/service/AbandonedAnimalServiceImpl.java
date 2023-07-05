@@ -3,8 +3,6 @@ package kh.petmily.service;
 import kh.petmily.dao.AbandonedAnimalDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
-import kh.petmily.domain.pet.Pet;
-import kh.petmily.domain.pet.form.PetPageForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -78,14 +76,6 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     }
 
     @Override
-    public PetPageForm getPetPage(int pageNo) {
-        int total = abandonedAnimalDao.selectPetCount();
-        List<Pet> content = abandonedAnimalDao.selectPetIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
-        System.out.println("content = " + content);
-        return new PetPageForm(total, pageNo, size, content);
-    }
-
-    @Override
     public String findName(int abNumber) {
         return abandonedAnimalDao.selectName(abNumber);
     }
@@ -98,21 +88,6 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     @Override
     public List<AbandonedAnimal> selectAll() {
         return abandonedAnimalDao.selectAll();
-    }
-
-    @Override
-    public void savePet(Pet pet) {
-        abandonedAnimalDao.insertPet(pet);
-    }
-
-    @Override
-    public void modifyPet(Pet pet) {
-        abandonedAnimalDao.updatePet(pet);
-    }
-
-    @Override
-    public void deletePet(int cpNumber) {
-        abandonedAnimalDao.deletePet(cpNumber);
     }
 
     @Override
