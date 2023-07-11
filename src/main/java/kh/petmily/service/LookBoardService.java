@@ -12,31 +12,31 @@ import java.io.IOException;
 
 public interface LookBoardService {
 
-    public void write(LookBoardWriteForm lwForm);
+    void write(LookBoardWriteForm lwForm);
 
-    public void modify(LookBoardModifyForm lmForm);
+    void modify(LookBoardModifyForm lmForm);
 
-    public void delete(int laNumber);
+    void delete(int laNumber);
 
-    public LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword, String sort);
+    LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword, String sort);
 
-    public LookBoardPageForm getAdminLookPage(int pageNo);
+    LookBoardPageForm getAdminLookPage(int pageNo);
 
-    public LookBoardDetailForm getDetailForm(int laNumber);
+    LookBoardDetailForm getDetailForm(int laNumber);
 
-    public LookBoardModifyForm getModifyForm(int laNumber);
+    LookBoardModifyForm getModifyForm(int laNumber);
 
-    public String findLookBoardName(int laNumber);
+    String findLookBoardName(int laNumber);
 
-    public String findMemberName(int mNumber);
+    String findMemberName(int mNumber);
 
-    public int updateViewCount(int laNumber);
+    int updateViewCount(int laNumber);
 
-    public LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard);
+    LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard);
 
-    public String storeFile(MultipartFile file, String filePath) throws IOException;
+    String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    public LookBoard getLookBoard(int laNumber);
+    LookBoard getLookBoard(int laNumber);
 
-    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type);
+    LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type);
 }

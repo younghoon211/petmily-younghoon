@@ -10,27 +10,27 @@ import java.io.IOException;
 
 public interface AdoptReviewService {
 
-    public AdoptReviewPageForm getAdoptReviewPage(int pbNumber, String kindOfBoard, String searchType, String keyword, String sort);
+    AdoptReviewPageForm getAdoptReviewPage(int pbNumber, String kindOfBoard, String searchType, String keyword, String sort);
 
-    public AdoptReviewPageForm getAdminAdoptReviewPage(String kindOfBoard, int pageNo);
+    AdoptReviewPageForm getAdminAdoptReviewPage(String kindOfBoard, int pageNo);
 
-    public AdoptReviewListForm getAdoptReview(int bNumber);
+    AdoptReviewListForm getAdoptReview(int bNumber);
 
-    public void write(AdoptReviewWriteForm adoptReviewWriteForm);
+    void write(AdoptReviewWriteForm adoptReviewWriteForm);
 
-    public AdoptReviewModifyForm getAdoptReviewModify(int bNumber);
+    AdoptReviewModifyForm getAdoptReviewModify(int bNumber);
 
-    public void modify(AdoptReviewModifyForm modReq);
+    void modify(AdoptReviewModifyForm modReq);
 
-    public void delete(int bNumber);
+    void delete(int bNumber);
 
-    public String boardName(int bNumber);
+    String boardName(int bNumber);
 
-    public int updateViewCount(int bNumber);
+    int updateViewCount(int bNumber);
 
-    public String storeFile(MultipartFile file, String filePath) throws IOException;
+    String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    public String findName(int mNumber);
+    String findName(int mNumber);
 
-    public AdoptReviewPageForm getAdoptReviewMyPost(int pageNo, int mNumber, String kindOfBoard);
+    AdoptReviewPageForm getAdoptReviewMyPost(int pageNo, int mNumber, String kindOfBoard);
 }

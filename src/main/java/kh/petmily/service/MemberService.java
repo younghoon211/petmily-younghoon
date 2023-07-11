@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface MemberService {
 
-    public void join(JoinRequest joinReq);
+    void join(JoinRequest joinReq);
 
-    public Member login(String id, String pw);
+    Member login(String id, String pw);
 
-    public void withdraw(int mNumber);
+    void withdraw(int mNumber);
 
-    public boolean checkPwCorrect(int mNumber, String pw);
+    boolean checkPwCorrect(int mNumber, String pw);
 
     Member modify(Member member, MemberChangeForm memberChangeForm);
 
@@ -21,25 +21,25 @@ public interface MemberService {
 
     List<Member> selectAll();
 
-    public boolean isPwEqualToConfirm(String pw, String confirmPw);
+    boolean isPwEqualToConfirm(String pw, String confirmPw);
 
-    public MemberPageForm getMemberPage(int pageNo);
+    MemberPageForm getMemberPage(int pageNo);
 
-    public MemberModifyForm getMemberModify(int mNumber);
+    MemberModifyForm getMemberModify(int mNumber);
 
-    public void delete(int mNumber);
+    void delete(int mNumber);
 
-    public void create(MemberCreateForm memberCreateForm);
+    void create(MemberCreateForm memberCreateForm);
 
-    public void modify(MemberModifyForm memberModifyForm);
+    void modify(MemberModifyForm memberModifyForm);
 
-    public boolean checkDuplicatedId(String id);
+    boolean checkDuplicatedId(String id);
 
-    public boolean checkDuplicatedEmail(String email);
+    boolean checkDuplicatedEmail(String email);
 
-    public boolean checkDuplicatedPhone(String phone);
+    boolean checkDuplicatedPhone(String phone);
 
-    public boolean checkDuplicatedPhoneMemberChange(MemberChangeForm memberChangeForm);
+    boolean checkDuplicatedPhoneMemberChange(MemberChangeForm memberChangeForm);
 
-    public boolean checkDuplicatedEmailMemberChange(String email, String id);
+    boolean checkDuplicatedEmailMemberChange(String email, String id);
 }

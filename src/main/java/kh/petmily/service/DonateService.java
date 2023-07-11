@@ -8,17 +8,17 @@ import kh.petmily.domain.donation.form.DonationPageForm;
 
 public interface DonateService {
 
-    public DonationPageForm getDonationPage(int pageNo);
+    DonationPageForm getDonationPage(int pageNo);
 
-    public DonationDetailForm getDonation(int dNumber);
+    DonationDetailForm getDonation(int dNumber);
 
-    public DonationModifyForm getDonationModify(int dNumber);
+    DonationModifyForm getDonationModify(int dNumber);
 
-    public void create(DonationCreateForm donationCreateForm);
+    void create(DonationCreateForm donationCreateForm);
 
-    public void modify(DonationModifyForm donationModifyForm);
+    void modify(DonationModifyForm donationModifyForm);
 
-    public void delete(int dNumber);
+    void delete(int dNumber);
 
-    public void donate(DonateSubmitForm donateSubmitForm);
+    void donate(DonateSubmitForm donateSubmitForm);
 }
