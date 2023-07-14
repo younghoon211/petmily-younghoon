@@ -63,14 +63,11 @@
         <div class="card mb-2">
             <div class="card-body">
                 <div class="media forum-item">
-
-                    <!-- content title, name, wrTime, checkPublic -->
-<%--                    <a href="javascript:void(0)">--%>
                     <div class="media-body ml-3">
                         <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
                         <h6 class="mt-1"></h6><br>
                         <small>${detailForm.name}</small>
-                        <small style="float: right">${detailForm.wrTime} </small>
+                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
 
                         <c:if test="${param.kindOfBoard eq '문의'}">
                             <c:if test="${detailForm.checkPublic eq 'Y'}">

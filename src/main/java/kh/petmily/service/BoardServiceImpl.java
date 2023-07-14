@@ -45,21 +45,17 @@ public class BoardServiceImpl implements BoardService {
     public BoardDetailForm getBoard(int bNumber) {
         Board board = boardDao.findByPk(bNumber);
         String memberName = memberDao.selectName(board.getMNumber());
-        board.setName(memberName);
 
         return new BoardDetailForm(
                 board.getBNumber(),
                 board.getMNumber(),
-                board.getName(),
+                memberName,
                 board.getKindOfBoard(),
                 board.getTitle(),
                 board.getContent(),
                 board.getWrTime(),
                 board.getCheckPublic(),
-                board.getViewCount(),
-                board.getCondition(),
-                board.getKeyword(),
-                board.getSort()
+                board.getViewCount()
         );
     }
 

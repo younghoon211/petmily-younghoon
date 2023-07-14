@@ -15,11 +15,8 @@ public class BoardDetailForm {
     private Date wrTime;
     private String checkPublic;
     private int viewCount;
-    private String condition;
-    private String keyword;
-    private String sort;
 
-    public BoardDetailForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, String condition, String keyword, String sort) {
+    public BoardDetailForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.name = name;
@@ -29,8 +26,5 @@ public class BoardDetailForm {
         this.wrTime = wrTime;
         this.checkPublic = checkPublic;
         this.viewCount = viewCount;
-        this.condition = condition;
-        this.keyword = keyword;
-        this.sort = sort;
     }
 }

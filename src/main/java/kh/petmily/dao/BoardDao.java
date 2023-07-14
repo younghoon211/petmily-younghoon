@@ -81,7 +81,7 @@ public class BoardDao implements BasicDao {
         List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {
-            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), b.getCondition(), b.getKeyword(), b.getSort(), selectReplyCount(b.getBNumber()));
+            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
             boardListForm.add(bd);
         }
 
