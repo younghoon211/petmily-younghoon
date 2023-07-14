@@ -13,7 +13,7 @@ public class AdoptDetailForm {
     private String residence;
     private String maritalStatus;
     private String job;
-    private String status = "처리중";
+    private String status;
     private String animalName;
     private String memberName;
     private String memberId;
@@ -29,5 +29,15 @@ public class AdoptDetailForm {
         this.animalName = animalName;
         this.memberName = memberName;
         this.memberId = memberId;
+    }
+
+    public AdoptDetailForm(int adNumber, int mNumber, int abNumber, String residence, String maritalStatus, String job, String status) {
+        this.adNumber = adNumber;
+        this.mNumber = mNumber;
+        this.abNumber = abNumber;
+        this.residence = residence;
+        this.maritalStatus = maritalStatus;
+        this.job = job;
+        this.status = status;
     }
 }

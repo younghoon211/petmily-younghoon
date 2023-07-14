@@ -5,16 +5,15 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TempPageForm {
-
+public class MypageAdoptPageForm {
     private int total;
     private int currentPage;
-    private List<TempDetailForm> content;
+    private List<MypageAdoptListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public TempPageForm(int total, int currentPage, int size, List<TempDetailForm> content) {
+    public MypageAdoptPageForm(int total, int currentPage, int size, List<MypageAdoptListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;
@@ -25,47 +24,19 @@ public class TempPageForm {
             endPage = 0;
         } else {
             totalPages = total / size;
+
             if (total % size > 0) {
                 totalPages++;
             }
+
             int modVal = currentPage % 5;
             startPage = currentPage / 5 * 5 + 1;
+
             if (modVal == 0) startPage -= 5;
 
             endPage = startPage + 4;
+
             if (endPage > totalPages) endPage = totalPages;
         }
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public boolean hasNoAnimals() {
-        return total == 0;
-    }
-
-    public boolean hasAnimals() {
-        return total > 0;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public List<TempDetailForm> getContent() {
-        return content;
-    }
-
-    public int getStartPage() {
-        return startPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
     }
 }

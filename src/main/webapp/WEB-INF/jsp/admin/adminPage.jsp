@@ -78,8 +78,19 @@
                             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
-                                        <h3 class="heading">입양/임보 관리</h3>
-                                        <a href="/admin/adopt_temp"
+                                        <h3 class="heading">입양 관리</h3>
+                                        <a href="/admin/adopt"
+                                           class="btn-custom d-flex align-items-center justify-content-center">
+                                            <span class="fa fa-chevron-right"></span>
+                                            <i class="sr-only">Read more</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                                <div class="d-block services text-center">
+                                    <div class="media-body p-4">
+                                        <h3 class="heading">임시보호 관리</h3>
+                                        <a href="/admin/temp"
                                            class="btn-custom d-flex align-items-center justify-content-center">
                                             <span class="fa fa-chevron-right"></span>
                                             <i class="sr-only">Read more</i></a>

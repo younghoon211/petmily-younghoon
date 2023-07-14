@@ -1,10 +1,11 @@
 package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
-import kh.petmily.domain.adopt.form.AdoptTempListForm;
-import kh.petmily.domain.adopt.form.TempDetailForm;
+import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
+import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
-import kh.petmily.domain.temp.form.TempMemberApplyListForm;
+import kh.petmily.domain.temp.form.MypageTempListForm;
+import kh.petmily.domain.temp.form.TempDetailForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.MemberMapper;
 import kh.petmily.mapper.TempMapper;
@@ -42,77 +43,69 @@ public class TempDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount(int mNumber) {
-        return mapper.selectCountBymNumber(mNumber);
-    }
-
-    public List<TempMemberApplyListForm> selectIndex(int start, int end, int mNumber) {
-        List<TempPet> list = mapper.selectIndexBymNumber(start, end, mNumber);
-        List<TempMemberApplyListForm> maList = new ArrayList<>();
-
-        for (TempPet t : list) {
-            TempMemberApplyListForm ma = new TempMemberApplyListForm(t.getTNumber(), getAbNameByAbNumber(t.getAbNumber()), t.getStatus());
-            maList.add(ma);
-        }
-
-        return maList;
-    }
-
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
     public int selectCount() {
         return mapper.selectCount();
     }
 
+    public int selectCount(int mNumber) {
+        return mapper.selectCountBymNumber(mNumber);
+    }
+
+    public List<TempDetailForm> selectIndex(int start, int end) {
+        List<TempDetailForm> result = new ArrayList<>();
+        List<TempPet> tempList = mapper.selectIndex(start, end);
+
+        for (TempPet l : tempList) {
+            TempDetailForm li = new TempDetailForm(
+                    l.getTNumber(), l.getAbNumber(), l.getMNumber(), l.getTempDate(), l.getTempPeriod(),
+                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+            );
+
+            result.add(li);
+        }
+
+        return result;
+    }
+
+    public List<MypageTempListForm> selectIndex(int start, int end, int mNumber) {
+        List<MypageTempListForm> result = new ArrayList<>();
+        List<TempPet> list = mapper.selectIndexBymNumber(start, end, mNumber);
+
+        for (TempPet t : list) {
+            MypageTempListForm ma = new MypageTempListForm(t.getTNumber(), getAbNameByAbNumber(t.getAbNumber()), t.getStatus());
+            result.add(ma);
+        }
+
+        return result;
+    }
+
     public List<TempDetailForm> selectIndex(int start, int end, String status) {
+        List<TempDetailForm> result = new ArrayList<>();
+        List<TempPet> tempList = mapper.selectIndexByStatus(start, end, status);
 
-        List<TempDetailForm> temps = new ArrayList<>();
-        List<AdoptTempListForm> tempList = mapper.selectIndexByStatus(start, end, status);
-
-        for (AdoptTempListForm l : tempList) {
+        for (TempPet l : tempList) {
             TempDetailForm li = new TempDetailForm(
-                    l.getTNumber(), l.getMNumber(), l.getAbNumber(),
+                    l.getTNumber(), l.getMNumber(), l.getAbNumber(), l.getTempDate(), l.getTempPeriod(),
                     l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
                     selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
             );
 
-            temps.add(li);
+            result.add(li);
         }
-        return temps;
+        return result;
     }
 
-    public List<TempDetailForm> tempApprove(int pk) {
-        List<TempDetailForm> temps = new ArrayList<>();
-        List<AdoptTempListForm> tempList = mapper.tempApprove(pk);
-
-        for (AdoptTempListForm l : tempList) {
-            TempDetailForm li = new TempDetailForm(
-                    l.getTNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
-            );
-
-            temps.add(li);
-        }
-        return temps;
+    public void tempApprove(int pk) {
+        mapper.tempApprove(pk);
     }
 
-    public List<TempDetailForm> tempRefuse(int pk) {
-        List<TempDetailForm> temps = new ArrayList<>();
-        List<AdoptTempListForm> tempList = mapper.tempRefuse(pk);
+    public void tempRefuse(int pk) {
+        mapper.tempRefuse(pk);
+    }
 
-        for (AdoptTempListForm l : tempList) {
-            TempDetailForm li = new TempDetailForm(
-                    l.getTNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
-            );
-
-            temps.add(li);
-        }
-        return temps;
+    private String getAbNameByAbNumber(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
     }
 
     public String selectAnimalName(int abNumber) {
@@ -127,4 +120,23 @@ public class TempDao implements BasicDao {
         return memberMapper.selectMemberId(mNumber);
     }
 
+    public void updateStatusToTemp() {
+        mapper.updateStatusToTemp();
+    }
+
+    public List<Member> selectAllMember() {
+        return memberMapper.selectAll();
+    }
+
+    public List<AbandonedAnimal> selectAllExcludeTempStatus() {
+        return mapper.selectAllExcludeTempStatus();
+    }
+
+    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
+        return abandonedAnimalMapper.selectAll();
+    }
+
+    public void adminInsert(DomainObj obj) {
+        mapper.adminInsert((TempPet) obj);
+    }
 }

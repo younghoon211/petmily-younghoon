@@ -12,8 +12,8 @@
     </select>
 
     <insert id="insert">
-        insert into ADOPT(MNUMBER, ABNUMBER, RESIDENCE, MARITALSTATUS, JOB)
-        values (#{mNumber}, #{abNumber}, #{residence}, #{maritalStatus}, #{job})
+        insert into ADOPT(MNUMBER, ABNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
+        values (#{mNumber}, #{abNumber}, #{residence}, #{maritalStatus}, #{job}, '처리중')
     </insert>
 
     <update id="update">
@@ -33,63 +33,17 @@
         from ADOPT
     </select>
 
-    <select id="adoptApprove" resultType="kh.petmily.domain.adopt.form.AdoptTempListForm">
-        {call
-            declare
-            begin
-
-            insert into PET (MNUMBER, NAME, SPECIES, KIND, GENDER)
-            values(
-            (select AD.MNUMBER
-                from ADOPT AD join ABANDONEDANIMAL AB
-                on AD.ABNUMBER = AB.ABNUMBER
-                    where AD.ADNUMBER = #{pk}),
-            (select AB.NAME
-                from ADOPT AD join ABANDONEDANIMAL AB
-                on AD.ABNUMBER = AB.ABNUMBER
-                    where AD.ADNUMBER = #{pk}),
-            (select AB.SPECIES
-                from ADOPT AD join ABANDONEDANIMAL AB
-                on AD.ABNUMBER = AB.ABNUMBER
-                    where AD.ADNUMBER = #{pk}),
-            (select AB.KIND
-                from ADOPT AD join ABANDONEDANIMAL AB
-                on AD.ABNUMBER = AB.ABNUMBER
-                    where AD.ADNUMBER = #{pk}),
-            (select AB.GENDER
-                from ADOPT AD join ABANDONEDANIMAL AB
-                on AD.ABNUMBER = AB.ABNUMBER
-                    where AD.ADNUMBER = #{pk})
-            );
-
-            update ADOPT set STATUS = '완료' where STATUS = '처리중'
-            and ABNUMBER = (select AD.ABNUMBER
-            from ADOPT AD join ABANDONEDANIMAL AB
-            on AB.ABNUMBER = AD.ABNUMBER
-                where AD.ADNUMBER = #{pk});
-
-            update ABANDONEDANIMAL set ANIMALSTATE = '입양' where ANIMALSTATE = '보호'
-            and ABNUMBER = (select AB.ABNUMBER
-            from ADOPT AD join ABANDONEDANIMAL AB
-            on AB.ABNUMBER = AD.ABNUMBER
-                where AD.ADNUMBER = #{pk});
-
-            end
-        }
-    </select>
-
-    <select id="adoptRefuse" resultType="kh.petmily.domain.adopt.form.AdoptTempListForm">
-              update ADOPT set STATUS = '거절' where STATUS = '처리중'
-              and ABNUMBER = (select AD.ABNUMBER
-              from ADOPT AD join ABANDONEDANIMAL AB
-              on AB.ABNUMBER = AD.ABNUMBER
-              where AD.ADNUMBER = #{pk})
-    </select>
-
-    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+    <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from ADOPT
         where MNUMBER = #{mNumber}
+    </select>
+
+    <select id="selectIndex" resultType="kh.petmily.domain.adopt.Adopt">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from ADOPT order by ADNUMBER DESC) A)
+        where NUM between #{start} and #{end}
     </select>
 
     <select id="selectIndexBymNumber" resultType="kh.petmily.domain.adopt.Adopt">
@@ -99,10 +53,58 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectIndexByStatus" resultType="kh.petmily.domain.adopt.form.AdoptTempListForm">
+    <select id="selectIndexByStatus" resultType="kh.petmily.domain.adopt.Adopt">
         select *
         from (select ROWNUM as NUM, A.*
               from (select * from ADOPT order by ADNUMBER DESC) A)
         where (NUM between #{start} and #{end}) and status = #{status}
     </select>
+
+    <select id="adoptApprove">
+        {call
+            declare
+            begin
+
+            update ADOPT set STATUS = '완료' where STATUS = '처리중'
+            and ABNUMBER = (select AD.ABNUMBER
+            from ADOPT AD join ABANDONEDANIMAL AB
+            on AB.ABNUMBER = AD.ABNUMBER
+                where AD.ADNUMBER = #{pk});
+
+            update ABANDONEDANIMAL set ANIMALSTATE = '입양'
+            where ABNUMBER in (select AD.ABNUMBER
+            from ADOPT AD join ABANDONEDANIMAL AB
+            on AD.ABNUMBER = AB.ABNUMBER
+                where AD.ADNUMBER = #{pk});
+
+            end
+            }
+    </select>
+
+    <select id="adoptRefuse">
+        update ADOPT set STATUS = '거절' where STATUS = '처리중'
+                                         and ABNUMBER = (select AD.ABNUMBER
+                                                         from ADOPT AD join ABANDONEDANIMAL AB
+                                                                            on AB.ABNUMBER = AD.ABNUMBER
+                                                         where AD.ADNUMBER = #{pk})
+    </select>
+
+    <select id="selectAllExcludeAdoptStatus" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select *
+        from ABANDONEDANIMAL
+        where ABNUMBER
+        not in (select ABNUMBER from ADOPT where STATUS in ('완료', '처리중'))
+        order by ABNUMBER
+    </select>
+
+    <insert id="adminInsert">
+        insert into ADOPT(MNUMBER, ABNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
+        values (#{mNumber}, #{abNumber}, #{residence}, #{maritalStatus}, #{job}, #{status})
+    </insert>
+
+    <update id="updateStatusToAdopt">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '입양'
+        where ABNUMBER in (select ABNUMBER from ADOPT where STATUS = '완료')
+    </update>
 </mapper>

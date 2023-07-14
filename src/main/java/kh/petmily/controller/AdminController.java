@@ -1,12 +1,15 @@
 package kh.petmily.controller;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalDetailForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalModifyForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalWriteForm;
+import kh.petmily.domain.adopt.Adopt;
+import kh.petmily.domain.adopt.form.AdminAdoptForm;
 import kh.petmily.domain.adopt.form.AdoptPageForm;
-import kh.petmily.domain.adopt.form.TempPageForm;
+import kh.petmily.domain.temp.TempPet;
+import kh.petmily.domain.temp.form.AdminTempForm;
+import kh.petmily.domain.temp.form.TempPageForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
 import kh.petmily.domain.board.form.BoardModifyForm;
 import kh.petmily.domain.donation.form.DonationCreateForm;
@@ -52,32 +55,13 @@ public class AdminController {
     private final AbandonedAnimalService abandonedAnimalService;
     private final AdoptTempService adoptTempService;
 
-    @ResponseBody
-    @GetMapping("/upload")
-    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
-
-        String fullPath = request.getSession().getServletContext().getRealPath("/");
-        fullPath = fullPath + "resources/upload/";
-        fullPath = fullPath + filename;
-
-        log.info("fullPath = {} ", fullPath);
-
-        try {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
-                    .body(new UrlResource("file:" + fullPath));
-        } catch (MalformedURLException e) {
-            log.info("fullPath = {} ", fullPath);
-
-            throw new RuntimeException(e);
-        }
-    }
-
+    // 관리자 메인 페이지
     @GetMapping
     public String adminPage() {
         return "/admin/adminPage";
     }
 
+    // =============== 회원정보 관리 ===============
     // 회원 리스트
     @GetMapping("/member")
     public String memberPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
@@ -103,7 +87,7 @@ public class AdminController {
         return "/admin/member/insertSuccess";
     }
 
-    // 회원 정보 수정(modify)
+    // 회원 정보 수정(update)
     @GetMapping("/member/modify")
     public String memberDetailModify(@RequestParam("mNumber") int mNumber, Model model) {
         MemberModifyForm memberModifyForm = memberService.getMemberModify(mNumber);
@@ -133,7 +117,8 @@ public class AdminController {
         return "/admin/member/deleteMemberSuccess";
     }
 
-    // =============== 유기동물 관리 시작 ===============
+    // =============== 유기동물 관리 ===============
+    // 유기동물 리스트
     @GetMapping("/abandoned_animal")
     public String abandonedAnimalList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo);
@@ -142,6 +127,7 @@ public class AdminController {
         return "/admin/abandoned_animal/abandonedAnimalList";
     }
 
+    // 유기동물 정보 추가(insert)
     @GetMapping("/abandoned_animal/write")
     public String adminAbandonedWriteForm() {
         return "/admin/abandoned_animal/abandonedAnimalWriteForm";
@@ -173,6 +159,7 @@ public class AdminController {
         return "/admin/abandoned_animal/abandonedAnimalWriteSuccess";
     }
 
+    // 유기동물 정보 수정(update)
     @GetMapping("/abandoned_animal/modify")
     public String adminAbandonedModifyForm(@RequestParam("abNumber") int abNumber, Model model) {
         AbandonedAnimalModifyForm modReq = abandonedAnimalService.getAbandonedModify(abNumber);
@@ -211,6 +198,7 @@ public class AdminController {
         return "redirect:/admin/abandoned_animal";
     }
 
+    // 유기동물 정보 삭제(delete)
     @GetMapping("/abandoned_animal/delete")
     public String adminAbandonedDelete(@RequestParam("abNumber") int abNumber, RedirectAttributes redirectAttributes) {
         abandonedAnimalService.delete(abNumber);
@@ -218,9 +206,9 @@ public class AdminController {
 
         return "redirect:/admin/abandoned_animal";
     }
-    // =============== 유기동물 관리 끝 ===============
 
-    // =============== 게시판 관리 시작 ===============
+    // =============== 게시판 관리 ===============
+    // 게시판 리스트
     @GetMapping("/board")
     public String boardPage(@RequestParam("kindOfBoard") String kind, @RequestParam(defaultValue = "1") int pageNo, Model model) {
         if (kind.equals("자유")) {
@@ -238,27 +226,26 @@ public class AdminController {
         return "/admin/board/adminBoardList";
     }
 
+    // 게시판 글 추가(insert)
     @GetMapping("/board/write")
     public String boardWrite(@RequestParam("kindOfBoard") String kind, Model model) {
         List<Member> list = memberService.selectAll();
         model.addAttribute("Mems", list);
 
         if (kind.equals("자유") || kind.equals("문의")) {
-
             return "/board/writeBoardForm";
         } else if (kind.equals("입양후기")) {
-
             return "/adopt_review/writeAdoptReviewForm";
         } else if (kind.equals("find")) {
-
             return "/find_board/writeFindBoardForm";
         } else if (kind.equals("look")) {
-
             return "/look_board/writeLookBoardForm";
         }
+
         return null;
     }
 
+    // 게시판 글 수정(update)
     @GetMapping("/board/modify")
     public String boardModify(@RequestParam("kindOfBoard") String kind, @RequestParam("pk") int pk, Model model) {
         if (kind.equals("자유") || kind.equals("문의")) {
@@ -306,6 +293,7 @@ public class AdminController {
         return null;
     }
 
+    // 게시판 글 삭제(delete)
     @GetMapping("/board/delete")
     public String boardDelete(@RequestParam("kindOfBoard") String kind, @RequestParam("pk") int pk, RedirectAttributes redirectAttributes) {
         if (kind.equals("자유") || kind.equals("문의")) {
@@ -322,141 +310,234 @@ public class AdminController {
 
         return "redirect:/admin/board?kindOfBoard={kindOfBoard}";
     }
-    // =============== 게시판 관리 끝 ===============
 
-
-    // 입양/임보 관리 메인 페이지
-    @GetMapping("/adopt_temp")
-    public String adoptTempTotalList() {
-        return "/admin/adopt_temp/adoptTempTotalList";
-    }
-
-    // 입양/임보 대기 선택 페이지
-    @GetMapping("/adopt_temp/wait")
-    public String adoptTempWaitList() {
-        return "/admin/adopt_temp/adoptTempWaitList";
-    }
-
-    // 입양 대기 페이지
-    @GetMapping("/adopt_temp/wait/adopt")
-    public String waitAdoptDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                  @RequestParam(defaultValue = "처리중") String status,
-                                  Model model) {
-
-        AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
+    // =============== 입양 정보 관리 ===============
+    // 입양 리스트
+    @GetMapping("/adopt")
+    public String adoptList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
+        AdoptPageForm adopt = adoptTempService.getAdminAdoptListPage(pageNo);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adopt_temp/waitAdoptDetail";
+        return "/admin/adopt/adminAdoptList";
+    }
+
+    // 입양 정보 추가(insert)
+    @GetMapping("/adopt/write")
+    public String adoptWrite(Model model) {
+        List<Member> member = adoptTempService.selectAllMemberAdopt();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllExcludeAdoptStatus();
+
+        model.addAttribute("member", member);
+        model.addAttribute("abandonedAnimal", abandonedAnimal);
+
+        return "/admin/adopt/adminAdoptWriteForm";
+    }
+
+    @PostMapping("/adopt/write")
+    public String adoptWriteForm(@ModelAttribute AdminAdoptForm adminAdoptForm) {
+        adoptTempService.adminAdoptWrite(adminAdoptForm);
+        adoptTempService.updateStatusToAdopt();
+
+        return "/admin/adopt/successAdminAdoptWrite";
+    }
+
+    // 입양 정보 수정(update)
+    @GetMapping("/adopt/modify")
+    public String adoptModify(@RequestParam("adNumber") int adNumber, Model model) {
+        List<Member> member = adoptTempService.selectAllMemberAdopt();
+        Adopt adopt = adoptTempService.findByAdoptPk(adNumber);
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllAbandonedAnimalAdopt();
+
+        model.addAttribute("member", member);
+        model.addAttribute("adopt", adopt);
+        model.addAttribute("abandonedAnimal", abandonedAnimal);
+
+        return "/admin/adopt/adminAdoptModifyForm";
+    }
+
+    @PostMapping("/adopt/modify")
+    public String adoptModifyForm(@ModelAttribute AdminAdoptForm adminAdoptForm) {
+        adoptTempService.adminAdoptUpdate(adminAdoptForm);
+        adoptTempService.updateStatusToAdopt();
+
+        return "/admin/adopt/successAdminAdoptModify";
+    }
+
+    // 입양 정보 삭제(delete)
+    @GetMapping("/adopt/delete")
+    public String adoptDelete(@RequestParam("adNumber") int adNumber) {
+        adoptTempService.deleteAdopt(adNumber);
+
+        return "/admin/adopt/successAdminAdoptDelete";
+    }
+
+
+    // 입양 승인 관리 페이지
+    @GetMapping("/adopt/wait")
+    public String adoptWait(@RequestParam(defaultValue = "1") int pageNo,
+                            @RequestParam(defaultValue = "처리중") String status,
+                            Model model) {
+        AdoptPageForm adopt = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
+        model.addAttribute("adopt", adopt);
+
+        return "/admin/adopt/adminAdoptWaitList";
     }
 
     // 입양 승인 버튼
-    @GetMapping("/adopt_temp/wait/adopt/approve")
-    public String adoptApprove(@RequestParam int adNumber) {
+    @GetMapping("/adopt/wait/approve")
+    public String adoptApprove(@RequestParam("adNumber") int adNumber) {
+        adoptTempService.adoptApproveButton(adNumber);
 
-        adoptTempService.adoptApprove(adNumber);
-
-        return "/admin/adopt_temp/adoptSuccess";
+        return "/admin/adopt/successAdoptApprove";
     }
 
     // 입양 거절 버튼
-    @GetMapping("/adopt_temp/wait/adopt/refuse")
-    public String adoptRefuse(@RequestParam int adNumber) {
+    @GetMapping("/adopt/wait/refuse")
+    public String adoptRefuse(@RequestParam("adNumber") int adNumber) {
+        adoptTempService.adoptRefuseButton(adNumber);
 
-        adoptTempService.adoptRefuse(adNumber);
-
-        return "/admin/adopt_temp/adoptRefuse";
-    }
-
-    // 임보 대기 페이지
-    @GetMapping("/adopt_temp/wait/temp_pet")
-    public String waitTempDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                 @RequestParam(defaultValue = "처리중") String status,
-                                 Model model) {
-
-        TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
-        model.addAttribute("temp", temp);
-
-        return "/admin/adopt_temp/waitTempPetDetail";
-    }
-
-    // 임보 승인 버튼
-    @GetMapping("/adopt_temp/wait/temp_pet/approve")
-    public String tempApprove(@RequestParam int tNumber) {
-
-        adoptTempService.tempApprove(tNumber);
-
-        return "/admin/adopt_temp/tempSuccess";
-    }
-
-    // 임보 거절 버튼
-    @GetMapping("/adopt_temp/wait/temp_pet/refuse")
-    public String tempRefuse(@RequestParam int tNumber) {
-
-        adoptTempService.tempRefuse(tNumber);
-
-        return "/admin/adopt_temp/tempRefuse";
-    }
-
-    // 입양/임보 완료 선택 페이지
-    @GetMapping("/adopt_temp/complete")
-    public String adoptTempCompleteList() {
-        return "/admin/adopt_temp/adoptTempCompleteList";
+        return "/admin/adopt/successAdoptRefuse";
     }
 
     // 입양 완료된 리스트
-    @GetMapping("/adopt_temp/complete/adopt")
-    public String completeAdoptDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                      @RequestParam(defaultValue = "완료") String status,
-                                      Model model) {
-
-        AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
+    @GetMapping("/adopt/complete")
+    public String adoptComplete(@RequestParam(defaultValue = "1") int pageNo,
+                                @RequestParam(defaultValue = "완료") String status,
+                                Model model) {
+        AdoptPageForm adopt = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adopt_temp/completeAdoptDetail";
-    }
-
-    // 임보 완료된 리스트
-    @GetMapping("/adopt_temp/complete/temp_pet")
-    public String completeTempPetDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                        @RequestParam(defaultValue = "완료") String status,
-                                        Model model) {
-
-        TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
-        model.addAttribute("temp", temp);
-
-        return "/admin/adopt_temp/completeTempPetDetail";
-    }
-
-    // 입양/임보 거절 선택 페이지
-    @GetMapping("/adopt_temp/refuse")
-    public String adoptTempRefuseList() {
-        return "/admin/adopt_temp/adoptTempRefuseList";
+        return "/admin/adopt/adoptCompleteList";
     }
 
     // 입양 거절된 리스트
-    @GetMapping("/adopt_temp/refuse/adopt")
-    public String refuseAdoptDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                    @RequestParam(defaultValue = "거절") String status,
-                                    Model model) {
+    @GetMapping("/adopt/refuse")
+    public String adoptRefuse(@RequestParam(defaultValue = "1") int pageNo,
+                              @RequestParam(defaultValue = "거절") String status,
+                              Model model) {
 
-        AdoptPageForm adopt = adoptTempService.getAdoptWaitPage(pageNo, status);
+        AdoptPageForm adopt = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
         model.addAttribute("adopt", adopt);
 
-        return "/admin/adopt_temp/refuseAdoptDetail";
+        return "/admin/adopt/adoptRefuseList";
     }
 
-    // 임보 거절된 리스트
-    @GetMapping("/adopt_temp/refuse/temp_pet")
-    public String refuseTempPetDetail(@RequestParam(defaultValue = "1") int pageNo,
-                                      @RequestParam(defaultValue = "거절") String status,
-                                      Model model) {
-
-        TempPageForm temp = adoptTempService.getTempWaitPage(pageNo, status);
+    // =============== 임시보호 정보 관리 ===============
+    // 임시보호 리스트
+    @GetMapping("/temp")
+    public String tempList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
+        TempPageForm temp = adoptTempService.getAdminTempListPage(pageNo);
         model.addAttribute("temp", temp);
 
-        return "/admin/adopt_temp/refuseTempPetDetail";
+        return "/admin/temp/adminTempList";
     }
 
+    // 임시보호 정보 추가(insert)
+    @GetMapping("/temp/write")
+    public String tempWrite(Model model) {
+        List<Member> member = adoptTempService.selectAllMemberTemp();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllExcludeTempStatus();
+
+        model.addAttribute("member", member);
+        model.addAttribute("abandonedAnimal", abandonedAnimal);
+
+        return "/admin/temp/adminTempWriteForm";
+    }
+
+    @PostMapping("/temp/write")
+    public String tempWriteForm(@ModelAttribute AdminTempForm adminTempForm) {
+        adoptTempService.adminTempWrite(adminTempForm);
+        adoptTempService.updateStatusToTemp();
+        log.info("adminTempForm={}", adminTempForm);
+
+        return "/admin/temp/successAdminTempWrite";
+    }
+
+    // 임시보호 정보 수정(update)
+    @GetMapping("/temp/modify")
+    public String tempModify(@RequestParam("tNumber") int tNumber, Model model) {
+        List<Member> member = adoptTempService.selectAllMemberTemp();
+        TempPet tempPet = adoptTempService.findByTempPk(tNumber);
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllAbandonedAnimalTemp();
+
+        model.addAttribute("member", member);
+        model.addAttribute("temp", tempPet);
+        model.addAttribute("abandonedAnimal", abandonedAnimal);
+
+        return "/admin/temp/adminTempModifyForm";
+    }
+
+    @PostMapping("/temp/modify")
+    public String tempModifyForm(@ModelAttribute AdminTempForm adminTempForm) {
+        adoptTempService.adminTempUpdate(adminTempForm);
+        adoptTempService.updateStatusToTemp();
+
+        return "/admin/temp/successAdminTempModify";
+    }
+
+    // 임시보호 정보 삭제(delete)
+    @GetMapping("/temp/delete")
+    public String tempDelete(@RequestParam("tNumber") int tNumber) {
+        adoptTempService.deleteTemp(tNumber);
+
+        return "/admin/temp/successAdminTempDelete";
+    }
+
+
+    // 임시보호 승인 관리 페이지
+    @GetMapping("/temp/wait")
+    public String tempWait(@RequestParam(defaultValue = "1") int pageNo,
+                           @RequestParam(defaultValue = "처리중") String status,
+                           Model model) {
+
+        TempPageForm temp = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        model.addAttribute("temp", temp);
+
+        return "/admin/temp/adminTempWaitList";
+    }
+
+    // 임시보호 승인 버튼
+    @GetMapping("/temp/wait/approve")
+    public String tempApprove(@RequestParam("tNumber") int tNumber) {
+        adoptTempService.tempApproveButton(tNumber);
+
+        return "/admin/temp/successTempApprove";
+    }
+
+    // 임시보호 거절 버튼
+    @GetMapping("/temp/wait/refuse")
+    public String tempRefuse(@RequestParam("tNumber") int tNumber) {
+        adoptTempService.tempRefuseButton(tNumber);
+
+        return "/admin/temp/successTempRefuse";
+    }
+
+    // 임시보호 완료된 리스트
+    @GetMapping("/temp/complete")
+    public String tempComplete(@RequestParam(defaultValue = "1") int pageNo,
+                               @RequestParam(defaultValue = "완료") String status,
+                               Model model) {
+
+        TempPageForm temp = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        model.addAttribute("temp", temp);
+
+        return "/admin/temp/tempCompleteList";
+    }
+
+    // 임시보호 거절된 리스트
+    @GetMapping("/temp/refuse")
+    public String tempRefuse(@RequestParam(defaultValue = "1") int pageNo,
+                             @RequestParam(defaultValue = "거절") String status,
+                             Model model) {
+
+        TempPageForm temp = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        model.addAttribute("temp", temp);
+
+        return "/admin/temp/tempRefuseList";
+    }
+
+    // =============== 후원 정보 관리 ===============
+    // 후원
     @GetMapping("/donation")
     public String donationPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         DonationPageForm donationPageForm = donateService.getDonationPage(pageNo);
@@ -550,4 +631,25 @@ public class AdminController {
         return "/admin/donation/deleteDonationSuccess";
     }
 
+    // 파일 업로드
+    @ResponseBody
+    @GetMapping("/upload")
+    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
+
+        String fullPath = request.getSession().getServletContext().getRealPath("/");
+        fullPath = fullPath + "resources/upload/";
+        fullPath = fullPath + filename;
+
+        log.info("fullPath = {} ", fullPath);
+
+        try {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(new UrlResource("file:" + fullPath));
+        } catch (MalformedURLException e) {
+            log.info("fullPath = {} ", fullPath);
+
+            throw new RuntimeException(e);
+        }
+    }
 }

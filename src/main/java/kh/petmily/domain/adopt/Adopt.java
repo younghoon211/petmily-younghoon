@@ -14,7 +14,6 @@ public class Adopt implements DomainObj {
     private String maritalStatus;
     private String job;
     private String status;
-//    private String status = "처리중";
 
     public Adopt(int mNumber, int abNumber, String residence, String maritalStatus, String job) {
         this.mNumber = mNumber;
@@ -33,5 +32,4 @@ public class Adopt implements DomainObj {
         this.job = job;
         this.status = status;
     }
-
 }

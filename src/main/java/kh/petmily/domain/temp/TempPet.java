@@ -3,12 +3,12 @@ package kh.petmily.domain.temp;
 import kh.petmily.domain.DomainObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @NoArgsConstructor
 public class TempPet implements DomainObj {
+
     private int tNumber; // 임보 번호
     private int abNumber;
     private int mNumber;
@@ -25,5 +25,21 @@ public class TempPet implements DomainObj {
         this.residence = residence;
         this.maritalStatus = maritalStatus;
         this.job = job;
+    }
+
+    public TempPet(int tNumber, int abNumber, int mNumber, Date tempDate, int tempPeriod, String residence, String maritalStatus, String job, String status) {
+        this.tNumber = tNumber;
+        this.abNumber = abNumber;
+        this.mNumber = mNumber;
+        this.tempDate = tempDate;
+        this.tempPeriod = tempPeriod;
+        this.residence = residence;
+        this.maritalStatus = maritalStatus;
+        this.job = job;
+        this.status = status;
+    }
+
+    public int getTNumber() {
+        return tNumber;
     }
 }

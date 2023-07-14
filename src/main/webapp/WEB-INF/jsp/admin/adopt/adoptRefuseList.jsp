@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8" %>
+		 pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +36,7 @@ pageEncoding="UTF-8" %>
 	<div class="container">
 		<div class="row no-gutters slider-text align-items-end">
 			<div class="col-md-9 ftco-animate pb-5">
-				<h1 class="mb-0 bread">입양 승인 or 거절 관리</h1>
+				<h1 class="mb-0 bread">입양 거절 리스트</h1>
 			</div>
 		</div>
 	</div>
@@ -47,96 +47,123 @@ pageEncoding="UTF-8" %>
 <section class="ftco-section bg-light">
 	<div class="container">
 
-			<!-- 목록 출력 -->
-<div class="row align-items-center">
-    <div class="col-lg-12">
-		<div class="col text-center">
-			<table class="table table-hover bg-white">
-
-				<thead>
-				<tr class="table table-border">
-					<th>입양 번호</th>
-					<th>동물 이름</th>
-					<th>회원 이름</th>
-					<th>아이디</th>
-					<th>거주지</th>
-					<th>결혼 여부</th>
-					<th>직업</th>
-					<th>승인 여부</th>
-				</tr>
-				</thead>
-				<c:forEach var="wait" items="${adopt.content}">
-				<tbody>
-					<th>${wait.adNumber}</th>
-					<th>${wait.animalName}</th>
-					<th>${wait.memberName}</th>
-					<th>${wait.memberId}</th>
-					<th>${wait.residence}</th>
-					<th>${wait.maritalStatus}</th>
-					<th>${wait.job}</th>
-					<th>
-<%--						onclick="location.href='/findBoard/list'"--%>
-						<button type="button" class="btn btn-primary"
-								onclick="location.href='/admin/adopt_temp/wait/adopt/approve?adNumber=${wait.adNumber}'">승인
-
-						</button>
-						&nbsp;
-						<button type="button" class="btn btn-primary"
-								onclick="location.href='/admin/adopt_temp/wait/adopt/refuse?adNumber=${wait.adNumber}'">거절
-						</button>
-					</th>
-				</tbody>
-				</c:forEach>
-			</table>
+		<div style="text-align: center">
+			<c:set var="URI" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+			<input type="radio" id="adopt" value="adopt" onclick="selectKind(this.value)"
+			<c:if test="${URI == '/admin/adopt'}">
+				   checked
+			</c:if>>
+			<label for="adopt">입양 관리</label>
+			&nbsp;&nbsp;&nbsp;
+			<input type="radio" id="wait" value="wait" onclick="selectKind(this.value)"
+			<c:if test="${URI == '/admin/adopt/wait'}">
+				   checked
+			</c:if>>
+			<label for="wait">입양 승인 관리</label>
+			&nbsp;&nbsp;&nbsp;
+			<input type="radio" id="complete" value="complete" onclick="selectKind(this.value)"
+			<c:if test="${URI == '/admin/adopt/complete'}">
+				   checked
+			</c:if>>
+			<label for="complete">입양 완료된 리스트</label>
+			&nbsp;&nbsp;&nbsp;
+			<input type="radio" id="refuse" value="refuse" onclick="selectKind(this.value)"
+			<c:if test="${URI == '/admin/adopt/refuse'}">
+				   checked
+			</c:if>>
+			<label for="refuse">입양 거절된 리스트</label>
 		</div>
-</div>
-</div>
+		<br/>
 
-			<!-- 페이징 처리 -->
-
-			<div class="row mt-5">
+		<!-- 목록 출력 -->
+		<div class="row align-items-center">
+			<div class="col-lg-12">
 				<div class="col text-center">
-					<div class="block-27">
-						<ul>
-							<li>
-								<c:if test="${adopt.startPage > 5}">
-									<a href="/admin/adopt_temp/wait/adopt?pageNo=${adopt.startPage - 5}">&lt;</a>
-								</c:if>
-							</li>
-							<li>
-								<c:forEach var="pbNum" begin="${adopt.startPage}" end="${adopt.endPage}">
-									<c:if test="${adopt.currentPage == pbNum}">
-							<li class="active">
-								<a href="/admin/adopt_temp/wait/adopt?pageNo=${pbNum}">${pbNum}</a>
-							</li>
-							</c:if>
-							<c:if test="${adopt.currentPage != pbNum}">
-								<li>
-									<a href="/admin/adopt_temp/wait/adopt?pageNo=${pbNum}">${pbNum}</a>
-								</li>
-							</c:if>
-							</c:forEach>
-							</li>
-							<li>
-								<c:if test="${adopt.endPage < adopt.totalPages}">
-									<a href="/admin/adopt_temp/wait/adopt?pageNo=${adopt.startPage + 5}">&gt;</a>
-								</c:if>
-							</li>
-						</ul>
-					</div>
+					<table class="table table-hover bg-white">
+						<thead>
+						<tr class="table table-border">
+							<th>입양번호</th>
+							<th>아이디 (번호)</th>
+							<th>동물이름 (번호)</th>
+							<th>닉네임</th>
+							<th>거주지</th>
+							<th>결혼여부</th>
+							<th>직업</th>
+						</tr>
+						</thead>
+						<c:forEach var="adopt" items="${adopt.content}">
+							<tbody>
+							<th>${adopt.adNumber}</th>
+							<th>${adopt.memberId} (${adopt.getMNumber()})</th>
+							<th>${adopt.animalName} (${adopt.abNumber})</th>
+							<th>${adopt.memberName}</th>
+							<th>${adopt.residence}</th>
+							<th>${adopt.maritalStatus}</th>
+							<th>${adopt.job}</th>
+							</tbody>
+						</c:forEach>
+					</table>
 				</div>
 			</div>
+		</div>
+
+		<!-- 페이징 처리 -->
+
+		<div class="row mt-5">
+			<div class="col text-center">
+				<div class="block-27">
+					<ul>
+						<li>
+							<c:if test="${adopt.startPage > 5}">
+								<a href="/admin/adopt_temp/refuse/adopt?pageNo=${adopt.startPage - 5}">&lt;</a>
+							</c:if>
+						</li>
+						<li>
+							<c:forEach var="pbNum" begin="${adopt.startPage}" end="${adopt.endPage}">
+							<c:if test="${adopt.currentPage == pbNum}">
+						<li class="active">
+							<a href="/admin/adopt_temp/refuse/adopt?pageNo=${pbNum}">${pbNum}</a>
+						</li>
+						</c:if>
+						<c:if test="${adopt.currentPage != pbNum}">
+							<li>
+								<a href="/admin/adopt_temp/refuse/adopt?pageNo=${pbNum}">${pbNum}</a>
+							</li>
+						</c:if>
+						</c:forEach>
+						</li>
+						<li>
+							<c:if test="${adopt.endPage < adopt.totalPages}">
+								<a href="/admin/adopt_temp/refuse/adopt?pageNo=${adopt.startPage + 5}">&gt;</a>
+							</c:if>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </section>
 <!-- 게시판 List 끝 -->
 
-<!-- 풋터 -->
+<script>
+	function selectKind(kind) {
+		if (kind == "adopt") {
+			window.location.href = "/admin/adopt";
+		} else if (kind == "wait") {
+			window.location.href = "/admin/adopt/wait";
+		} else if (kind == "complete") {
+			window.location.href = "/admin/adopt/complete";
+		} else if (kind == "refuse") {
+			window.location.href = "/admin/adopt/refuse";
+		}
+	}
+</script>
 
+<!-- 풋터 -->
 <%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
 
 <!-- loader -->
-
 <div id="ftco-loader" class="show fullscreen">
 	<svg class="circular" width="48px" height="48px">
 		<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>

@@ -1,10 +1,11 @@
 package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
+import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.AdoptDetailForm;
-import kh.petmily.domain.adopt.form.AdoptMemberApplyListForm;
-import kh.petmily.domain.adopt.form.AdoptTempListForm;
+import kh.petmily.domain.adopt.form.MypageAdoptListForm;
+import kh.petmily.domain.member.Member;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.AdoptMapper;
 import kh.petmily.mapper.MemberMapper;
@@ -42,77 +43,70 @@ public class AdoptDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount(int mNumber) {
-        return mapper.selectCountBymNumber(mNumber);
-    }
-
-    public List<AdoptMemberApplyListForm> selectIndex(int start, int end, int mNumber) {
-        List<Adopt> list = mapper.selectIndexBymNumber(start, end, mNumber);
-        List<AdoptMemberApplyListForm> maList = new ArrayList<>();
-
-        for (Adopt a : list) {
-            AdoptMemberApplyListForm ma = new AdoptMemberApplyListForm(a.getAdNumber(), getAbNameByAbNumber(a.getAbNumber()), a.getStatus());
-            maList.add(ma);
-        }
-
-        return maList;
-    }
-
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
     public int selectCount() {
         return mapper.selectCount();
     }
 
+    public int selectCount(int mNumber) {
+        return mapper.selectCountBymNumber(mNumber);
+    }
+
+    public List<AdoptDetailForm> selectIndex(int start, int end) {
+        List<AdoptDetailForm> result = new ArrayList<>();
+        List<Adopt> adoptList = mapper.selectIndex(start, end);
+
+        for (Adopt l : adoptList) {
+            AdoptDetailForm li = new AdoptDetailForm(
+                    l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
+                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+            );
+
+            result.add(li);
+        }
+
+        return result;
+    }
+
+    public List<MypageAdoptListForm> selectIndex(int start, int end, int mNumber) {
+        List<MypageAdoptListForm> result = new ArrayList<>();
+        List<Adopt> adoptList = mapper.selectIndexBymNumber(start, end, mNumber);
+
+        for (Adopt a : adoptList) {
+            MypageAdoptListForm ma = new MypageAdoptListForm(a.getAdNumber(), getAbNameByAbNumber(a.getAbNumber()), a.getStatus());
+            result.add(ma);
+        }
+
+        return result;
+    }
+
     public List<AdoptDetailForm> selectIndex(int start, int end, String status) {
+        List<AdoptDetailForm> result = new ArrayList<>();
+        List<Adopt> adoptList = mapper.selectIndexByStatus(start, end, status);
 
-        List<AdoptDetailForm> adopts = new ArrayList<>();
-        List<AdoptTempListForm> adoptList = mapper.selectIndexByStatus(start, end, status);
-
-        for (AdoptTempListForm l : adoptList) {
+        for (Adopt l : adoptList) {
             AdoptDetailForm li = new AdoptDetailForm(
                     l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
                     l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
                     selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
             );
 
-            adopts.add(li);
+            result.add(li);
         }
-        return adopts;
+
+        return result;
     }
 
-    public List<AdoptDetailForm> adoptApprove(int pk) {
-        List<AdoptDetailForm> adopts = new ArrayList<>();
-        List<AdoptTempListForm> adoptList = mapper.adoptApprove(pk);
-
-        for (AdoptTempListForm l : adoptList) {
-            AdoptDetailForm li = new AdoptDetailForm(
-                    l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
-            );
-
-            adopts.add(li);
-        }
-        return adopts;
+    public void adoptApprove(int pk) {
+        mapper.adoptApprove(pk);
     }
 
-    public List<AdoptDetailForm> adoptRefuse(int pk) {
-        List<AdoptDetailForm> adopts = new ArrayList<>();
-        List<AdoptTempListForm> adoptList = mapper.adoptRefuse(pk);
+    public void adoptRefuse(int pk) {
+        mapper.adoptRefuse(pk);
+    }
 
-        for (AdoptTempListForm l : adoptList) {
-            AdoptDetailForm li = new AdoptDetailForm(
-                    l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
-            );
-
-            adopts.add(li);
-        }
-        return adopts;
+    private String getAbNameByAbNumber(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
     }
 
     public String selectAnimalName(int abNumber) {
@@ -125,5 +119,25 @@ public class AdoptDao implements BasicDao {
 
     public String selectMemberId(int mNumber) {
         return memberMapper.selectMemberId(mNumber);
+    }
+
+    public void updateStatusToAdopt() {
+        mapper.updateStatusToAdopt();
+    }
+
+    public List<Member> selectAllMember() {
+        return memberMapper.selectAll();
+    }
+
+    public List<AbandonedAnimal> selectAllExcludeAdoptStatus() {
+        return mapper.selectAllExcludeAdoptStatus();
+    }
+
+    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
+        return abandonedAnimalMapper.selectAll();
+    }
+
+    public void adminInsert(DomainObj obj) {
+        mapper.adminInsert((Adopt) obj);
     }
 }

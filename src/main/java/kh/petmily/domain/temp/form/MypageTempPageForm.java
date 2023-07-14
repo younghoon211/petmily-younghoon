@@ -5,15 +5,15 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TempApplyPageForm {
+public class MypageTempPageForm {
     private int total;
     private int currentPage;
-    private List<TempMemberApplyListForm> content;
+    private List<MypageTempListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public TempApplyPageForm(int total, int currentPage, int size, List<TempMemberApplyListForm> content) {
+    public MypageTempPageForm(int total, int currentPage, int size, List<MypageTempListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;
