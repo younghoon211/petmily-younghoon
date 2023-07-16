@@ -1,10 +1,7 @@
 package kh.petmily.service;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalDetailForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalModifyForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalWriteForm;
+import kh.petmily.domain.abandoned_animal.form.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,17 +13,17 @@ public interface AbandonedAnimalService {
 
     AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo);
 
-    AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword, String sort);
+    AbandonedAnimalPageForm getAbandonedAnimalPage(AbandonedAnimalConditionForm abandonedAnimalConditionForm);
 
     String findName(int abNumber);
 
     List<AbandonedAnimal> selectAll();
 
-    void write(AbandonedAnimalWriteForm abandonedAnimalWriteForm);
+    void write(AdminAbandonedAnimalWriteForm adminAbandonedAnimalWriteForm);
 
-    AbandonedAnimalModifyForm getAbandonedModify(int abNumber);
+    AdminAbandonedAnimalModifyForm getAbandonedModify(int abNumber);
 
-    void modify(AbandonedAnimalModifyForm abandonedAnimalModifyForm);
+    void modify(AdminAbandonedAnimalModifyForm adminAbandonedAnimalModifyForm);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 

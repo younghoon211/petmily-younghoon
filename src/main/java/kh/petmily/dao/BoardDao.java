@@ -3,6 +3,7 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.BoardListForm;
+import kh.petmily.domain.board.form.BoardConditionForm;
 import kh.petmily.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -71,13 +72,13 @@ public class BoardDao implements BasicDao {
     }
 
     // 조건부 검색 게시글 개수
-    public int selectCountWithCondition(String kindOfBoard, String condition, String keyword) {
-        return mapper.selectCountWithCondition(kindOfBoard, condition, keyword);
+    public int selectCountWithCondition(BoardConditionForm boardConditionForm) {
+        return mapper.selectCountWithCondition(boardConditionForm.getKindOfBoard(), boardConditionForm.getCondition(), boardConditionForm.getKeyword());
     }
 
     // 조건부 검색
-    public List<BoardListForm> selectIndexWithCondition(int start, int end, String kindOfBoard, String condition, String keyword, String sort) {
-        List<Board> list = mapper.selectIndexWithCondition(start, end, kindOfBoard, condition, keyword, sort);
+    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm boardConditionForm) {
+        List<Board> list = mapper.selectIndexWithCondition(start, end, boardConditionForm.getKindOfBoard(), boardConditionForm.getCondition(), boardConditionForm.getKeyword(), boardConditionForm.getSort());
         List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {

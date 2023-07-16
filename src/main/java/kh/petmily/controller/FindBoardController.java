@@ -1,9 +1,6 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.find_board.form.FindBoardDetailForm;
-import kh.petmily.domain.find_board.form.FindBoardModifyForm;
-import kh.petmily.domain.find_board.form.FindBoardPageForm;
-import kh.petmily.domain.find_board.form.FindBoardWriteForm;
+import kh.petmily.domain.find_board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.FindBoardService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,55 +28,16 @@ public class FindBoardController {
 
     private final FindBoardService findBoardService;
 
-    @ResponseBody
-    @GetMapping("/upload")
-    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
-        String fullPath = request.getSession().getServletContext().getRealPath("/");
-        fullPath = fullPath + "resources/upload/";
-        fullPath = fullPath + filename;
-
-        log.info("fullPath = {}", fullPath);
-
-        try {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
-                    .body(new UrlResource("file:" + fullPath));
-        } catch (MalformedURLException e) {
-            log.info("fullPath = {}", fullPath);
-
-            throw new RuntimeException(e);
-        }
-    }
-
     @GetMapping("/list")
-    public String list(@RequestParam(required = false) Integer pageNo,
-                       @RequestParam(required = false) String species,
-                       @RequestParam(required = false) String animalState,
-                       @RequestParam(required = false) String keyword,
-                       @RequestParam String sort,
-                       HttpServletRequest request,
-                       Model model) {
-        HttpSession session = request.getSession();
-
-        if (pageNo == null) {
-            initCondition(species, animalState, keyword, session);
-            pageNo = 1;
-        }
-
-        saveCondition(species, animalState, keyword, session);
-
-        species = (String) session.getAttribute("species");
-        animalState = (String) session.getAttribute("animalState");
-        keyword = (String) session.getAttribute("keyword");
-
-        FindBoardPageForm findBoardPageForm = findBoardService.getFindPage(pageNo, species, animalState, keyword, sort);
+    public String list(@Validated @ModelAttribute FindBoardConditionForm conditionForm, Model model) {
+        FindBoardPageForm findBoardPageForm = findBoardService.getFindPage(conditionForm);
         model.addAttribute("Finds", findBoardPageForm);
 
         return "/find_board/listFindBoard";
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("faNumber") int faNumber, Model model) {
+    public String detail(@RequestParam int faNumber, Model model) {
         findBoardService.updateViewCount(faNumber);
 
         FindBoardDetailForm detailForm = findBoardService.getDetailForm(faNumber);
@@ -129,7 +88,7 @@ public class FindBoardController {
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam("faNumber") int faNumber, HttpServletRequest request, Model model) {
+    public String modifyForm(@RequestParam int faNumber, HttpServletRequest request, Model model) {
         FindBoardModifyForm fmForm = findBoardService.getModifyForm(faNumber);
 
         Member member = getAuthMember(request);
@@ -144,7 +103,7 @@ public class FindBoardController {
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam("faNumber") int faNumber,
+    public String modify(@RequestParam int faNumber,
                          @ModelAttribute FindBoardModifyForm findBoardModifyForm,
                          HttpServletRequest request,
                          Model model,
@@ -180,35 +139,29 @@ public class FindBoardController {
 
     //=======삭제=======
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam("faNumber") int faNumber) {
+    public String delete(@RequestParam int faNumber) {
         findBoardService.delete(faNumber);
 
         return "/find_board/submitSuccess";
     }
 
-    private void saveCondition(String species, String animalState, String keyword, HttpSession session) {
-        if (species != null) {
-            session.setAttribute("species", species);
-        }
+    @ResponseBody
+    @GetMapping("/upload")
+    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
+        String fullPath = request.getSession().getServletContext().getRealPath("/");
+        fullPath = fullPath + "resources/upload/";
+        fullPath = fullPath + filename;
 
-        if (animalState != null) {
-            session.setAttribute("animalState", animalState);
-        }
+        log.info("fullPath = {}", fullPath);
 
-        if (keyword != null) {
-            if (!keyword.equals("")) {
-                session.setAttribute("keyword", keyword);
-            } else {
-                session.setAttribute("keyword", "allKeyword");
-            }
-        }
-    }
+        try {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(new UrlResource("file:" + fullPath));
+        } catch (MalformedURLException e) {
+            log.info("fullPath = {}", fullPath);
 
-    private void initCondition(String species, String animalState, String keyword, HttpSession session) {
-        if (species == null && animalState == null && keyword == null) {
-            session.removeAttribute("species");
-            session.removeAttribute("animalState");
-            session.removeAttribute("keyword");
+            throw new RuntimeException(e);
         }
     }
 

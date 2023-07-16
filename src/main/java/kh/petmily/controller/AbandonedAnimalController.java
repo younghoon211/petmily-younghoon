@@ -1,10 +1,6 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalDetailForm;
-import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
-import kh.petmily.domain.abandoned_animal.form.AdoptTempSubmitForm;
-import kh.petmily.domain.abandoned_animal.form.DonateSubmitForm;
+import kh.petmily.domain.abandoned_animal.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.AbandonedAnimalService;
 import kh.petmily.service.AdoptTempService;
@@ -14,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,42 +29,17 @@ public class AbandonedAnimalController {
     private final MemberService memberService;
 
     @GetMapping("/list")
-    public String list(@RequestParam(required = false) Integer pageNo,
-                       @RequestParam(required = false) String species,
-                       @RequestParam(required = false) String gender,
-                       @RequestParam(required = false) String animalState,
-                       @RequestParam(required = false) String keyword,
-                       @RequestParam String sort,
-                       HttpServletRequest request,
-                       Model model) {
+    public String list(@Validated @ModelAttribute AbandonedAnimalConditionForm conditionForm, Model model) {
+        log.info("abandonedAnimalConditionForm = {}", conditionForm);
 
-        HttpSession session = request.getSession();
-
-        if (pageNo == null) {
-            initCondition(species, gender, animalState, keyword, session);
-            pageNo = 1;
-        }
-
-        saveCondition(species, gender, animalState, keyword, session);
-
-        species = (String) session.getAttribute("species");
-        gender = (String) session.getAttribute("gender");
-        animalState = (String) session.getAttribute("animalState");
-        keyword = (String) session.getAttribute("keyword");
-
-        log.info("species = {}", species);
-        log.info("gender = {}", gender);
-        log.info("animalState = {}", animalState);
-        log.info("keyword = {}", keyword);
-
-        AbandonedAnimalPageForm abandonedAnimals = abandonedAnimalService.getAbandonedAnimalPage(pageNo, species, gender, animalState, keyword, sort);
-        model.addAttribute("abandonedAnimals", abandonedAnimals);
+        AbandonedAnimalPageForm abandonedAnimalPageForm = abandonedAnimalService.getAbandonedAnimalPage(conditionForm);
+        model.addAttribute("abandonedAnimals", abandonedAnimalPageForm);
 
         return "/abandoned_animal/listAbandonedAnimal";
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("abNumber") int abNumber, Model model) {
+    public String detail(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailForm(abNumber);
         log.info("detailForm = {}", detailForm);
 
@@ -78,31 +50,18 @@ public class AbandonedAnimalController {
 
     //=======후원=======
     @GetMapping("/auth/donate")
-    public String donateForm(@RequestParam("abNumber") int abNumber, HttpServletRequest request, Model model) {
+    public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
+        int mNumber = getAuthMember(request).getMNumber();
 
-        Member member = getAuthMember(request);
-
-        int mNumber = member.getMNumber();
-
-        String animalName = abandonedAnimalService.findName(abNumber);
-        String memberName = memberService.findName(mNumber);
-
-        if (animalName != null) {
-            request.setAttribute("animalName", animalName);
-        }
-
-        if (memberName != null) {
-            request.setAttribute("memberName", memberName);
-        }
+        model.addAttribute("animalName", abandonedAnimalService.findName(abNumber));
+        model.addAttribute("memberName", memberService.findName(mNumber));
 
         return "/abandoned_animal/donateSubmitForm";
     }
 
     @PostMapping("/auth/donate")
     public String donate(@ModelAttribute DonateSubmitForm donateSubmitForm, HttpServletRequest request) {
-
-        Member member = getAuthMember(request);
-        int mNumber = member.getMNumber();
+        int mNumber = getAuthMember(request).getMNumber();
 
         donateSubmitForm.setMNumber(mNumber);
         log.info("donateSubmitForm = {}", donateSubmitForm);
@@ -115,12 +74,9 @@ public class AbandonedAnimalController {
     //=======입양/임보=======
     @GetMapping("/auth/adopt_temp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
-        Member member = getAuthMember(request);
-        int mNumber = member.getMNumber();
+        int mNumber = getAuthMember(request).getMNumber();
 
-        AbandonedAnimal animal = abandonedAnimalService.getAnimal(abNumber);
-
-        model.addAttribute("animal", animal);
+        model.addAttribute("animal", abandonedAnimalService.getAnimal(abNumber));
         model.addAttribute("memberName", memberService.findName(mNumber));
 
         return "/abandoned_animal/adoptTempSubmitForm";
@@ -144,7 +100,7 @@ public class AbandonedAnimalController {
         }
 
         if (adoptOrTemp.equals("temp")) {
-            adoptTempService.tempProtect(form);
+            adoptTempService.temp(form);
         }
 
         redirectAttributes.addAttribute("abNumber", form.getAbNumber());
@@ -154,7 +110,7 @@ public class AbandonedAnimalController {
 
     //=======봉사=======
     @GetMapping("/auth/volunteer")
-    public String volunteerForm(@RequestParam("abNumber") int abNumber, Model model) {
+    public String volunteerForm(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailForm(abNumber);
         model.addAttribute("detailForm", detailForm);
 
@@ -165,36 +121,5 @@ public class AbandonedAnimalController {
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute("authUser");
         return member;
-    }
-
-    private void saveCondition(String species, String gender, String animalState, String keyword, HttpSession session) {
-        if (species != null) {
-            session.setAttribute("species", species);
-        }
-
-        if (gender != null) {
-            session.setAttribute("gender", gender);
-        }
-
-        if (animalState != null) {
-            session.setAttribute("animalState", animalState);
-        }
-
-        if (keyword != null) {
-            if (!keyword.equals("")) {
-                session.setAttribute("keyword", keyword);
-            } else {
-                session.setAttribute("keyword", "allKeyword");
-            }
-        }
-    }
-
-    private void initCondition(String species, String gender, String animalState, String keyword, HttpSession session) {
-        if (species == null && gender == null && animalState == null && keyword == null) {
-            session.removeAttribute("species");
-            session.removeAttribute("gender");
-            session.removeAttribute("animalState");
-            session.removeAttribute("keyword");
-        }
     }
 }

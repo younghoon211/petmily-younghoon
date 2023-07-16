@@ -1,9 +1,6 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.look_board.form.LookBoardDetailForm;
-import kh.petmily.domain.look_board.form.LookBoardModifyForm;
-import kh.petmily.domain.look_board.form.LookBoardPageForm;
-import kh.petmily.domain.look_board.form.LookBoardWriteForm;
+import kh.petmily.domain.look_board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.LookBoardService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,60 +28,16 @@ public class LookBoardController {
 
     private final LookBoardService lookBoardService;
 
-    @ResponseBody
-    @GetMapping("/upload")
-    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
-        String fullPath = request.getSession().getServletContext().getRealPath("/");
-        fullPath = fullPath + "resources/upload/";
-        fullPath = fullPath + filename;
-
-        log.info("fullPath = {}", fullPath);
-
-        try {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
-                    .body(new UrlResource("file:" + fullPath));
-        } catch (MalformedURLException e) {
-            log.info("fullPath = {}", fullPath);
-
-            throw new RuntimeException(e);
-        }
-    }
-
     @GetMapping("/list")
-    public String list(@RequestParam(required = false) Integer pageNo,
-                       @RequestParam(required = false) String species,
-                       @RequestParam(required = false) String animalState,
-                       @RequestParam(required = false) String keyword,
-                       @RequestParam String sort,
-                       HttpServletRequest request,
-                       Model model) {
-
-        HttpSession session = request.getSession();
-
-        if (pageNo == null) {
-            initCondition(species, animalState, keyword, session);
-            pageNo = 1;
-        }
-
-        saveCondition(species, animalState, keyword, session);
-
-        species = (String) session.getAttribute("species");
-        animalState = (String) session.getAttribute("animalState");
-        keyword = (String) session.getAttribute("keyword");
-
-        log.info("species = {}", species);
-        log.info("animalState = {}", animalState);
-        log.info("keyword = {}", keyword);
-
-        LookBoardPageForm lookBoardPageForm = lookBoardService.getLookPage(pageNo, species, animalState, keyword, sort);
+    public String list(@Validated @ModelAttribute LookBoardConditionForm conditionForm, Model model) {
+        LookBoardPageForm lookBoardPageForm = lookBoardService.getLookPage(conditionForm);
         model.addAttribute("Looks", lookBoardPageForm);
 
         return "/look_board/listLookBoard";
     }
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("laNumber") int laNumber, Model model) {
+    public String detail(@RequestParam int laNumber, Model model) {
         lookBoardService.updateViewCount(laNumber);
 
         LookBoardDetailForm detailForm = lookBoardService.getDetailForm(laNumber);
@@ -133,7 +87,7 @@ public class LookBoardController {
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam("laNumber") int laNumber, HttpServletRequest request, Model model) {
+    public String modifyForm(@RequestParam int laNumber, HttpServletRequest request, Model model) {
         LookBoardModifyForm lmForm = lookBoardService.getModifyForm(laNumber);
 
         Member member = getAuthMember(request);
@@ -148,7 +102,7 @@ public class LookBoardController {
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam("laNumber") int laNumber,
+    public String modify(@RequestParam int laNumber,
                          @ModelAttribute LookBoardModifyForm lookBoardModifyForm,
                          HttpServletRequest request,
                          Model model,
@@ -183,10 +137,30 @@ public class LookBoardController {
 
     //=======삭제=======
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam("laNumber") int laNumber) {
+    public String delete(@RequestParam int laNumber) {
         lookBoardService.delete(laNumber);
 
         return "/look_board/submitSuccess";
+    }
+
+    @ResponseBody
+    @GetMapping("/upload")
+    public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
+        String fullPath = request.getSession().getServletContext().getRealPath("/");
+        fullPath = fullPath + "resources/upload/";
+        fullPath = fullPath + filename;
+
+        log.info("fullPath = {}", fullPath);
+
+        try {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(new UrlResource("file:" + fullPath));
+        } catch (MalformedURLException e) {
+            log.info("fullPath = {}", fullPath);
+
+            throw new RuntimeException(e);
+        }
     }
 
     private Member getAuthMember(HttpServletRequest request) {
@@ -194,31 +168,5 @@ public class LookBoardController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
-    }
-
-    private void saveCondition(String species, String animalState, String keyword, HttpSession session) {
-        if (species != null) {
-            session.setAttribute("species", species);
-        }
-
-        if (animalState != null) {
-            session.setAttribute("animalState", animalState);
-        }
-
-        if (keyword != null) {
-            if (!keyword.equals("")) {
-                session.setAttribute("keyword", keyword);
-            } else {
-                session.setAttribute("keyword", "allKeyword");
-            }
-        }
-    }
-
-    private void initCondition(String species, String animalState, String keyword, HttpSession session) {
-        if (species == null && animalState == null && keyword == null) {
-            session.removeAttribute("species");
-            session.removeAttribute("animalState");
-            session.removeAttribute("keyword");
-        }
     }
 }

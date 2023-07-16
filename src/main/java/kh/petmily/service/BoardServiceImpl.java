@@ -4,6 +4,7 @@ import kh.petmily.dao.BoardDao;
 import kh.petmily.dao.MemberDao;
 import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.*;
+import kh.petmily.domain.board.form.BoardConditionForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,11 @@ public class BoardServiceImpl implements BoardService {
     private int size = 10;
 
     @Override
-    public BoardPageForm getBoardPage(int pageNo, String kindOfBoard, String condition, String keyword, String sort) {
-        int total = boardDao.selectCountWithCondition(kindOfBoard, condition, keyword);
-        List<BoardListForm> content = boardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard, condition, keyword, sort);
+    public BoardPageForm getBoardPage(BoardConditionForm boardConditionForm) {
+        int total = boardDao.selectCountWithCondition(boardConditionForm);
+        List<BoardListForm> content = boardDao.selectIndexWithCondition((boardConditionForm.getPageNo() - 1) * size + 1, (boardConditionForm.getPageNo() - 1) * size + size, boardConditionForm);
 
-        return new BoardPageForm(total, pageNo, size, content);
+        return new BoardPageForm(total, boardConditionForm.getPageNo(), size, content);
     }
 
     @Override

@@ -63,16 +63,11 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     }
 
     @Override
-    public AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo, String species, String gender, String animalState, String keyword, String sort) {
-        int total = abandonedAnimalDao.selectCount(species, gender, animalState, keyword);
-        log.info("total = {}", total);
+    public AbandonedAnimalPageForm getAbandonedAnimalPage(AbandonedAnimalConditionForm ac) {
+        int total = abandonedAnimalDao.selectCount(ac);
+        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex((ac.getPageNo() - 1) * size + 1, (ac.getPageNo() - 1) * size + size, ac);
 
-        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, gender, animalState, keyword, sort);
-
-        AbandonedAnimalPageForm result = new AbandonedAnimalPageForm(total, pageNo, size, content);
-        log.info("start = {}, end = {}", result.getStartPage(), result.getEndPage());
-
-        return new AbandonedAnimalPageForm(total, pageNo, size, content);
+        return new AbandonedAnimalPageForm(total, ac.getPageNo(), size, content);
     }
 
     @Override
@@ -119,21 +114,21 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     }
 
     @Override
-    public void write(AbandonedAnimalWriteForm abandonedAnimalWriteForm) {
-        AbandonedAnimal abandonedAnimal = toAbandonedAnimalWriteForm(abandonedAnimalWriteForm);
+    public void write(AdminAbandonedAnimalWriteForm adminAbandonedAnimalWriteForm) {
+        AbandonedAnimal abandonedAnimal = toAbandonedAnimalWriteForm(adminAbandonedAnimalWriteForm);
         abandonedAnimalDao.insert(abandonedAnimal);
     }
 
     @Override
-    public AbandonedAnimalModifyForm getAbandonedModify(int abNumber) {
+    public AdminAbandonedAnimalModifyForm getAbandonedModify(int abNumber) {
         AbandonedAnimal abandonedAnimal = abandonedAnimalDao.findByPk(abNumber);
-        AbandonedAnimalModifyForm modReq = toAbandonedAnimalModify(abandonedAnimal);
+        AdminAbandonedAnimalModifyForm modReq = toAbandonedAnimalModify(abandonedAnimal);
 
         return modReq;
     }
 
     @Override
-    public void modify(AbandonedAnimalModifyForm modReq) {
+    public void modify(AdminAbandonedAnimalModifyForm modReq) {
         AbandonedAnimal abandonedAnimal = toAbandonedAnimalModifyForm(modReq);
         log.info("Service - abandonedAnimal : {}", abandonedAnimal);
         abandonedAnimalDao.update(abandonedAnimal);
@@ -154,7 +149,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return abandonedAnimalDao.selectPhone(abNumber);
     }
 
-    private AbandonedAnimal toAbandonedAnimalWriteForm(AbandonedAnimalWriteForm req) {
+    private AbandonedAnimal toAbandonedAnimalWriteForm(AdminAbandonedAnimalWriteForm req) {
         return new AbandonedAnimal(
                 req.getSNumber(),
                 req.getName(),
@@ -171,8 +166,8 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
                 req.getAnimalState());
     }
 
-    private AbandonedAnimalModifyForm toAbandonedAnimalModify(AbandonedAnimal abandonedAnimal) {
-        return new AbandonedAnimalModifyForm(
+    private AdminAbandonedAnimalModifyForm toAbandonedAnimalModify(AbandonedAnimal abandonedAnimal) {
+        return new AdminAbandonedAnimalModifyForm(
                 abandonedAnimal.getAbNumber(),
                 abandonedAnimal.getSNumber(),
                 abandonedAnimal.getName(),
@@ -189,7 +184,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private AbandonedAnimal toAbandonedAnimalModifyForm(AbandonedAnimalModifyForm modReq) {
+    private AbandonedAnimal toAbandonedAnimalModifyForm(AdminAbandonedAnimalModifyForm modReq) {
         return new AbandonedAnimal(
                 modReq.getAbNumber(),
                 modReq.getSNumber(),

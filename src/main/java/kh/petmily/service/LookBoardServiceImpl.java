@@ -67,11 +67,11 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     @Override
-    public LookBoardPageForm getLookPage(int pageNo, String species, String animalState, String keyword, String sort) {
-        int total = lookBoardDao.selectCountWithCondition(species, animalState, keyword);
-        List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
+    public LookBoardPageForm getLookPage(LookBoardConditionForm lc) {
+        int total = lookBoardDao.selectCountWithCondition(lc);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((lc.getPageNo() - 1) * size + 1, (lc.getPageNo() - 1) * size + size, lc);
 
-        return new LookBoardPageForm(total, pageNo, size, content);
+        return new LookBoardPageForm(total, lc.getPageNo(), size, content);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     @Override
-    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type) {
+    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber) {
         int total = lookBoardDao.selectCountBymNumber(mNumber);
         List<LookBoardListForm> content = lookBoardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 

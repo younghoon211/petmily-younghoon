@@ -2,6 +2,7 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.adopt_review.AdoptReview;
+import kh.petmily.domain.adopt_review.form.AdoptReviewConditionForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.mapper.AdoptReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -94,12 +95,12 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     //====== 검색 추가 ======
-    public int selectCountWithCondition(String kindOfBoard, String searchType, String keyword) {
-        return mapper.selectCountWithCondition(kindOfBoard, searchType, keyword);
+    public int selectCountWithCondition(AdoptReviewConditionForm ac) {
+        return mapper.selectCountWithCondition(ac.getKindOfBoard(), ac.getSearchType(), ac.getKeyword());
     }
 
-    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String kindOfBoard, String searchType, String keyword, String sort) {
-        List<AdoptReview> list = mapper.selectIndexWithCondition(start, end, kindOfBoard, searchType, keyword, sort);
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm ac) {
+        List<AdoptReview> list = mapper.selectIndexWithCondition(start, end, ac.getKindOfBoard(), ac.getSearchType(), ac.getKeyword(), ac.getSort());
         List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
 
         for (AdoptReview a : list) {

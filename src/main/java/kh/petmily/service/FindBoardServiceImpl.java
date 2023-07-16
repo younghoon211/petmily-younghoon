@@ -72,11 +72,11 @@ public class FindBoardServiceImpl implements FindBoardService {
     }
 
     @Override
-    public FindBoardPageForm getFindPage(int pageNo, String species, String animalState, String keyword, String sort) {
-        int total = findBoardDao.selectCountWithCondition(species, animalState, keyword);
-        List<FindBoardListForm> content = findBoardDao.selectIndexWithCondition((pageNo - 1) * size + 1, (pageNo - 1) * size + size, species, animalState, keyword, sort);
+    public FindBoardPageForm getFindPage(FindBoardConditionForm fc) {
+        int total = findBoardDao.selectCountWithCondition(fc);
+        List<FindBoardListForm> content = findBoardDao.selectIndexWithCondition((fc.getPageNo() - 1) * size + 1, (fc.getPageNo() - 1) * size + size, fc);
 
-        return new FindBoardPageForm(total, pageNo, size, content);
+        return new FindBoardPageForm(total, fc.getPageNo(), size, content);
     }
 
     @Override
@@ -85,6 +85,7 @@ public class FindBoardServiceImpl implements FindBoardService {
         List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
 
         return new FindBoardPageForm(total, pageNo, adminSize, content);
+
     }
 
     @Override
@@ -120,7 +121,7 @@ public class FindBoardServiceImpl implements FindBoardService {
     }
 
     @Override
-    public FindBoardPageForm getFindMyPost(int pageNo, int mNumber, String type) {
+    public FindBoardPageForm getFindMyPost(int pageNo, int mNumber) {
         int total = findBoardDao.selectCountBymNumber(mNumber);
         List<FindBoardListForm> content = findBoardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 

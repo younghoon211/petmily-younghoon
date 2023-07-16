@@ -1,19 +1,16 @@
 package kh.petmily.service;
 
 import kh.petmily.domain.find_board.FindBoard;
-import kh.petmily.domain.find_board.form.FindBoardDetailForm;
-import kh.petmily.domain.find_board.form.FindBoardModifyForm;
-import kh.petmily.domain.find_board.form.FindBoardPageForm;
-import kh.petmily.domain.find_board.form.FindBoardWriteForm;
+import kh.petmily.domain.find_board.form.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 public interface FindBoardService {
 
-    void write(FindBoardWriteForm fwForm);
+    void write(FindBoardWriteForm findBoardWriteForm);
 
-    void modify(FindBoardModifyForm fmForm);
+    void modify(FindBoardModifyForm findBoardModifyForm);
 
     void delete(int faNumber);
 
@@ -21,7 +18,7 @@ public interface FindBoardService {
 
     FindBoardModifyForm getModifyForm(int faNumber);
 
-    FindBoardPageForm getFindPage(int pageNo, String animalType, String stateType, String keyword, String sort);
+    FindBoardPageForm getFindPage(FindBoardConditionForm findBoardConditionForm);
 
     FindBoardPageForm getAdminFindPage(int pageNo);
 
@@ -35,5 +32,5 @@ public interface FindBoardService {
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    FindBoardPageForm getFindMyPost(int pageNo, int mNumber, String type);
+    FindBoardPageForm getFindMyPost(int pageNo, int mNumber);
 }

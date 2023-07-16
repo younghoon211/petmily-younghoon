@@ -2,10 +2,7 @@ package kh.petmily.service;
 
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
-import kh.petmily.domain.look_board.form.LookBoardDetailForm;
-import kh.petmily.domain.look_board.form.LookBoardModifyForm;
-import kh.petmily.domain.look_board.form.LookBoardPageForm;
-import kh.petmily.domain.look_board.form.LookBoardWriteForm;
+import kh.petmily.domain.look_board.form.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,7 +15,7 @@ public interface LookBoardService {
 
     void delete(int laNumber);
 
-    LookBoardPageForm getLookPage(int pageNo, String animalType, String stateType, String keyword, String sort);
+    LookBoardPageForm getLookPage(LookBoardConditionForm lookBoardConditionForm);
 
     LookBoardPageForm getAdminLookPage(int pageNo);
 
@@ -38,5 +35,5 @@ public interface LookBoardService {
 
     LookBoard getLookBoard(int laNumber);
 
-    LookBoardPageForm getLookMyPost(int pageNo, int mNumber, String type);
+    LookBoardPageForm getLookMyPost(int pageNo, int mNumber);
 }

@@ -1,16 +1,17 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.BoardModifyForm;
 import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.board.form.BoardDetailForm;
 import kh.petmily.domain.board.form.BoardWriteForm;
+import kh.petmily.domain.board.form.BoardConditionForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,26 +28,18 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public String list(@RequestParam String kindOfBoard,
-                       @RequestParam(defaultValue = "1") int pbNumber,
-                       @RequestParam(required = false) String condition,
-                       @RequestParam(required = false) String keyword,
-                       @RequestParam String sort,
-                       Model model) {
+    public String list(@Validated @ModelAttribute BoardConditionForm conditionForm, Model model) {
 
-        log.info("kindOfBoard = {}", kindOfBoard);
-        log.info("pbNumber = {}", pbNumber);
-        log.info("sort = {}", sort);
+        log.info("boardConditionForm = {}", conditionForm);
 
-        BoardPageForm boardPageForm = boardService.getBoardPage(pbNumber, kindOfBoard, condition, keyword, sort);
+        BoardPageForm boardPageForm = boardService.getBoardPage(conditionForm);
         model.addAttribute("boardPageForm", boardPageForm);
 
         return "/board/boardList";
     }
 
-
     @GetMapping("/detail")
-    public String detail(@RequestParam("bNumber") int bNumber, Model model) {
+    public String detail(@RequestParam int bNumber, Model model) {
         BoardDetailForm detailForm = boardService.getBoard(bNumber);
         boardService.updateViewCount(bNumber);
 
@@ -62,48 +55,31 @@ public class BoardController {
 
     @PostMapping("/auth/write")
     public String write(@ModelAttribute BoardWriteForm boardWriteForm, HttpServletRequest request) {
-        if (boardWriteForm.getMNumber() == 0) {
-            Member member = getAuthMember(request);
-
-            int mNumber = member.getMNumber();
-            boardWriteForm.setMNumber(mNumber);
-        }
-
-        log.info("WriteBoardForm = {}", boardWriteForm);
-
+        boardWriteForm.setMNumber(getAuthMember(request).getMNumber());
         boardService.write(boardWriteForm);
 
         return "/board/writeBoardSuccess";
     }
 
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam("bNumber") int bNumber, @RequestParam("kindOfBoard") String kindOfBoard, HttpServletRequest request, Model model) {
-        BoardModifyForm modReq = boardService.getBoardModify(bNumber);
-        Member authUser = getAuthMember(request);
+    public String modifyForm(@RequestParam int bNumber, HttpServletRequest request, Model model) {
+        BoardModifyForm boardModifyForm = boardService.getBoardModify(bNumber);
 
-        int mNumber = authUser.getMNumber();
-        modReq.setMNumber(mNumber);
-        modReq.setBNumber(bNumber);
+        boardModifyForm.setMNumber(getAuthMember(request).getMNumber());
+        boardModifyForm.setBNumber(bNumber);
 
-        log.info("bNumber = {}", bNumber);
-
-        model.addAttribute("modReq", modReq);
+        model.addAttribute("boardModifyForm", boardModifyForm);
 
         return "/board/modifyForm";
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam("bNumber") int bNumber, @RequestParam("kindOfBoard") String kindOfBoard, @ModelAttribute BoardModifyForm modReq, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        Member authUser = getAuthMember(request);
+    public String modify(@RequestParam int bNumber, @RequestParam String kindOfBoard, @ModelAttribute BoardModifyForm boardModifyForm, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        boardModifyForm.setMNumber(getAuthMember(request).getMNumber());
+        boardModifyForm.setBNumber(bNumber);
 
-        int mNumber = authUser.getMNumber();
-        modReq.setMNumber(mNumber);
-        modReq.setBNumber(bNumber);
-
-        log.info("BoardModifyForm = {}", modReq);
-
-        boardService.modify(modReq);
-        model.addAttribute("modReq", modReq);
+        boardService.modify(boardModifyForm);
+        
         redirectAttributes.addAttribute("bNumber", bNumber);
         redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
@@ -111,7 +87,7 @@ public class BoardController {
     }
 
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam("bNumber") int bNumber) {
+    public String delete(@RequestParam int bNumber) {
         boardService.delete(bNumber);
 
         return "/board/deleteSuccess";
@@ -120,6 +96,7 @@ public class BoardController {
     private Member getAuthMember(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute("authUser");
+
         return member;
     }
 }

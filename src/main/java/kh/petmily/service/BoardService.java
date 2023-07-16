@@ -4,10 +4,11 @@ import kh.petmily.domain.board.form.BoardDetailForm;
 import kh.petmily.domain.board.form.BoardModifyForm;
 import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.board.form.BoardWriteForm;
+import kh.petmily.domain.board.form.BoardConditionForm;
 
 public interface BoardService {
 
-    BoardPageForm getBoardPage(int pbNumber, String kindOfBoard, String condition, String keyword, String sort);
+    BoardPageForm getBoardPage(BoardConditionForm boardConditionForm);
 
     BoardPageForm getAdminBoardPage(String kindOfBoard, int pageNo);
 

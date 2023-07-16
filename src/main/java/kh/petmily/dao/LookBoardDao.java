@@ -3,6 +3,7 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
+import kh.petmily.domain.look_board.form.LookBoardConditionForm;
 import kh.petmily.domain.look_board.form.LookBoardListForm;
 import kh.petmily.mapper.FindBoardMapper;
 import kh.petmily.mapper.LookBoardMapper;
@@ -116,14 +117,14 @@ public class LookBoardDao implements BasicDao {
         return lookList;
     }
 
-    public int selectCountWithCondition(String species, String animalState, String keyword) {
-        return mapper.selectCountWithCondition(species, animalState, keyword);
+    public int selectCountWithCondition(LookBoardConditionForm lc) {
+        return mapper.selectCountWithCondition(lc.getSpecies(), lc.getAnimalState(), lc.getKeyword());
     }
 
-    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, String species, String animalState, String keyword, String sort) {
+    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm lc) {
         List<LookBoardListForm> result = new ArrayList<>();
 
-        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(start, end, species, animalState, keyword, sort);
+        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(start, end, lc.getSpecies(), lc.getAnimalState(), lc.getKeyword(), lc.getSort());
 
         for (LookBoard board : lookBoards) {
             LookBoardListForm li = new LookBoardListForm(board.getLaNumber(), selectName(board.getLaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount(), board.getSort());
