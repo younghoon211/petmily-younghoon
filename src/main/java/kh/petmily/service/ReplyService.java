@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ReplyService {
 
-    void write(ReplyWriteForm replyWriteForm);
+    void write(ReplyWriteForm form);
 
-    void modify(ReplyModifyForm replyModifyForm);
+    void modify(ReplyModifyForm form);
 
     void delete(int brNumber);
 

@@ -8,29 +8,27 @@ import java.io.IOException;
 
 public interface FindBoardService {
 
-    void write(FindBoardWriteForm findBoardWriteForm);
-
-    void modify(FindBoardModifyForm findBoardModifyForm);
-
-    void delete(int faNumber);
-
-    FindBoardDetailForm getDetailForm(int faNumber);
-
-    FindBoardModifyForm getModifyForm(int faNumber);
-
-    FindBoardPageForm getFindPage(FindBoardConditionForm findBoardConditionForm);
-
-    FindBoardPageForm getAdminFindPage(int pageNo);
-
-    FindBoardPageForm getMembersFindPage(int pageNo, int mNumber, String matched);
-
-    String findName(int faNumber);
-
-    int updateViewCount(int faNumber);
-
-    FindBoard getFindBoard(int faNumber);
+    void write(FindBoardWriteForm form);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    FindBoardPageForm getFindMyPost(int pageNo, int mNumber);
+    FindBoardPageForm getListPage(FindBoardConditionForm form);
+
+    FindBoardPageForm getAdminListPage(int pageNo);
+
+    FindBoardDetailForm getDetailPage(int faNumber);
+
+    FindBoardPageForm getMatchingPage(int pageNo, int mNumber, String matched);
+
+    FindBoard getFindBoard(int faNumber);
+
+    FindBoardPageForm getMyPost(int pageNo, int mNumber);
+
+    FindBoardModifyForm getModifyForm(int faNumber);
+
+    void modify(FindBoardModifyForm form);
+
+    int updateViewCount(int faNumber);
+
+    void delete(int faNumber);
 }

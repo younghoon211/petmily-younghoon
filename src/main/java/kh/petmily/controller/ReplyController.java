@@ -23,15 +23,15 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @GetMapping("/{bNumber}")
-    public ResponseEntity<List<ReadReplyForm>> list(@PathVariable("bNumber") int bNumber, HttpServletRequest request) {
+    public ResponseEntity<List<ReadReplyForm>> list(@PathVariable int bNumber, HttpServletRequest request) {
         Member authMember = (Member) request.getSession(false).getAttribute("authUser");
 
         List<ReadReplyForm> list = replyService.getList(bNumber);
 
         if (authMember != null) {
-            for (ReadReplyForm readReplyForm : list) {
-                if (readReplyForm.getMNumber() == authMember.getMNumber()) {
-                    readReplyForm.setSameWriter(true);
+            for (ReadReplyForm r : list) {
+                if (r.getMNumber() == authMember.getMNumber()) {
+                    r.setSameWriter(true);
                 }
             }
         }
@@ -40,23 +40,23 @@ public class ReplyController {
     }
 
     @PostMapping("/{bNumber}")
-    public String register(@RequestBody ReplyWriteForm replyWriteForm) {
-        log.info("replyWriteForm = {}", replyWriteForm);
-        replyService.write(replyWriteForm);
+    public String register(@RequestBody ReplyWriteForm writeForm) {
+        log.info("replyWriteForm = {}", writeForm);
+        replyService.write(writeForm);
 
         return "SUCCESS";
     }
 
     @PatchMapping("/{bNumber}")
-    public String update(@RequestBody ReplyModifyForm replyModifyForm) {
-        log.info("replyModifyForm = {}", replyModifyForm);
-        replyService.modify(replyModifyForm);
+    public String update(@RequestBody ReplyModifyForm modifyForm) {
+        log.info("replyModifyForm = {}", modifyForm);
+        replyService.modify(modifyForm);
 
         return "SUCCESS";
     }
 
     @DeleteMapping("/{brNumber}")
-    public String remove(@PathVariable("brNumber") int brNumber) {
+    public String remove(@PathVariable int brNumber) {
         replyService.delete(brNumber);
 
         return "SUCCESS";

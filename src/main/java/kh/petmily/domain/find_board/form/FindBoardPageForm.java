@@ -1,11 +1,14 @@
 package kh.petmily.domain.find_board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class FindBoardPageForm {
+
     private int total;
     private int currentPage;
     private List<FindBoardListForm> content;

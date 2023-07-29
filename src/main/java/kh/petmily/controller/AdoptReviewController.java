@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,118 +30,82 @@ public class AdoptReviewController {
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute AdoptReviewConditionForm conditionForm, Model model) {
 
-        AdoptReviewPageForm adoptReviewPageForm = adoptReviewService.getAdoptReviewPage(conditionForm);
-        model.addAttribute("boardList", adoptReviewPageForm);
+        AdoptReviewPageForm pageForm = adoptReviewService.getListPage(conditionForm);
+        model.addAttribute("pageForm", pageForm);
 
-        return "/adopt_review/listAdoptReview";
+        return "/adopt.review/adopt_review_list";
     }
 
     @GetMapping("/detail")
     public String detail(@RequestParam int bNumber, Model model) {
-        AdoptReviewDetailForm detailForm = adoptReviewService.getAdoptReview(bNumber);
+        AdoptReviewDetailForm detailForm = adoptReviewService.getDetailPage(bNumber);
         adoptReviewService.updateViewCount(bNumber);
 
         model.addAttribute("detailForm", detailForm);
 
-        return "/adopt_review/detailFormAdoptReview";
+        return "/adopt.review/adopt_review_detail";
     }
 
     @GetMapping("/auth/write")
     public String writeForm() {
-        return "/adopt_review/writeAdoptReviewForm";
+        return "/adopt.review/adopt_review_write";
     }
 
     @PostMapping("/auth/write")
-    public String write(@ModelAttribute AdoptReviewWriteForm adoptReviewWriteForm, HttpServletRequest request) {
+    public String write(@ModelAttribute AdoptReviewWriteForm writeForm, HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        if (adoptReviewWriteForm.getmNumber() == 0) {
-            Member member = getAuthMember(request);
-            int mNumber = member.getMNumber();
+        String filename = adoptReviewService.storeFile(writeForm.getFile(), fullPath);
 
-            adoptReviewWriteForm.setmNumber(mNumber);
-        }
+        writeForm.setMNumber(getAuthMember(request).getMNumber());
+        writeForm.setImgPath(filename);
 
-        String filename = "";
+        log.info("adoptReviewWriteForm = {}", writeForm);
 
-        if (!adoptReviewWriteForm.getImgPath().isEmpty()) {
+        adoptReviewService.write(writeForm);
 
-            try {
-                log.info("ImgPath = {}, fullPath = {}", adoptReviewWriteForm.getImgPath(), fullPath);
-
-                filename = adoptReviewService.storeFile(adoptReviewWriteForm.getImgPath(), fullPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            adoptReviewWriteForm.setFullPath(filename);
-        } else {
-            adoptReviewWriteForm.setFullPath("");
-        }
-
-        log.info("adoptReviewWriteForm = {}", adoptReviewWriteForm);
-
-        adoptReviewService.write(adoptReviewWriteForm);
-
-        return "/adopt_review/writeAdoptReviewSuccess";
+        return "/adopt.review/alert_write";
     }
 
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int bNumber, HttpServletRequest request, Model model) {
-        AdoptReviewModifyForm modReq = adoptReviewService.getAdoptReviewModify(bNumber);
-        Member authUser = getAuthMember(request);
+    public String modifyForm(@RequestParam int bNumber, Model model) {
+        AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(bNumber);
+        log.info("수정 전 adoptReviewModifyForm={}", modifyForm);
 
-        int mNumber = authUser.getMNumber();
-        modReq.setMNumber(mNumber);
+        model.addAttribute("modifyForm", modifyForm);
 
-        log.info("modReq={}", modReq);
-
-        model.addAttribute("modReq", modReq);
-
-        return "/adopt_review/modifyAdoptReviewForm";
+        return "/adopt.review/adopt_review_modify";
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam int bNumber, @RequestParam String kindOfBoard, @ModelAttribute AdoptReviewModifyForm modReq, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+    public String modify(@Validated @ModelAttribute AdoptReviewModifyForm modifyForm,
+                         HttpServletRequest request,
+                         Model model) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        Member authUser = getAuthMember(request);
+        String filename = adoptReviewService.storeFile(modifyForm.getFile(), fullPath);
+        modifyForm.setImgPath(filename);
 
-        int mNumber = authUser.getMNumber();
-        modReq.setMNumber(mNumber);
-        modReq.setBNumber(bNumber);
+        adoptReviewService.modify(modifyForm);
+        log.info("수정 후 adoptReviewModifyForm = {}", modifyForm);
 
-        log.info("BoardModifyForm = {}", modReq);
-        String filename = null;
+        model.addAttribute("bNumber", modifyForm.getBNumber());
 
-        try {
-            filename = adoptReviewService.storeFile(modReq.getImgPath(), fullPath);
-            modReq.setFullPath(filename);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        adoptReviewService.modify(modReq);
-        model.addAttribute("modReq", modReq);
-        redirectAttributes.addAttribute("bNumber", bNumber);
-        redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
-
-        return "redirect:/adopt_review/detail?kindOfBoard={kindOfBoard}&bNumber={bNumber}";
+        return "/adopt.review/alert_modify";
     }
 
     @GetMapping("/auth/delete")
     public String delete(@RequestParam int bNumber) {
         adoptReviewService.delete(bNumber);
 
-        return "/adopt_review/deleteSuccess";
+        return "/adopt.review/alert_delete";
     }
 
     @ResponseBody
     @GetMapping("/upload")
     public ResponseEntity<Resource> list(String filename, HttpServletRequest request) {
-
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
         fullPath = fullPath + filename;

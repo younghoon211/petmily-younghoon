@@ -7,31 +7,31 @@ import java.util.List;
 
 public interface MemberService {
 
-    void join(JoinRequest joinReq);
+    void join(MemberJoinForm form);
+
+    void create(AdminMemberCreateForm form);
 
     Member login(String id, String pw);
 
-    void withdraw(int mNumber);
-
     boolean checkPwCorrect(int mNumber, String pw);
-
-    Member modify(Member member, MemberChangeForm memberChangeForm);
-
-    String findName(int mNumber);
-
-    List<Member> selectAll();
 
     boolean isPwEqualToConfirm(String pw, String confirmPw);
 
-    MemberPageForm getMemberPage(int pageNo);
+    String getMemberName(int mNumber);
 
-    MemberModifyForm getMemberModify(int mNumber);
+    List<Member> selectAll();
+
+    MemberPageForm getAdminListPage(int pageNo);
+
+    Member change(Member member, MemberChangeForm form);
+
+    AdminMemberModifyForm getModifyForm(int mNumber);
+
+    void modify(AdminMemberModifyForm form);
+
+    void withdraw(int mNumber);
 
     void delete(int mNumber);
-
-    void create(MemberCreateForm memberCreateForm);
-
-    void modify(MemberModifyForm memberModifyForm);
 
     boolean checkDuplicatedId(String id);
 
@@ -39,7 +39,7 @@ public interface MemberService {
 
     boolean checkDuplicatedPhone(String phone);
 
-    boolean checkDuplicatedPhoneMemberChange(MemberChangeForm memberChangeForm);
-
     boolean checkDuplicatedEmailMemberChange(String email, String id);
+
+    boolean checkDuplicatedPhoneMemberChange(MemberChangeForm form);
 }

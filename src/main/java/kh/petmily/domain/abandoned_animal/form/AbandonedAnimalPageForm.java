@@ -1,11 +1,14 @@
 package kh.petmily.domain.abandoned_animal.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class AbandonedAnimalPageForm {
+
     private int total;
     private int currentPage;
     private List<AbandonedAnimalListForm> content;

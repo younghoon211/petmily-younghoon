@@ -8,23 +8,21 @@ import kh.petmily.domain.board.form.BoardConditionForm;
 
 public interface BoardService {
 
-    BoardPageForm getBoardPage(BoardConditionForm boardConditionForm);
+    void write(BoardWriteForm form);
 
-    BoardPageForm getAdminBoardPage(String kindOfBoard, int pageNo);
+    BoardPageForm getListPage(BoardConditionForm form);
 
-    void write(BoardWriteForm boardWriteForm);
+    BoardDetailForm getDetailPage(int bNumber);
 
-    BoardDetailForm getBoard(int bNumber);
+    BoardPageForm getMyPost(int pageNo, int mNumber, String type, String kindOfBoard);
 
-    BoardModifyForm getBoardModify(int bNumber);
+    BoardPageForm getAdminListPage(String kindOfBoard, int pageNo);
 
-    void modify(BoardModifyForm modReq);
+    BoardModifyForm getModifyForm(int bNumber);
 
-    void delete(int bNumber);
+    void modify(BoardModifyForm form);
 
     int updateViewCount(int bNumber);
 
-    String findName(int mNumber);
-
-    BoardPageForm getBoardMyPost(int pageNo, int mNumber, String type, String kindOfBoard);
+    void delete(int bNumber);
 }

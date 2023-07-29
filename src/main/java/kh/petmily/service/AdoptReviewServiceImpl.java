@@ -1,7 +1,6 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.AdoptReviewDao;
-import kh.petmily.dao.MemberDao;
 import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.*;
 import lombok.RequiredArgsConstructor;
@@ -22,123 +21,19 @@ import java.util.UUID;
 public class AdoptReviewServiceImpl implements AdoptReviewService {
 
     private final AdoptReviewDao adoptReviewDao;
-    private final MemberDao memberDao;
     private int size = 6;
     private int adminSize = 10;
 
+    // ===================== Create =====================
+    // 글쓰기
     @Override
-    public AdoptReviewPageForm getAdoptReviewPage(AdoptReviewConditionForm ac) {
-        int total = adoptReviewDao.selectCountWithCondition(ac);
-        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((ac.getPageNo() - 1) * size + 1, (ac.getPageNo() - 1) * size + size, ac);
-
-        return new AdoptReviewPageForm(total, ac.getPageNo(), size, content);
-    }
-
-    @Override
-    public AdoptReviewPageForm getAdminAdoptReviewPage(String kindOfBoard, int pageNo) {
-        int total = adoptReviewDao.selectCount(kindOfBoard);
-        List<AdoptReviewListForm> content = adoptReviewDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize, kindOfBoard);
-
-        return new AdoptReviewPageForm(total, pageNo, adminSize, content);
-    }
-
-    @Override
-    public AdoptReviewDetailForm getAdoptReview(int bNumber) {
-        AdoptReview arForm = adoptReviewDao.findByPk(bNumber);
-
-        return new AdoptReviewDetailForm(
-                arForm.getBNumber(),
-                arForm.getMNumber(),
-                boardName(arForm.getBNumber()),
-                arForm.getKindOfBoard(),
-                arForm.getTitle(),
-                arForm.getContent(),
-                arForm.getImgPath(),
-                arForm.getWrTime(),
-                arForm.getCheckPublic(),
-                arForm.getViewCount()
-        );
-    }
-
-    @Override
-    public void write(AdoptReviewWriteForm adoptReviewWriteForm) {
-        AdoptReview adoptReview = toAdoptReview(adoptReviewWriteForm);
+    public void write(AdoptReviewWriteForm form) {
+        AdoptReview adoptReview = toWrite(form);
         adoptReviewDao.insert(adoptReview);
     }
 
+    // 파일 업로드
     @Override
-    public AdoptReviewModifyForm getAdoptReviewModify(int bNumber) {
-        AdoptReview adoptReview = adoptReviewDao.findByPk(bNumber);
-        AdoptReviewModifyForm modReq = toAdoptReviewModify(adoptReview);
-        return modReq;
-    }
-
-    @Override
-    public void modify(AdoptReviewModifyForm modReq) {
-        AdoptReview adoptReview = toAdoptReviewModifyForm(modReq);
-
-        log.info("adoptReview.getImgPath() = {} ", adoptReview.getImgPath());
-
-        adoptReviewDao.update(adoptReview);
-    }
-
-    @Override
-    public void delete(int bNumber) {
-        adoptReviewDao.delete(bNumber);
-    }
-
-    @Override
-    public String boardName(int bNumber) {
-        return adoptReviewDao.selectName(bNumber);
-    }
-
-    @Override
-    public int updateViewCount(int bNumber) {
-        return adoptReviewDao.updateViewCount(bNumber);
-    }
-
-    @Override
-    public AdoptReviewPageForm getAdoptReviewMyPost(int pageNo, int mNumber, String kindOfBoard) {
-        int total = adoptReviewDao.selectCountBymNumber(mNumber, kindOfBoard);
-        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, kindOfBoard);
-
-        return new AdoptReviewPageForm(total, pageNo, size, content);
-    }
-
-    private AdoptReview toAdoptReview(AdoptReviewWriteForm req) {
-        return new AdoptReview(
-                req.getmNumber(),
-                req.getKindOfBoard(),
-                req.getTitle(),
-                req.getContent(),
-                req.getFullPath(),
-                req.getCheckPublic()
-        );
-    }
-
-    private AdoptReviewModifyForm toAdoptReviewModify(AdoptReview adoptReview) {
-        return new AdoptReviewModifyForm(adoptReview.getBNumber(), adoptReview.getTitle(), adoptReview.getContent(), adoptReview.getCheckPublic());
-    }
-
-    private AdoptReview toAdoptReviewModifyForm(AdoptReviewModifyForm modReq) {
-        return new AdoptReview(
-                modReq.getBNumber(),
-                modReq.getTitle(),
-                modReq.getContent(),
-                "Y",
-                modReq.getFullPath());
-    }
-
-    private String getFullPath(String filename, String filePath) {
-        return filePath + filename;
-    }
-
-    private String extractExt(String originalFilename) {
-        int position = originalFilename.lastIndexOf(".");
-
-        return originalFilename.substring(position + 1);
-    }
-
     public String storeFile(MultipartFile file, String filePath) throws IOException {
         log.info("storeFile = {} ", file.getOriginalFilename());
 
@@ -154,7 +49,7 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
 
         String originalFilename = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
-        String storeFileName = uuid + "." + extractExt(originalFilename);
+        String storeFileName = uuid + "." + extractExt(originalFilename); // 확장자 포함한 uuid명
         String fullPath = getFullPath(storeFileName, filePath);
 
         log.info("fullPath = {}", fullPath);
@@ -164,8 +59,127 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
         return storeFileName;
     }
 
+    // ===================== Read =====================
+    // 게시판 리스트
     @Override
-    public String findName(int mNumber) {
-        return memberDao.selectName(mNumber);
+    public AdoptReviewPageForm getListPage(AdoptReviewConditionForm form) {
+        int total = adoptReviewDao.selectCountWithCondition(form);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
+
+        return new AdoptReviewPageForm(total, form.getPageNo(), size, content);
+    }
+
+    // 글 상세보기
+    @Override
+    public AdoptReviewDetailForm getDetailPage(int pk) {
+        AdoptReview domain = adoptReviewDao.findByPk(pk);
+
+        return toDetailForm(domain);
+    }
+
+    // 내가 쓴 게시글 (마이페이지)
+    @Override
+    public AdoptReviewPageForm getMyPost(int pageNo, int mNumber, String kindOfBoard) {
+        int total = adoptReviewDao.selectCountBymNumber(mNumber, kindOfBoard);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, kindOfBoard);
+
+        return new AdoptReviewPageForm(total, pageNo, size, content);
+    }
+
+    // 게시판 리스트 (관리자 페이지)
+    @Override
+    public AdoptReviewPageForm getAdminListPage(String kindOfBoard, int pageNo) {
+        int total = adoptReviewDao.selectCount(kindOfBoard);
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize, kindOfBoard);
+
+        return new AdoptReviewPageForm(total, pageNo, adminSize, content);
+    }
+
+    // ===================== Update =====================
+    // 수정 폼
+    @Override
+    public AdoptReviewModifyForm getModifyForm(int pk) {
+        AdoptReview adoptReview = adoptReviewDao.findByPk(pk);
+
+        return toModifyForm(adoptReview);
+    }
+
+    // 수정하기
+    @Override
+    public void modify(AdoptReviewModifyForm form) {
+        AdoptReview adoptReview = toModify(form);
+        adoptReviewDao.update(adoptReview);
+    }
+
+    // 조회수 업데이트
+    @Override
+    public int updateViewCount(int pk) {
+        return adoptReviewDao.updateViewCount(pk);
+    }
+
+    // ===================== Delete =====================
+    @Override
+    public void delete(int pk) {
+        adoptReviewDao.delete(pk);
+    }
+
+
+    // ===================== CRUD 끝 =====================
+
+
+    private AdoptReview toWrite(AdoptReviewWriteForm form) {
+        return new AdoptReview(
+                form.getMNumber(),
+                form.getKindOfBoard(),
+                form.getTitle(),
+                form.getContent(),
+                form.getImgPath()
+        );
+    }
+
+    private String extractExt(String originalFilename) {
+        int position = originalFilename.lastIndexOf(".");
+
+        return originalFilename.substring(position + 1);
+    }
+
+    private String getFullPath(String filename, String filePath) {
+        return filePath + filename;
+    }
+
+    private AdoptReviewDetailForm toDetailForm(AdoptReview domain) {
+        return new AdoptReviewDetailForm(
+                domain.getBNumber(),
+                domain.getMNumber(),
+                boardType(domain.getBNumber()),
+                domain.getKindOfBoard(),
+                domain.getTitle(),
+                domain.getContent(),
+                domain.getImgPath(),
+                domain.getWrTime(),
+                domain.getViewCount()
+        );
+    }
+
+    private String boardType(int pk) {
+        return adoptReviewDao.selectName(pk);
+    }
+
+    private AdoptReviewModifyForm toModifyForm(AdoptReview domain) {
+        return new AdoptReviewModifyForm(
+                domain.getBNumber(),
+                domain.getTitle(),
+                domain.getContent(),
+                domain.getImgPath()
+        );
+    }
+
+    private AdoptReview toModify(AdoptReviewModifyForm form) {
+        return new AdoptReview(
+                form.getBNumber(),
+                form.getTitle(),
+                form.getContent(),
+                form.getImgPath()
+        );
     }
 }

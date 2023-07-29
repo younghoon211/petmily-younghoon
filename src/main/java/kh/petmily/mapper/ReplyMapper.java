@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface ReplyMapper {
 
+    // =======BasicMapper 메소드=======
     Reply selectByPk(int pk);
 
     void insert(Reply obj);
@@ -15,6 +16,7 @@ public interface ReplyMapper {
     void update(Reply obj);
 
     void delete(int pk);
+    // ===============================
 
     List<Reply> getList(int bNumber);
 }

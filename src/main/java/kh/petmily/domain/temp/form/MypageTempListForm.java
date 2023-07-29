@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class MypageTempListForm {
+
     int pk;
     String abName;
     String status;

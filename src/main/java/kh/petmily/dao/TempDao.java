@@ -5,7 +5,7 @@ import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.MypageTempListForm;
-import kh.petmily.domain.temp.form.TempDetailForm;
+import kh.petmily.domain.temp.form.AdminTempDetailForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.MemberMapper;
 import kh.petmily.mapper.TempMapper;
@@ -51,15 +51,24 @@ public class TempDao implements BasicDao {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    public List<TempDetailForm> selectIndex(int start, int end) {
-        List<TempDetailForm> result = new ArrayList<>();
-        List<TempPet> tempList = mapper.selectIndex(start, end);
+    public List<AdminTempDetailForm> selectIndex(int start, int end) {
+        List<AdminTempDetailForm> result = new ArrayList<>();
+        List<TempPet> list = mapper.selectIndex(start, end);
 
-        for (TempPet l : tempList) {
-            TempDetailForm li = new TempDetailForm(
-                    l.getTNumber(), l.getAbNumber(), l.getMNumber(), l.getTempDate(), l.getTempPeriod(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+        for (TempPet l : list) {
+            AdminTempDetailForm li = new AdminTempDetailForm(
+                    l.getTNumber(),
+                    l.getAbNumber(),
+                    l.getMNumber(),
+                    l.getTempDate(),
+                    l.getTempPeriod(),
+                    l.getResidence(),
+                    l.getMaritalStatus(),
+                    l.getJob(),
+                    l.getStatus(),
+                    selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()),
+                    selectMemberId(l.getMNumber())
             );
 
             result.add(li);
@@ -73,26 +82,38 @@ public class TempDao implements BasicDao {
         List<TempPet> list = mapper.selectIndexBymNumber(start, end, mNumber);
 
         for (TempPet t : list) {
-            MypageTempListForm ma = new MypageTempListForm(t.getTNumber(), getAbNameByAbNumber(t.getAbNumber()), t.getStatus());
-            result.add(ma);
+            MypageTempListForm li = new MypageTempListForm(
+                    t.getTNumber(), getAbNameByAbNumber(t.getAbNumber()), t.getStatus());
+
+            result.add(li);
         }
 
         return result;
     }
 
-    public List<TempDetailForm> selectIndex(int start, int end, String status) {
-        List<TempDetailForm> result = new ArrayList<>();
-        List<TempPet> tempList = mapper.selectIndexByStatus(start, end, status);
+    public List<AdminTempDetailForm> selectIndex(int start, int end, String status) {
+        List<AdminTempDetailForm> result = new ArrayList<>();
+        List<TempPet> list = mapper.selectIndexByStatus(start, end, status);
 
-        for (TempPet l : tempList) {
-            TempDetailForm li = new TempDetailForm(
-                    l.getTNumber(), l.getMNumber(), l.getAbNumber(), l.getTempDate(), l.getTempPeriod(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+        for (TempPet l : list) {
+            AdminTempDetailForm li = new AdminTempDetailForm(
+                    l.getTNumber(),
+                    l.getMNumber(),
+                    l.getAbNumber(),
+                    l.getTempDate(),
+                    l.getTempPeriod(),
+                    l.getResidence(),
+                    l.getMaritalStatus(),
+                    l.getJob(),
+                    l.getStatus(),
+                    selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()),
+                    selectMemberId(l.getMNumber())
             );
 
             result.add(li);
         }
+
         return result;
     }
 

@@ -9,31 +9,27 @@ import java.io.IOException;
 
 public interface LookBoardService {
 
-    void write(LookBoardWriteForm lwForm);
-
-    void modify(LookBoardModifyForm lmForm);
-
-    void delete(int laNumber);
-
-    LookBoardPageForm getLookPage(LookBoardConditionForm lookBoardConditionForm);
-
-    LookBoardPageForm getAdminLookPage(int pageNo);
-
-    LookBoardDetailForm getDetailForm(int laNumber);
-
-    LookBoardModifyForm getModifyForm(int laNumber);
-
-    String findLookBoardName(int laNumber);
-
-    String findMemberName(int mNumber);
-
-    int updateViewCount(int laNumber);
-
-    LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard);
+    void write(LookBoardWriteForm form);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
+    LookBoardPageForm getListPage(LookBoardConditionForm form);
+
+    LookBoardPageForm getAdminListPage(int pageNo);
+
+    LookBoardDetailForm getDetailPage(int laNumber);
+
+    LookBoardPageForm getMatchingPage(int pageNo, FindBoard domain);
+
     LookBoard getLookBoard(int laNumber);
 
-    LookBoardPageForm getLookMyPost(int pageNo, int mNumber);
+    LookBoardPageForm getMyPost(int pageNo, int mNumber);
+
+    LookBoardModifyForm getModifyForm(int laNumber);
+
+    void modify(LookBoardModifyForm form);
+
+    int updateViewCount(int laNumber);
+
+    void delete(int laNumber);
 }

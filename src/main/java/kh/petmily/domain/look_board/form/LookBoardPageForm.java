@@ -1,11 +1,14 @@
 package kh.petmily.domain.look_board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class LookBoardPageForm {
+
     private int total;
     private int currentPage;
     private List<LookBoardListForm> content;

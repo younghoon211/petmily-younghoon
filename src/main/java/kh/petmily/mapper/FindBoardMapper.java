@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface FindBoardMapper {
 
+    // =======BasicMapper 메소드=======
     FindBoard selectByPk(int pk);
 
     void insert(FindBoard obj);
@@ -16,18 +17,35 @@ public interface FindBoardMapper {
     void update(FindBoard obj);
 
     void delete(int pk);
+    // ===============================
 
     int selectCountBymNumber(int mNumber);
 
-    List<FindBoard> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
+    List<FindBoard> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber);
 
-    int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
+    int selectCountWithCondition(
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword);
 
-    List<FindBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
+    List<FindBoard> selectIndexWithCondition(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort);
 
     int selectCount();
 
-    List<FindBoard> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<FindBoard> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
+
+    String selectMemberId(int pk);
 
     String selectName(int pk);
 
@@ -35,9 +53,9 @@ public interface FindBoardMapper {
 
     List<Integer> selectMatchedLa(FindBoard obj);
 
-    void changeState(int faNumber);
+    void changeState(int pk);
 
-    void backState(int faNumber);
+    void backState(int pk);
 
     void changeStateLook(int laNumber);
 
@@ -45,7 +63,13 @@ public interface FindBoardMapper {
 
     int selectByPkMax();
 
-    int selectMemberCount(@Param("mNumber") int mNumber, @Param("matched") String matched);
+    int selectMemberCount(
+            @Param("mNumber") int mNumber,
+            @Param("matched") String matched);
 
-    List<FindBoard> selectMemberIndex(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("matched") String matched);
+    List<FindBoard> selectMemberIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber,
+            @Param("matched") String matched);
 }

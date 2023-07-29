@@ -1,24 +1,21 @@
 package kh.petmily.service;
 
 import kh.petmily.domain.abandoned_animal.form.DonateSubmitForm;
-import kh.petmily.domain.donation.form.DonationCreateForm;
-import kh.petmily.domain.donation.form.DonationDetailForm;
-import kh.petmily.domain.donation.form.DonationModifyForm;
-import kh.petmily.domain.donation.form.DonationPageForm;
+import kh.petmily.domain.donation.form.AdminDonationModifyForm;
+import kh.petmily.domain.donation.form.AdminDonationPageForm;
+import kh.petmily.domain.donation.form.AdminDonationWriteForm;
 
 public interface DonateService {
 
-    DonationPageForm getDonationPage(int pageNo);
+    void donate(DonateSubmitForm form);
 
-    DonationDetailForm getDonation(int dNumber);
+    void create(AdminDonationWriteForm form);
 
-    DonationModifyForm getDonationModify(int dNumber);
+    AdminDonationPageForm getListPage(int pageNo);
 
-    void create(DonationCreateForm donationCreateForm);
+    AdminDonationModifyForm getModifyForm(int dNumber);
 
-    void modify(DonationModifyForm donationModifyForm);
+    void modify(AdminDonationModifyForm form);
 
     void delete(int dNumber);
-
-    void donate(DonateSubmitForm donateSubmitForm);
 }

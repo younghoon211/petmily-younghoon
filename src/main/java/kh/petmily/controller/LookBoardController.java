@@ -1,5 +1,6 @@
 package kh.petmily.controller;
 
+import kh.petmily.domain.find_board.form.FindBoardWriteForm;
 import kh.petmily.domain.look_board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.LookBoardService;
@@ -30,109 +31,73 @@ public class LookBoardController {
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute LookBoardConditionForm conditionForm, Model model) {
-        LookBoardPageForm lookBoardPageForm = lookBoardService.getLookPage(conditionForm);
-        model.addAttribute("Looks", lookBoardPageForm);
+        LookBoardPageForm pageForm = lookBoardService.getListPage(conditionForm);
+        model.addAttribute("pageForm", pageForm);
 
-        return "/look_board/listLookBoard";
+        return "/look.board/look_list";
     }
 
     @GetMapping("/detail")
     public String detail(@RequestParam int laNumber, Model model) {
         lookBoardService.updateViewCount(laNumber);
+        LookBoardDetailForm detailForm = lookBoardService.getDetailPage(laNumber);
 
-        LookBoardDetailForm detailForm = lookBoardService.getDetailForm(laNumber);
-        log.info("LookDetailForm = {}", detailForm);
+        model.addAttribute("detailForm", detailForm);
 
-        model.addAttribute("lookIn", detailForm);
-
-        return "/look_board/detailLookBoard";
+        return "/look.board/look_detail";
     }
 
     //=======작성=======
     @GetMapping("/auth/write")
     public String writeForm() {
-        return "/look_board/writeLookBoardForm";
+        return "/look.board/look_write";
     }
 
     @PostMapping("/auth/write")
-    public String write(@ModelAttribute LookBoardWriteForm lookBoardWriteForm, HttpServletRequest request) {
+    public String write(@ModelAttribute LookBoardWriteForm writeForm,
+                        HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        Member member = getAuthMember(request);
+        String filename = lookBoardService.storeFile(writeForm.getFile(), fullPath);
 
-        int mNumber = member.getMNumber();
-        lookBoardWriteForm.setMNumber(mNumber);
-        String filename = "";
+        writeForm.setMNumber(getAuthMember(request).getMNumber());
+        writeForm.setImgPath(filename);
 
-        if (!lookBoardWriteForm.getImgPath().isEmpty()) {
-            try {
-                filename = lookBoardService.storeFile(lookBoardWriteForm.getImgPath(), fullPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        log.info("lookBoardWriteForm = {}", writeForm);
 
-            lookBoardWriteForm.setFullPath(filename);
-        } else {
-            lookBoardWriteForm.setFullPath("");
-        }
+        lookBoardService.write(writeForm);
 
-
-        log.info("LookWriteForm = {}", lookBoardWriteForm);
-
-        lookBoardService.write(lookBoardWriteForm);
-
-        return "/look_board/submitSuccess";
+        return "/look.board/alert_write";
     }
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int laNumber, HttpServletRequest request, Model model) {
-        LookBoardModifyForm lmForm = lookBoardService.getModifyForm(laNumber);
+    public String modifyForm(@RequestParam int laNumber, Model model) {
+        LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(laNumber);
+        log.info("수정 전 LookBoardModifyForm = {}", modifyForm);
 
-        Member member = getAuthMember(request);
+        model.addAttribute("modifyForm", modifyForm);
 
-        int mNumber = member.getMNumber();
-        lmForm.setMNumber(mNumber);
-        lmForm.setLaNumber(laNumber);
-
-        model.addAttribute("lookMod", lmForm);
-
-        return "/look_board/modifyLookBoardForm";
+        return "/look.board/look_modify";
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam int laNumber,
-                         @ModelAttribute LookBoardModifyForm lookBoardModifyForm,
+    public String modify(@Validated @ModelAttribute LookBoardModifyForm modifyForm,
                          HttpServletRequest request,
-                         Model model,
-                         RedirectAttributes redirectAttributes) {
+                         Model model) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        Member member = getAuthMember(request);
+        String filename = lookBoardService.storeFile(modifyForm.getFile(), fullPath);
+        modifyForm.setImgPath(filename);
 
-        int mNumber = member.getMNumber();
-        lookBoardModifyForm.setMNumber(mNumber);
-        lookBoardModifyForm.setLaNumber(laNumber);
+        lookBoardService.modify(modifyForm);
+        log.info("수정 후 LookBoardModifyForm = {}", modifyForm);
 
-        log.info("LookModifyForm = {}", lookBoardModifyForm);
-        String filename = null;
+        model.addAttribute("laNumber", modifyForm.getLaNumber());
 
-        try {
-            filename = lookBoardService.storeFile(lookBoardModifyForm.getImgPath(), fullPath);
-            lookBoardModifyForm.setFullPath(filename);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        lookBoardService.modify(lookBoardModifyForm);
-
-        model.addAttribute("lookMod", lookBoardModifyForm);
-
-        redirectAttributes.addAttribute("laNumber", laNumber);
-
-        return "redirect:/lookBoard/detail?laNumber={laNumber}";
+        return "/look.board/alert_modify";
     }
 
     //=======삭제=======
@@ -140,7 +105,7 @@ public class LookBoardController {
     public String delete(@RequestParam int laNumber) {
         lookBoardService.delete(laNumber);
 
-        return "/look_board/submitSuccess";
+        return "/look.board/alert_delete";
     }
 
     @ResponseBody

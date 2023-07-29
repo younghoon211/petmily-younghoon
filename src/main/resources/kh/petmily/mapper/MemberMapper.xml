@@ -18,7 +18,7 @@
 
     <update id="update">
         update MEMBER
-        set PW = #{pw}, NAME = #{name}, EMAIL = #{email}, PHONE = #{phone}
+        set PW = #{pw}, NAME = #{name}, BIRTH = #{birth}, GENDER = #{gender}, EMAIL = #{email}, PHONE = #{phone}
         where MNUMBER = #{mNumber}
     </update>
 
@@ -70,7 +70,7 @@
         order by MNUMBER
     </select>
 
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectCount" resultType="int">
         select count(*)
         from MEMBER
     </select>
@@ -88,32 +88,32 @@
         where MNUMBER = #{pk}
     </select>
 
-    <select id="selectIdCheck" resultType="java.lang.Integer">
+    <select id="selectIdCheck" resultType="int">
         select count(ID)
         from MEMBER
         where ID = #{id}
     </select>
 
-    <select id="selectEmailCheck" resultType="java.lang.Integer">
+    <select id="selectEmailCheck" resultType="int">
         select count(EMAIL)
         from MEMBER
         where EMAIL = #{email}
     </select>
 
-    <select id="selectPhoneCheck" resultType="java.lang.Integer">
+    <select id="selectPhoneCheck" resultType="int">
         select count(PHONE)
         from MEMBER
         where PHONE = #{phone}
     </select>
 
-    <select id="selectEmailCheckMemberChange" resultType="java.lang.Integer">
+    <select id="selectEmailCheckMemberChange" resultType="int">
         select count(*)
         from MEMBER
         where EMAIL = #{email}
         and ID != #{id}
     </select>
 
-    <select id="selectPhoneCheckMemberChange" resultType="java.lang.Integer">
+    <select id="selectPhoneCheckMemberChange" resultType="int">
         select count(*)
         from MEMBER
         where PHONE = #{phone}

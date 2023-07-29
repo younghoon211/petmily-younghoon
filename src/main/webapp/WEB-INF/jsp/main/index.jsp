@@ -3,31 +3,38 @@
 <html lang="en">
 <head>
     <title>Petmily - Don't buy, Do Adopt</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap"
           rel="stylesheet">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="/resources/petsitting-master/css/animate.css">
-
     <link rel="stylesheet" href="/resources/petsitting-master/css/owl.carousel.min.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/magnific-popup.css">
-
-
     <link rel="stylesheet" href="/resources/petsitting-master/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/jquery.timepicker.css">
-
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
 </head>
 
-<%@ include file="/WEB-INF/jsp/include/header.jspf" %>
+<body>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"/>
+    </svg>
+</div>
 
-<div class="hero-wrap js-fullheight" style="background-image: url('/resources/petsitting-master/images/bg_1.jpg');"
+<!-- header -->
+<%@ include file="../include/header.jspf" %>
+
+<%-- 현재 페이지 --%>
+<div class="hero-wrap js-fullheight" style="background-image: url('../../../resources/petsitting-master/images/bg_1.jpg');"
      data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -98,7 +105,7 @@
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
                 <div class="img img-video d-flex align-self-stretch align-items-center justify-content-center justify-content-md-center mb-4 mb-sm-0"
-                     style="background-image:url('/resources/petsitting-master/images/about-1.jpg');">
+                     style="background-image:url('../../../resources/petsitting-master/images/about-1.jpg');">
                 </div>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
@@ -196,7 +203,7 @@
         <div class="row">
             <div class="col-lg-6 order-md-last">
                 <div class="img img-video d-flex align-self-stretch align-items-center justify-content-center justify-content-md-center mb-4 mb-sm-0"
-                     style="background-image:url('/resources/petsitting-master/images/about-4.jpg');">
+                     style="background-image:url('../../../resources/petsitting-master/images/about-4.jpg');">
                     <a href="https://vimeo.com/248735074"
                        class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
                         <span class="fa fa-play"></span>
@@ -204,9 +211,9 @@
                 </div>
                 <div class="d-flex mt-3">
                     <div class="img img-2 mr-md-2"
-                         style="background-image:url('/resources/petsitting-master/images/about-5.jpg');"></div>
+                         style="background-image:url('../../../resources/petsitting-master/images/about-5.jpg');"></div>
                     <div class="img img-2 ml-md-2"
-                         style="background-image:url('/resources/petsitting-master/images/about-6.jpg');"></div>
+                         style="background-image:url('../../../resources/petsitting-master/images/about-6.jpg');"></div>
                 </div>
             </div>
 
@@ -219,7 +226,7 @@
                     <div class="card">
                         <div class="card-header p-0" id="headingOne">
                             <h2 class="mb-0">
-                                <button href="#collapseOne"
+                                <button type="button" href="#collapseOne"
                                         class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link"
                                         data-parent="#accordion" data-toggle="collapse" aria-expanded="true"
                                         aria-controls="collapseOne">
@@ -244,7 +251,7 @@
                     <div class="card">
                         <div class="card-header p-0" id="headingTwo" role="tab">
                             <h2 class="mb-0">
-                                <button href="#collapseTwo"
+                                <button type="button" href="#collapseTwo"
                                         class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link"
                                         data-parent="#accordion" data-toggle="collapse" aria-expanded="false"
                                         aria-controls="collapseTwo">
@@ -266,7 +273,7 @@
                     <div class="card">
                         <div class="card-header p-0" id="headingThree" role="tab">
                             <h2 class="mb-0">
-                                <button href="#collapseThree"
+                                <button type="button" href="#collapseThree"
                                         class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link"
                                         data-parent="#accordion" data-toggle="collapse" aria-expanded="false"
                                         aria-controls="collapseThree">
@@ -292,7 +299,7 @@
     </div>
 </section>
 
-<section class="ftco-section testimony-section" style="background-image: url('/resources/petsitting-master/images/bg_2.jpg');">
+<section class="ftco-section testimony-section" style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row justify-content-center pb-5 mb-3">
@@ -312,7 +319,7 @@
                                 <p class="mb-4">얌전하고 잘 짖지 않는 강아지입니다. 사람의 손길을 그리워해서 쓰다듬어주는걸 좋아합니다.</p>
                                 <div class="d-flex align-items-center">
                                     <div class="user-img"
-                                         style="background-image: url('/resources/petsitting-master/images/abani-01.jpg')"></div>
+                                         style="background-image: url('../../../resources/petsitting-master/images/abani-01.jpg')"></div>
                                     <div class="pl-3">
                                         <p class="name">바둑이(3년 추정)</p>
                                         <span class="position">강아지 - 비숑</span>
@@ -329,7 +336,7 @@
                                 <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다. </p>
                                 <div class="d-flex align-items-center">
                                     <div class="user-img"
-                                         style="background-image: url('/resources/petsitting-master/images/abani-02.jpg')"></div>
+                                         style="background-image: url('../../../resources/petsitting-master/images/abani-02.jpg')"></div>
                                     <div class="pl-3">
                                         <p class="name">코코(6개월 추정)</p>
                                         <span class="position">고양이 - 코리안 숏헤어</span>
@@ -346,7 +353,7 @@
                                 <p class="mb-4">얌전하고 잘 짖지 않는 강아지입니다. 사람의 손길을 그리워해서 쓰다듬어주는걸 좋아합니다.</p>
                                 <div class="d-flex align-items-center">
                                     <div class="user-img"
-                                         style="background-image: url('/resources/petsitting-master/images/abani-03.jpg')"></div>
+                                         style="background-image: url('../../../resources/petsitting-master/images/abani-03.jpg')"></div>
                                     <div class="pl-3">
                                         <p class="name">몽실이(5년 추정)</p>
                                         <span class="position">강아지 - 삽살견</span>
@@ -363,7 +370,7 @@
                                 <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다.</p>
                                 <div class="d-flex align-items-center">
                                     <div class="user-img"
-                                         style="background-image: url('/resources/petsitting-master/images/abani-04.jpg')"></div>
+                                         style="background-image: url('../../../resources/petsitting-master/images/abani-04.jpg')"></div>
                                     <div class="pl-3">
                                         <p class="name">시루(1년 추정)</p>
                                         <span class="position">강아지 - 말티즈</span>
@@ -380,7 +387,7 @@
                                 <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다.</p>
                                 <div class="d-flex align-items-center">
                                     <div class="user-img"
-                                         style="background-image: url('/resources/petsitting-master/images/abani-05.jpg')"></div>
+                                         style="background-image: url('../../../resources/petsitting-master/images/abani-05.jpg')"></div>
                                     <div class="pl-3">
                                         <p class="name">치즈(1년 추정)</p>
                                         <span class="position">고양이 - 코리안 숏헤어</span>
@@ -406,7 +413,7 @@
             <div class="col-md-4 d-flex ftco-animate">
                 <div class="blog-entry align-self-stretch">
                     <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('/resources/petsitting-master/images/image_1.jpg');">
+                       style="background-image: url('../../../resources/petsitting-master/images/image_1.jpg');">
                     </a>
                     <div class="text p-4">
                         <div class="meta mb-2">
@@ -421,7 +428,7 @@
             <div class="col-md-4 d-flex ftco-animate">
                 <div class="blog-entry align-self-stretch">
                     <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('/resources/petsitting-master/images/gallery-12.jpg');">
+                       style="background-image: url('../../../resources/petsitting-master/images/gallery-12.jpg');">
                     </a>
                     <div class="text p-4">
                         <div class="meta mb-2">
@@ -436,7 +443,7 @@
             <div class="col-md-4 d-flex ftco-animate">
                 <div class="blog-entry align-self-stretch">
                     <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('/resources/petsitting-master/images/image_3.jpg');">
+                       style="background-image: url('../../../resources/petsitting-master/images/image_3.jpg');">
                     </a>
                     <div class="text p-4">
                         <div class="meta mb-2">
@@ -462,7 +469,7 @@
         <div class="row">
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-8.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-8.jpg');">
                     <a href="images/gallery-1.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -477,7 +484,7 @@
             </div>
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-9.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-9.jpg');">
                     <a href="images/gallery-2.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -492,7 +499,7 @@
             </div>
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-10.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-10.jpg');">
                     <a href="images/gallery-3.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -508,7 +515,7 @@
 
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-11.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-11.jpg');">
                     <a href="images/gallery-4.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -523,7 +530,7 @@
             </div>
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-12.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-12.jpg');">
                     <a href="images/gallery-5.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -538,7 +545,7 @@
             </div>
             <div class="col-md-4 ftco-animate">
                 <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('/resources/petsitting-master/images/gallery-13.jpg');">
+                     style="background-image: url('../../../resources/petsitting-master/images/gallery-13.jpg');">
                     <a href="images/gallery-6.jpg"
                        class="icon image-popup d-flex justify-content-center align-items-center">
                         <span class="fa fa-expand"></span>
@@ -554,17 +561,6 @@
         </div>
     </div>
 </section>
-
-<%@ include file="/WEB-INF/jsp/include/footer.jspf" %>
-
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen">
-    <svg class="circular" width="48px" height="48px">
-        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
-        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-                stroke="#F96D00"/>
-    </svg>
-</div>
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
@@ -583,5 +579,7 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<%-- footer --%>
+<%@ include file="../include/footer.jspf" %>
 </body>
 </html>

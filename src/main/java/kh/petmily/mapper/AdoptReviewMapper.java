@@ -12,24 +12,44 @@ public interface AdoptReviewMapper {
     // =======BasicMapper 메소드=======
     AdoptReview selectByPk(int pk);
 
-    void insert(AdoptReview board);
+    void insert(AdoptReview obj);
 
-    void update(AdoptReview board);
+    void update(AdoptReview obj);
 
     void delete(int pk);
-    // =======BasicMapper 메소드 끝=======
+    // ===============================
 
-    int selectCountBymNumber(@Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
+    int selectCountBymNumber(
+            @Param("mNumber") int mNumber,
+            @Param("kindOfBoard") String kindOfBoard);
 
-    List<AdoptReview> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
+    List<AdoptReview> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber,
+            @Param("kindOfBoard") String kindOfBoard);
 
     int selectCount(String kindOfBoard);
 
-    List<AdoptReview> selectIndex(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard);
+    List<AdoptReview> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("kindOfBoard") String kindOfBoard);
 
-    int selectCountWithCondition(@Param("kindOfBoard") String kindOfBoard, @Param("searchType") String searchType, @Param("keyword") String keyword);
+    int selectCountWithCondition(
+            @Param("kindOfBoard") String kindOfBoard,
+            @Param("searchType") String searchType,
+            @Param("keyword") String keyword);
 
-    List<AdoptReview> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard, @Param("searchType") String searchType, @Param("keyword") String keyword, @Param("sort") String sort);
+    List<AdoptReview> selectIndexWithCondition(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("kindOfBoard") String kindOfBoard,
+            @Param("searchType") String searchType,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort);
+
+    String selectMemberId(int pk);
 
     String selectName(int pk);
 

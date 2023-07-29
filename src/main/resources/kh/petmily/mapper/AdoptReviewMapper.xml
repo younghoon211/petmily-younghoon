@@ -12,14 +12,22 @@
     </select>
 
     <insert id="insert">
-        insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, VIDEO, WRTIME, CHECKPUBLIC)
-        values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}, #{imgPath}, null, SYSDATE, #{checkPublic})
+        insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT
+        <if test='imgPath != null and imgPath !=""'>
+        , IMGPATH
+        </if>
+        , VIDEO, WRTIME, CHECKPUBLIC)
+        values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}
+        <if test='imgPath != null and imgPath !=""'>
+        , #{imgPath}
+        </if>
+        , null, SYSDATE, 'Y')
     </insert>
 
     <update id="update">
         update BOARD
-        set TITLE = #{title}, CONTENT = #{content}, CHECKPUBLIC = #{checkPublic}, WRTIME = SYSDATE
-        <if test='imgPath != null '>
+        set TITLE = #{title}, CONTENT = #{content}, WRTIME = SYSDATE
+        <if test='imgPath != null and imgPath !=""'>
             ,IMGPATH = #{imgPath}
         </if>
         where BNUMBER = #{bNumber}
@@ -30,7 +38,7 @@
         where BNUMBER = #{pk}
     </delete>
 
-    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+    <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from BOARD
         where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard}
@@ -44,7 +52,7 @@
     </select>
 
     <!--관리자-->
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectCount" resultType="int">
         select count(*)
         from BOARD where KINDOFBOARD = #{kindOfBoard}
     </select>
@@ -61,7 +69,7 @@
     </select>
 
     <!--======= 조건부 검색 게시글 개수 =======-->
-    <select id="selectCountWithCondition" resultType="java.lang.Integer">
+    <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from BOARD
         <where>
@@ -135,6 +143,13 @@
         </if>
     </sql>
 
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from BOARD B inner join MEMBER M
+        on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
+    </select>
+
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from BOARD B inner join MEMBER M
@@ -145,6 +160,6 @@
     <update id="updateViewCount">
         update BOARD
         set VIEWCOUNT = VIEWCOUNT + 1
-        where BNUMBER = #{bNumber}
+        where BNUMBER = #{pk}
     </update>
 </mapper>

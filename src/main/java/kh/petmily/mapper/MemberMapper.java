@@ -12,12 +12,12 @@ public interface MemberMapper {
     // =======BasicMapper 메소드=======
     Member selectByPk(int pk);
 
-    void insert(Member member);
+    void insert(Member obj);
 
-    void update(Member member);
+    void update(Member obj);
 
     void delete(int pk);
-    // =======BasicMapper 메소드=======
+    // ===============================
 
     int selectmNumber(@Param("id") String id, @Param("pw") String pw);
 

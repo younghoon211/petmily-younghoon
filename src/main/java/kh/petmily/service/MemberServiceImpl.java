@@ -17,14 +17,25 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberDao memberDao;
-    private int size = 5;
+    private int size = 10;
 
+    // ===================== Create =====================
+    // 회원가입
     @Override
-    public void join(JoinRequest joinReq) {
-        Member member = toMemberJoin(joinReq);
+    public void join(MemberJoinForm form) {
+        Member member = toJoin(form);
         memberDao.insert(member);
     }
 
+    // 회원정보 추가 (관리자)
+    @Override
+    public void create(AdminMemberCreateForm form) {
+        Member member = toCreate(form);
+        memberDao.insert(member);
+    }
+
+    // ===================== Read =====================
+    // 로그인
     @Override
     public Member login(String id, String pw) {
         Member member = memberDao.selectMemberById(id);
@@ -36,145 +47,184 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
+    // 비밀번호 체크
     @Override
-    public void withdraw(int mNumber) {
-        memberDao.delete(mNumber);
-    }
-
-    @Override
-    public boolean checkPwCorrect(int mNumber, String pw) {
-        Member member = memberDao.findByPk(mNumber);
+    public boolean checkPwCorrect(int pk, String pw) {
+        Member member = memberDao.findByPk(pk);
 
         return member.getPw().equals(pw);
     }
 
+    // 비밀번호, 확인 체크
     @Override
     public boolean isPwEqualToConfirm(String pw, String confirmPw) {
         return pw != null && pw.equals(confirmPw);
     }
 
+    // 회원 이름
     @Override
-    public Member modify(Member member, MemberChangeForm memberChangeForm) {
-        Member mem = toMemberFromChange(member, memberChangeForm);
-
-        memberDao.update(mem);
-
-        log.info("Service - modify - member : {}", mem);
-
-        return mem;
+    public String getMemberName(int pk) {
+        return memberDao.selectName(pk);
     }
 
-    @Override
-    public String findName(int mNumber) {
-        return memberDao.selectName(mNumber);
-    }
-
+    // 모든 회원정보 조회 (관리자)
     @Override
     public List<Member> selectAll() {
         return memberDao.selectAll();
     }
 
-    // 관리자 페이지
+    // 회원 리스트 페이지 (관리자)
     @Override
-    public MemberPageForm getMemberPage(int pageNo) {
+    public MemberPageForm getAdminListPage(int pageNo) {
         int total = memberDao.selectCount();
         List<MemberDetailForm> content = memberDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
 
         return new MemberPageForm(total, pageNo, size, content);
     }
 
+    // ===================== Update =====================
+    // 수정
     @Override
-    public void delete(int mNumber) {
-        memberDao.delete(mNumber);
+    public Member change(Member domain, MemberChangeForm form) {
+        Member member = toChange(domain, form);
+        memberDao.update(member);
+
+        return member;
     }
 
+    // 수정 폼 (관리자)
     @Override
-    public MemberModifyForm getMemberModify(int mNumber) {
-        Member member = memberDao.findByPk(mNumber);
-        MemberModifyForm memberModifyForm = toMemberModify(member);
+    public AdminMemberModifyForm getModifyForm(int pk) {
+        Member member = memberDao.findByPk(pk);
 
-        return memberModifyForm;
+        return toModifyForm(member);
     }
 
+    // 수정 (관리자)
     @Override
-    public void create(MemberCreateForm memberCreateForm) {
-        Member member = toMember(memberCreateForm);
-
-        memberDao.insert(member);
-    }
-
-    @Override
-    public void modify(MemberModifyForm memberModifyForm) {
-        Member member = toMember(memberModifyForm);
-
+    public void modify(AdminMemberModifyForm form) {
+        Member member = toModify(form);
         memberDao.update(member);
     }
 
+    // ===================== Delete =====================
+    // 회원 탈퇴
+    @Override
+    public void withdraw(int pk) {
+        memberDao.delete(pk);
+    }
+
+    // 삭제 (관리자)
+    @Override
+    public void delete(int pk) {
+        memberDao.delete(pk);
+    }
+
+    // ===================== 검증 =====================
+    // 회원가입 검증 (아이디)
     @Override
     public boolean checkDuplicatedId(String id) {
         int idCount = memberDao.selectIdCheck(id);
+        
         return idCount == 1;
     }
 
+    // 회원가입 검증 (이메일)
     @Override
     public boolean checkDuplicatedEmail(String email) {
         int emailCount = memberDao.selectEmailCheck(email);
+        
         return emailCount == 1;
     }
 
+    // 회원가입 검증 (연락처)
     @Override
     public boolean checkDuplicatedPhone(String phone) {
         int phoneCount = memberDao.selectPhoneCheck(phone);
+        
         return phoneCount == 1;
     }
 
+    // 회원정보 변경 검증 (이메일)
     @Override
     public boolean checkDuplicatedEmailMemberChange(String email, String id) {
         int emailCount = memberDao.selectEmailCheckMemberChange(email, id);
+        
         return emailCount == 0;
     }
 
+    // 회원정보 변경 검증 (연락처)
     @Override
-    public boolean checkDuplicatedPhoneMemberChange(MemberChangeForm memberChangeForm) {
-        int phoneCount = memberDao.selectPhoneCheckMemberChange(memberChangeForm.getPhone(), memberChangeForm.getId());
+    public boolean checkDuplicatedPhoneMemberChange(MemberChangeForm form) {
+        int phoneCount = memberDao.selectPhoneCheckMemberChange(
+                         form.getPhone(), form.getId());
+        
         return phoneCount == 1;
     }
 
 
-    private Member toMember(MemberCreateForm memberCreateForm) {
-        Member member = new Member(memberCreateForm.getMNumber(), memberCreateForm.getId(), memberCreateForm.getPw(), memberCreateForm.getName(), memberCreateForm.getBirth(), memberCreateForm.getGender(), memberCreateForm.getEmail(), memberCreateForm.getPhone(), memberCreateForm.getGrade());
+    // ===================== CRUD / 검증 끝 =====================
 
-        return member;
+
+    private Member toJoin(MemberJoinForm form) {
+        return new Member(
+                form.getId(),
+                form.getPw(),
+                form.getName(),
+                form.getBirth().substring(0, 10),
+                form.getGender(),
+                form.getEmail(),
+                form.getPhone()
+        );
     }
 
-    private Member toMember(MemberModifyForm memberModifyForm) {
-        Member member = new Member(memberModifyForm.getMNumber(), memberModifyForm.getId(), memberModifyForm.getPw(), memberModifyForm.getName(), memberModifyForm.getBirth(), memberModifyForm.getGender(), memberModifyForm.getEmail(), memberModifyForm.getPhone(), memberModifyForm.getGrade());
-
-        return member;
+    private Member toCreate(AdminMemberCreateForm form) {
+        return new Member(
+                form.getId(),
+                form.getPw(),
+                form.getName(),
+                form.getBirth().substring(0, 10),
+                form.getGender(),
+                form.getEmail(),
+                form.getPhone()
+        );
     }
 
-    private MemberModifyForm toMemberModify(Member member) {
-        return new MemberModifyForm(member.getMNumber(), member.getId(), member.getPw(), member.getName(), member.getBirth(), member.getGender(), member.getEmail(), member.getPhone(), member.getGrade());
+    private Member toChange(Member domain, MemberChangeForm form) {
+        return new Member(
+                domain.getMNumber(),
+                form.getPw(),
+                form.getName(),
+                domain.getBirth(),
+                domain.getGender(),
+                form.getEmail(),
+                form.getPhone()
+        );
     }
 
-    private Member toMemberFromChange(Member member, MemberChangeForm memberChangeForm) {
-        return new Member(member.getMNumber(), member.getId(), memberChangeForm.getPw(), memberChangeForm.getName(), member.getBirth(), member.getGender(), memberChangeForm.getEmail(), memberChangeForm.getPhone(), member.getGrade());
+    private AdminMemberModifyForm toModifyForm(Member domain) {
+        return new AdminMemberModifyForm(
+                domain.getMNumber(),
+                domain.getId(),
+                domain.getPw(),
+                domain.getName(),
+                domain.getBirth(),
+                domain.getGender(),
+                domain.getEmail(),
+                domain.getPhone(),
+                domain.getGrade()
+        );
     }
 
-    private Member toMemberJoin(JoinRequest joinReq) {
-        String id = joinReq.getId();
-        String pw = joinReq.getPw();
-        String name = joinReq.getName();
-        String birth = extractyyyymmdd(joinReq);
-        String gender = joinReq.getGender();
-        String email = joinReq.getEmail();
-        String phone = joinReq.getPhone();
-
-        return new Member(id, pw, name, birth, gender, email, phone);
-    }
-
-    private String extractyyyymmdd(JoinRequest joinReq) {
-        String birth = joinReq.getBirth();
-        return birth.substring(0, 10);
+    private Member toModify(AdminMemberModifyForm form) {
+        return new Member(
+                form.getMNumber(),
+                form.getPw(),
+                form.getName(),
+                form.getBirth(),
+                form.getGender(),
+                form.getEmail(),
+                form.getPhone()
+        );
     }
 }

@@ -106,24 +106,51 @@ public class FindBoardDao implements BasicDao {
         List<FindBoard> list = mapper.selectIndexBymNumber(start, end, mNumber);
 
         for (FindBoard board : list) {
-            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
-            result.add(fi);
+            FindBoardListForm li = new FindBoardListForm(
+                    board.getFaNumber(),
+                    selectName(board.getFaNumber()),
+                    board.getSpecies(),
+                    board.getKind(),
+                    board.getLocation(),
+                    board.getAnimalState(),
+                    board.getImgPath(),
+                    board.getWrTime(),
+                    board.getTitle(),
+                    board.getViewCount()
+            );
+
+            result.add(li);
         }
 
         return result;
     }
 
-    public int selectCountWithCondition(FindBoardConditionForm fc) {
-        return mapper.selectCountWithCondition(fc.getSpecies(), fc.getAnimalState(), fc.getKeyword());
+    public int selectCountWithCondition(FindBoardConditionForm form) {
+        return mapper.selectCountWithCondition(
+                form.getSpecies(), form.getAnimalState(), form.getKeyword());
     }
 
-    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm fc) {
+    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm form) {
         List<FindBoardListForm> result = new ArrayList<>();
-        List<FindBoard> list = mapper.selectIndexWithCondition(start, end, fc.getSpecies(), fc.getAnimalState(), fc.getKeyword(), fc.getSort());
+        List<FindBoard> list = mapper.selectIndexWithCondition(
+                start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword(), form.getSort()
+        );
 
         for (FindBoard board : list) {
-            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
-            result.add(fi);
+            FindBoardListForm li = new FindBoardListForm(
+                    board.getFaNumber(),
+                    selectName(board.getFaNumber()),
+                    board.getSpecies(),
+                    board.getKind(),
+                    board.getLocation(),
+                    board.getAnimalState(),
+                    board.getImgPath(),
+                    board.getWrTime(),
+                    board.getTitle(),
+                    board.getViewCount()
+            );
+
+            result.add(li);
         }
 
         return result;
@@ -138,11 +165,27 @@ public class FindBoardDao implements BasicDao {
         List<FindBoard> list = mapper.selectIndex(start, end);
 
         for (FindBoard board : list) {
-            FindBoardListForm fi = new FindBoardListForm(board.getFaNumber(), selectName(board.getFaNumber()), board.getSpecies(), board.getKind(), board.getLocation(), board.getAnimalState(), board.getImgPath(), board.getWrTime(), board.getTitle(), board.getViewCount());
-            result.add(fi);
+            FindBoardListForm li = new FindBoardListForm(
+                    board.getFaNumber(),
+                    selectMemberId(board.getFaNumber()),
+                    selectName(board.getFaNumber()),
+                    board.getSpecies(),
+                    board.getKind(),
+                    board.getLocation(),
+                    board.getAnimalState(),
+                    board.getImgPath(),
+                    board.getWrTime(),
+                    board.getTitle(),
+                    board.getViewCount()
+            );
+            result.add(li);
         }
 
         return result;
+    }
+
+    public String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 
     public String selectName(int pk) {
@@ -162,8 +205,20 @@ public class FindBoardDao implements BasicDao {
         List<FindBoard> list = mapper.selectMemberIndex(start, end, mNumber, matched);
 
         for (FindBoard f : list) {
-            FindBoardListForm fi = new FindBoardListForm(f.getFaNumber(), selectName(f.getFaNumber()), f.getSpecies(), f.getKind(), f.getLocation(), f.getAnimalState(), f.getImgPath(), f.getWrTime(), f.getTitle(), f.getViewCount());
-            result.add(fi);
+            FindBoardListForm li = new FindBoardListForm(
+                    f.getFaNumber(),
+                    selectName(f.getFaNumber()),
+                    f.getSpecies(),
+                    f.getKind(),
+                    f.getLocation(),
+                    f.getAnimalState(),
+                    f.getImgPath(),
+                    f.getWrTime(),
+                    f.getTitle(),
+                    f.getViewCount()
+            );
+
+            result.add(li);
         }
 
         return result;

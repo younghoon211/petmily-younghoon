@@ -3,76 +3,76 @@ package kh.petmily.service;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AdoptTempSubmitForm;
 import kh.petmily.domain.adopt.Adopt;
-import kh.petmily.domain.adopt.form.*;
+import kh.petmily.domain.adopt.form.AdminAdoptForm;
+import kh.petmily.domain.adopt.form.AdminAdoptPageForm;
+import kh.petmily.domain.adopt.form.MypageAdoptPageForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.AdminTempForm;
+import kh.petmily.domain.temp.form.AdminTempPageForm;
 import kh.petmily.domain.temp.form.MypageTempPageForm;
-import kh.petmily.domain.temp.form.TempDetailForm;
-import kh.petmily.domain.temp.form.TempPageForm;
 
 import java.util.List;
 
 public interface AdoptTempService {
 
     // 입양
-    void adopt(AdoptTempSubmitForm adoptTempSubmitForm);
-
-    Adopt findByAdoptPk(int adNumber);
+    void adopt(AdoptTempSubmitForm form);
 
     MypageAdoptPageForm getMypageAdopt(int pageNo, int mNumber, String type);
 
     // 임보
-    void temp(AdoptTempSubmitForm adoptTempSubmitForm);
-
-    TempPet findByTempPk(int tNumber);
+    void temp(AdoptTempSubmitForm form);
 
     MypageTempPageForm getMypageTemp(int pageNo, int mNumber, String type);
 
-    // 입양 관리 페이지
-    AdoptPageForm getAdminAdoptListPage(int pageNo);
+    // 입양 관리
+    void adminAdoptWrite(AdminAdoptForm form);
 
-    List<Member> selectAllMemberAdopt();
+    AdminAdoptPageForm getAdminAdoptListPage(int pageNo);
 
-    List<AbandonedAnimal> selectAllExcludeAdoptStatus();
+    AdminAdoptPageForm getAdminAdoptWaitPage(int pageNo, String status);
 
-    void adminAdoptWrite(AdminAdoptForm adminAdoptForm);
-
-    void updateStatusToAdopt();
+    Adopt getAdoptByPk(int adNumber);
 
     List<AbandonedAnimal> selectAllAbandonedAnimalAdopt();
 
-    void adminAdoptUpdate(AdminAdoptForm adminAdoptForm);
+    List<AbandonedAnimal> selectAllExcludeAdoptStatus();
 
-    void deleteAdopt(int adNumber);
+    List<Member> selectAllMemberAdopt();
 
-    AdoptPageForm getAdminAdoptWaitPage(int pageNo, String status);
+    void adminAdoptUpdate(AdminAdoptForm form);
+
+    void updateStatusToAdopt();
 
     void adoptApproveButton(int adNumber);
 
     void adoptRefuseButton(int adNumber);
 
+    void deleteAdopt(int adNumber);
 
-    // 임보 관리 페이지
-    TempPageForm getAdminTempListPage(int pageNo);
+    // 임보 관리
+    void adminTempWrite(AdminTempForm form);
 
-    List<Member> selectAllMemberTemp();
+    AdminTempPageForm getAdminTempListPage(int pageNo);
 
-    List<AbandonedAnimal> selectAllExcludeTempStatus();
+    AdminTempPageForm getAdminTempWaitPage(int pageNo, String status);
 
-    void adminTempWrite(AdminTempForm adminTempForm);
-
-    void updateStatusToTemp();
+    TempPet getTempByPk(int tNumber);
 
     List<AbandonedAnimal> selectAllAbandonedAnimalTemp();
 
-    void adminTempUpdate(AdminTempForm adminTempForm);
+    List<AbandonedAnimal> selectAllExcludeTempStatus();
 
-    void deleteTemp(int tNumber);
+    List<Member> selectAllMemberTemp();
 
-    TempPageForm getAdminTempWaitPage(int pageNo, String status);
+    void adminTempUpdate(AdminTempForm form);
+
+    void updateStatusToTemp();
 
     void tempApproveButton(int tNumber);
 
     void tempRefuseButton(int tNumber);
+
+    void deleteTemp(int tNumber);
 }

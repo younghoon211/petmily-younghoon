@@ -13,32 +13,29 @@ import java.sql.Date;
 @NoArgsConstructor
 public class AdoptReview implements DomainObj {
 
-    private int bNumber;
+    private int bNumber; // 게시판 번호
     private int mNumber;
-    private String name;
     private String kindOfBoard;
     private String title;
     private String content;
     private String imgPath;
     private Blob video;
     private Date wrTime;
-    private String checkPublic;
+    private final String checkPublic = "Y";
     private int viewCount;
 
-    public AdoptReview(int mNumber, String kindOfBoard, String title, String content, String imgPath, String checkPublic) {
+    public AdoptReview(int mNumber, String kindOfBoard, String title, String content, String imgPath) {
         this.mNumber = mNumber;
         this.kindOfBoard = kindOfBoard;
         this.title = title;
         this.content = content;
         this.imgPath = imgPath;
-        this.checkPublic = checkPublic;
     }
 
-    public AdoptReview(int bNumber, String title, String content, String checkPublic, String imgPath) {
+    public AdoptReview(int bNumber, String title, String content, String imgPath) {
         this.bNumber = bNumber;
         this.title = title;
         this.content = content;
-        this.checkPublic = checkPublic;
         this.imgPath = imgPath;
     }
 }

@@ -24,6 +24,15 @@ public class FindBoardServiceImpl implements FindBoardService {
     private int size = 6;
     private int adminSize = 10;
 
+    // ===================== Create =====================
+    // 글쓰기
+    @Override
+    public void write(FindBoardWriteForm form) {
+        FindBoard findBoard = toWrite(form);
+        findBoardDao.insert(findBoard);
+    }
+
+    // 파일 업로드
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
         log.info("storeFile = {} ", file.getOriginalFilename());
@@ -33,124 +42,169 @@ public class FindBoardServiceImpl implements FindBoardService {
         }
 
         File storeFolder = new File(filePath);
+
         if (!storeFolder.exists()) {
             storeFolder.mkdir();
         }
+
         String originalFilename = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
-        String storeFileName = uuid + "." + extractExt(originalFilename);
+        String storeFileName = uuid + "." + extractExt(originalFilename); // 확장자 포함한 uuid명
         String fullPath = getFullPath(storeFileName, filePath);
+
+        log.info("fullPath = {}", fullPath);
+
         file.transferTo(new File(fullPath));
 
         return storeFileName;
     }
 
+    // ===================== Read =====================
+    // 반려동물 찾아요 리스트 페이지
     @Override
-    public void write(FindBoardWriteForm fwForm) {
-        FindBoard findBoard = toFindFromFW(fwForm);
-        findBoardDao.insert(findBoard);
+    public FindBoardPageForm getListPage(FindBoardConditionForm form) {
+        int total = findBoardDao.selectCountWithCondition(form);
+        List<FindBoardListForm> content = findBoardDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
+
+        return new FindBoardPageForm(total, form.getPageNo(), size, content);
     }
 
+    // 반려동물 찾아요 리스트 페이지 (관리자)
     @Override
-    public void modify(FindBoardModifyForm fmForm) {
-        FindBoard findBoard = toFindFromFM(fmForm);
-        findBoard.setFaNumber(fmForm.getFaNumber());
-        findBoardDao.update(findBoard);
-    }
-
-    @Override
-    public void delete(int faNumber) {
-        findBoardDao.delete(faNumber);
-    }
-
-    @Override
-    public FindBoardDetailForm getDetailForm(int faNumber) {
-        FindBoard findBoard = findBoardDao.findByPk(faNumber);
-        FindBoardDetailForm detailForm = toDetailForm(findBoard);
-
-        return detailForm;
-    }
-
-    @Override
-    public FindBoardPageForm getFindPage(FindBoardConditionForm fc) {
-        int total = findBoardDao.selectCountWithCondition(fc);
-        List<FindBoardListForm> content = findBoardDao.selectIndexWithCondition((fc.getPageNo() - 1) * size + 1, (fc.getPageNo() - 1) * size + size, fc);
-
-        return new FindBoardPageForm(total, fc.getPageNo(), size, content);
-    }
-
-    @Override
-    public FindBoardPageForm getAdminFindPage(int pageNo) {
+    public FindBoardPageForm getAdminListPage(int pageNo) {
         int total = findBoardDao.selectCount();
         List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
 
         return new FindBoardPageForm(total, pageNo, adminSize, content);
-
     }
 
+    // 상세보기 페이지
     @Override
-    public FindBoardModifyForm getModifyForm(int faNumber) {
-        FindBoard findBoard = findBoardDao.findByPk(faNumber);
-        FindBoardModifyForm modifyForm = toModifyForm(findBoard);
+    public FindBoardDetailForm getDetailPage(int pk) {
+        FindBoard findBoard = getFindBoard(pk);
 
-        return modifyForm;
+        return toDetailForm(findBoard);
     }
 
+    // 찾아요 매칭된 페이지
     @Override
-    public String findName(int faNumber) {
-        return findBoardDao.selectName(faNumber);
-    }
-
-    @Override
-    public int updateViewCount(int faNumber) {
-        return findBoardDao.updateViewCount(faNumber);
-    }
-
-    @Override
-    public FindBoardPageForm getMembersFindPage(int pageNo, int mNumber, String matched) {
+    public FindBoardPageForm getMatchingPage(int pageNo, int mNumber, String matched) {
         int total = findBoardDao.selectMemberCount(mNumber, matched);
-
         List<FindBoardListForm> content = findBoardDao.selectMemberIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, matched);
 
         return new FindBoardPageForm(total, pageNo, size, content);
     }
 
+    // 찾아요 글 조회
     @Override
-    public FindBoard getFindBoard(int faNumber) {
-        return findBoardDao.findByPk(faNumber);
+    public FindBoard getFindBoard(int pk) {
+        return findBoardDao.findByPk(pk);
     }
 
+    // 내가 쓴 게시글 (마이페이지)
     @Override
-    public FindBoardPageForm getFindMyPost(int pageNo, int mNumber) {
+    public FindBoardPageForm getMyPost(int pageNo, int mNumber) {
         int total = findBoardDao.selectCountBymNumber(mNumber);
         List<FindBoardListForm> content = findBoardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 
         return new FindBoardPageForm(total, pageNo, size, content);
     }
 
-    private FindBoardDetailForm toDetailForm(FindBoard findBoard) {
-        return new FindBoardDetailForm(findBoard.getFaNumber(), findBoard.getMNumber(), findName(findBoard.getFaNumber()), findBoard.getSpecies(), findBoard.getKind(), findBoard.getLocation(), findBoard.getAnimalState(), findBoard.getImgPath(), findBoard.getWrTime(), findBoard.getTitle(), findBoard.getContent(), findBoard.getViewCount());
+    // ===================== Update =====================
+    // 수정 폼
+    @Override
+    public FindBoardModifyForm getModifyForm(int pk) {
+        FindBoard findBoard = getFindBoard(pk);
+
+        return toModifyForm(findBoard);
     }
 
-    private FindBoardModifyForm toModifyForm(FindBoard findBoard) {
-        return new FindBoardModifyForm(findBoard.getSpecies(), findBoard.getKind(), findBoard.getLocation(), findBoard.getTitle(), findBoard.getContent());
+    // 수정하기
+    @Override
+    public void modify(FindBoardModifyForm form) {
+        FindBoard findBoard = toModify(form);
+        findBoardDao.update(findBoard);
     }
 
-    private FindBoard toFindFromFW(FindBoardWriteForm req) {
-        return new FindBoard(req.getMNumber(), req.getSpecies(), req.getKind(), req.getLocation(), req.getFullPath(), req.getTitle(), req.getContent());
+    // 조회수 업데이트
+    @Override
+    public int updateViewCount(int pk) {
+        return findBoardDao.updateViewCount(pk);
     }
 
-    private FindBoard toFindFromFM(FindBoardModifyForm req) {
-        return new FindBoard(req.getMNumber(), req.getSpecies(), req.getKind(), req.getLocation(), req.getFullPath(), req.getTitle(), req.getContent());
+    // ===================== Delete =====================
+    // 삭제
+    @Override
+    public void delete(int pk) {
+        findBoardDao.delete(pk);
     }
 
-    private String getFullPath(String filename, String filePath) {
-        return filePath + filename;
+
+    // ===================== CRUD 끝 =====================
+
+
+    private FindBoard toWrite(FindBoardWriteForm form) {
+        return new FindBoard(
+                form.getSpecies(),
+                form.getMNumber(),
+                form.getKind(),
+                form.getLocation(),
+                form.getImgPath(),
+                form.getTitle(),
+                form.getContent()
+        );
     }
 
     private String extractExt(String originalFilename) {
         int position = originalFilename.lastIndexOf(".");
 
         return originalFilename.substring(position + 1);
+    }
+
+    private String getFullPath(String filename, String filePath) {
+        return filePath + filename;
+    }
+
+    private FindBoardDetailForm toDetailForm(FindBoard domain) {
+        return new FindBoardDetailForm(
+                domain.getFaNumber(),
+                domain.getMNumber(),
+                getMemberName(domain.getFaNumber()),
+                domain.getSpecies(),
+                domain.getKind(),
+                domain.getLocation(),
+                domain.getAnimalState(),
+                domain.getImgPath(),
+                domain.getWrTime(),
+                domain.getTitle(),
+                domain.getContent(),
+                domain.getViewCount()
+        );
+    }
+
+    public String getMemberName(int pk) {
+        return findBoardDao.selectName(pk);
+    }
+
+    private FindBoardModifyForm toModifyForm(FindBoard domain) {
+        return new FindBoardModifyForm(
+                domain.getFaNumber(),
+                domain.getSpecies(),
+                domain.getKind(),
+                domain.getLocation(),
+                domain.getImgPath(),
+                domain.getTitle(),
+                domain.getContent());
+    }
+
+    private FindBoard toModify(FindBoardModifyForm form) {
+        return new FindBoard(
+                form.getFaNumber(),
+                form.getSpecies(),
+                form.getKind(),
+                form.getLocation(),
+                form.getImgPath(),
+                form.getTitle(),
+                form.getContent());
     }
 }

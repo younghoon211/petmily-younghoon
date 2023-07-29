@@ -11,7 +11,6 @@
         where ABNUMBER = #{pk}
     </select>
 
-    <!-- useGeneratedKeys="true" keyProperty="abNumber" -->
     <insert id="insert">
         insert into ABANDONEDANIMAL(SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, LOCATION, ADMISSIONDATE,
         UNIQUENESS, DESCRIPTION, VIDEO, ANIMALSTATE
@@ -32,7 +31,7 @@
         set SNUMBER = #{sNumber}, NAME = #{name}, SPECIES = #{species}, KIND = #{kind}, GENDER = #{gender},
         AGE = #{age}, WEIGHT = #{weight}, LOCATION = #{location}, ADMISSIONDATE = #{admissionDate},
         UNIQUENESS = #{uniqueness}, DESCRIPTION = #{description}, ANIMALSTATE = #{animalState}
-        <if test='imgPath != null '>
+        <if test='imgPath != null and imgPath !=""'>
             ,IMGPATH = #{imgPath}
         </if>
         where ABNUMBER = #{abNumber}
@@ -42,8 +41,14 @@
         delete from ABANDONEDANIMAL
         where ABNUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드=======-->
-    <select id="selectCountWithCondition" resultType="java.lang.Integer">
+    <!--=======BasicMapper 메소드 끝=======-->
+
+    <select id="selectCount" resultType="int">
+    select count(*)
+    from ABANDONEDANIMAL
+    </select>
+
+    <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from ABANDONEDANIMAL
         <where>
@@ -133,22 +138,21 @@
         order by ABNUMBER
     </select>
 
-    <select id="selectsNumber" resultType="int">
-        select SNUMBER
-        from ABANDONEDANIMAL
-        where ABNUMBER = #{pk}
-    </select>
-
-
     <select id="selectGroupName" resultType="java.lang.String">
         select S.GROUPNAME
         from SHELTER S inner join ABANDONEDANIMAL AB
-                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
     </select>
 
     <select id="selectPhone" resultType="java.lang.String">
         select S.PHONE
         from SHELTER S inner join ABANDONEDANIMAL AB
-                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
+    </select>
+
+    <select id="selectAllShelter" resultType="kh.petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER
+        order by SNUMBER
     </select>
 </mapper>

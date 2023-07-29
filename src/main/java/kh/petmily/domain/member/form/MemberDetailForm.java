@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MemberDetailForm {
+
     private int mNumber;
     private String id;
     private String pw;

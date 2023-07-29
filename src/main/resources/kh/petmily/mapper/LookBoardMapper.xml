@@ -30,7 +30,7 @@
         set SPECIES  = #{species},
             KIND     = #{kind},
             LOCATION = #{location},
-        <if test='imgPath != null '>
+        <if test='imgPath != null and imgPath !=""'>
             IMGPATH = #{imgPath},
         </if>
             TITLE    = #{title},
@@ -44,7 +44,7 @@
         where LANUMBER = #{pk}
     </delete>
 
-    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+    <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
         where MNUMBER = #{mNumber}
@@ -57,7 +57,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectCount" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
     </select>
@@ -72,7 +72,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCountWithCondition" resultType="java.lang.Integer">
+    <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
         <where>
@@ -131,6 +131,13 @@
         </if>
     </sql>
 
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from LOOKANIMALBOARD L
+                inner join MEMBER M on L.MNUMBER = M.MNUMBER
+        where L.LANUMBER = #{pk}
+    </select>
+
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from LOOKANIMALBOARD L
@@ -146,7 +153,7 @@
 
 
     <!--=======look-find 연결=======-->
-    <select id="selectMatchedFa" resultType="java.lang.Integer">
+    <select id="selectMatchedFa" resultType="int">
         select FANUMBER
         from FINDANIMALBOARD
         <where>
@@ -163,13 +170,13 @@
     <update id="changeState">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '매칭됨'
-        where LANUMBER = #{laNumber}
+        where LANUMBER = #{pk}
     </update>
 
     <update id="backState">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '보호'
-        where LANUMBER = #{laNumber}
+        where LANUMBER = #{pk}
     </update>
 
     <update id="changeStateFind">
@@ -184,7 +191,7 @@
         where FANUMBER = #{faNumber}
     </update>
 
-    <select id="selectByPkMax" resultType="java.lang.Integer">
+    <select id="selectByPkMax" resultType="int">
         select MAX(LANUMBER)
         from LOOKANIMALBOARD
     </select>

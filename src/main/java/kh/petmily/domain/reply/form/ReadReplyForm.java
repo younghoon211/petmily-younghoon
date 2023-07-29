@@ -6,6 +6,7 @@ import java.sql.Date;
 
 @Data
 public class ReadReplyForm {
+
     private int brNumber;
     private int mNumber;
     private String reply;

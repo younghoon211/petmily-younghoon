@@ -1,11 +1,14 @@
 package kh.petmily.domain.look_board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
 public class LookBoardDetailForm {
+
     private int laNumber;
     private int mNumber;
     private String name;

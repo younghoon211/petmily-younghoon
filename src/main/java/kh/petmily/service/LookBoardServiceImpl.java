@@ -1,7 +1,6 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.LookBoardDao;
-import kh.petmily.dao.MemberDao;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.*;
@@ -23,10 +22,18 @@ import java.util.UUID;
 public class LookBoardServiceImpl implements LookBoardService {
 
     private final LookBoardDao lookBoardDao;
-    private final MemberDao memberDao;
     private int size = 6;
     private int adminSize = 10;
 
+    // ===================== Create =====================
+    // 글쓰기
+    @Override
+    public void write(LookBoardWriteForm form) {
+        LookBoard lookBoard = toWrite(form);
+        lookBoardDao.insert(lookBoard);
+    }
+
+    // 파일 업로드
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
         log.info("storeFile = {} ", file.getOriginalFilename());
@@ -36,107 +43,118 @@ public class LookBoardServiceImpl implements LookBoardService {
         }
 
         File storeFolder = new File(filePath);
+
         if (!storeFolder.exists()) {
             storeFolder.mkdir();
         }
+
         String originalFilename = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
-        String storeFileName = uuid + "." + extractExt(originalFilename);
+        String storeFileName = uuid + "." + extractExt(originalFilename); // 확장자 포함한 uuid명
         String fullPath = getFullPath(storeFileName, filePath);
+
+        log.info("fullPath = {}", fullPath);
+
         file.transferTo(new File(fullPath));
 
         return storeFileName;
     }
 
+    // ===================== Read =====================
+    // 유기동물 봤어요 리스트 페이지
     @Override
-    public void write(LookBoardWriteForm lwForm) {
-        LookBoard lookBoard = toLookFromLW(lwForm);
-        lookBoardDao.insert(lookBoard);
+    public LookBoardPageForm getListPage(LookBoardConditionForm form) {
+        int total = lookBoardDao.selectCountWithCondition(form);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
+
+        return new LookBoardPageForm(total, form.getPageNo(), size, content);
     }
 
+    // 유기동물 봤어요 리스트 페이지 (관리자)
     @Override
-    public void modify(LookBoardModifyForm lmForm) {
-        LookBoard lookBoard = toLookFromLM(lmForm);
-        lookBoard.setLaNumber(lmForm.getLaNumber());
-        lookBoardDao.update(lookBoard);
-    }
-
-    @Override
-    public void delete(int laNumber) {
-        lookBoardDao.delete(laNumber);
-    }
-
-    @Override
-    public LookBoardPageForm getLookPage(LookBoardConditionForm lc) {
-        int total = lookBoardDao.selectCountWithCondition(lc);
-        List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((lc.getPageNo() - 1) * size + 1, (lc.getPageNo() - 1) * size + size, lc);
-
-        return new LookBoardPageForm(total, lc.getPageNo(), size, content);
-    }
-
-    @Override
-    public LookBoardPageForm getAdminLookPage(int pageNo) {
+    public LookBoardPageForm getAdminListPage(int pageNo) {
         int total = lookBoardDao.selectCount();
         List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
 
         return new LookBoardPageForm(total, pageNo, adminSize, content);
     }
 
+    // 상세보기 페이지
     @Override
-    public LookBoardDetailForm getDetailForm(int laNumber) {
-        LookBoard lookBoard = lookBoardDao.findByPk(laNumber);
-        LookBoardDetailForm detailForm = toDetailForm(lookBoard);
+    public LookBoardDetailForm getDetailPage(int pk) {
+        LookBoard lookBoard = lookBoardDao.findByPk(pk);
 
-        return detailForm;
+        return toDetailForm(lookBoard);
     }
 
+    // 봤어요 매칭된 페이지
     @Override
-    public LookBoardModifyForm getModifyForm(int laNumber) {
-        LookBoard lookBoard = lookBoardDao.findByPk(laNumber);
-        LookBoardModifyForm modifyForm = toModifyForm(lookBoard);
-
-        return modifyForm;
-    }
-
-    @Override
-    public String findLookBoardName(int laNumber) {
-        return lookBoardDao.selectName(laNumber);
-    }
-
-    @Override
-    public String findMemberName(int mNumber) {
-        return memberDao.selectName(mNumber);
-    }
-
-    @Override
-    public int updateViewCount(int laNumber) {
-        return lookBoardDao.updateViewCount(laNumber);
-    }
-
-    @Override
-    public LookBoardPageForm getMatchedLookPage(int pageNo, FindBoard findBoard) {
-        int total = lookBoardDao.selectMatchedCount(findBoard);
-
-        List<LookBoardListForm> content = lookBoardDao.selectMatchedIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, findBoard);
+    public LookBoardPageForm getMatchingPage(int pageNo, FindBoard domain) {
+        int total = lookBoardDao.selectMatchedCount(domain);
+        List<LookBoardListForm> content = lookBoardDao.selectMatchedIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, domain);
 
         return new LookBoardPageForm(total, pageNo, size, content);
     }
 
+    // 봤어요 글 조회
     @Override
-    public LookBoard getLookBoard(int laNumber) {
-        return lookBoardDao.findByPk(laNumber);
+    public LookBoard getLookBoard(int pk) {
+        return lookBoardDao.findByPk(pk);
     }
 
+    // 내가 쓴 게시글 (마이페이지)
     @Override
-    public LookBoardPageForm getLookMyPost(int pageNo, int mNumber) {
+    public LookBoardPageForm getMyPost(int pageNo, int mNumber) {
         int total = lookBoardDao.selectCountBymNumber(mNumber);
         List<LookBoardListForm> content = lookBoardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 
         return new LookBoardPageForm(total, pageNo, size, content);
     }
 
-    private String getFullPath(String filename, String filePath) {
-        return filePath + filename;
+    // ===================== Update =====================
+    // 수정 폼
+    @Override
+    public LookBoardModifyForm getModifyForm(int pk) {
+        LookBoard lookBoard = lookBoardDao.findByPk(pk);
+
+        return toModifyForm(lookBoard);
+    }
+
+    // 수정
+    @Override
+    public void modify(LookBoardModifyForm form) {
+        LookBoard lookBoard = toModify(form);
+        lookBoardDao.update(lookBoard);
+    }
+
+
+    // 조회수 업데이트
+    @Override
+    public int updateViewCount(int pk) {
+        return lookBoardDao.updateViewCount(pk);
+    }
+
+    // ===================== Delete =====================
+    // 삭제
+    @Override
+    public void delete(int pk) {
+        lookBoardDao.delete(pk);
+    }
+
+
+    // ===================== CRUD 끝 =====================
+
+
+    private LookBoard toWrite(LookBoardWriteForm form) {
+        return new LookBoard(
+                form.getSpecies(),
+                form.getMNumber(),
+                form.getKind(),
+                form.getLocation(),
+                form.getImgPath(),
+                form.getTitle(),
+                form.getContent()
+        );
     }
 
     private String extractExt(String originalFilename) {
@@ -145,19 +163,52 @@ public class LookBoardServiceImpl implements LookBoardService {
         return originalFilename.substring(position + 1);
     }
 
-    private LookBoard toLookFromLW(LookBoardWriteForm req) {
-        return new LookBoard(req.getMNumber(), req.getSpecies(), req.getKind(), req.getLocation(), req.getFullPath(), req.getTitle(), req.getContent());
+    private String getFullPath(String filename, String filePath) {
+        return filePath + filename;
     }
 
-    private LookBoard toLookFromLM(LookBoardModifyForm req) {
-        return new LookBoard(req.getMNumber(), req.getSpecies(), req.getKind(), req.getLocation(), req.getFullPath(), req.getTitle(), req.getContent());
+    private LookBoardDetailForm toDetailForm(LookBoard domain) {
+        return new LookBoardDetailForm(
+                domain.getLaNumber(),
+                domain.getMNumber(),
+                getMemberName(domain.getLaNumber()),
+                domain.getSpecies(),
+                domain.getKind(),
+                domain.getLocation(),
+                domain.getAnimalState(),
+                domain.getImgPath(),
+                domain.getWrTime(),
+                domain.getTitle(),
+                domain.getContent(),
+                domain.getViewCount()
+        );
     }
 
-    private LookBoardDetailForm toDetailForm(LookBoard lookBoard) {
-        return new LookBoardDetailForm(lookBoard.getLaNumber(), lookBoard.getMNumber(), findLookBoardName(lookBoard.getLaNumber()), lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation(), lookBoard.getAnimalState(), lookBoard.getImgPath(), lookBoard.getWrTime(), lookBoard.getTitle(), lookBoard.getContent(), lookBoard.getViewCount());
+    public String getMemberName(int pk) {
+        return lookBoardDao.selectName(pk);
     }
 
-    private LookBoardModifyForm toModifyForm(LookBoard lookBoard) {
-        return new LookBoardModifyForm(lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation(), lookBoard.getTitle(), lookBoard.getContent());
+    private LookBoardModifyForm toModifyForm(LookBoard domain) {
+        return new LookBoardModifyForm(
+                domain.getLaNumber(),
+                domain.getSpecies(),
+                domain.getKind(),
+                domain.getLocation(),
+                domain.getImgPath(),
+                domain.getTitle(),
+                domain.getContent()
+        );
+    }
+
+    private LookBoard toModify(LookBoardModifyForm form) {
+        return new LookBoard(
+                form.getLaNumber(),
+                form.getSpecies(),
+                form.getKind(),
+                form.getLocation(),
+                form.getImgPath(),
+                form.getTitle(),
+                form.getContent()
+        );
     }
 }

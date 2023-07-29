@@ -7,27 +7,23 @@ import java.io.IOException;
 
 public interface AdoptReviewService {
 
-    AdoptReviewPageForm getAdoptReviewPage(AdoptReviewConditionForm adoptReviewConditionForm);
-
-    AdoptReviewPageForm getAdminAdoptReviewPage(String kindOfBoard, int pageNo);
-
-    AdoptReviewDetailForm getAdoptReview(int bNumber);
-
-    void write(AdoptReviewWriteForm adoptReviewWriteForm);
-
-    AdoptReviewModifyForm getAdoptReviewModify(int bNumber);
-
-    void modify(AdoptReviewModifyForm modReq);
-
-    void delete(int bNumber);
-
-    String boardName(int bNumber);
-
-    int updateViewCount(int bNumber);
+    void write(AdoptReviewWriteForm form);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    String findName(int mNumber);
+    AdoptReviewPageForm getListPage(AdoptReviewConditionForm form);
 
-    AdoptReviewPageForm getAdoptReviewMyPost(int pageNo, int mNumber, String kindOfBoard);
+    AdoptReviewDetailForm getDetailPage(int bNumber);
+
+    AdoptReviewPageForm getMyPost(int pageNo, int mNumber, String kindOfBoard);
+
+    AdoptReviewPageForm getAdminListPage(String kindOfBoard, int pageNo);
+
+    AdoptReviewModifyForm getModifyForm(int bNumber);
+
+    void modify(AdoptReviewModifyForm form);
+
+    int updateViewCount(int bNumber);
+
+    void delete(int bNumber);
 }

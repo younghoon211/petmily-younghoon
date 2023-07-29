@@ -46,18 +46,6 @@ public class MemberDao implements BasicDao {
         return mapper.selectName(pk);
     }
 
-    public String selectBirth(int pk) {
-        return mapper.selectBirth(pk);
-    }
-
-    public String selectPhone(int pk) {
-        return mapper.selectPhone(pk);
-    }
-
-    public String selectEmail(int pk) {
-        return mapper.selectEmail(pk);
-    }
-
     public List<Member> selectAll() {
         return mapper.selectAll();
     }
@@ -67,12 +55,23 @@ public class MemberDao implements BasicDao {
     }
 
     public List<MemberDetailForm> selectIndex(int start, int end) {
-        List<Member> memberListForms = mapper.selectIndex(start, end);
         List<MemberDetailForm> result = new ArrayList<>();
+        List<Member> list = mapper.selectIndex(start, end);
 
-        for (Member m : memberListForms) {
-            MemberDetailForm mf = new MemberDetailForm(m.getMNumber(), m.getId(), m.getPw(), m.getName(), m.getBirth(), m.getGender(), m.getEmail(), m.getPhone(), m.getGrade());
-            result.add(mf);
+        for (Member m : list) {
+            MemberDetailForm li = new MemberDetailForm(
+                    m.getMNumber(),
+                    m.getId(),
+                    m.getPw(),
+                    m.getName(),
+                    m.getBirth(),
+                    m.getGender(),
+                    m.getEmail(),
+                    m.getPhone(),
+                    m.getGrade()
+            );
+
+            result.add(li);
         }
 
         return result;

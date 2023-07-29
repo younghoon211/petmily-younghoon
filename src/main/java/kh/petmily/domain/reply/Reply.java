@@ -3,12 +3,15 @@ package kh.petmily.domain.reply;
 import kh.petmily.domain.DomainObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Date;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class Reply implements DomainObj {
+
     private int brNumber;
     private int bNumber;
     private int mNumber;

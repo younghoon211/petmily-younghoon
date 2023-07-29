@@ -1,14 +1,16 @@
 package kh.petmily.domain.abandoned_animal.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
 public class AbandonedAnimalDetailForm {
 
     private int abNumber;
-    private int sNumber;    // 보호소 번호
+    private int sNumber; // 보호소 번호
     private int age;
     private float weight;
     private char gender;
@@ -23,9 +25,6 @@ public class AbandonedAnimalDetailForm {
     private Date admissionDate;
     private String groupName;
     private String phone;
-
-    public AbandonedAnimalDetailForm() {
-    }
 
     public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName, String phone) {
         this.abNumber = abNumber;

@@ -3,10 +3,13 @@ package kh.petmily.domain.adopt;
 import kh.petmily.domain.DomainObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class Adopt implements DomainObj {
+
     private int adNumber; // 입양 번호
     private int mNumber;
     private int abNumber;

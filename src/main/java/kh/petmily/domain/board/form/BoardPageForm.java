@@ -1,10 +1,12 @@
 package kh.petmily.domain.board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class BoardPageForm {
 
     private int total;

@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface TempMapper {
 
+    // =======BasicMapper 메소드=======
     TempPet selectByPk(int pk);
 
     void insert(TempPet obj);
@@ -17,18 +18,26 @@ public interface TempMapper {
     void update(TempPet obj);
 
     void delete(int pk);
+    // ===============================
 
-    // ====== 관리자 페이지 ======
-
+    // ========== 관리자 페이지 ==========
     int selectCount();
 
     int selectCountBymNumber(int mNumber);
 
-    List<TempPet> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<TempPet> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
 
-    List<TempPet> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
+    List<TempPet> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber);
 
-    List<TempPet> selectIndexByStatus(@Param("start") int start, @Param("end") int end, @Param("status") String status);
+    List<TempPet> selectIndexByStatus(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("status") String status);
 
     void tempApprove(int pk);
 

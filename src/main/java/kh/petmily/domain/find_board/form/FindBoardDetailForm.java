@@ -1,11 +1,14 @@
 package kh.petmily.domain.find_board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
 public class FindBoardDetailForm {
+
     private int faNumber;
     private int mNumber;
     private String name;

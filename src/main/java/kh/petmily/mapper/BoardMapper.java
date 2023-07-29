@@ -9,29 +9,51 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
+    // =======BasicMapper 메소드=======
     Board selectByPk(int pk);
 
-    void insert(Board board);
+    void insert(Board obj);
 
-    void update(Board board);
+    void update(Board obj);
 
     void delete(int pk);
+    // ===============================
 
-    int selectCountBymNumber(@Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
+    int selectCountBymNumber(
+            @Param("mNumber") int mNumber,
+            @Param("kindOfBoard") String kindOfBoard);
 
-    List<Board> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber, @Param("kindOfBoard") String kindOfBoard);
+    List<Board> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber,
+            @Param("kindOfBoard") String kindOfBoard);
 
     int selectCount(String kindOfBoard);
 
-    List<Board> selectIndex(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard);
+    List<Board> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("kindOfBoard") String kindOfBoard);
 
-    int selectCountWithCondition(@Param("kindOfBoard") String kindOfBoard, @Param("condition") String condition, @Param("keyword") String keyword);
+    int selectCountWithCondition(
+            @Param("kindOfBoard") String kindOfBoard,
+            @Param("condition") String condition,
+            @Param("keyword") String keyword);
 
-    List<Board> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("kindOfBoard") String kindOfBoard, @Param("condition") String condition, @Param("keyword") String keyword, @Param("sort") String sort);
+    List<Board> selectIndexWithCondition(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("kindOfBoard") String kindOfBoard,
+            @Param("condition") String condition,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort);
 
     String selectName(int pk);
 
+    String selectMemberId(int pk);
+
     int updateViewCount(int pk);
 
-    int selectReplyCount(int bNumber);
+    int selectReplyCount(int pk);
 }

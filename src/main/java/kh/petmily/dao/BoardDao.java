@@ -42,15 +42,27 @@ public class BoardDao implements BasicDao {
     }
 
     public List<BoardListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
+        List<BoardListForm> result = new ArrayList<>();
         List<Board> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
-        List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {
-            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
-            boardListForm.add(bd);
+            BoardListForm li = new BoardListForm(
+                    b.getBNumber(),
+                    b.getMNumber(),
+                    selectName(b.getBNumber()),
+                    b.getKindOfBoard(),
+                    b.getTitle(),
+                    b.getContent(),
+                    b.getWrTime(),
+                    b.getCheckPublic(),
+                    b.getViewCount(),
+                    selectReplyCount(b.getBNumber())
+            );
+
+            result.add(li);
         }
 
-        return boardListForm;
+        return result;
     }
 
     // 관리자 페이지 게시글 개수
@@ -60,44 +72,77 @@ public class BoardDao implements BasicDao {
 
     // 관리자 페이지 리스트
     public List<BoardListForm> selectIndex(int start, int end, String kindOfBoard) {
+        List<BoardListForm> result = new ArrayList<>();
         List<Board> list = mapper.selectIndex(start, end, kindOfBoard);
-        List<BoardListForm> boardListForm = new ArrayList<>();
 
         for (Board b : list) {
-            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
-            boardListForm.add(bd);
+            BoardListForm li = new BoardListForm(
+                    b.getBNumber(),
+                    b.getMNumber(),
+                    selectMemberId(b.getBNumber()),
+                    selectName(b.getBNumber()),
+                    b.getKindOfBoard(),
+                    b.getTitle(),
+                    b.getContent(),
+                    b.getWrTime(),
+                    b.getCheckPublic(),
+                    b.getViewCount(),
+                    selectReplyCount(b.getBNumber())
+            );
+
+            result.add(li);
         }
 
-        return boardListForm;
+        return result;
     }
 
     // 조건부 검색 게시글 개수
-    public int selectCountWithCondition(BoardConditionForm boardConditionForm) {
-        return mapper.selectCountWithCondition(boardConditionForm.getKindOfBoard(), boardConditionForm.getCondition(), boardConditionForm.getKeyword());
+    public int selectCountWithCondition(BoardConditionForm form) {
+        return mapper.selectCountWithCondition(
+                form.getKindOfBoard(), form.getCondition(), form.getKeyword()
+        );
     }
 
     // 조건부 검색
-    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm boardConditionForm) {
-        List<Board> list = mapper.selectIndexWithCondition(start, end, boardConditionForm.getKindOfBoard(), boardConditionForm.getCondition(), boardConditionForm.getKeyword(), boardConditionForm.getSort());
-        List<BoardListForm> boardListForm = new ArrayList<>();
+    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm form) {
+        List<BoardListForm> result = new ArrayList<>();
+        List<Board> list = mapper.selectIndexWithCondition(
+                start, end, form.getKindOfBoard(), form.getCondition(), form.getKeyword(), form.getSort()
+        );
 
         for (Board b : list) {
-            BoardListForm bd = new BoardListForm(b.getBNumber(), b.getMNumber(), selectName(b.getBNumber()), b.getKindOfBoard(), b.getTitle(), b.getContent(), b.getWrTime(), b.getCheckPublic(), b.getViewCount(), selectReplyCount(b.getBNumber()));
-            boardListForm.add(bd);
+            BoardListForm li = new BoardListForm(
+                    b.getBNumber(),
+                    b.getMNumber(),
+                    selectName(b.getBNumber()),
+                    b.getKindOfBoard(),
+                    b.getTitle(),
+                    b.getContent(),
+                    b.getWrTime(),
+                    b.getCheckPublic(),
+                    b.getViewCount(),
+                    selectReplyCount(b.getBNumber())
+            );
+
+            result.add(li);
         }
 
-        return boardListForm;
+        return result;
     }
 
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
 
+    public String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
+    }
+
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
     }
 
-    public int selectReplyCount(int bNumber) {
-        return mapper.selectReplyCount(bNumber);
+    public int selectReplyCount(int pk) {
+        return mapper.selectReplyCount(pk);
     }
 }

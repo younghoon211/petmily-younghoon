@@ -30,7 +30,7 @@
         set SPECIES  = #{species},
             KIND     = #{kind},
             LOCATION = #{location},
-        <if test='imgPath != null '>
+        <if test='imgPath != null and imgPath !=""'>
             IMGPATH = #{imgPath},
         </if>
             TITLE    = #{title},
@@ -45,7 +45,7 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
-    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+    <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from FINDANIMALBOARD
         where MNUMBER = #{mNumber}
@@ -58,7 +58,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectCount" resultType="int">
         select count(*)
         from FINDANIMALBOARD
     </select>
@@ -72,7 +72,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCountWithCondition" resultType="java.lang.Integer">
+    <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from FINDANIMALBOARD
         <where>
@@ -103,7 +103,7 @@
             </if>
 
             <if test="animalState != null and animalState != 'allAnimalState'">
-                and AnimalState = #{animalState}
+                and ANIMALSTATE = #{animalState}
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword'">
@@ -136,6 +136,13 @@
         where FANUMBER = #{pk}
     </select>
 
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from FINDANIMALBOARD F
+        inner join MEMBER M on F.MNUMBER = M.MNUMBER
+        where F.FANUMBER = #{pk}
+    </select>
+
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from FINDANIMALBOARD F
@@ -150,7 +157,7 @@
     </update>
 
     <!--=======find-look 연결=======-->
-    <select id="selectMatchedLa" resultType="java.lang.Integer">
+    <select id="selectMatchedLa" resultType="int">
         select LANUMBER
         from LOOKANIMALBOARD
         <where>
@@ -167,13 +174,13 @@
     <update id="changeState">
         update FINDANIMALBOARD
         set ANIMALSTATE = '매칭됨'
-        where FANUMBER = #{faNumber}
+        where FANUMBER = #{pk}
     </update>
 
     <update id="backState">
         update FINDANIMALBOARD
         set ANIMALSTATE = '실종'
-        where FANUMBER = #{faNumber}
+        where FANUMBER = #{pk}
     </update>
 
     <update id="changeStateLook">
@@ -188,12 +195,12 @@
         where LANUMBER = #{laNumber}
     </update>
 
-    <select id="selectByPkMax" resultType="java.lang.Integer">
+    <select id="selectByPkMax" resultType="int">
         select MAX(FANUMBER)
         from FINDANIMALBOARD
     </select>
 
-    <select id="selectMemberCount" resultType="java.lang.Integer">
+    <select id="selectMemberCount" resultType="int">
         select count(*)
         from FINDANIMALBOARD
         <where>

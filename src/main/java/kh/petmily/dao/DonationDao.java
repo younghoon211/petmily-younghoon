@@ -2,12 +2,12 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.donation.Donation;
-import kh.petmily.domain.donation.form.DonationDetailForm;
-import kh.petmily.domain.donation.form.DonationListForm;
+import kh.petmily.domain.donation.form.AdminDonationListForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.DonationMapper;
 import kh.petmily.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -47,17 +47,24 @@ public class DonationDao implements BasicDao {
         return mapper.selectCount();
     }
 
-    public List<DonationDetailForm> selectIndex(int start, int end) {
-        List<DonationListForm> donationListForms = mapper.selectIndex(start, end);
-        List<DonationDetailForm> result = new ArrayList<>();
+    public List<AdminDonationListForm> selectIndex(int start, int end) {
+        List<AdminDonationListForm> result = new ArrayList<>();
+        List<Donation> list = mapper.selectIndex(start, end);
 
-        for (DonationListForm d : donationListForms) {
-            DonationDetailForm df = new DonationDetailForm(d.getDNumber(),
-                    d.getAbNumber(), findAnimalName(d.getAbNumber()),
-                    d.getMNumber(), findMemberName(d.getMNumber()),
+        for (Donation d : list) {
+            AdminDonationListForm li = new AdminDonationListForm(
+                    d.getDNumber(),
+                    d.getAbNumber(),
+                    findAnimalName(d.getAbNumber()),
+                    d.getMNumber(),
+                    findMemberName(d.getMNumber()),
                     d.getDonaSum(),
-                    d.getBank(), d.getAccountHolder(), d.getAccountNumber());
-            result.add(df);
+                    d.getBank(),
+                    d.getAccountHolder(),
+                    d.getAccountNumber()
+            );
+
+            result.add(li);
         }
 
         return result;

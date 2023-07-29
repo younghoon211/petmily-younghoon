@@ -30,7 +30,7 @@
         where BNUMBER = #{pk}
     </delete>
 
-    <select id="selectCountBymNumber" resultType="java.lang.Integer">
+    <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from BOARD
         where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard}
@@ -43,7 +43,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectCount" resultType="int">
         select count(*)
         from BOARD
         where KINDOFBOARD = #{kindOfBoard}
@@ -59,7 +59,7 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectCountWithCondition" resultType="java.lang.Integer">
+    <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from BOARD
         <where>
@@ -135,18 +135,26 @@
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from BOARD B
+             inner join MEMBER M
+             on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
+    </select>
+
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from BOARD B
                  inner join MEMBER M
                             on B.MNUMBER = M.MNUMBER
         where B.BNUMBER = #{pk}
     </select>
 
-    <select id="selectByContent" resultType="kh.petmily.domain.board.Board">
-        select B.*, M.ID, M.NAME
-        from BOARD B,
-             MEMBER M
-        where B.MNUMBER = M.MNUMBER
-          and BNUMBER = #{bNumber}
-    </select>
+<!--    <select id="selectByContent" resultType="kh.petmily.domain.board.Board">-->
+<!--        select B.*, M.ID, M.NAME-->
+<!--        from BOARD B,-->
+<!--             MEMBER M-->
+<!--        where B.MNUMBER = M.MNUMBER-->
+<!--          and BNUMBER = #{pk}-->
+<!--    </select>-->
 
     <update id="updateViewCount">
         update BOARD
@@ -154,9 +162,9 @@
         where BNUMBER = #{pk}
     </update>
 
-    <select id="selectReplyCount" resultType="java.lang.Integer">
+    <select id="selectReplyCount" resultType="int">
         select count(*)
         from BOARD B inner join BOARDREPLY BR on B.BNUMBER = BR.BNUMBER
-        where B.BNUMBER = #{bNumber}
+        where B.BNUMBER = #{pk}
     </select>
 </mapper>

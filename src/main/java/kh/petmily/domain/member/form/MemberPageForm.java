@@ -36,29 +36,4 @@ public class MemberPageForm {
             if (endPage > totalPages) endPage = totalPages;
         }
     }
-
-    public List<MemberDetailForm> getContent() {
-        return content;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public int getStartPage() {
-        return startPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
-    }
-
 }

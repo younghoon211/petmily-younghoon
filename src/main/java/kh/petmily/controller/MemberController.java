@@ -1,15 +1,15 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.adopt.form.AdoptApplyPageForm;
+import kh.petmily.domain.adopt.form.MypageAdoptPageForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
 import kh.petmily.domain.member.Member;
-import kh.petmily.domain.member.form.JoinRequest;
+import kh.petmily.domain.member.form.MemberJoinForm;
 import kh.petmily.domain.member.form.MemberChangeForm;
-import kh.petmily.domain.temp.form.TempApplyPageForm;
+import kh.petmily.domain.temp.form.MypageTempPageForm;
 import kh.petmily.service.*;
 import kh.petmily.validation.JoinValidator;
 import kh.petmily.validation.MemberChangeValidator;
@@ -55,35 +55,35 @@ public class MemberController {
     // 회원 가입
     @GetMapping("/join")
     public String joinForm() {
-        return "/login/joinForm";
+        return "/login/join";
     }
 
     @PostMapping("/join")
-    public String join(@Validated @ModelAttribute("joinRequest") JoinRequest joinRequest, BindingResult bindingResult) {
-        log.info("넘어온 joinRequest : {}", joinRequest);
+    public String join(@Validated @ModelAttribute("joinRequest") MemberJoinForm memberJoinForm,
+                       BindingResult bindingResult) {
+        log.info("memberJoinForm = {}", memberJoinForm);
 
         if (bindingResult.hasErrors()) {
             log.info("join bindingResult= {}", bindingResult);
-            return "/login/joinForm";
+            return "/login/join";
         }
 
-        memberService.join(joinRequest);
+        memberService.join(memberJoinForm);
 
-        return "/login/joinSuccess";
+        return "/login/alert_join";
     }
 
     // 로그인
     @GetMapping("/login")
     public String loginForm() {
-        return "/login/loginForm";
+        return "/login/login";
     }
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam("id") String id,
-            @RequestParam("pw") String pw,
-            HttpServletRequest request, RedirectAttributes redirectAttributes) {
-
+    public String login(@RequestParam String id,
+                        @RequestParam String pw,
+                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        log.info("id= {}, pw= {}", id, pw);
         Member authUser;
 
         try {
@@ -91,12 +91,14 @@ public class MemberController {
         } catch (Exception e) {
             redirectAttributes.addAttribute("error", true);
             redirectAttributes.addAttribute("id", id);
+
             return "redirect:/login";
         }
 
         if (authUser == null) {
             redirectAttributes.addAttribute("error", true);
             redirectAttributes.addAttribute("id", id);
+
             return "redirect:/login";
         }
 
@@ -126,7 +128,6 @@ public class MemberController {
     @GetMapping("/member/auth/mypage")
     public String mypage(HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
-
         model.addAttribute("member", member);
 
         return "/member/mypage";
@@ -136,153 +137,136 @@ public class MemberController {
     @GetMapping("/member/auth/change_info")
     public String changeInfo(HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
+        model.addAttribute("member", member);
 
-        model.addAttribute("memberInfo", member);
-
-        return "/member/changeMemberInfo";
+        return "/member/member_info_change";
     }
 
     @PostMapping("/member/auth/change_info")
-    public String changeInfoPost(HttpServletRequest request, @Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm, BindingResult bindingResult) {
+    public String changeInfoPost(@Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm,
+                                 BindingResult bindingResult, HttpServletRequest request) {
+        log.info("memberChangeForm= {}", memberChangeForm);
         Member member = getAuthMember(request);
 
         if (bindingResult.hasErrors()) {
             log.info("changeInfo bindingResult= {}", bindingResult);
-            return "/member/changeMemberInfo";
+            return "/member/member_info_change";
         }
 
-        memberService.modify(member, memberChangeForm);
+        memberService.change(member, memberChangeForm);
 
-        return "/member/changeMemberSuccess";
+        return "/member/alert_change";
     }
 
     // 회원탈퇴
     @GetMapping("/member/auth/withdraw")
     public String withdrawForm() {
-        return "/member/withdrawForm";
+        return "/member/withdraw";
     }
 
     @PostMapping("/member/auth/withdraw")
-    public String withdraw(HttpServletRequest request, @RequestParam String pw, @RequestParam String confirmPw) {
+    public String withdraw(@RequestParam String pw, @RequestParam String confirmPw,
+                           HttpServletRequest request) {
 
-        log.info("pw = {}", pw);
-        log.info("confirmPw = {}", confirmPw);
+        log.info("pw = {}, confirmPw = {}", pw, confirmPw);
 
-        Member member = getAuthMember(request);
-        int mNumber = member.getMNumber();
+        int mNumber = getAuthMember(request).getMNumber();
 
         Map<String, Boolean> errors = new HashMap<>();
         request.setAttribute("errors", errors);
 
         if (!memberService.isPwEqualToConfirm(pw, confirmPw)) {
             errors.put("notMatch", Boolean.TRUE);
-            return "/member/withdrawForm";
+            return "/member/withdraw";
         } else if (!memberService.checkPwCorrect(mNumber, pw)) {
             errors.put("notCorrect", Boolean.TRUE);
-            return "/member/withdrawForm";
+            return "/member/withdraw";
         }
 
         memberService.withdraw(mNumber);
         request.getSession().invalidate();
 
-        return "/member/withdrawSuccess";
+        return "/member/alert_withdraw";
     }
 
     @GetMapping("/member/auth/checkMatching")
-    public String checkMatching(@RequestParam(required = false) String matched, HttpServletRequest request, Model model) {
-        String pageNoVal = request.getParameter("pageNo");
+    public String checkMatching(@RequestParam(required = false) String matched,
+                                @RequestParam(defaultValue = "1") int pageNo,
+                                HttpServletRequest request, Model model) {
+        int mNumber = getAuthMember(request).getMNumber();
 
-        int pageNo = 1;
-
-        if (pageNoVal != null) {
-            pageNo = Integer.parseInt(pageNoVal);
-        }
-
-        Member member = getAuthMember(request);
-        int mNumber = member.getMNumber();
-
-        FindBoardPageForm Finds = findBoardService.getMembersFindPage(pageNo, mNumber, matched);
-        model.addAttribute("Finds", Finds);
+        FindBoardPageForm pageForm = findBoardService.getMatchingPage(pageNo, mNumber, matched);
+        model.addAttribute("pageForm", pageForm);
 
         request.getSession().setAttribute("matched", matched);
 
-        return "/member/listFindBoard";
+        return "/member/matched_find_list";
     }
 
     @GetMapping("/member/auth/checkMatching/lookList")
-    public String checkMatchingDetail(@RequestParam("faNumber") int faNumber, HttpServletRequest request, Model model) {
+    public String checkMatchingDetail(@RequestParam int faNumber,
+                                      @RequestParam(defaultValue = "1") int pageNo,
+                                      Model model) {
         FindBoard findBoard = findBoardService.getFindBoard(faNumber);
-        String pageNoVal = request.getParameter("pageNo");
 
-        int pageNo = 1;
+        LookBoardPageForm pageForm = lookBoardService.getMatchingPage(pageNo, findBoard);
+        model.addAttribute("matchedPageForm", pageForm);
 
-        if (pageNoVal != null) {
-            pageNo = Integer.parseInt(pageNoVal);
-        }
-
-        LookBoardPageForm boardPage = lookBoardService.getMatchedLookPage(pageNo, findBoard);
-        model.addAttribute("matchedLookBoardForm", boardPage);
-
-        return "/member/listLookBoard";
+        return "/member/matched_look_list";
     }
 
     @GetMapping("/member/auth/myApply/{type}")
-    public String getMyApply(@PathVariable("type") String type, HttpServletRequest request, Model model) {
-        String pageNoVal = request.getParameter("pageNo");
-
-        int pageNo = 1;
-
-        if (pageNoVal != null) {
-            pageNo = Integer.parseInt(pageNoVal);
-        }
-
+    public String getMyApply(@PathVariable String type,
+                             @RequestParam(defaultValue = "1") int pageNo,
+                             HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
         int mNumber = member.getMNumber();
 
-        log.info("type : {}", type);
-
         if (type.equals("adopt")) {
-            AdoptApplyPageForm applyPage = adoptTempService.getAdoptApplyPage(pageNo, mNumber, type);
-            model.addAttribute("applyListForm", applyPage);
+            MypageAdoptPageForm pageForm = adoptTempService.getMypageAdopt(pageNo, mNumber, type);
+            model.addAttribute("pageForm", pageForm);
         } else {
-            TempApplyPageForm applyPage = adoptTempService.getTempApplyPage(pageNo, mNumber, type);
-            model.addAttribute("applyListForm", applyPage);
+            MypageTempPageForm pageForm = adoptTempService.getMypageTemp(pageNo, mNumber, type);
+            model.addAttribute("pageForm", pageForm);
         }
 
         request.getSession().setAttribute("type", type);
 
-        return "/member/listApply";
+        return "/member/adopt_temp_apply_list";
     }
 
     // 내가 쓴 게시글
     @GetMapping("/member/auth/myPost/{type}")
-    public String getMyPost(@PathVariable("type") String type, @RequestParam(defaultValue = "1") int pageNo, @RequestParam(required = false) String kindOfBoard, HttpServletRequest request, Model model) {
+    public String getMyPost(@PathVariable String type,
+                            @RequestParam(defaultValue = "1") int pageNo,
+                            @RequestParam(required = false) String kindOfBoard,
+                            HttpServletRequest request, Model model) {
         Member member = getAuthMember(request);
         int mNumber = member.getMNumber();
 
         model.addAttribute("type", type);
 
         if (type.equals("find")) {
-            FindBoardPageForm findMyPost = findBoardService.getFindMyPost(pageNo, mNumber, type);
+            FindBoardPageForm findMyPost = findBoardService.getMyPost(pageNo, mNumber);
 
             model.addAttribute("myPost", findMyPost);
 
-            return "/member/listMyPostFind";
+            return "/member/mypost_find_list";
         } else if (type.equals("look")) {
-            LookBoardPageForm lookMyPost = lookBoardService.getLookMyPost(pageNo, mNumber, type);
+            LookBoardPageForm lookMyPost = lookBoardService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", lookMyPost);
 
-            return "/member/listMyPostLook";
-        } else if (type.equals("board")) { // 자유,문의(?kindOfBoard로 구분)
-            BoardPageForm boardMyPost = boardService.getBoardMyPost(pageNo, mNumber, type, kindOfBoard);
+            return "/member/mypost_look_list";
+        } else if (type.equals("board")) {
+            BoardPageForm boardMyPost = boardService.getMyPost(pageNo, mNumber, type, kindOfBoard);
             model.addAttribute("myPost", boardMyPost);
 
-            return "/member/listMyPostBoard";
-        } else if (type.equals("입양후기")) { //입양후기
-            AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getAdoptReviewMyPost(pageNo, mNumber, type);
+            return "/member/mypost_board_list";
+        } else if (type.equals("입양후기")) {
+            AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getMyPost(pageNo, mNumber, type);
             model.addAttribute("myPost", adoptReviewMyPost);
 
-            return "/member/listMyPostAdoptReview";
+            return "/member/mypost_adopt_review_list";
         } else {
             return null;
         }

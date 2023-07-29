@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface LookBoardMapper {
 
+    // =======BasicMapper 메소드=======
     LookBoard selectByPk(int pk);
 
     void insert(LookBoard obj);
@@ -16,18 +17,35 @@ public interface LookBoardMapper {
     void update(LookBoard obj);
 
     void delete(int pk);
+    // ===============================
 
     int selectCount();
 
-    int selectCountWithCondition(@Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword);
+    int selectCountWithCondition(
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword);
 
     int selectCountBymNumber(int mNumber);
 
-    List<LookBoard> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<LookBoard> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
 
-    List<LookBoard> selectIndexBymNumber(@Param("start") int start, @Param("end") int end, @Param("mNumber") int mNumber);
+    List<LookBoard> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber);
 
-    List<LookBoard> selectIndexWithCondition(@Param("start") int start, @Param("end") int end, @Param("species") String species, @Param("animalState") String animalState, @Param("keyword") String keyword, @Param("sort") String sort);
+    List<LookBoard> selectIndexWithCondition(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort);
+
+    String selectMemberId(int pk);
 
     String selectName(int pk);
 
@@ -35,9 +53,9 @@ public interface LookBoardMapper {
 
     List<Integer> selectMatchedFa(LookBoard obj);
 
-    void changeState(int laNumber);
+    void changeState(int pk);
 
-    void backState(int laNumber);
+    void backState(int pk);
 
     void changeStateFind(int faNumber);
 

@@ -2,6 +2,7 @@ package kh.petmily.service;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
+import kh.petmily.domain.shelter.Shelter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -9,29 +10,27 @@ import java.util.List;
 
 public interface AbandonedAnimalService {
 
-    AbandonedAnimalDetailForm getDetailForm(int abNumber);
-
-    AbandonedAnimalPageForm getAbandonedAnimalPage(int pageNo);
-
-    AbandonedAnimalPageForm getAbandonedAnimalPage(AbandonedAnimalConditionForm abandonedAnimalConditionForm);
-
-    String findName(int abNumber);
-
-    List<AbandonedAnimal> selectAll();
-
-    void write(AdminAbandonedAnimalWriteForm adminAbandonedAnimalWriteForm);
-
-    AdminAbandonedAnimalModifyForm getAbandonedModify(int abNumber);
-
-    void modify(AdminAbandonedAnimalModifyForm adminAbandonedAnimalModifyForm);
+    void write(AdminAbandonedAnimalWriteForm form);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
-    void delete(int abNumber);
+    AbandonedAnimalPageForm getListPage(AbandonedAnimalConditionForm form);
+
+    AbandonedAnimalDetailForm getDetailPage(int abNumber);
+
+    List<AbandonedAnimal> selectAll();
 
     AbandonedAnimal getAnimal(int abNumber);
 
-    String getGroupName(int abNumber);
+    String getAnimalName(int abNumber);
 
-    String getPhone(int abNumber);
+    AbandonedAnimalPageForm getAdminListPage(int pageNo);
+
+    List<Shelter> selectAllShelter();
+
+    AdminAbandonedAnimalModifyForm getModifyForm(int abNumber);
+
+    void modify(AdminAbandonedAnimalModifyForm form);
+
+    void delete(int abNumber);
 }

@@ -13,8 +13,8 @@ import java.sql.Date;
 @ToString
 public class AbandonedAnimal implements DomainObj {
 
-    private int abNumber;
-    private int sNumber;    // 보호소 번호
+    private int abNumber; // 유기동물 번호
+    private int sNumber;
     private String name;
     private String species;
     private String kind;
@@ -26,45 +26,8 @@ public class AbandonedAnimal implements DomainObj {
     private Date admissionDate;
     private String uniqueness;
     private String description;
-    private String animalState;
     private Blob video;
-    private String sort;
-
-    public AbandonedAnimal(int abNumber, String name, String imgPath, String location, Date admissionDate) {
-        this.abNumber = abNumber;
-        this.name = name;
-        this.imgPath = imgPath;
-        this.location = location;
-        this.admissionDate = admissionDate;
-    }
-
-    public AbandonedAnimal(int abNumber, int sNumber, String name, String imgPath, String animalState, String location, Date admissionDate) {
-        this.abNumber = abNumber;
-        this.sNumber = sNumber;
-        this.name = name;
-        this.imgPath = imgPath;
-        this.animalState = animalState;
-        this.location = location;
-        this.admissionDate = admissionDate;
-    }
-
-    public AbandonedAnimal(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState, Blob video) {
-        this.abNumber = abNumber;
-        this.sNumber = sNumber;
-        this.name = name;
-        this.species = species;
-        this.kind = kind;
-        this.gender = gender;
-        this.age = age;
-        this.weight = weight;
-        this.imgPath = imgPath;
-        this.location = location;
-        this.admissionDate = admissionDate;
-        this.uniqueness = uniqueness;
-        this.description = description;
-        this.animalState = animalState;
-        this.video = video;
-    }
+    private String animalState;
 
     public AbandonedAnimal(int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.sNumber = sNumber;
@@ -75,22 +38,6 @@ public class AbandonedAnimal implements DomainObj {
         this.age = age;
         this.weight = weight;
         this.imgPath = imgPath;
-        this.location = location;
-        this.admissionDate = admissionDate;
-        this.uniqueness = uniqueness;
-        this.description = description;
-        this.animalState = animalState;
-    }
-
-    public AbandonedAnimal(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String location, Date admissionDate, String uniqueness, String description, String animalState) {
-        this.abNumber = abNumber;
-        this.sNumber = sNumber;
-        this.name = name;
-        this.species = species;
-        this.kind = kind;
-        this.gender = gender;
-        this.age = age;
-        this.weight = weight;
         this.location = location;
         this.admissionDate = admissionDate;
         this.uniqueness = uniqueness;
@@ -113,9 +60,5 @@ public class AbandonedAnimal implements DomainObj {
         this.uniqueness = uniqueness;
         this.description = description;
         this.animalState = animalState;
-    }
-
-    public void setAbNumber(int abNumber) {
-        this.abNumber = abNumber;
     }
 }

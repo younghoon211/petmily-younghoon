@@ -7,6 +7,7 @@ import kh.petmily.domain.reply.form.ReadReplyForm;
 import kh.petmily.domain.reply.form.ReplyModifyForm;
 import kh.petmily.domain.reply.form.ReplyWriteForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,33 +22,62 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyDao replyDao;
     private final MemberDao memberDao;
 
+    // ===================== Create =====================
+    // 댓글 쓰기
     @Override
-    public void write(ReplyWriteForm replyWriteForm) {
-        Reply reply = new Reply(replyWriteForm.getbNumber(), replyWriteForm.getmNumber(), replyWriteForm.getReply());
+    public void write(ReplyWriteForm form) {
+        Reply reply = toWrite(form);
         replyDao.insert(reply);
     }
 
-    @Override
-    public void modify(ReplyModifyForm replyModifyForm) {
-        Reply reply = new Reply(replyModifyForm.getBrNumber(), replyModifyForm.getReply());
-        replyDao.update(reply);
-    }
-
-    @Override
-    public void delete(int brNumber) {
-        replyDao.delete(brNumber);
-    }
-
+    // ===================== Read =====================
+    // 댓글 리스트
     @Override
     public List<ReadReplyForm> getList(int bNumber) {
         List<ReadReplyForm> result = new ArrayList<>();
-        List<Reply> replies = replyDao.list(bNumber);
+        List<Reply> list = replyDao.list(bNumber);
 
-        for (Reply reply : replies) {
-            String writer = memberDao.selectName(reply.getMNumber());
-            result.add(new ReadReplyForm(reply.getBrNumber(), reply.getMNumber(), reply.getReply(), reply.getWrTime(), writer));
+        for (Reply r : list) {
+            String writer = memberDao.selectName(r.getMNumber());
+            result.add(toReplyForm(r, writer));
         }
 
         return result;
+    }
+
+    // ===================== Update =====================
+    // 수정
+    @Override
+    public void modify(ReplyModifyForm form) {
+        Reply reply = new Reply(form.getBrNumber(), form.getReply());
+        replyDao.update(reply);
+    }
+
+    // ===================== Delete =====================
+    // 삭제
+    @Override
+    public void delete(int pk) {
+        replyDao.delete(pk);
+    }
+
+
+    // ===================== CRUD 끝 =====================
+
+
+    private Reply toWrite(ReplyWriteForm form) {
+        return new Reply(
+                form.getbNumber(),
+                form.getmNumber(),
+                form.getReply()
+        );
+    }
+
+    private ReadReplyForm toReplyForm(Reply r, String writer) {
+        return new ReadReplyForm(
+                r.getBrNumber(),
+                r.getMNumber(),
+                r.getReply(),
+                r.getWrTime(),
+                writer);
     }
 }

@@ -21,7 +21,6 @@ public class ReplyDao implements BasicDao {
     @Override
     public void insert(DomainObj obj) {
         mapper.insert((Reply) obj);
-
     }
 
     @Override

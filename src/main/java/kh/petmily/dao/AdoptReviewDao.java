@@ -44,11 +44,11 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
+        List<AdoptReviewListForm> result = new ArrayList<>();
         List<AdoptReview> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
-        List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
 
         for (AdoptReview a : list) {
-            AdoptReviewListForm ar = new AdoptReviewListForm(
+            AdoptReviewListForm li = new AdoptReviewListForm(
                     a.getBNumber(),
                     a.getMNumber(),
                     selectName(a.getBNumber()),
@@ -57,13 +57,13 @@ public class AdoptReviewDao implements BasicDao {
                     a.getContent(),
                     a.getImgPath(),
                     a.getWrTime(),
-                    a.getCheckPublic(),
-                    a.getViewCount());
+                    a.getViewCount()
+            );
 
-            adoptReviewListForm.add(ar);
+            result.add(li);
         }
 
-        return adoptReviewListForm;
+        return result;
     }
 
     // 관리자
@@ -72,39 +72,44 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     public List<AdoptReviewListForm> selectIndex(int start, int end, String kindOfBoard) {
+        List<AdoptReviewListForm> result = new ArrayList<>();
         List<AdoptReview> list = mapper.selectIndex(start, end, kindOfBoard);
-        List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
 
         for (AdoptReview a : list) {
-            AdoptReviewListForm ar = new AdoptReviewListForm(
+            AdoptReviewListForm li = new AdoptReviewListForm(
                     a.getBNumber(),
                     a.getMNumber(),
+                    selectMemberId(a.getBNumber()),
                     selectName(a.getBNumber()),
                     a.getKindOfBoard(),
                     a.getTitle(),
                     a.getContent(),
                     a.getImgPath(),
                     a.getWrTime(),
-                    a.getCheckPublic(),
-                    a.getViewCount());
+                    a.getViewCount()
+            );
 
-            adoptReviewListForm.add(ar);
+            result.add(li);
         }
 
-        return adoptReviewListForm;
+        return result;
     }
 
     //====== 검색 추가 ======
-    public int selectCountWithCondition(AdoptReviewConditionForm ac) {
-        return mapper.selectCountWithCondition(ac.getKindOfBoard(), ac.getSearchType(), ac.getKeyword());
+    public int selectCountWithCondition(AdoptReviewConditionForm form) {
+        return mapper.selectCountWithCondition(
+                form.getKindOfBoard(), form.getSearchType(), form.getKeyword()
+        );
     }
 
-    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm ac) {
-        List<AdoptReview> list = mapper.selectIndexWithCondition(start, end, ac.getKindOfBoard(), ac.getSearchType(), ac.getKeyword(), ac.getSort());
-        List<AdoptReviewListForm> adoptReviewListForm = new ArrayList<>();
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm form) {
+        List<AdoptReviewListForm> result = new ArrayList<>();
+        List<AdoptReview> list = mapper.selectIndexWithCondition(
+                start, end, form.getKindOfBoard(), form.getSearchType(), form.getKeyword(), form.getSort()
+        );
 
         for (AdoptReview a : list) {
-            AdoptReviewListForm ar = new AdoptReviewListForm(
+            AdoptReviewListForm li = new AdoptReviewListForm(
                     a.getBNumber(),
                     a.getMNumber(),
                     selectName(a.getBNumber()),
@@ -113,13 +118,17 @@ public class AdoptReviewDao implements BasicDao {
                     a.getContent(),
                     a.getImgPath(),
                     a.getWrTime(),
-                    a.getCheckPublic(),
-                    a.getViewCount());
+                    a.getViewCount()
+            );
 
-            adoptReviewListForm.add(ar);
+            result.add(li);
         }
 
-        return adoptReviewListForm;
+        return result;
+    }
+
+    public String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 
     public String selectName(int pk) {

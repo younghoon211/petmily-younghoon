@@ -19,14 +19,14 @@ public class PetmilyErrorController implements ErrorController {
             int statusCode = Integer.valueOf(status.toString());
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "error/error-404";
+                return "error/error_404";
             } else if (statusCode == HttpStatus.BAD_REQUEST.value()) {
-                return "error/error-400";
+                return "error/error_400";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "error/error-500";
+                return "error/error_500";
             }
         }
 
-        return "/error/error-default";
+        return "/error/error_default";
     }
 }

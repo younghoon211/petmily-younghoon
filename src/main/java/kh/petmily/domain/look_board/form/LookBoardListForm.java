@@ -1,12 +1,16 @@
 package kh.petmily.domain.look_board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Data
+@NoArgsConstructor
 public class LookBoardListForm {
+
     private int laNumber;
+    private String memberId;
     private String name;
     private String species;
     private String kind;
@@ -30,7 +34,7 @@ public class LookBoardListForm {
         this.title = title;
     }
 
-    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount, String sort) {
+    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
         this.laNumber = laNumber;
         this.name = name;
         this.species = species;
@@ -41,11 +45,11 @@ public class LookBoardListForm {
         this.wrTime = wrTime;
         this.title = title;
         this.viewCount = viewCount;
-        this.sort = sort;
     }
 
-    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+    public LookBoardListForm(int laNumber, String memberId, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
         this.laNumber = laNumber;
+        this.memberId = memberId;
         this.name = name;
         this.species = species;
         this.kind = kind;

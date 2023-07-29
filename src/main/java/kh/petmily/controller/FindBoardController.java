@@ -30,111 +30,72 @@ public class FindBoardController {
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute FindBoardConditionForm conditionForm, Model model) {
-        FindBoardPageForm findBoardPageForm = findBoardService.getFindPage(conditionForm);
-        model.addAttribute("Finds", findBoardPageForm);
+        FindBoardPageForm pageForm = findBoardService.getListPage(conditionForm);
+        model.addAttribute("pageForm", pageForm);
 
-        return "/find_board/listFindBoard";
+        return "/find.board/find_list";
     }
 
     @GetMapping("/detail")
     public String detail(@RequestParam int faNumber, Model model) {
         findBoardService.updateViewCount(faNumber);
+        FindBoardDetailForm detailForm = findBoardService.getDetailPage(faNumber);
 
-        FindBoardDetailForm detailForm = findBoardService.getDetailForm(faNumber);
-        log.info("FindDetailForm = {}", detailForm);
+        model.addAttribute("detailForm", detailForm);
 
-        model.addAttribute("findIn", detailForm);
-
-        return "/find_board/detailFindBoard";
+        return "/find.board/find_detail";
     }
 
     //=======작성=======
     @GetMapping("/auth/write")
     public String writeForm() {
-
-        return "/find_board/writeFindBoardForm";
+        return "/find.board/find_write";
     }
 
     @PostMapping("/auth/write")
-    public String write(@ModelAttribute FindBoardWriteForm findBoardWriteForm, HttpServletRequest request) {
+    public String write(@ModelAttribute FindBoardWriteForm writeForm,
+                        HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        Member member = getAuthMember(request);
+        String filename = findBoardService.storeFile(writeForm.getFile(), fullPath);
 
-        int mNumber = member.getMNumber();
-        findBoardWriteForm.setMNumber(mNumber);
+        writeForm.setMNumber(getAuthMember(request).getMNumber());
+        writeForm.setImgPath(filename);
 
-        String filename = "";
+        log.info("findBoardWriteForm = {}", writeForm);
 
-        if (!findBoardWriteForm.getImgPath().isEmpty()) {
-            try {
-                filename = findBoardService.storeFile(findBoardWriteForm.getImgPath(), fullPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        findBoardService.write(writeForm);
 
-            findBoardWriteForm.setFullPath(filename);
-        } else {
-            findBoardWriteForm.setFullPath("");
-        }
-
-        log.info("FindWriteForm = {}", findBoardWriteForm);
-
-        findBoardService.write(findBoardWriteForm);
-
-        return "/find_board/submitSuccess";
+        return "/find.board/alert_write";
     }
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int faNumber, HttpServletRequest request, Model model) {
-        FindBoardModifyForm fmForm = findBoardService.getModifyForm(faNumber);
+    public String modifyForm(@RequestParam int faNumber, Model model) {
+        FindBoardModifyForm modifyForm = findBoardService.getModifyForm(faNumber);
+        log.info("수정 전 FindBoardModifyForm = {}", modifyForm);
 
-        Member member = getAuthMember(request);
+        model.addAttribute("modifyForm", modifyForm);
 
-        int mNumber = member.getMNumber();
-        fmForm.setMNumber(mNumber);
-        fmForm.setFaNumber(faNumber);
-
-        model.addAttribute("findMod", fmForm);
-
-        return "/find_board/modifyFindBoardForm";
+        return "/find.board/find_modify";
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@RequestParam int faNumber,
-                         @ModelAttribute FindBoardModifyForm findBoardModifyForm,
-                         HttpServletRequest request,
-                         Model model,
-                         RedirectAttributes redirectAttributes) {
+    public String modify(@Validated @ModelAttribute FindBoardModifyForm modifyForm,
+                         HttpServletRequest request, Model model) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
-        Member member = getAuthMember(request);
+        String filename = findBoardService.storeFile(modifyForm.getFile(), fullPath);
+        modifyForm.setImgPath(filename);
 
-        int mNumber = member.getMNumber();
-        findBoardModifyForm.setMNumber(mNumber);
-        findBoardModifyForm.setFaNumber(faNumber);
+        findBoardService.modify(modifyForm);
+        log.info("수정 후 FindBoardModifyForm = {}", modifyForm);
 
-        String filename = null;
+        model.addAttribute("faNumber", modifyForm.getFaNumber());
 
-        try {
-            filename = findBoardService.storeFile(findBoardModifyForm.getImgPath(), fullPath);
-            findBoardModifyForm.setFullPath(filename);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.info("FinModifyForm = {}", findBoardModifyForm);
-
-        findBoardService.modify(findBoardModifyForm);
-
-        model.addAttribute("findMod", findBoardModifyForm);
-
-        redirectAttributes.addAttribute("faNumber", faNumber);
-
-        return "redirect:/findBoard/detail?faNumber={faNumber}";
+        return "/find.board/alert_modify";
     }
 
     //=======삭제=======
@@ -142,7 +103,7 @@ public class FindBoardController {
     public String delete(@RequestParam int faNumber) {
         findBoardService.delete(faNumber);
 
-        return "/find_board/submitSuccess";
+        return "/find.board/alert_delete";
     }
 
     @ResponseBody

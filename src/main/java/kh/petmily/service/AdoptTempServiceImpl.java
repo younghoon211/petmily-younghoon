@@ -26,27 +26,15 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     private final TempDao tempDao;
     private int size = 10;
 
-
-    //    ============================== 입양 ==============================
-
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 회원 페이지(입양) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    // 입양 신청
     @Override
-    public void adopt(AdoptTempSubmitForm adoptTempSubmitForm) {
-        Adopt adopt = toAdopt(adoptTempSubmitForm);
+    public void adopt(AdoptTempSubmitForm form) {
+        Adopt adopt = toAdopt(form);
         adoptDao.insert(adopt);
     }
 
-    private Adopt toAdopt(AdoptTempSubmitForm adoptTempSubmitForm) {
-        return new Adopt(adoptTempSubmitForm.getMNumber(), adoptTempSubmitForm.getAbNumber(),
-                adoptTempSubmitForm.getResidence(), adoptTempSubmitForm.getMaritalStatus(),
-                adoptTempSubmitForm.getJob());
-    }
-
-    @Override
-    public Adopt findByAdoptPk(int adNumber) {
-        return adoptDao.findByPk(adNumber);
-    }
-
-    // 마이페이지 입양
+    // 입양 신청 내역 (마이페이지)
     @Override
     public MypageAdoptPageForm getMypageAdopt(int pageNo, int mNumber, String type) {
         int total = adoptDao.selectCount(mNumber);
@@ -55,27 +43,15 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return new MypageAdoptPageForm(total, pageNo, size, content);
     }
 
-
-    //    ============================== 임보 ==============================
-
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 회원 페이지(임시보호) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    // 임시보호 신청
     @Override
-    public void temp(AdoptTempSubmitForm adoptTempSubmitForm) {
-        TempPet tempPet = toTempPet(adoptTempSubmitForm);
+    public void temp(AdoptTempSubmitForm form) {
+        TempPet tempPet = toTempPet(form);
         tempDao.insert(tempPet);
     }
 
-    private TempPet toTempPet(AdoptTempSubmitForm adoptTempSubmitForm) {
-        return new TempPet(adoptTempSubmitForm.getAbNumber(), adoptTempSubmitForm.getMNumber(),
-                adoptTempSubmitForm.getResidence(), adoptTempSubmitForm.getMaritalStatus(),
-                adoptTempSubmitForm.getJob());
-    }
-
-    @Override
-    public TempPet findByTempPk(int tNumber) {
-        return tempDao.findByPk(tNumber);
-    }
-
-    // 마이페이지 임보
+    // 임시보호 신청 내역 (마이페이지)
     @Override
     public MypageTempPageForm getMypageTemp(int pageNo, int mNumber, String type) {
         int total = tempDao.selectCount(mNumber);
@@ -85,157 +61,222 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     }
 
 
-    //    ============================== 관리자 페이지(입양) ==============================
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 관리자 페이지(입양) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
-    // 입양 관리 페이지
+    // ===================== Create =====================
+    // 입양 글쓰기
     @Override
-    public AdoptPageForm getAdminAdoptListPage(int pageNo) {
-        int total = adoptDao.selectCount();
-        List<AdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
-
-        return new AdoptPageForm(total, pageNo, size, content);
-    }
-
-    // insert
-    @Override
-    public List<Member> selectAllMemberAdopt() {
-        return adoptDao.selectAllMember();
-    }
-
-    @Override
-    public List<AbandonedAnimal> selectAllExcludeAdoptStatus() {
-        return adoptDao.selectAllExcludeAdoptStatus();
-    }
-
-    @Override
-    public void adminAdoptWrite(AdminAdoptForm adminAdoptForm) {
-        Adopt adopt = adminToAdopt(adminAdoptForm);
+    public void adminAdoptWrite(AdminAdoptForm form) {
+        Adopt adopt = adminToAdopt(form);
         adoptDao.adminInsert(adopt);
     }
 
+    // ===================== Read =====================
+
+    // 입양 관리 리스트 페이지
     @Override
-    public void updateStatusToAdopt() {
-        adoptDao.updateStatusToAdopt();
+    public AdminAdoptPageForm getAdminAdoptListPage(int pageNo) {
+        int total = adoptDao.selectCount();
+        List<AdminAdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+
+        return new AdminAdoptPageForm(total, pageNo, size, content);
     }
 
-    // update
+    // 입양 승인 관리 페이지
+    @Override
+    public AdminAdoptPageForm getAdminAdoptWaitPage(int pageNo, String status) {
+        int total = adoptDao.selectCount();
+        List<AdminAdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+
+        return new AdminAdoptPageForm(total, pageNo, size, content);
+    }
+
+    // 입양 조회
+    @Override
+    public Adopt getAdoptByPk(int adNumber) {
+        return adoptDao.findByPk(adNumber);
+    }
+
+    // 모든 유기동물
     @Override
     public List<AbandonedAnimal> selectAllAbandonedAnimalAdopt() {
         return adoptDao.selectAllAbandonedAnimal();
     }
 
+    // 입양 '완료'인 상태 제외한 유기동물 리스트
     @Override
-    public void adminAdoptUpdate(AdminAdoptForm adminAdoptForm) {
-        Adopt adopt = adminToAdopt(adminAdoptForm);
+    public List<AbandonedAnimal> selectAllExcludeAdoptStatus() {
+        return adoptDao.selectAllExcludeAdoptStatus();
+    }
+
+    // 모든 회원 리스트
+    @Override
+    public List<Member> selectAllMemberAdopt() {
+        return adoptDao.selectAllMember();
+    }
+
+    // ===================== Update =====================
+    // 입양 업데이트
+    @Override
+    public void adminAdoptUpdate(AdminAdoptForm form) {
+        Adopt adopt = adminToAdopt(form);
         adoptDao.update(adopt);
     }
 
-    // delete
+    // 입양 '완료'인 유기동물 '입양'으로 업데이트
     @Override
-    public void deleteAdopt(int adNumber) {
-        adoptDao.delete(adNumber);
+    public void updateStatusToAdopt() {
+        adoptDao.updateStatusToAdopt();
     }
 
-    private Adopt adminToAdopt(AdminAdoptForm adminAdoptForm) {
-        return new Adopt(adminAdoptForm.getAdNumber(), adminAdoptForm.getMNumber(), adminAdoptForm.getAbNumber(),
-                adminAdoptForm.getResidence(), adminAdoptForm.getMaritalStatus(),
-                adminAdoptForm.getJob(), adminAdoptForm.getStatus());
-    }
-
-    // 입양 승인 관리 페이지
-    @Override
-    public AdoptPageForm getAdminAdoptWaitPage(int pageNo, String status) {
-        int total = adoptDao.selectCount();
-        List<AdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
-
-        return new AdoptPageForm(total, pageNo, size, content);
-    }
-
+    // 입양 승인 버튼
     @Override
     public void adoptApproveButton(int adNumber) {
         adoptDao.adoptApprove(adNumber);
     }
 
+    // 입양 거절 버튼
     @Override
     public void adoptRefuseButton(int adNumber) {
         adoptDao.adoptRefuse(adNumber);
     }
 
-
-    //    ============================== 관리자 페이지(임보) ==============================
-
-    // 임보 관리 페이지
+    // ===================== Delete =====================
+    // 입양 삭제
     @Override
-    public TempPageForm getAdminTempListPage(int pageNo) {
-        int total = tempDao.selectCount();
-        List<TempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
-
-        return new TempPageForm(total, pageNo, size, content);
+    public void deleteAdopt(int adNumber) {
+        adoptDao.delete(adNumber);
     }
 
-    // insert
-    @Override
-    public List<Member> selectAllMemberTemp() {
-        return tempDao.selectAllMember();
+    // ===================== CRUD 끝 =====================
+
+
+    private Adopt toAdopt(AdoptTempSubmitForm form) {
+        return new Adopt(
+                form.getMNumber(), form.getAbNumber(),
+                form.getResidence(), form.getMaritalStatus(),
+                form.getJob());
     }
 
-    @Override
-    public List<AbandonedAnimal> selectAllExcludeTempStatus() {
-        return tempDao.selectAllExcludeTempStatus();
+    private Adopt adminToAdopt(AdminAdoptForm form) {
+        return new Adopt(
+                form.getAdNumber(), form.getMNumber(), form.getAbNumber(),
+                form.getResidence(), form.getMaritalStatus(),
+                form.getJob(), form.getStatus());
     }
 
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 관리자 페이지(임시보호) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+    // ===================== Create =====================
+    // 임시보호 글쓰기
     @Override
-    public void adminTempWrite(AdminTempForm adminTempForm) {
-        TempPet tempPet = adminToTemp(adminTempForm);
+    public void adminTempWrite(AdminTempForm form) {
+        TempPet tempPet = adminToTemp(form);
         tempDao.adminInsert(tempPet);
     }
 
+    // ===================== Read =====================
+    // 임보 관리 리스트 페이지
     @Override
-    public void updateStatusToTemp() {
-        tempDao.updateStatusToTemp();
+    public AdminTempPageForm getAdminTempListPage(int pageNo) {
+        int total = tempDao.selectCount();
+        List<AdminTempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+
+        return new AdminTempPageForm(total, pageNo, size, content);
     }
 
-    // update
+    // 임보 승인 관리 페이지
+    @Override
+    public AdminTempPageForm getAdminTempWaitPage(int pageNo, String status) {
+        int total = tempDao.selectCount();
+        List<AdminTempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+
+        return new AdminTempPageForm(total, pageNo, size, content);
+    }
+
+    // 임시보호 조회
+    @Override
+    public TempPet getTempByPk(int pk) {
+        return tempDao.findByPk(pk);
+    }
+
+    // 모든 유기동물 리스트
     @Override
     public List<AbandonedAnimal> selectAllAbandonedAnimalTemp() {
         return tempDao.selectAllAbandonedAnimal();
     }
 
+    // 임시보호 '완료'인 상태 제외한 유기동물 리스트
     @Override
-    public void adminTempUpdate(AdminTempForm adminTempForm) {
-        TempPet tempPet = adminToTemp(adminTempForm);
+    public List<AbandonedAnimal> selectAllExcludeTempStatus() {
+        return tempDao.selectAllExcludeTempStatus();
+    }
+
+    // 모든 회원 리스트
+    @Override
+    public List<Member> selectAllMemberTemp() {
+        return tempDao.selectAllMember();
+    }
+
+    // ===================== Update =====================
+    // 임시보호 업데이트
+    @Override
+    public void adminTempUpdate(AdminTempForm form) {
+        TempPet tempPet = adminToTemp(form);
         tempDao.update(tempPet);
     }
 
-    // delete
+    // 임보 '완료'인 유기동물 '임보'로 업데이트
     @Override
-    public void deleteTemp(int tNumber) {
-        tempDao.delete(tNumber);
+    public void updateStatusToTemp() {
+        tempDao.updateStatusToTemp();
     }
 
-    private TempPet adminToTemp(AdminTempForm adminTempForm) {
-        return new TempPet(adminTempForm.getTNumber(), adminTempForm.getAbNumber(), adminTempForm.getMNumber(),
-                adminTempForm.getTempDate(), adminTempForm.getTempPeriod(),
-                adminTempForm.getResidence(), adminTempForm.getMaritalStatus(),
-                adminTempForm.getJob(), adminTempForm.getStatus());
+    // 임보 승인 버튼
+    @Override
+    public void tempApproveButton(int pk) {
+        tempDao.tempApprove(pk);
     }
 
-    // 임보 승인 관리 페이지
+    // 임보 거절 버튼
     @Override
-    public TempPageForm getAdminTempWaitPage(int pageNo, String status) {
-        int total = tempDao.selectCount();
-        List<TempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
-
-        return new TempPageForm(total, pageNo, size, content);
+    public void tempRefuseButton(int pk) {
+        tempDao.tempRefuse(pk);
     }
 
+    // ===================== Delete =====================
+    // 임시보호 삭제
     @Override
-    public void tempApproveButton(int tNumber) {
-        tempDao.tempApprove(tNumber);
+    public void deleteTemp(int pk) {
+        tempDao.delete(pk);
     }
 
-    @Override
-    public void tempRefuseButton(int tNumber) {
-        tempDao.tempRefuse(tNumber);
+
+    // ===================== CRUD 끝 =====================
+
+
+    private TempPet toTempPet(AdoptTempSubmitForm form) {
+        return new TempPet(
+                form.getAbNumber(),
+                form.getMNumber(),
+                form.getResidence(),
+                form.getMaritalStatus(),
+                form.getJob()
+        );
+    }
+
+    private TempPet adminToTemp(AdminTempForm form) {
+        return new TempPet(
+                form.getTNumber(),
+                form.getAbNumber(),
+                form.getMNumber(),
+                form.getTempDate(),
+                form.getTempPeriod(),
+                form.getResidence(),
+                form.getMaritalStatus(),
+                form.getJob(),
+                form.getStatus()
+        );
     }
 }

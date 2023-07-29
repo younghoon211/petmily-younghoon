@@ -1,10 +1,12 @@
 package kh.petmily.domain.adopt_review.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class AdoptReviewPageForm {
 
     private int total;

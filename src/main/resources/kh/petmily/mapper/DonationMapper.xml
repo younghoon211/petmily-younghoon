@@ -35,16 +35,16 @@
         from DONATION
     </select>
 
-    <select id="selectIndex" resultType="kh.petmily.domain.donation.form.DonationListForm">
+    <select id="selectIndex" resultType="kh.petmily.domain.donation.Donation">
         select * from
         (select ROWNUM as NUM, A.* from
         (select * from DONATION order by DNUMBER desc) A)
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectByContent" resultType="kh.petmily.domain.donation.Donation">
-        select D.*, AB.NAME, M.NAME
-        from DONATION D, ABANDONEDANIMAL AB, MEMBER M
-        where D.ABNUMBER = AB.ABNUMBER AND D.MNUMBER = M.MNUMBER and DNUMBER = #{dNumber}
-    </select>
+<!--    <select id="selectByContent" resultType="kh.petmily.domain.donation.Donation">-->
+<!--        select D.*, AB.NAME, M.NAME-->
+<!--        from DONATION D, ABANDONEDANIMAL AB, MEMBER M-->
+<!--        where D.ABNUMBER = AB.ABNUMBER AND D.MNUMBER = M.MNUMBER and DNUMBER = #{dNumber}-->
+<!--    </select>-->
 </mapper>

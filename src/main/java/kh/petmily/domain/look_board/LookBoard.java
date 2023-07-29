@@ -8,9 +8,10 @@ import lombok.ToString;
 import java.sql.Date;
 
 @Getter
-@ToString
 @NoArgsConstructor
+@ToString
 public class LookBoard implements DomainObj {
+
     private int laNumber;
     private int mNumber;
     private String species;
@@ -22,10 +23,9 @@ public class LookBoard implements DomainObj {
     private String title;
     private String content;
     private int viewCount;
-    private String sort;
 
-    public LookBoard(int mNumber, String species, String kind, String location, String imgPath, String title, String content) {
-        this.mNumber = mNumber;
+    public LookBoard(int laNumber, String species, String kind, String location, String imgPath, String title, String content) {
+        this.laNumber = laNumber;
         this.species = species;
         this.kind = kind;
         this.location = location;
@@ -34,35 +34,13 @@ public class LookBoard implements DomainObj {
         this.content = content;
     }
 
-    public LookBoard(int laNumber, int mNumber, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content) {
-        this.laNumber = laNumber;
-        this.mNumber = mNumber;
+    public LookBoard(String species, int mNumber, String kind, String location, String imgPath, String title, String content) {
         this.species = species;
+        this.mNumber = mNumber;
         this.kind = kind;
         this.location = location;
-        this.animalState = animalState;
         this.imgPath = imgPath;
-        this.wrTime = wrTime;
         this.title = title;
         this.content = content;
-    }
-
-    // ====== 조회수 추가 ======
-    public LookBoard(int laNumber, int mNumber, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content, int viewCount) {
-        this.laNumber = laNumber;
-        this.mNumber = mNumber;
-        this.species = species;
-        this.kind = kind;
-        this.location = location;
-        this.animalState = animalState;
-        this.imgPath = imgPath;
-        this.wrTime = wrTime;
-        this.title = title;
-        this.content = content;
-        this.viewCount = viewCount;
-    }
-
-    public void setLaNumber(int laNumber) {
-        this.laNumber = laNumber;
     }
 }

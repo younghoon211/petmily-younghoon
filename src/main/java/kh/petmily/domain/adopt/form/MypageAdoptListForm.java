@@ -1,12 +1,15 @@
 package kh.petmily.domain.adopt.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class MypageAdoptListForm {
-    int pk;
-    String abName;
-    String status;
+
+    private int pk;
+    private String abName;
+    private String status;
 
     public MypageAdoptListForm(int adNumber, String abName, String status) {
         this.pk = adNumber;

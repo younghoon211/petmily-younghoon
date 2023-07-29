@@ -1,12 +1,17 @@
 package kh.petmily.domain.board.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class BoardDetailForm {
-    private int bNumber;
+
+    private Integer bNumber;
     private int mNumber;
     private String name;
     private String kindOfBoard;

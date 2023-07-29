@@ -6,11 +6,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BasicDao {
 
-    public DomainObj findByPk(int pk);
+    DomainObj findByPk(int pk);
 
-    public void insert(DomainObj obj);
+    void insert(DomainObj obj);
 
-    public void update(DomainObj obj);
+    void update(DomainObj obj);
 
-    public void delete(int pk);
+    void delete(int pk);
 }

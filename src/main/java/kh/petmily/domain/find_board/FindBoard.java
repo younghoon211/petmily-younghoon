@@ -8,9 +8,10 @@ import lombok.ToString;
 import java.sql.Date;
 
 @Getter
-@ToString
 @NoArgsConstructor
+@ToString
 public class FindBoard implements DomainObj {
+
     private int faNumber;
     private int mNumber;
     private String species;
@@ -22,10 +23,9 @@ public class FindBoard implements DomainObj {
     private String title;
     private String content;
     private int viewCount;
-    private String sort;
 
-    public FindBoard(int mNumber, String species, String kind, String location, String imgPath, String title, String content) {
-        this.mNumber = mNumber;
+    public FindBoard(int faNumber, String species, String kind, String location, String imgPath, String title, String content) {
+        this.faNumber = faNumber;
         this.species = species;
         this.kind = kind;
         this.location = location;
@@ -34,7 +34,13 @@ public class FindBoard implements DomainObj {
         this.content = content;
     }
 
-    public void setFaNumber(int faNumber) {
-        this.faNumber = faNumber;
+    public FindBoard(String species, int mNumber, String kind, String location, String imgPath, String title, String content) {
+        this.species = species;
+        this.mNumber = mNumber;
+        this.kind = kind;
+        this.location = location;
+        this.imgPath = imgPath;
+        this.title = title;
+        this.content = content;
     }
 }

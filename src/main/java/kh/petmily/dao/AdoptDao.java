@@ -3,7 +3,7 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.adopt.Adopt;
-import kh.petmily.domain.adopt.form.AdoptDetailForm;
+import kh.petmily.domain.adopt.form.AdminAdoptDetailForm;
 import kh.petmily.domain.adopt.form.MypageAdoptListForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.mapper.AbandonedAnimalMapper;
@@ -51,15 +51,22 @@ public class AdoptDao implements BasicDao {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    public List<AdoptDetailForm> selectIndex(int start, int end) {
-        List<AdoptDetailForm> result = new ArrayList<>();
-        List<Adopt> adoptList = mapper.selectIndex(start, end);
+    public List<AdminAdoptDetailForm> selectIndex(int start, int end) {
+        List<AdminAdoptDetailForm> result = new ArrayList<>();
+        List<Adopt> list = mapper.selectIndex(start, end);
 
-        for (Adopt l : adoptList) {
-            AdoptDetailForm li = new AdoptDetailForm(
-                    l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+        for (Adopt l : list) {
+            AdminAdoptDetailForm li = new AdminAdoptDetailForm(
+                    l.getAdNumber(),
+                    l.getMNumber(),
+                    l.getAbNumber(),
+                    l.getResidence(),
+                    l.getMaritalStatus(),
+                    l.getJob(),
+                    l.getStatus(),
+                    selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()),
+                    selectMemberId(l.getMNumber())
             );
 
             result.add(li);
@@ -70,25 +77,37 @@ public class AdoptDao implements BasicDao {
 
     public List<MypageAdoptListForm> selectIndex(int start, int end, int mNumber) {
         List<MypageAdoptListForm> result = new ArrayList<>();
-        List<Adopt> adoptList = mapper.selectIndexBymNumber(start, end, mNumber);
+        List<Adopt> list = mapper.selectIndexBymNumber(start, end, mNumber);
 
-        for (Adopt a : adoptList) {
-            MypageAdoptListForm ma = new MypageAdoptListForm(a.getAdNumber(), getAbNameByAbNumber(a.getAbNumber()), a.getStatus());
-            result.add(ma);
+        for (Adopt a : list) {
+            MypageAdoptListForm li = new MypageAdoptListForm(
+                    a.getAdNumber(),
+                    getAbNameByAbNumber(a.getAbNumber()),
+                    a.getStatus()
+            );
+
+            result.add(li);
         }
 
         return result;
     }
 
-    public List<AdoptDetailForm> selectIndex(int start, int end, String status) {
-        List<AdoptDetailForm> result = new ArrayList<>();
-        List<Adopt> adoptList = mapper.selectIndexByStatus(start, end, status);
+    public List<AdminAdoptDetailForm> selectIndex(int start, int end, String status) {
+        List<AdminAdoptDetailForm> result = new ArrayList<>();
+        List<Adopt> list = mapper.selectIndexByStatus(start, end, status);
 
-        for (Adopt l : adoptList) {
-            AdoptDetailForm li = new AdoptDetailForm(
-                    l.getAdNumber(), l.getMNumber(), l.getAbNumber(),
-                    l.getResidence(), l.getMaritalStatus(), l.getJob(), l.getStatus(), selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()), selectMemberId(l.getMNumber())
+        for (Adopt l : list) {
+            AdminAdoptDetailForm li = new AdminAdoptDetailForm(
+                    l.getAdNumber(),
+                    l.getMNumber(),
+                    l.getAbNumber(),
+                    l.getResidence(),
+                    l.getMaritalStatus(),
+                    l.getJob(),
+                    l.getStatus(),
+                    selectAnimalName(l.getAbNumber()),
+                    selectMemberName(l.getMNumber()),
+                    selectMemberId(l.getMNumber())
             );
 
             result.add(li);

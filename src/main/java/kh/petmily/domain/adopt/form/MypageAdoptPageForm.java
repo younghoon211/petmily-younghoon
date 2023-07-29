@@ -1,10 +1,12 @@
 package kh.petmily.domain.adopt.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class MypageAdoptPageForm {
     private int total;
     private int currentPage;

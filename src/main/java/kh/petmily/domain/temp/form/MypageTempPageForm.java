@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class MypageTempPageForm {
+
     private int total;
     private int currentPage;
     private List<MypageTempListForm> content;

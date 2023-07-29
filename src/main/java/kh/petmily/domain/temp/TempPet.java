@@ -3,10 +3,13 @@ package kh.petmily.domain.temp;
 import kh.petmily.domain.DomainObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.sql.Date;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class TempPet implements DomainObj {
 
     private int tNumber; // 임보 번호
@@ -37,9 +40,5 @@ public class TempPet implements DomainObj {
         this.maritalStatus = maritalStatus;
         this.job = job;
         this.status = status;
-    }
-
-    public int getTNumber() {
-        return tNumber;
     }
 }
