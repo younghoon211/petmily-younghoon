@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +62,6 @@
     </div>
 </section>
 
-
 <!-- 게시판 List -->
 <section class="ftco-section bg-light">
     <div class="container">
@@ -114,12 +114,14 @@
                                 </c:if>
                             </div>
 
+
                             <!-- 작성자, 작성 날짜 -->
                             <div class="text-muted">
                                 <small><a href="javascript:void(0)">by ${board.name}</a><span>
-									<i class="far fa-comment ml-2"></i>
-									</span>date ${board.wrTime} </small>
+									<i class="far fa-comment ml-2"></i>&nbsp;
+									</span><fmt:formatDate value="${board.wrTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/></small>
                             </div>
+
 
                         </div>
 

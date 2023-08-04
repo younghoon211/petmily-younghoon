@@ -74,7 +74,7 @@
                                 </label>
                                 <select name="mNumber" id="mNumber">
                                     <c:forEach var="mem" items="${memberList}">
-                                        <option value="${mem.getMNumber()}">${mem.getMNumber()} - ${mem.name}</option>
+                                        <option value="${mem.getMNumber()}">${mem.name} (${mem.getMNumber()})</option>
                                     </c:forEach>
                                 </select>
                             </div>

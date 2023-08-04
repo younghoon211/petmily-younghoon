@@ -19,8 +19,7 @@
         update BOARD
         set TITLE       = #{title},
             CONTENT     = #{content},
-            CHECKPUBLIC = #{checkPublic},
-            WRTIME      = SYSDATE
+            CHECKPUBLIC = #{checkPublic}
         where BNUMBER = #{bNumber}
     </update>
 

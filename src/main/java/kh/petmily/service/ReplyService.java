@@ -1,6 +1,6 @@
 package kh.petmily.service;
 
-import kh.petmily.domain.reply.form.ReadReplyForm;
+import kh.petmily.domain.reply.form.ReplyListForm;
 import kh.petmily.domain.reply.form.ReplyModifyForm;
 import kh.petmily.domain.reply.form.ReplyWriteForm;
 
@@ -14,5 +14,5 @@ public interface ReplyService {
 
     void delete(int brNumber);
 
-    List<ReadReplyForm> getList(int bNumber);
+    List<ReplyListForm> getListPage(int bNumber);
 }

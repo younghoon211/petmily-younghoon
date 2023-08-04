@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,12 +66,10 @@
 </section>
 
 <!-- content 상세보기 -->
-
 <section class="ftco-section bg-light">
     <div class="container">
 
         <!-- content 내용 출력 -->
-
         <div class="card mb-2">
             <div class="card-body">
                 <div class="media forum-item">
@@ -78,7 +77,7 @@
                         <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
                         <h6 class="mt-1"></h6><br>
                         <small>${detailForm.name}</small>
-                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
+                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;<fmt:formatDate value="${detailForm.wrTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/> </small>
 
                         <c:if test="${param.kindOfBoard eq '문의'}">
                             <c:if test="${detailForm.checkPublic eq 'Y'}">
@@ -92,7 +91,6 @@
                         <div class="modal-footer"></div>
 
                         <!-- content 내용 -->
-
                         <div class="mt-3 font-size-lg">${detailForm.content}</div>
                         <h1 class="mt-1"></h1>
 
@@ -100,13 +98,11 @@
                         <div class="modal-footer">
 
                             <!-- content 수정, 삭제 -->
-
                             <c:if test="${authUser.getMNumber() eq detailForm.getMNumber()}">
                                 <button type="button" class="btn btn-primary"
                                         onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
                                     수정
                                 </button>
-
                                 <button type="button" class="btn btn-danger"
                                         onclick="if(confirm('정말로 삭제하시겠습니까?'))
                                                 {return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
@@ -114,8 +110,7 @@
                                 </button>
                             </c:if>
 
-                            <!-- content 목록 이동 버튼 -->
-
+                            <!-- 목록으로 버튼 -->
                             <span>
 								<button type="button" class="btn btn-secondary"
                                         <c:if test="${authUser.grade eq '일반' || empty authUser}">
@@ -125,34 +120,35 @@
                                         onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'"
                                     </c:if>>목록으로</button>
 							</span>
+
                         </div>
 
                         <%-- 댓글 리스트 --%>
-                        <div id="replyListDiv" style="list-style: non">
+                        <div style="list-style: non">
                             <ul class="timeline">
-                                <!-- timeline time label -->
-                                <li class="time-label" id="repliesDiv" style="list-style-type: none"></li>
+                                <li class="time-label" id="replyLi" style="list-style-type: none"></li>
                             </ul>
                         </div>
 
+                        <!-- 댓글 작성창 -->
                         <c:if test="${authUser ne null}">
-                            <!-- 댓글 작성 -->
                             <div class="card mb-2" id="message">
                                 <div class="card-body">
                                     <div class="col-md-8 col-lg-12">
                                         <div class="comment-wrapper">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
+
                                                     <div class="form-group">
                                                         <label for="message">댓글</label>
                                                         <textarea name="reply" id="message1" cols="30" rows="3"
                                                                   class="form-control" maxlength="300"
                                                                   placeholder="댓글을 작성해주세요."></textarea>
                                                     </div>
-
                                                     <div class="modal-footer">
-                                                        <button type="button" id="replyAddBtn" class="btn btn-primary addBtn">
-                                                            댓글 등록
+                                                        <button type="button" id="replyAddBtn"
+                                                                class="btn btn-outline-success addBtn">
+                                                            댓글등록
                                                         </button>
                                                     </div>
 
@@ -171,46 +167,6 @@
     </div>
 </section>
 
-<script id="template" type="text/x-handlebars-template">
-    {{#each this.reverse}}
-    <li class="replyLi" data-brNumber={{brNumber}} style="list-style-type: none">
-        <div class="timeline-item">
-            <div class="timeline-header">
-                <strong>{{writer}}</strong>&nbsp;
-                <span style="color: lightgray">{{wrTime}}</span>
-            </div>
-            <h7 class="timeline-body">{{reply}}</h7>
-            <span class="timeline-footer" style="white-space: nowrap">
-                {{#if sameWriter}}
-                <button type="button" data-toggle="modal" data-target="#modifyModal"
-                        class="btn btn-light float-right">댓글 수정/삭제</button>
-                {{/if}}
-            </span><br><br>
-        </div>
-        <hr/>
-    </li>
-    {{/each}}
-</script>
-
-<!-- Modal -->
-<div id="modifyModal" class="modal modal-primary fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="modal-title" style="display: none"></div>
-            </div>
-            <div class="modal-body" data-rno>
-                <p><input type="text" id="reply" class="form-control" style="height: 1000px; resize: none"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="replyModBtn">댓글 수정</button>
-                <button type="button" class="btn btn-danger" id="replyDelBtn">댓글 삭제</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="/resources/petsitting-master/js/popper.min.js"></script>
@@ -228,9 +184,31 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<script id="template" type="text/x-handlebars-template">
+    {{#each this.reverse}}
+    <li class="replyObj" data-brNumber={{brNumber}} style="list-style-type: none">
+        <div class="timeline-item">
+            <div class="timeline-header">
+                <strong>{{writer}}</strong>&nbsp;
+                <span style="color: lightgray">{{wrTime}}</span>
+            </div>
+            <span id="reply" class="timeline-body">{{reply}}</span>
+            <span class="timeline-footer" style="white-space: nowrap">
+                {{#if sameWriter}}
+                <br><div style="float: right">
+                    <button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>
+                    <button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>
+                </div><br><br>
+                {{/if}}
+            </span>
+        </div>
+        <hr/>
+    </li>
+    {{/each}}
+</script>
+
 <script>
-    var bNumber = ${detailForm.getBNumber()};
-    var replyPage = 1;
+    let bNumber = ${detailForm.getBNumber()};
 
     window.onload = function () {
         getPage("/replies/" + bNumber);
@@ -238,32 +216,30 @@
 
     function getPage(pageInfo) {
         $.getJSON(pageInfo, function (data) {
-            printData(data, $("#repliesDiv"), $('#template'));
-
-            $("#modifyModal").modal('hide');
+            printData(data, $("#replyLi"), $('#template'));
         });
     }
 
-    var printData = function (replyArr, target, templateObject) {
-        var template = Handlebars.compile(templateObject.html());
-        var html = template(replyArr);
-        $(".replyLi").remove();
+    let printData = function (replyData, target, templateObject) {
+        let template = Handlebars.compile(templateObject.html());
+        let html = template(replyData);
+
+        $(".replyObj").remove();
         target.after(html);
     }
 
     //작성
     $("#replyAddBtn").on("click", function () {
-        var mNumber = "${authUser.getMNumber()}";
+        let mNumber = "${authUser.getMNumber()}";
         console.log(mNumber);
-        var replytextObj = $("#message1");
-        var reply = replytextObj.val();
+        let replytextObj = $("#message1");
+        let reply = replytextObj.val();
 
         $.ajax({
             type: 'post',
             url: '/replies/' + bNumber,
             headers: {
                 "Content-Type": "application/json",
-                "X-HTTP-Method-Override": "POST"
             },
             data: JSON.stringify({bNumber: bNumber, mNumber: mNumber, reply: reply}),
             dataType: 'text',
@@ -271,7 +247,6 @@
                 console.log("result: " + result);
 
                 if (result == 'SUCCESS') {
-                    replyPage = 1;
                     getPage("/replies/" + bNumber);
                     replytextObj.val("");
                 }
@@ -279,62 +254,93 @@
         });
     });
 
-    //수정
-    $("#replyModBtn").on("click", function () {
-        var brNumber = $(".modal-title").html();
-        var reply = $("#reply").val();
+    // 수정
+    $(document).on("click", "#editBtn", function () {
+        let replyObj = $(this).closest(".replyObj");
+        let replyText = replyObj.find(".timeline-body").text();
+        let brNumber = replyObj.attr("data-brNumber");
 
-        console.log()
+        console.log("수정 brNumber= " + brNumber);
 
-        $.ajax({
-            type: 'patch',
-            url: '/replies/' + bNumber,
-            headers: {
-                "Content-Type": "application/json",
-                "X-HTTP-Method-Override": "PATCH"
-            },
-            data: JSON.stringify({brNumber: brNumber, reply: reply}),
-            dataType: 'text',
-            success: function (result) {
-                console.log("result: " + result);
-                if (result == 'SUCCESS') {
-                    alert("댓글이 수정되었습니다.");
-                    getPage("/replies/" + bNumber);
+        let editArea = $("<textarea>", {
+            "class": "form-control",
+            "style": "height: 100px; resize: none",
+            "text": replyText,
+            "maxLength": "300",
+            "placeholder": "댓글을 작성해주세요.",
+            "cols": "30", "rows": "3",
+        });
+
+        let saveBtn = $("<button>", {
+            "type": "button",
+            "class": "btn btn-outline-success saveEditBtn",
+            "text": "수정하기",
+        });
+
+        let cancelBtn = $("<button>", {
+            "type": "button",
+            "class": "btn btn-outline-danger cancelEditBtn",
+            "text": "취소",
+        });
+
+        replyObj.find(".timeline-body").empty().append(editArea).append('<br>');
+        replyObj.find(".timeline-footer").empty().append(saveBtn).append('&nbsp;').append(cancelBtn).append('<br>');
+
+        saveBtn.on("click", function () {
+            let editedReply = editArea.val();
+
+            $.ajax({
+                type: 'patch',
+                url: '/replies/' + bNumber,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify({brNumber: brNumber, reply: editedReply}),
+                dataType: 'text',
+                success: function (result) {
+                    if (result == 'SUCCESS') {
+                        console.log("수정 result = " + result);
+                        getPage("/replies/" + bNumber);
+                    }
                 }
-            }
+            });
+        });
+
+        cancelBtn.on("click", function () {
+            replyObj.find(".timeline-body").text(replyText);
+            replyObj.find(".timeline-footer").empty()
+                .append('<br><div style="float: right">' +
+                    '<button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>&nbsp;' +
+                    '<button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>' +
+                    '</div><br><br>');
         });
     });
 
-    $(".timeline").on("click", ".replyLi", function (event) {
-        var reply = $(this);
+    // 삭제
+    $(document).on("click", "#deleteBtn", function () {
+        let replyObj = $(this).closest(".replyObj");
+        let brNumber = replyObj.attr("data-brNumber");
 
-        $("#reply").val(reply.find('.timeline-body').text());
-        $(".modal-title").html(reply.attr("data-brNumber"));
-    });
+        console.log("삭제 brNumber=" + brNumber);
 
-    //삭제
-    $("#replyDelBtn").on("click", function () {
-        var isConfirmed = confirm("정말로 삭제하시겠습니까?");
-
+        let isConfirmed = confirm("정말로 삭제하시겠습니까?");
         if (isConfirmed) {
-            var brNumber = $(".modal-title").html();
-
             $.ajax({
                 type: 'delete',
                 url: '/replies/' + brNumber,
                 headers: {
                     "Content-Type": "application/json",
-                    "X-HTTP-Method-Override": "DELETE"
                 },
                 dataType: 'text',
                 success: function (result) {
-                    console.log("result: " + result);
+                    console.log("삭제 result = " + result);
                     if (result == 'SUCCESS') {
-                        alert("댓글이 삭제되었습니다.");
                         getPage("/replies/" + bNumber);
                     }
-                }
+                },
             });
+
+            replyObj.remove();
         }
     });
 </script>

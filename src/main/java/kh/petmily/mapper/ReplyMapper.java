@@ -18,5 +18,5 @@ public interface ReplyMapper {
     void delete(int pk);
     // ===============================
 
-    List<Reply> getList(int bNumber);
+    List<Reply> selectIndexBybNumber(int bNumber);
 }

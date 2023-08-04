@@ -1,7 +1,7 @@
 package kh.petmily.controller;
 
 import kh.petmily.domain.member.Member;
-import kh.petmily.domain.reply.form.ReadReplyForm;
+import kh.petmily.domain.reply.form.ReplyListForm;
 import kh.petmily.domain.reply.form.ReplyModifyForm;
 import kh.petmily.domain.reply.form.ReplyWriteForm;
 import kh.petmily.service.ReplyService;
@@ -22,15 +22,16 @@ public class ReplyController {
 
     private final ReplyService replyService;
 
+    // 댓글 리스트
     @GetMapping("/{bNumber}")
-    public ResponseEntity<List<ReadReplyForm>> list(@PathVariable int bNumber, HttpServletRequest request) {
-        Member authMember = (Member) request.getSession(false).getAttribute("authUser");
+    public ResponseEntity<List<ReplyListForm>> list(@PathVariable int bNumber, HttpServletRequest request) {
+        Member authUser = (Member) request.getSession(false).getAttribute("authUser");
 
-        List<ReadReplyForm> list = replyService.getList(bNumber);
+        List<ReplyListForm> list = replyService.getListPage(bNumber);
 
-        if (authMember != null) {
-            for (ReadReplyForm r : list) {
-                if (r.getMNumber() == authMember.getMNumber()) {
+        if (authUser != null) {
+            for (ReplyListForm r : list) {
+                if (r.getMNumber() == authUser.getMNumber()) {
                     r.setSameWriter(true);
                 }
             }
@@ -39,24 +40,27 @@ public class ReplyController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // 작성
     @PostMapping("/{bNumber}")
-    public String register(@RequestBody ReplyWriteForm writeForm) {
+    public String write(@RequestBody ReplyWriteForm writeForm) {
         log.info("replyWriteForm = {}", writeForm);
         replyService.write(writeForm);
 
         return "SUCCESS";
     }
 
+    // 수정
     @PatchMapping("/{bNumber}")
-    public String update(@RequestBody ReplyModifyForm modifyForm) {
+    public String modify(@RequestBody ReplyModifyForm modifyForm) {
         log.info("replyModifyForm = {}", modifyForm);
         replyService.modify(modifyForm);
 
         return "SUCCESS";
     }
 
+    // 삭제
     @DeleteMapping("/{brNumber}")
-    public String remove(@PathVariable int brNumber) {
+    public String delete(@PathVariable int brNumber) {
         replyService.delete(brNumber);
 
         return "SUCCESS";

@@ -29,7 +29,7 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
-    <select id="getList" resultType="kh.petmily.domain.reply.Reply">
+    <select id="selectIndexBybNumber" resultType="kh.petmily.domain.reply.Reply">
         select *
         from BOARDREPLY
         where BNUMBER = #{bNumber}
