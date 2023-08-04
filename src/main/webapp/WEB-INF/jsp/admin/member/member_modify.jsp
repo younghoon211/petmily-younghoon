@@ -88,7 +88,7 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">연락처</label>
-                            <input type="text" class="form-control" name="phone"
+                            <input type="tel" class="form-control" name="phone"
                                    value="${modifyForm.phone}" pattern="^010\d{8}$" maxlength="11"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                         </div>

@@ -361,6 +361,7 @@ ALTER TABLE TempPet
 		)
 		ON DELETE CASCADE;
 
+-- cascade 추가
 ALTER TABLE AbandonedAnimal
 	ADD
 		CONSTRAINT FK_S_TO_AB
@@ -369,7 +370,8 @@ ALTER TABLE AbandonedAnimal
 		)
 		REFERENCES Shelter (
 			sNumber
-		);
+		)
+        ON DELETE CASCADE;
 
 ALTER TABLE FindAnimalBoard
 	ADD

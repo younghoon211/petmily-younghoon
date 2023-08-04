@@ -26,8 +26,6 @@ public interface AbandonedAnimalService {
 
     AbandonedAnimalPageForm getAdminListPage(int pageNo);
 
-    List<Shelter> selectAllShelter();
-
     AdminAbandonedAnimalModifyForm getModifyForm(int abNumber);
 
     void modify(AdminAbandonedAnimalModifyForm form);

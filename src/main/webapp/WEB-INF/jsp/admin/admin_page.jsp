@@ -34,7 +34,8 @@
 <%@ include file="../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
-<section class="hero-wrap hero-wrap-2" style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
          data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -45,15 +46,14 @@
         </div>
     </div>
 </section>
-
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="wrapper">
                     <div class="container">
-                        <div class="row mb-5 pb-5">
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                        <div class="row">
+                            <div class="col-lg-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">회원 관리</h3>
@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                            <div class="col-lg-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">유기동물 관리</h3>
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                            <div class="col-lg-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">게시글 관리</h3>
@@ -87,8 +87,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-5 pt-4">
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                        <br><br><br><br><br>
+                        <div class="row">
+                            <div class="col-lg-3 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">입양 관리</h3>
@@ -99,7 +100,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                            <div class="col-lg-3 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">임시보호 관리</h3>
@@ -110,11 +111,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                            <div class="col-lg-3 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">후원 관리</h3>
                                         <a href="/admin/donation"
+                                           class="btn-custom d-flex align-items-center justify-content-center">
+                                            <span class="fa fa-chevron-right"></span>
+                                            <i class="sr-only">Read more</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 d-flex align-self-stretch px-4 ftco-animate">
+                                <div class="d-block services text-center">
+                                    <div class="media-body p-4">
+                                        <h3 class="heading">보호소 관리</h3>
+                                        <a href="/admin/shelter"
                                            class="btn-custom d-flex align-items-center justify-content-center">
                                             <span class="fa fa-chevron-right"></span>
                                             <i class="sr-only">Read more</i></a>
@@ -127,8 +139,8 @@
             </div>
         </div>
     </div>
+    <div class="info-wrap w-100 p-5 img"></div>
 </section>
-
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="/resources/petsitting-master/js/popper.min.js"></script>

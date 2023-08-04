@@ -103,12 +103,6 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return new AbandonedAnimalPageForm(total, pageNo, size, content);
     }
 
-    // 보호소 리스트 조회
-    @Override
-    public List<Shelter> selectAllShelter() {
-        return abandonedAnimalDao.selectAllShelter();
-    }
-
     // ===================== Update =====================
     // 수정 폼
     @Override

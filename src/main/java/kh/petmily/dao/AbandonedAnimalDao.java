@@ -4,7 +4,6 @@ import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalListForm;
-import kh.petmily.domain.shelter.Shelter;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -132,9 +131,5 @@ public class AbandonedAnimalDao implements BasicDao {
 
     public String selectPhone(int pk) {
         return mapper.selectPhone(pk);
-    }
-
-    public List<Shelter> selectAllShelter() {
-        return mapper.selectAllShelter();
     }
 }

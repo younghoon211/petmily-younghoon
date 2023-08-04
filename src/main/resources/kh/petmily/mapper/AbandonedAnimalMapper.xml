@@ -149,10 +149,4 @@
         from SHELTER S inner join ABANDONEDANIMAL AB
                                   on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
     </select>
-
-    <select id="selectAllShelter" resultType="kh.petmily.domain.shelter.Shelter">
-        select *
-        from SHELTER
-        order by SNUMBER
-    </select>
 </mapper>

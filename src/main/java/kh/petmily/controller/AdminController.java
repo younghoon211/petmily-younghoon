@@ -18,7 +18,9 @@ import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.AdminMemberCreateForm;
 import kh.petmily.domain.member.form.AdminMemberModifyForm;
 import kh.petmily.domain.member.form.MemberPageForm;
-import kh.petmily.domain.shelter.Shelter;
+import kh.petmily.domain.shelter.form.ShelterModifyForm;
+import kh.petmily.domain.shelter.form.ShelterPageForm;
+import kh.petmily.domain.shelter.form.ShelterWriteForm;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.AdminTempForm;
 import kh.petmily.domain.temp.form.AdminTempPageForm;
@@ -47,14 +49,15 @@ import java.util.List;
 @Slf4j
 public class AdminController {
 
-    private final MemberService memberService;
-    private final BoardService boardService;
+    private final AbandonedAnimalService abandonedAnimalService;
     private final AdoptReviewService adoptReviewService;
+    private final AdoptTempService adoptTempService;
+    private final BoardService boardService;
+    private final DonateService donateService;
     private final FindBoardService findBoardService;
     private final LookBoardService lookBoardService;
-    private final DonateService donateService;
-    private final AbandonedAnimalService abandonedAnimalService;
-    private final AdoptTempService adoptTempService;
+    private final MemberService memberService;
+    private final ShelterService shelterService;
 
     // 관리자 메인 페이지
     @GetMapping
@@ -91,7 +94,6 @@ public class AdminController {
     @GetMapping("/member/modify")
     public String memberDetailModify(@RequestParam int mNumber, Model model) {
         AdminMemberModifyForm modifyForm = memberService.getModifyForm(mNumber);
-//        modifyForm.setMNumber(mNumber);
         log.info("수정 전 adminMemberModifyForm = {}", modifyForm);
 
         model.addAttribute("modifyForm", modifyForm);
@@ -153,10 +155,8 @@ public class AdminController {
         AdminAbandonedAnimalModifyForm modifyForm = abandonedAnimalService.getModifyForm(abNumber);
         log.info("수정 전 adminAbandonedAnimalModifyForm = {}", modifyForm);
 
-        List<Shelter> shelterList = abandonedAnimalService.selectAllShelter();
-
         model.addAttribute("modifyForm", modifyForm);
-        model.addAttribute("shelter", shelterList);
+        model.addAttribute("shelter", shelterService.selectAll());
 
         return "/admin/abandoned.animal/abandoned_animal_modify";
     }
@@ -182,103 +182,6 @@ public class AdminController {
         abandonedAnimalService.delete(abNumber);
 
         return "redirect:/admin/abandoned_animal";
-    }
-
-    // =============== 게시판 관리 ===============
-    // 게시판 리스트
-    @GetMapping("/board")
-    public String boardPage(@RequestParam("kindOfBoard") String kind,
-                            @RequestParam(defaultValue = "1") int pageNo,
-                            Model model) {
-        if (kind.equals("자유")) {
-            model.addAttribute("boardForm", boardService.getAdminListPage("자유", pageNo));
-        } else if (kind.equals("문의")) {
-            model.addAttribute("boardForm", boardService.getAdminListPage("문의", pageNo));
-        } else if (kind.equals("입양후기")) {
-            model.addAttribute("boardForm", adoptReviewService.getAdminListPage("입양후기", pageNo));
-        } else if (kind.equals("find")) {
-            model.addAttribute("boardForm", findBoardService.getAdminListPage(pageNo));
-        } else if (kind.equals("look")) {
-            model.addAttribute("boardForm", lookBoardService.getAdminListPage(pageNo));
-        }
-
-        return "/admin/board/board_list";
-    }
-
-    // 게시판 글 추가(insert)
-    @GetMapping("/board/write")
-    public String boardWrite(@RequestParam("kindOfBoard") String kind, Model model) {
-        List<Member> memberList = memberService.selectAll();
-
-        model.addAttribute("memberList", memberList);
-
-        if (kind.equals("자유") || kind.equals("문의")) {
-            return "/board/board_write";
-        } else if (kind.equals("입양후기")) {
-            return "/adopt.review/adopt_review_write";
-        } else if (kind.equals("find")) {
-            return "/find.board/find_write";
-        } else if (kind.equals("look")) {
-            return "/look.board/look_write";
-        }
-
-        return null;
-    }
-
-    // 게시판 글 수정(update)
-    @GetMapping("/board/modify")
-    public String boardModify(@RequestParam("kindOfBoard") String kind, @RequestParam int pk, Model model) {
-        if (kind.equals("자유") || kind.equals("문의")) {
-            BoardModifyForm modifyForm = boardService.getModifyForm(pk);
-            log.info("수정 전 boardModifyForm = {}", modifyForm);
-
-            model.addAttribute("modifyForm", modifyForm);
-
-            return "/board/board_modify";
-        } else if (kind.equals("입양후기")) {
-            AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(pk);
-            log.info("수정 전 adoptReviewModifyForm = {}", modifyForm);
-
-            model.addAttribute("modifyForm", modifyForm);
-
-            return "/adopt.review/adopt_review_modify";
-        } else if (kind.equals("find")) {
-            FindBoardModifyForm modifyForm = findBoardService.getModifyForm(pk);
-            log.info("수정 전 findBoardModifyForm = {}", modifyForm);
-
-            model.addAttribute("modifyForm", modifyForm);
-
-            return "/find.board/find_modify";
-        } else if (kind.equals("look")) {
-            LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(pk);
-            log.info("수정 전 lookBoardModifyForm = {}", modifyForm);
-
-            model.addAttribute("modifyForm", modifyForm);
-
-            return "/look.board/look_modify";
-        }
-
-        return null;
-    }
-
-    // 게시판 글 삭제(delete)
-    @GetMapping("/board/delete")
-    public String boardDelete(@RequestParam("kindOfBoard") String kind,
-                              @RequestParam int pk,
-                              RedirectAttributes redirectAttributes) {
-        if (kind.equals("자유") || kind.equals("문의")) {
-            boardService.delete(pk);
-        } else if (kind.equals("입양후기")) {
-            adoptReviewService.delete(pk);
-        } else if (kind.equals("find")) {
-            findBoardService.delete(pk);
-        } else if (kind.equals("look")) {
-            lookBoardService.delete(pk);
-        }
-
-        redirectAttributes.addAttribute("kindOfBoard", kind);
-
-        return "redirect:/admin/board";
     }
 
     // =============== 입양 정보 관리 ===============
@@ -511,6 +414,103 @@ public class AdminController {
         return "/admin/temp/temp_refuse_list";
     }
 
+    // =============== 게시판 관리 ===============
+    // 게시판 리스트
+    @GetMapping("/board")
+    public String boardPage(@RequestParam("kindOfBoard") String kind,
+                            @RequestParam(defaultValue = "1") int pageNo,
+                            Model model) {
+        if (kind.equals("자유")) {
+            model.addAttribute("boardForm", boardService.getAdminListPage("자유", pageNo));
+        } else if (kind.equals("문의")) {
+            model.addAttribute("boardForm", boardService.getAdminListPage("문의", pageNo));
+        } else if (kind.equals("입양후기")) {
+            model.addAttribute("boardForm", adoptReviewService.getAdminListPage("입양후기", pageNo));
+        } else if (kind.equals("find")) {
+            model.addAttribute("boardForm", findBoardService.getAdminListPage(pageNo));
+        } else if (kind.equals("look")) {
+            model.addAttribute("boardForm", lookBoardService.getAdminListPage(pageNo));
+        }
+
+        return "/admin/board/board_list";
+    }
+
+    // 게시판 글 추가(insert)
+    @GetMapping("/board/write")
+    public String boardWrite(@RequestParam("kindOfBoard") String kind, Model model) {
+        List<Member> memberList = memberService.selectAll();
+
+        model.addAttribute("memberList", memberList);
+
+        if (kind.equals("자유") || kind.equals("문의")) {
+            return "/board/board_write";
+        } else if (kind.equals("입양후기")) {
+            return "/adopt.review/adopt_review_write";
+        } else if (kind.equals("find")) {
+            return "/find.board/find_write";
+        } else if (kind.equals("look")) {
+            return "/look.board/look_write";
+        }
+
+        return null;
+    }
+
+    // 게시판 글 수정(update)
+    @GetMapping("/board/modify")
+    public String boardModify(@RequestParam("kindOfBoard") String kind, @RequestParam int pk, Model model) {
+        if (kind.equals("자유") || kind.equals("문의")) {
+            BoardModifyForm modifyForm = boardService.getModifyForm(pk);
+            log.info("수정 전 boardModifyForm = {}", modifyForm);
+
+            model.addAttribute("modifyForm", modifyForm);
+
+            return "/board/board_modify";
+        } else if (kind.equals("입양후기")) {
+            AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(pk);
+            log.info("수정 전 adoptReviewModifyForm = {}", modifyForm);
+
+            model.addAttribute("modifyForm", modifyForm);
+
+            return "/adopt.review/adopt_review_modify";
+        } else if (kind.equals("find")) {
+            FindBoardModifyForm modifyForm = findBoardService.getModifyForm(pk);
+            log.info("수정 전 findBoardModifyForm = {}", modifyForm);
+
+            model.addAttribute("modifyForm", modifyForm);
+
+            return "/find.board/find_modify";
+        } else if (kind.equals("look")) {
+            LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(pk);
+            log.info("수정 전 lookBoardModifyForm = {}", modifyForm);
+
+            model.addAttribute("modifyForm", modifyForm);
+
+            return "/look.board/look_modify";
+        }
+
+        return null;
+    }
+
+    // 게시판 글 삭제(delete)
+    @GetMapping("/board/delete")
+    public String boardDelete(@RequestParam("kindOfBoard") String kind,
+                              @RequestParam int pk,
+                              RedirectAttributes redirectAttributes) {
+        if (kind.equals("자유") || kind.equals("문의")) {
+            boardService.delete(pk);
+        } else if (kind.equals("입양후기")) {
+            adoptReviewService.delete(pk);
+        } else if (kind.equals("find")) {
+            findBoardService.delete(pk);
+        } else if (kind.equals("look")) {
+            lookBoardService.delete(pk);
+        }
+
+        redirectAttributes.addAttribute("kindOfBoard", kind);
+
+        return "redirect:/admin/board";
+    }
+
     // =============== 후원 정보 관리 ===============
     // 후원 리스트
     @GetMapping("/donation")
@@ -521,6 +521,7 @@ public class AdminController {
         return "/admin/donation/donation_list";
     }
 
+    // 후원 추가
     @GetMapping("donation/create")
     public String donationCreateForm(Model model) {
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
@@ -540,6 +541,7 @@ public class AdminController {
         return "/admin/donation/alert_write";
     }
 
+    // 후원 수정
     @GetMapping("donation/modify")
     public String donationModifyForm(@RequestParam("dNumber") int dNumber, Model model) {
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
@@ -575,11 +577,62 @@ public class AdminController {
         return "/admin/donation/alert_modify";
     }
 
+    // 후원 삭제
     @GetMapping("/donation/delete")
     public String delete(@RequestParam("dNumber") int dNumber) {
         donateService.delete(dNumber);
 
         return "redirect:/admin/donation";
+    }
+
+    // =============== 보호소 정보 관리 ===============
+    // 보호소 리스트
+    @GetMapping("/shelter")
+    public String shelterPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
+        ShelterPageForm pageForm = shelterService.getListPage(pageNo);
+        model.addAttribute("pageForm", pageForm);
+
+        return "/admin/shelter/shelter_list";
+    }
+
+    // 보호소 추가
+    @GetMapping("/shelter/create")
+    public String shelterCreateForm() {
+        return "/admin/shelter/shelter_write";
+    }
+
+    @PostMapping("/shelter/create")
+    public String shelterCreate(@ModelAttribute ShelterWriteForm writeForm) {
+        log.info("ShelterWriteForm = {}", writeForm);
+        shelterService.create(writeForm);
+
+        return "/admin/shelter/alert_write";
+    }
+
+    // 보호소 수정
+    @GetMapping("/shelter/modify")
+    public String shelterModifyForm(@RequestParam int sNumber, Model model) {
+        ShelterModifyForm modifyForm = shelterService.getModifyForm(sNumber);
+        log.info("보호소 수정 전 modifyForm = {}", modifyForm);
+        model.addAttribute("modifyForm", modifyForm);
+
+        return "/admin/shelter/shelter_modify";
+    }
+
+    @PostMapping("/shelter/modify")
+    public String shelterModify(@ModelAttribute ShelterModifyForm modifyForm) {
+        shelterService.modify(modifyForm);
+        log.info("보호소 수정 후 modifyForm = {}", modifyForm);
+
+        return "/admin/shelter/alert_modify";
+    }
+
+    // 보호소 삭제
+    @GetMapping("/shelter/delete")
+    public String shelterDelete(@RequestParam int sNumber) {
+        shelterService.delete(sNumber);
+
+        return "redirect:/admin/shelter";
     }
 
     // 파일 업로드

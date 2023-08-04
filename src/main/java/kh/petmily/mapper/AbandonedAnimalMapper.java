@@ -49,6 +49,4 @@ public interface AbandonedAnimalMapper {
     String selectGroupName(int pk);
 
     String selectPhone(int pk);
-
-    List<Shelter> selectAllShelter();
 }

@@ -122,7 +122,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="label" for="phone">연락처</label>
-                                <input type="text" class="form-control" name="phone" id="phone"
+                                <input type="tel" class="form-control" name="phone" id="phone"
                                        maxlength="11" placeholder="연락처 (예: 01012345678)"
                                        value="${empty param.phone ? member.phone : param.phone}"
                                        pattern="^010\d{8}$" oninput="this.value = this.value.replace(/[^0-9]/g, '');"

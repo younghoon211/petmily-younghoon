@@ -14,4 +14,17 @@ public class Shelter implements DomainObj {
     private String groupName;
     private String location;
     private String phone;
+
+    public Shelter(String groupName, String location, String phone) {
+        this.groupName = groupName;
+        this.location = location;
+        this.phone = phone;
+    }
+
+    public Shelter(int sNumber, String groupName, String location, String phone) {
+        this.sNumber = sNumber;
+        this.groupName = groupName;
+        this.location = location;
+        this.phone = phone;
+    }
 }
