@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -78,10 +79,13 @@ public class BoardController {
     }
 
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam int bNumber) {
+    public String delete(@RequestParam int bNumber,
+                         @RequestParam String kindOfBoard ,
+                         RedirectAttributes redirectAttributes) {
         boardService.delete(bNumber);
+        redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
-        return "/board/alert_delete";
+        return "redirect:/board/list?sort=bno";
     }
 
     private Member getAuthMember(HttpServletRequest request) {

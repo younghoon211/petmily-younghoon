@@ -100,10 +100,14 @@ public class FindBoardController {
 
     //=======삭제=======
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam int faNumber) {
+    public String delete(@RequestParam int faNumber, HttpServletRequest request) {
         findBoardService.delete(faNumber);
 
-        return "/find.board/alert_delete";
+        if (getAuthMember(request).getGrade().equals("관리자")) {
+            return "redirect:/admin/board?kindOfBoard=find";
+        } else {
+            return "redirect:/findBoard/list?sort=fno";
+        }
     }
 
     @ResponseBody

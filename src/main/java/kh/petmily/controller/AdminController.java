@@ -112,7 +112,7 @@ public class AdminController {
     public String MemberDelete(@RequestParam int mNumber) {
         memberService.delete(mNumber);
 
-        return "/admin/member/alert_delete";
+        return "redirect:/admin/member";
     }
 
     // =============== 유기동물 관리 ===============
@@ -181,7 +181,7 @@ public class AdminController {
     public String adminAbandonedDelete(@RequestParam int abNumber) {
         abandonedAnimalService.delete(abNumber);
 
-        return "/admin/abandoned.animal/alert_delete";
+        return "redirect:/admin/abandoned_animal";
     }
 
     // =============== 게시판 관리 ===============
@@ -278,7 +278,7 @@ public class AdminController {
 
         redirectAttributes.addAttribute("kindOfBoard", kind);
 
-        return "/admin/board/alert_delete";
+        return "redirect:/admin/board";
     }
 
     // =============== 입양 정보 관리 ===============
@@ -341,7 +341,7 @@ public class AdminController {
     public String adoptDelete(@RequestParam int adNumber) {
         adoptTempService.deleteAdopt(adNumber);
 
-        return "/admin/adopt/alert_delete";
+        return "redirect:/admin/adopt";
     }
 
 
@@ -361,7 +361,7 @@ public class AdminController {
     public String adoptApprove(@RequestParam int adNumber) {
         adoptTempService.adoptApproveButton(adNumber);
 
-        return "/admin/adopt/alert_approve";
+        return "redirect:/admin/adopt/wait";
     }
 
     // 입양 거절 버튼
@@ -369,7 +369,7 @@ public class AdminController {
     public String adoptRefuse(@RequestParam int adNumber) {
         adoptTempService.adoptRefuseButton(adNumber);
 
-        return "/admin/adopt/alert_refuse";
+        return "redirect:/admin/adopt/wait";
     }
 
     // 입양 완료된 리스트
@@ -455,7 +455,7 @@ public class AdminController {
     public String tempDelete(@RequestParam int tNumber) {
         adoptTempService.deleteTemp(tNumber);
 
-        return "/admin/temp/alert_delete";
+        return "redirect:/admin/temp";
     }
 
 
@@ -476,7 +476,7 @@ public class AdminController {
     public String tempApprove(@RequestParam int tNumber) {
         adoptTempService.tempApproveButton(tNumber);
 
-        return "/admin/temp/alert_approve";
+        return "redirect:/admin/temp/wait";
     }
 
     // 임시보호 거절 버튼
@@ -484,7 +484,7 @@ public class AdminController {
     public String tempRefuse(@RequestParam int tNumber) {
         adoptTempService.tempRefuseButton(tNumber);
 
-        return "/admin/temp/alert_refuse";
+        return "redirect:/admin/temp/wait";
     }
 
     // 임시보호 완료된 리스트
@@ -579,7 +579,7 @@ public class AdminController {
     public String delete(@RequestParam("dNumber") int dNumber) {
         donateService.delete(dNumber);
 
-        return "/admin/donation/alert_delete";
+        return "redirect:/admin/donation";
     }
 
     // 파일 업로드

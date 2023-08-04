@@ -102,10 +102,14 @@ public class LookBoardController {
 
     //=======삭제=======
     @GetMapping("/auth/delete")
-    public String delete(@RequestParam int laNumber) {
+    public String delete(@RequestParam int laNumber, HttpServletRequest request) {
         lookBoardService.delete(laNumber);
 
-        return "/look.board/alert_delete";
+        if (getAuthMember(request).getGrade().equals("관리자")) {
+            return "redirect:/admin/board?kindOfBoard=look";
+        } else {
+            return "redirect:/lookBoard/list?sort=lno";
+        }
     }
 
     @ResponseBody
