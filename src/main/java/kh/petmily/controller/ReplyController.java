@@ -31,8 +31,8 @@ public class ReplyController {
 
         if (authUser != null) {
             for (ReplyListForm r : list) {
-                if (r.getMNumber() == authUser.getMNumber()) {
-                    r.setSameWriter(true);
+                if (r.getMNumber() == authUser.getMNumber() || authUser.getGrade().equals("관리자")) {
+                    r.setHasPermission(true);
                 }
             }
         }

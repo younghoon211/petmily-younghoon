@@ -10,7 +10,7 @@ public class ReplyListForm {
     private String reply;
     private String wrTime;
     private String writer;
-    private boolean sameWriter;
+    private boolean hasPermission;
 
     public ReplyListForm(int brNumber, int mNumber, String reply, String wrTime, String writer) {
         this.brNumber = brNumber;

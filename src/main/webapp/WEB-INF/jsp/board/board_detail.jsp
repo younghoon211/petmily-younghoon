@@ -98,7 +98,7 @@
                         <div class="modal-footer">
 
                             <!-- content 수정, 삭제 -->
-                            <c:if test="${authUser.getMNumber() eq detailForm.getMNumber()}">
+                            <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                                 <button type="button" class="btn btn-primary"
                                         onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
                                     수정
@@ -194,7 +194,7 @@
             </div>
             <span id="reply" class="timeline-body">{{reply}}</span>
             <span class="timeline-footer" style="white-space: nowrap">
-                {{#if sameWriter}}
+                {{#if hasPermission}}
                 <br><div style="float: right">
                     <button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>
                     <button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>
