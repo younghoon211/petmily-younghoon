@@ -17,9 +17,11 @@
 
     <update id="update">
         update BOARD
-        set TITLE       = #{title},
-            CONTENT     = #{content},
-            CHECKPUBLIC = #{checkPublic}
+        set MNUMBER = #{mNumber},
+            TITLE = #{title},
+            CONTENT = #{content},
+            CHECKPUBLIC = #{checkPublic},
+            WRTIME = #{wrTime}
         where BNUMBER = #{bNumber}
     </update>
 
@@ -38,7 +40,9 @@
     <select id="selectIndexBymNumber" resultType="kh.petmily.domain.board.Board">
         select *
         from (select ROWNUM as NUM, A.*
-              from (select * from BOARD where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard} order by BNUMBER DESC) A)
+              from (select * from BOARD where MNUMBER = #{mNumber}
+                    and KINDOFBOARD = #{kindOfBoard}
+                    order by BNUMBER DESC) A)
         where NUM between #{start} and #{end}
     </select>
 

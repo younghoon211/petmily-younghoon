@@ -45,8 +45,9 @@
                         </a>
                     </div>
                     <div class="form-inputs">
-                        <input type="text" name="id" placeholder="아이디" required style="padding-left: 10px"
-                               value="${param.id}" maxlength="15"
+                        <input type="text" name="id" placeholder="아이디" required
+                               style="padding-left: 10px" maxlength="15"
+                               value="${param.id}"
                         <c:if test="${param.error ne 'true'}">
                                autofocus
                         </c:if>
@@ -55,7 +56,7 @@
                             <input type="password" name="pw" placeholder="비밀번호" required
                                    style="padding-left: 10px" maxlength="16"
                             <c:if test="${param.error eq 'true'}">
-                                   id="myInput"
+                                   id="pwError"
                             </c:if>
                             >
                         </div>
@@ -78,7 +79,7 @@
 
 <script>
     window.onload = function () {
-        var input = document.getElementById('myInput');
+        var input = document.getElementById('pwError');
         input.focus();
 
         setInterval(function () {

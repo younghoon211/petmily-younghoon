@@ -6,10 +6,11 @@ import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.*;
 import kh.petmily.domain.board.form.BoardConditionForm;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -115,7 +116,7 @@ public class BoardServiceImpl implements BoardService {
                 domain.getKindOfBoard(),
                 domain.getTitle(),
                 domain.getContent(),
-                domain.getWrTime(),
+                domain.getWrTime().format(getFormatter()),
                 domain.getCheckPublic(),
                 domain.getViewCount()
         );
@@ -124,20 +125,32 @@ public class BoardServiceImpl implements BoardService {
     private BoardModifyForm toModifyForm(Board domain) {
         return new BoardModifyForm(
                 domain.getBNumber(),
+                domain.getMNumber(),
                 domain.getTitle(),
                 domain.getContent(),
                 domain.getCheckPublic(),
-                domain.getKindOfBoard()
+                domain.getKindOfBoard(),
+                domain.getWrTime().format(getFormatter())
         );
     }
 
     private Board toModify(BoardModifyForm form) {
         return new Board(
                 form.getBNumber(),
+                form.getMNumber(),
                 form.getTitle(),
                 form.getContent(),
-                form.getCheckPublic()
+                form.getCheckPublic(),
+                LocalDateTime.parse(getReplaceWrTime(form), getFormatter())
         );
 
+    }
+
+    private String getReplaceWrTime(BoardModifyForm form) {
+        return form.getWrTime().replace("T", " ");
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

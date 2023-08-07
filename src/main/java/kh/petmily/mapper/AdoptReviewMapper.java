@@ -1,6 +1,7 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.adopt_review.AdoptReview;
+import kh.petmily.domain.adopt_review.form.AdoptReviewConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,12 +35,9 @@ public interface AdoptReviewMapper {
     List<AdoptReview> selectIndex(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("kindOfBoard") String kindOfBoard);
+            @Param("kindOfBoard") String kindfBoard);
 
-    int selectCountWithCondition(
-            @Param("kindOfBoard") String kindOfBoard,
-            @Param("searchType") String searchType,
-            @Param("keyword") String keyword);
+    int selectCountWithCondition(AdoptReviewConditionForm form);
 
     List<AdoptReview> selectIndexWithCondition(
             @Param("start") int start,

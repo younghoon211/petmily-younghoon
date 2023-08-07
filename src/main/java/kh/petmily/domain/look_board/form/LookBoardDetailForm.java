@@ -3,8 +3,6 @@ package kh.petmily.domain.look_board.form;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Data
 @NoArgsConstructor
 public class LookBoardDetailForm {
@@ -17,12 +15,12 @@ public class LookBoardDetailForm {
     private String location;
     private String animalState;
     private String imgPath;
-    private Date wrTime;
+    private String wrTime;
     private String title;
     private String content;
     private int viewCount;
 
-    public LookBoardDetailForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, String content, int viewCount) {
+    public LookBoardDetailForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title, String content, int viewCount) {
         this.laNumber = laNumber;
         this.mNumber = mNumber;
         this.name = name;

@@ -13,6 +13,7 @@ public class FindBoardModifyForm {
     @NotNull
     private Integer faNumber;
 
+    private int mNumber;
     private String species;
     private String kind;
     private String location;
@@ -20,14 +21,17 @@ public class FindBoardModifyForm {
     private MultipartFile file;
     private String title;
     private String content;
+    private String wrTime;
 
-    public FindBoardModifyForm(int faNumber, String species, String kind, String location, String imgPath, String title, String content) {
+    public FindBoardModifyForm(int faNumber, int mNumber, String species, String kind, String location, String imgPath, String title, String content, String wrTime) {
         this.faNumber = faNumber;
+        this.mNumber = mNumber;
         this.species = species;
         this.kind = kind;
         this.location = location;
         this.imgPath = imgPath;
         this.title = title;
         this.content = content;
+        this.wrTime = wrTime;
     }
 }

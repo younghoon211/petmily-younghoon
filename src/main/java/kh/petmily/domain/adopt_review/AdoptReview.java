@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.sql.Blob;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @ToString
 @Getter
@@ -20,7 +20,7 @@ public class AdoptReview implements DomainObj {
     private String content;
     private String imgPath;
     private Blob video;
-    private Date wrTime;
+    private LocalDateTime wrTime;
     private final String checkPublic = "Y";
     private int viewCount;
 
@@ -32,10 +32,12 @@ public class AdoptReview implements DomainObj {
         this.imgPath = imgPath;
     }
 
-    public AdoptReview(int bNumber, String title, String content, String imgPath) {
+    public AdoptReview(int bNumber, int mNumber, String title, String content, String imgPath, LocalDateTime wrTime) {
         this.bNumber = bNumber;
+        this.mNumber = mNumber;
         this.title = title;
         this.content = content;
         this.imgPath = imgPath;
+        this.wrTime = wrTime;
     }
 }

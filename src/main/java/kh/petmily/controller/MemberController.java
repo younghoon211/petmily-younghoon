@@ -167,18 +167,18 @@ public class MemberController {
     @PostMapping("/member/auth/withdraw")
     public String withdraw(@RequestParam String pw, @RequestParam String confirmPw,
                            HttpServletRequest request) {
-
         log.info("pw = {}, confirmPw = {}", pw, confirmPw);
-
-        int mNumber = getAuthMember(request).getMNumber();
 
         Map<String, Boolean> errors = new HashMap<>();
         request.setAttribute("errors", errors);
 
+        int mNumber = getAuthMNumber(request);
+
         if (!memberService.isPwEqualToConfirm(pw, confirmPw)) {
             errors.put("notMatch", Boolean.TRUE);
             return "/member/withdraw";
-        } else if (!memberService.checkPwCorrect(mNumber, pw)) {
+        }
+        else if (!memberService.checkPwCorrect(mNumber, pw)) {
             errors.put("notCorrect", Boolean.TRUE);
             return "/member/withdraw";
         }
@@ -193,7 +193,7 @@ public class MemberController {
     public String checkMatching(@RequestParam(required = false) String matched,
                                 @RequestParam(defaultValue = "1") int pageNo,
                                 HttpServletRequest request, Model model) {
-        int mNumber = getAuthMember(request).getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         FindBoardPageForm pageForm = findBoardService.getMatchingPage(pageNo, mNumber, matched);
         model.addAttribute("pageForm", pageForm);
@@ -252,22 +252,26 @@ public class MemberController {
             model.addAttribute("myPost", findMyPost);
 
             return "/member/mypost_find_list";
-        } else if (type.equals("look")) {
+        }
+        else if (type.equals("look")) {
             LookBoardPageForm lookMyPost = lookBoardService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", lookMyPost);
 
             return "/member/mypost_look_list";
-        } else if (type.equals("board")) {
+        }
+        else if (type.equals("board")) {
             BoardPageForm boardMyPost = boardService.getMyPost(pageNo, mNumber, type, kindOfBoard);
             model.addAttribute("myPost", boardMyPost);
 
             return "/member/mypost_board_list";
-        } else if (type.equals("입양후기")) {
+        }
+        else if (type.equals("입양후기")) {
             AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getMyPost(pageNo, mNumber, type);
             model.addAttribute("myPost", adoptReviewMyPost);
 
             return "/member/mypost_adopt_review_list";
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -277,5 +281,9 @@ public class MemberController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

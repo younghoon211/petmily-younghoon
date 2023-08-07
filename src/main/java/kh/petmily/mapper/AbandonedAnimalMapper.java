@@ -1,10 +1,9 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.shelter.Shelter;
+import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -23,11 +22,7 @@ public interface AbandonedAnimalMapper {
 
     int selectCount();
 
-    int selectCountWithCondition(
-            @Param("species") String species,
-            @Param("gender") String gender,
-            @Param("animalState") String animalState,
-            @Param("keyword") String keyword);
+    int selectCountWithCondition(AbandonedAnimalConditionForm form);
 
     List<AbandonedAnimal> selectIndex(
             @Param("start") int start,
@@ -40,7 +35,8 @@ public interface AbandonedAnimalMapper {
             @Param("gender") String gender,
             @Param("animalState") String animalState,
             @Param("keyword") String keyword,
-            @Param("sort") String sort);
+            @Param("sort") String sort
+    );
 
     String selectName(int pk);
 

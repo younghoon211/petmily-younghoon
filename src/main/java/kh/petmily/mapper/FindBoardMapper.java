@@ -1,6 +1,7 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.find_board.FindBoard;
+import kh.petmily.domain.find_board.form.FindBoardConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,10 +27,7 @@ public interface FindBoardMapper {
             @Param("end") int end,
             @Param("mNumber") int mNumber);
 
-    int selectCountWithCondition(
-            @Param("species") String species,
-            @Param("animalState") String animalState,
-            @Param("keyword") String keyword);
+    int selectCountWithCondition(FindBoardConditionForm form);
 
     List<FindBoard> selectIndexWithCondition(
             @Param("start") int start,

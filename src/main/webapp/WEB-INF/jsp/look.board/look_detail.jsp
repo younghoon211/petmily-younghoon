@@ -63,8 +63,12 @@
 
                 <div class="heading-section pt-md-5">
                     <h2 class="mb-4">${detailForm.title}</h2>
-                    <p>조회수: ${detailForm.viewCount}</p>
+                    <span>
+                        <small>조회수: ${detailForm.viewCount}</small>
+                        <small style="float: right">${detailForm.wrTime}</small>
+                    </span>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col-md-6 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center">
@@ -108,7 +112,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <c:if test="${authUser.getMNumber() eq detailForm.getMNumber()}">
+                    <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-primary"
                                 onclick="location.href='/lookBoard/auth/modify?laNumber=${detailForm.laNumber}'">수정
                         </button>
@@ -119,13 +123,13 @@
                         </button>
                     </c:if>
                     <button type="button" class="btn btn-secondary"
-                            <c:if test="${authUser.grade eq '일반' || empty authUser}">
-                                onclick="location.href='/lookBoard/list?sort=lno'"
-                            </c:if>
-                            <c:if test="${authUser.grade eq '관리자'}">
-                                onclick="location.href='/admin/board?kindOfBoard=look'"
-                            </c:if>>목록으로
+                            onclick="location.href='/lookBoard/list?sort=lno'">목록으로
                     </button>
+                    <c:if test="${authUser.grade eq '관리자'}">
+                        <button type="button" class="btn btn-dark"
+                                onclick="location.href='/admin/board?kindOfBoard=look'">게시판 관리로
+                        </button>
+                    </c:if>
                 </div>
 
             </div>

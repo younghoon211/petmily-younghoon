@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -111,13 +112,14 @@ public class LookBoardDao implements BasicDao {
         for (LookBoard board : list) {
             LookBoardListForm li = new LookBoardListForm(
                     board.getLaNumber(),
+                    board.getMNumber(),
                     selectName(board.getLaNumber()),
                     board.getSpecies(),
                     board.getKind(),
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -129,9 +131,7 @@ public class LookBoardDao implements BasicDao {
     }
 
     public int selectCountWithCondition(LookBoardConditionForm form) {
-        return mapper.selectCountWithCondition(
-                form.getSpecies(), form.getAnimalState(), form.getKeyword()
-        );
+        return mapper.selectCountWithCondition(form);
     }
 
     public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm form) {
@@ -143,13 +143,14 @@ public class LookBoardDao implements BasicDao {
         for (LookBoard board : list) {
             LookBoardListForm li = new LookBoardListForm(
                     board.getLaNumber(),
+                    board.getMNumber(),
                     selectName(board.getLaNumber()),
                     board.getSpecies(),
                     board.getKind(),
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -171,6 +172,7 @@ public class LookBoardDao implements BasicDao {
         for (LookBoard board : list) {
             LookBoardListForm li = new LookBoardListForm(
                     board.getLaNumber(),
+                    board.getMNumber(),
                     selectMemberId(board.getLaNumber()),
                     selectName(board.getLaNumber()),
                     board.getSpecies(),
@@ -178,7 +180,7 @@ public class LookBoardDao implements BasicDao {
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -219,18 +221,23 @@ public class LookBoardDao implements BasicDao {
         for (LookBoard l : lookBoardList) {
             LookBoardListForm li = new LookBoardListForm(
                     l.getLaNumber(),
+                    l.getMNumber(),
                     selectName(l.getLaNumber()),
                     l.getSpecies(),
                     l.getKind(),
                     l.getLocation(),
                     l.getAnimalState(),
                     l.getImgPath(),
-                    l.getWrTime(),
+                    l.getWrTime().format(getFormatter()),
                     l.getTitle());
 
             result.add(li);
         }
 
         return result;
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

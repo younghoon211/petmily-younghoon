@@ -3,6 +3,7 @@ package kh.petmily.controller;
 import kh.petmily.domain.find_board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.FindBoardService;
+import kh.petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/findBoard")
@@ -27,10 +28,13 @@ import java.net.MalformedURLException;
 public class FindBoardController {
 
     private final FindBoardService findBoardService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute FindBoardConditionForm conditionForm, Model model) {
+        log.info("FindBoardConditionForm = {}", conditionForm);
         FindBoardPageForm pageForm = findBoardService.getListPage(conditionForm);
+
         model.addAttribute("pageForm", pageForm);
 
         return "/find.board/find_list";
@@ -48,7 +52,13 @@ public class FindBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writeForm() {
+    public String writeForm(Model model, HttpServletRequest request) {
+        int mNumber = getAuthMNumber(request);
+        List<Member> memberList = memberService.selectAll();
+
+        model.addAttribute("mNumber", mNumber);
+        model.addAttribute("memberList", memberList);
+
         return "/find.board/find_write";
     }
 
@@ -60,7 +70,7 @@ public class FindBoardController {
 
         String filename = findBoardService.storeFile(writeForm.getFile(), fullPath);
 
-        writeForm.setMNumber(getAuthMember(request).getMNumber());
+        writeForm.setMNumber(writeForm.getMNumber());
         writeForm.setImgPath(filename);
 
         log.info("findBoardWriteForm = {}", writeForm);
@@ -76,7 +86,10 @@ public class FindBoardController {
         FindBoardModifyForm modifyForm = findBoardService.getModifyForm(faNumber);
         log.info("수정 전 FindBoardModifyForm = {}", modifyForm);
 
+        List<Member> memberList = memberService.selectAll();
+
         model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("memberList", memberList);
 
         return "/find.board/find_modify";
     }
@@ -135,5 +148,9 @@ public class FindBoardController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

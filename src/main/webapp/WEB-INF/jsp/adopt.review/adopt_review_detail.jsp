@@ -60,12 +60,22 @@
         <div class="media-body ml-3">
 
             <!-- content title, name, wrTime -->
-            <div class="media-body ml-3">
                 <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
                 <h6 class="mt-1"></h6>
                 <small><a href="javascript:void(0)">${detailForm.name}</a></small>
-                <small><i class="far fa-comment ml-2"></i> date ${detailForm.wrTime} </small>
-                <small><i class="far fa-comment ml-2"></i> 조회수 ${detailForm.viewCount} </small>
+                <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
+
+
+<%--                <div class="card mb-2">--%>
+<%--                    <div class="card-body">--%>
+<%--                        <div class="media forum-item">--%>
+<%--                            --%>
+<%--                            <div class="media-body ml-3">--%>
+<%--                                <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>--%>
+<%--                                <h6 class="mt-1"></h6><br>--%>
+<%--                                <small>${detailForm.name}</small>--%>
+<%--                                <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>--%>
+
 
                 <!-- content 내용 -->
                 <div class="modal-footer"></div>
@@ -84,7 +94,7 @@
 
                 <!-- content 수정, 삭제 -->
                 <div class="modal-footer">
-                    <c:if test="${authUser.getMNumber() eq detailForm.getMNumber()}">
+                    <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-primary"
                                 onclick="location.href='/adopt_review/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
                             수정
@@ -98,17 +108,15 @@
                     </c:if>
 
                     <!-- content 목록 이동 버튼 -->
-                    <span>
-            		<button type="button" class="btn btn-secondary"
-                            <c:if test="${authUser.grade eq '일반' || empty authUser}">
-                                onclick="location.href='/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNo'"
-                            </c:if>
-						<c:if test="${authUser.grade eq '관리자'}">
-                            onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'"
-                        </c:if>>목록으로</button>
-            	    </span>
+                    <button type="button" class="btn btn-secondary"
+                            onclick="location.href='/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNo'">목록으로
+                    </button>
+                    <c:if test="${authUser.grade eq '관리자'}">
+                        <button type="button" class="btn btn-dark"
+                                onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
+                        </button>
+                    </c:if>
                 </div>
-            </div>
         </div>
     </div>
 </section>

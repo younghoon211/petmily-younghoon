@@ -3,8 +3,6 @@ package kh.petmily.domain.board.form;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 public class BoardListForm {
@@ -16,12 +14,12 @@ public class BoardListForm {
     private String kindOfBoard;
     private String title;
     private String content;
-    private Date wrTime;
+    private String wrTime;
     private String checkPublic;
     private int viewCount;
     private int replyCount;
 
-    public BoardListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, int replyCount) {
+    public BoardListForm(int bNumber, int mNumber, String name, String kindOfBoard, String title, String content, String wrTime, String checkPublic, int viewCount, int replyCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.name = name;
@@ -34,7 +32,7 @@ public class BoardListForm {
         this.replyCount = replyCount;
     }
 
-    public BoardListForm(int bNumber, int mNumber, String memberId, String name, String kindOfBoard, String title, String content, Date wrTime, String checkPublic, int viewCount, int replyCount) {
+    public BoardListForm(int bNumber, int mNumber, String memberId, String name, String kindOfBoard, String title, String content, String wrTime, String checkPublic, int viewCount, int replyCount) {
         this.bNumber = bNumber;
         this.mNumber = mNumber;
         this.memberId = memberId;

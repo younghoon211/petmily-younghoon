@@ -57,22 +57,23 @@
               enctype="multipart/form-data">
             <div class="modal-body">
 
-                <c:set var="URI" value="${requestScope['javax.servlet.forward.request_uri']}"/>
-                <c:if test="${authUser.grade eq '관리자' && URI.contains('admin')}">
+                <c:if test="${authUser.grade eq '관리자'}">
                     <div>
                         <label for="mNumber">
-                            작성자 :
+                            회원번호 / 아이디 / 닉네임
                         </label>
-                        <select name="mNumber" id="mNumber">
-                            <c:forEach var="mem" items="${memberList}">
-                                <option value="${mem.getMNumber()}">${mem.getMNumber()}
-                                    - ${mem.name}</option>
+                        <select name="mNumber" id="mNumber" class="form-control">
+                            <c:forEach var="m" items="${memberList}">
+                                <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </c:if>
+                <c:if test="${authUser.grade eq '일반'}">
+                    <input type="hidden" name="mNumber" value="${mNumber}">
+                </c:if>
 
-                <hr color="#6c757d" width="100%">
+                <hr width="100%" style="color: #9e9e9e">
 
                 <div class="row justify-content-start">
                     <div class="col-md-6 col-lg-4 form-check">
@@ -109,7 +110,7 @@
                     </div>
                 </div>
 
-                <hr color="#6c757d" width="100%">
+                <hr width="100%" style="color: #9e9e9e">
 
                 <div class="form-group">
                     <label for="title">제목</label>

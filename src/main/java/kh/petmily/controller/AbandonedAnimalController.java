@@ -47,7 +47,7 @@ public class AbandonedAnimalController {
     //=======후원=======
     @GetMapping("/auth/donate")
     public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
-        int mNumber = getAuthMember(request).getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         model.addAttribute("animalName", abandonedAnimalService.getAnimalName(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
@@ -57,7 +57,7 @@ public class AbandonedAnimalController {
 
     @PostMapping("/auth/donate")
     public String donate(@ModelAttribute DonateSubmitForm donateSubmitForm, HttpServletRequest request) {
-        int mNumber = getAuthMember(request).getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         donateSubmitForm.setMNumber(mNumber);
         log.info("donateSubmitForm = {}", donateSubmitForm);
@@ -70,7 +70,7 @@ public class AbandonedAnimalController {
     //=======입양/임보=======
     @GetMapping("/auth/adopt_temp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
-        int mNumber = getAuthMember(request).getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         model.addAttribute("animal", abandonedAnimalService.getAnimal(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
@@ -117,5 +117,9 @@ public class AbandonedAnimalController {
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute("authUser");
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

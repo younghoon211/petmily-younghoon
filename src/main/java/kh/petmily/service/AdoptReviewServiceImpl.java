@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -151,35 +153,47 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
         return new AdoptReviewDetailForm(
                 domain.getBNumber(),
                 domain.getMNumber(),
-                boardType(domain.getBNumber()),
+                getMemberName(domain.getBNumber()),
                 domain.getKindOfBoard(),
                 domain.getTitle(),
                 domain.getContent(),
                 domain.getImgPath(),
-                domain.getWrTime(),
+                domain.getWrTime().format(getFormatter()),
                 domain.getViewCount()
         );
     }
 
-    private String boardType(int pk) {
+    private String getMemberName(int pk) {
         return adoptReviewDao.selectName(pk);
     }
 
     private AdoptReviewModifyForm toModifyForm(AdoptReview domain) {
         return new AdoptReviewModifyForm(
+                domain.getMNumber(),
                 domain.getBNumber(),
                 domain.getTitle(),
                 domain.getContent(),
-                domain.getImgPath()
+                domain.getImgPath(),
+                domain.getWrTime().format(getFormatter())
         );
     }
 
     private AdoptReview toModify(AdoptReviewModifyForm form) {
         return new AdoptReview(
                 form.getBNumber(),
+                form.getMNumber(),
                 form.getTitle(),
                 form.getContent(),
-                form.getImgPath()
+                form.getImgPath(),
+                LocalDateTime.parse(getReplaceWrTime(form), getFormatter())
         );
+    }
+
+    private String getReplaceWrTime(AdoptReviewModifyForm form) {
+        return form.getWrTime().replace("T", " ");
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

@@ -101,16 +101,16 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div>종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
+                                <div><small>${findBoard.wrTime}</small></div>
                                 <br>
-                                <div>상태: ${findBoard.animalState}</div>
+                                <div><i class="far fa-eye"></i> 종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
                                 <br>
-                                <div>장소: ${findBoard.location}</div>
+                                <div><i class="far fa-eye"></i> 상태: ${findBoard.animalState}</div>
                                 <br>
-                                <div>작성일: ${findBoard.wrTime}</div>
+                                <div><i class="far fa-eye"></i> 장소: ${findBoard.location}</div>
                                 <br>
-                                <div>작성자: ${findBoard.name}</div>
                             </div>
+                            <div><small style="color: #00bd56">${findBoard.name}</small></div>
                             <h3 class="heading">
                                 <a href="/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a>
                             </h3>

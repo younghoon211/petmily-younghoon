@@ -3,6 +3,7 @@ package kh.petmily.controller;
 import kh.petmily.domain.board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.BoardService;
+import kh.petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -22,12 +24,13 @@ import javax.servlet.http.HttpSession;
 public class BoardController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute BoardConditionForm conditionForm, Model model) {
-        log.info("boardConditionForm = {}", conditionForm);
-
+        log.info("BoardConditionForm = {}", conditionForm);
         BoardPageForm pageForm = boardService.getListPage(conditionForm);
+
         model.addAttribute("pageForm", pageForm);
 
         return "/board/board_list";
@@ -44,15 +47,19 @@ public class BoardController {
     }
 
     @GetMapping("/auth/write")
-    public String writeForm() {
+    public String writeForm(Model model, HttpServletRequest request) {
+        int mNumber = getAuthMNumber(request);
+        List<Member> memberList = memberService.selectAll();
+
+        model.addAttribute("mNumber", mNumber);
+        model.addAttribute("memberList", memberList);
+
         return "/board/board_write";
     }
 
     @PostMapping("/auth/write")
-    public String write(@ModelAttribute BoardWriteForm writeForm, HttpServletRequest request) {
-        writeForm.setMNumber(getAuthMember(request).getMNumber());
+    public String write(@ModelAttribute BoardWriteForm writeForm) {
         log.info("BoardWriteForm = {}", writeForm);
-
         boardService.write(writeForm);
 
         return "/board/alert_write";
@@ -63,15 +70,18 @@ public class BoardController {
         BoardModifyForm modifyForm = boardService.getModifyForm(bNumber);
         log.info("수정 전 boardModifyForm = {}", modifyForm);
 
+        List<Member> memberList = memberService.selectAll();
+
         model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("memberList", memberList);
 
         return "/board/board_modify";
     }
 
     @PostMapping("/auth/modify")
     public String modify(@Validated @ModelAttribute BoardModifyForm modifyForm, Model model) {
-        boardService.modify(modifyForm);
         log.info("수정 후 boardModifyForm = {}", modifyForm);
+        boardService.modify(modifyForm);
 
         model.addAttribute("modifyForm", modifyForm);
 
@@ -81,11 +91,15 @@ public class BoardController {
     @GetMapping("/auth/delete")
     public String delete(@RequestParam int bNumber,
                          @RequestParam String kindOfBoard ,
-                         RedirectAttributes redirectAttributes) {
+                         RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boardService.delete(bNumber);
         redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
-        return "redirect:/board/list?sort=bno";
+        if (getAuthMember(request).getGrade().equals("관리자")) {
+            return "redirect:/admin/board";
+        } else {
+            return "redirect:/board/list?sort=bno";
+        }
     }
 
     private Member getAuthMember(HttpServletRequest request) {
@@ -93,5 +107,9 @@ public class BoardController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

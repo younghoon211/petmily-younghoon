@@ -44,12 +44,7 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     public int selectCount(AbandonedAnimalConditionForm form) {
-        return mapper.selectCountWithCondition(
-                form.getSpecies(),
-                form.getGender(),
-                form.getAnimalState(),
-                form.getKeyword()
-        );
+        return mapper.selectCountWithCondition(form);
     }
 
     public List<AbandonedAnimalListForm> selectIndex(int start, int end) {

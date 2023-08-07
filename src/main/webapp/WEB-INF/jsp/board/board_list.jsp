@@ -90,7 +90,7 @@
 
                         <!-- 글 번호 -->
                         <div class="media-body">
-                            <small><i class="far fa-eye"></i>글번호 ${board.getBNumber()}</small>
+                            <small><i class="far fa-eye"></i> 글번호: ${board.getBNumber()}</small>
 
                             <!-- 제목 -->
                             <div class="text-secondary">
@@ -114,20 +114,14 @@
                                 </c:if>
                             </div>
 
-
                             <!-- 작성자, 작성 날짜 -->
                             <div class="text-muted">
-                                <small><a href="javascript:void(0)">by ${board.name}</a><span>
-									<i class="far fa-comment ml-2"></i>&nbsp;
-									</span><fmt:formatDate value="${board.wrTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/></small>
+                                <small><a href="javascript:void(0)">${board.name}</a>&nbsp;&nbsp;&nbsp;${board.wrTime}</small>
                             </div>
-
-
                         </div>
 
                         <!-- list 공개 / 비공개 -->
                         <div class="text-muted small text-center align-self-center">
-                            <c:if test="${param.kindOfBoard eq '자유'}"></c:if>
                             <c:if test="${param.kindOfBoard eq '문의'}">
                                 <c:if test="${board.checkPublic eq 'Y'}">
                                     <span><i class="far fa-comment ml-2"></i></span>
@@ -150,7 +144,7 @@
         </c:forEach>
 
         <!-- 글쓰기 버튼  -->
-        </br>
+        <br>
         <span class="modal-footer">
 				<button type="button" class="btn btn-primary"
                         onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'">글쓰기</button>

@@ -7,7 +7,7 @@ import kh.petmily.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +43,11 @@ public class ReplyDao implements BasicDao {
         List<Reply> list = mapper.selectIndexBybNumber(bNumber);
 
         for (Reply r : list) {
-            String formattedTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(r.getWrTime());
-
             ReplyListForm li = new ReplyListForm(
                     r.getBrNumber(),
                     r.getMNumber(),
                     r.getReply(),
-                    formattedTime,
+                    r.getWrTime().format(getFormatter()),
                     memberDao.selectName(r.getMNumber())
             );
 
@@ -57,5 +55,9 @@ public class ReplyDao implements BasicDao {
         }
 
         return result;
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

@@ -3,7 +3,6 @@ package kh.petmily.service;
 import kh.petmily.dao.AbandonedAnimalDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
-import kh.petmily.domain.shelter.Shelter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ import java.util.UUID;
 public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
 
     private final AbandonedAnimalDao abandonedAnimalDao;
-    private int size = 12;
+    private final int size = 12;
 
     // 유기동물 CUD : 관리자만 가능
 

@@ -8,6 +8,7 @@ import kh.petmily.mapper.AdoptReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class AdoptReviewDao implements BasicDao {
                     a.getTitle(),
                     a.getContent(),
                     a.getImgPath(),
-                    a.getWrTime(),
+                    a.getWrTime().format(getFormatter()),
                     a.getViewCount()
             );
 
@@ -85,7 +86,7 @@ public class AdoptReviewDao implements BasicDao {
                     a.getTitle(),
                     a.getContent(),
                     a.getImgPath(),
-                    a.getWrTime(),
+                    a.getWrTime().format(getFormatter()),
                     a.getViewCount()
             );
 
@@ -97,9 +98,7 @@ public class AdoptReviewDao implements BasicDao {
 
     //====== 검색 추가 ======
     public int selectCountWithCondition(AdoptReviewConditionForm form) {
-        return mapper.selectCountWithCondition(
-                form.getKindOfBoard(), form.getSearchType(), form.getKeyword()
-        );
+        return mapper.selectCountWithCondition(form);
     }
 
     public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm form) {
@@ -117,7 +116,7 @@ public class AdoptReviewDao implements BasicDao {
                     a.getTitle(),
                     a.getContent(),
                     a.getImgPath(),
-                    a.getWrTime(),
+                    a.getWrTime().format(getFormatter()),
                     a.getViewCount()
             );
 
@@ -135,8 +134,11 @@ public class AdoptReviewDao implements BasicDao {
         return mapper.selectName(pk);
     }
 
-    //====== 조회수 추가 ======
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

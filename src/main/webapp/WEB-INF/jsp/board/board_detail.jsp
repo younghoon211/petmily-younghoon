@@ -76,8 +76,8 @@
                     <div class="media-body ml-3">
                         <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
                         <h6 class="mt-1"></h6><br>
-                        <small>${detailForm.name}</small>
-                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;<fmt:formatDate value="${detailForm.wrTime}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/> </small>
+                        <small><a href="javascript:void(0)">${detailForm.name}</a></small>
+                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
 
                         <c:if test="${param.kindOfBoard eq '문의'}">
                             <c:if test="${detailForm.checkPublic eq 'Y'}">
@@ -111,16 +111,14 @@
                             </c:if>
 
                             <!-- 목록으로 버튼 -->
-                            <span>
-								<button type="button" class="btn btn-secondary"
-                                        <c:if test="${authUser.grade eq '일반' || empty authUser}">
-                                            onclick="location.href='/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno'"
-                                        </c:if>
-                                    <c:if test="${authUser.grade eq '관리자'}">
-                                        onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'"
-                                    </c:if>>목록으로</button>
-							</span>
-
+                            <button type="button" class="btn btn-secondary"
+                                    onclick="location.href='/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno'">목록으로
+                            </button>
+                            <c:if test="${authUser.grade eq '관리자'}">
+                                <button type="button" class="btn btn-dark"
+                                        onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
+                                </button>
+                            </c:if>
                         </div>
 
                         <%-- 댓글 리스트 --%>

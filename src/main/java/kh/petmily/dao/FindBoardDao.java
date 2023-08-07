@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,22 +30,21 @@ public class FindBoardDao implements BasicDao {
     public void insert(DomainObj obj) {
         FindBoard findBoard = (FindBoard) obj;
 
-        List<Integer> list = mapper.selectMatchedLa(findBoard); // 종,품종,장소가 같은 laNumber를 가져옴. 단, 하나라도 모름일 경우 null 받아옴
-
-        list.removeIf(Objects::isNull); // npe방지 위해 list중 null값 선택적 제거
+        List<Integer> list = mapper.selectMatchedLa(findBoard);
+        list.removeIf(Objects::isNull);
 
         log.info("find insert : list = {}", list);
 
-        if (!list.isEmpty()) { // selectMatchedLa(find랑 종,품종,장소가 일치하는 look리스트)가 존재하면
+        if (!list.isEmpty()) {
             mapper.insert(findBoard);
 
-            int faNumber = mapper.selectByPkMax(); // 지금 insert된 find pk값 가져와서 faNumber에 초기화하고
+            int faNumber = mapper.selectByPkMax();
             log.info("find insert : MAX faNumber = {}", faNumber);
 
-            mapper.changeState(faNumber); // 최근 업로드하는 find pk값의 animalstate를 매칭됨 으로 바꿈
+            mapper.changeState(faNumber);
 
             for (Integer i : list) {
-                mapper.changeStateLook(i); // look부분도 매칭됨 으로 바꿈
+                mapper.changeStateLook(i);
             }
         } else {
             mapper.insert(findBoard);
@@ -108,13 +108,14 @@ public class FindBoardDao implements BasicDao {
         for (FindBoard board : list) {
             FindBoardListForm li = new FindBoardListForm(
                     board.getFaNumber(),
+                    board.getMNumber(),
                     selectName(board.getFaNumber()),
                     board.getSpecies(),
                     board.getKind(),
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -126,8 +127,7 @@ public class FindBoardDao implements BasicDao {
     }
 
     public int selectCountWithCondition(FindBoardConditionForm form) {
-        return mapper.selectCountWithCondition(
-                form.getSpecies(), form.getAnimalState(), form.getKeyword());
+        return mapper.selectCountWithCondition(form);
     }
 
     public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm form) {
@@ -139,13 +139,14 @@ public class FindBoardDao implements BasicDao {
         for (FindBoard board : list) {
             FindBoardListForm li = new FindBoardListForm(
                     board.getFaNumber(),
+                    board.getMNumber(),
                     selectName(board.getFaNumber()),
                     board.getSpecies(),
                     board.getKind(),
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -167,6 +168,7 @@ public class FindBoardDao implements BasicDao {
         for (FindBoard board : list) {
             FindBoardListForm li = new FindBoardListForm(
                     board.getFaNumber(),
+                    board.getMNumber(),
                     selectMemberId(board.getFaNumber()),
                     selectName(board.getFaNumber()),
                     board.getSpecies(),
@@ -174,7 +176,7 @@ public class FindBoardDao implements BasicDao {
                     board.getLocation(),
                     board.getAnimalState(),
                     board.getImgPath(),
-                    board.getWrTime(),
+                    board.getWrTime().format(getFormatter()),
                     board.getTitle(),
                     board.getViewCount()
             );
@@ -207,13 +209,14 @@ public class FindBoardDao implements BasicDao {
         for (FindBoard f : list) {
             FindBoardListForm li = new FindBoardListForm(
                     f.getFaNumber(),
+                    f.getMNumber(),
                     selectName(f.getFaNumber()),
                     f.getSpecies(),
                     f.getKind(),
                     f.getLocation(),
                     f.getAnimalState(),
                     f.getImgPath(),
-                    f.getWrTime(),
+                    f.getWrTime().format(getFormatter()),
                     f.getTitle(),
                     f.getViewCount()
             );
@@ -222,5 +225,9 @@ public class FindBoardDao implements BasicDao {
         }
 
         return result;
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

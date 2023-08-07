@@ -3,6 +3,7 @@ package kh.petmily.controller;
 import kh.petmily.domain.adopt_review.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.AdoptReviewService;
+import kh.petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/adopt_review")
@@ -27,11 +29,13 @@ import java.net.MalformedURLException;
 public class AdoptReviewController {
 
     private final AdoptReviewService adoptReviewService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute AdoptReviewConditionForm conditionForm, Model model) {
-
+        log.info("AdoptReviewConditionForm = {}", conditionForm);
         AdoptReviewPageForm pageForm = adoptReviewService.getListPage(conditionForm);
+
         model.addAttribute("pageForm", pageForm);
 
         return "/adopt.review/adopt_review_list";
@@ -48,7 +52,13 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/auth/write")
-    public String writeForm() {
+    public String writeForm(Model model, HttpServletRequest request) {
+        List<Member> memberList = memberService.selectAll();
+        int mNumber = getAuthMNumber(request);
+
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("mNumber", mNumber);
+
         return "/adopt.review/adopt_review_write";
     }
 
@@ -56,12 +66,9 @@ public class AdoptReviewController {
     public String write(@ModelAttribute AdoptReviewWriteForm writeForm, HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
-
         String filename = adoptReviewService.storeFile(writeForm.getFile(), fullPath);
 
-        writeForm.setMNumber(getAuthMember(request).getMNumber());
         writeForm.setImgPath(filename);
-
         log.info("adoptReviewWriteForm = {}", writeForm);
 
         adoptReviewService.write(writeForm);
@@ -70,11 +77,16 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int bNumber, Model model) {
+    public String modifyForm(@RequestParam int bNumber, Model model, HttpServletRequest request) {
         AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(bNumber);
         log.info("수정 전 adoptReviewModifyForm={}", modifyForm);
 
+        List<Member> memberList = memberService.selectAll();
+        int mNumber = getAuthMNumber(request);
+
         model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("mNumber", mNumber);
 
         return "/adopt.review/adopt_review_modify";
     }
@@ -88,10 +100,9 @@ public class AdoptReviewController {
 
         String filename = adoptReviewService.storeFile(modifyForm.getFile(), fullPath);
         modifyForm.setImgPath(filename);
-
-        adoptReviewService.modify(modifyForm);
         log.info("수정 후 adoptReviewModifyForm = {}", modifyForm);
 
+        adoptReviewService.modify(modifyForm);
         model.addAttribute("bNumber", modifyForm.getBNumber());
 
         return "/adopt.review/alert_modify";
@@ -100,11 +111,15 @@ public class AdoptReviewController {
     @GetMapping("/auth/delete")
     public String delete(@RequestParam int bNumber,
                          @RequestParam String kindOfBoard,
-                         RedirectAttributes redirectAttributes) {
+                         RedirectAttributes redirectAttributes, HttpServletRequest request) {
         adoptReviewService.delete(bNumber);
         redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
-        return "redirect:/adopt_review/list?sort=adoptReviewNo";
+        if (getAuthMember(request).getGrade().equals("관리자")) {
+            return "redirect:/admin/board";
+        } else {
+            return "redirect:/adopt_review/list?sort=adoptReviewNo";
+        }
     }
 
     @ResponseBody
@@ -132,5 +147,9 @@ public class AdoptReviewController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +59,6 @@
 </section>
 
 <!-- modifyForm 시작 -->
-
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row">
@@ -68,9 +66,32 @@
                 <div class="contact">
 
                     <!-- form 시작 -->
-
-                    <form class="form" method="post" action="/board/auth/modify">
+                    <form id="boardModify" class="form" method="post" action="/board/auth/modify">
                         <div class="modal-body">
+
+                            <c:if test="${authUser.grade eq '관리자'}">
+                                <div class="form-group">
+                                    <label for="mNumber">
+                                        회원번호 / 아이디 / 닉네임
+                                    </label>
+                                    <select name="mNumber" id="mNumber" class="form-control">
+                                        <c:forEach var="m" items="${memberList}">
+                                            <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wrTime">작성일시 (여기를 클릭 후 스페이스바를 누르세요)</label>
+                                    <input type="datetime-local" name="wrTime" class="form-control" id="wrTime"
+                                           value="${modifyForm.wrTime}" max="2099-12-30 00:00"
+                                           required>
+                                </div>
+                            </c:if>
+                            <c:if test="${authUser.grade eq '일반'}">
+                                <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
+                                <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
+                            </c:if>
+
 
                             <!-- title, content, bNumber, kindOfBoard -->
                             <div class="form-group">
@@ -87,8 +108,7 @@
                                           placeholder="내용을 입력해주세요"
                                           maxlength="1300" required>${modifyForm.content}</textarea>
                             </div>
-                            <input type="hidden" name="bNumber" value="${modifyForm.getBNumber()}">
-                            <input type="hidden" name="kindOfBoard" value="${modifyForm.kindOfBoard}">
+
                         </div>
 
                         <!-- checkPublic 공개 / 비공개 여부  -->
@@ -105,12 +125,14 @@
                                                 for="Y">공개</label>&ensp;
                                         </div>
                                         <div>
-                                            <input type="radio" name="checkPublic" value="N" id="N"> <label for="N">비공개</label>&ensp;
+                                            <input type="radio" name="checkPublic" value="N" id="N"> <label
+                                                for="N">비공개</label>&ensp;
                                         </div>
                                     </c:when>
                                     <c:when test="${modifyForm.checkPublic eq 'N'}">
                                         <div>
-                                            <input type="radio" name="checkPublic" value="Y" id="Y2"> <label for="Y2">공개</label>&ensp;
+                                            <input type="radio" name="checkPublic" value="Y" id="Y2"> <label
+                                                for="Y2">공개</label>&ensp;
                                         </div>
                                         <div>
                                             <input type="radio" name="checkPublic" value="N" id="N2"
@@ -122,6 +144,8 @@
                             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
                             <button type="submit" class="btn btn-primary">글 수정 등록</button>
                         </div>
+                        <input type="hidden" name="bNumber" value="${modifyForm.getBNumber()}">
+                        <input type="hidden" name="kindOfBoard" value="${modifyForm.kindOfBoard}">
                     </form>
 
                 </div>
@@ -130,11 +154,7 @@
     </div>
 
 </section>
-
 <!-- modifyForm 끝 -->
-
-
-
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
@@ -153,5 +173,11 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<script>
+    document.getElementById("mNumber").value = "${modifyForm.getMNumber()}";
+</script>
+
+<%-- footer --%>
+<%@ include file="../include/footer.jspf" %>
 </body>
 </html>

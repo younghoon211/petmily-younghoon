@@ -83,11 +83,9 @@
                            class="block-20 rounded"
                            style="background-image: url('/adopt_review/upload?filename=${board.imgPath}')"></a>
                         <div class="text p-4">
-                            <div class="meta mb-2">
-                                <div><i class="far fa-eye"></i>date ${board.wrTime}</div>
-                                <br>
-                                <div><i class="far fa-eye"></i>by<a href="javascript:void(0)"> ${board.name}</a></div>
-                            </div>
+                            <div class="meta mb-2"><small>${board.wrTime}</small></div>
+                            <div><small style="color: #00bd56">${board.name}</small></div>
+                            <br>
                             <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
                                 <h3 class="heading">${board.title}</h3></a>
                             <div class="meta mb-2">

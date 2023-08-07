@@ -1,6 +1,7 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.board.Board;
+import kh.petmily.domain.board.form.BoardConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,10 +37,7 @@ public interface BoardMapper {
             @Param("end") int end,
             @Param("kindOfBoard") String kindOfBoard);
 
-    int selectCountWithCondition(
-            @Param("kindOfBoard") String kindOfBoard,
-            @Param("condition") String condition,
-            @Param("keyword") String keyword);
+    int selectCountWithCondition(BoardConditionForm form);
 
     List<Board> selectIndexWithCondition(
             @Param("start") int start,

@@ -1,6 +1,7 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.look_board.LookBoard;
+import kh.petmily.domain.look_board.form.LookBoardConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,10 +22,7 @@ public interface LookBoardMapper {
 
     int selectCount();
 
-    int selectCountWithCondition(
-            @Param("species") String species,
-            @Param("animalState") String animalState,
-            @Param("keyword") String keyword);
+    int selectCountWithCondition(LookBoardConditionForm form);
 
     int selectCountBymNumber(int mNumber);
 

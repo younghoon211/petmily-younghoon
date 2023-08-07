@@ -1,9 +1,9 @@
 package kh.petmily.controller;
 
-import kh.petmily.domain.find_board.form.FindBoardWriteForm;
 import kh.petmily.domain.look_board.form.*;
 import kh.petmily.domain.member.Member;
 import kh.petmily.service.LookBoardService;
+import kh.petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/lookBoard")
@@ -28,10 +28,13 @@ import java.net.MalformedURLException;
 public class LookBoardController {
 
     private final LookBoardService lookBoardService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute LookBoardConditionForm conditionForm, Model model) {
+        log.info("LookBoardConditionForm = {}", conditionForm);
         LookBoardPageForm pageForm = lookBoardService.getListPage(conditionForm);
+
         model.addAttribute("pageForm", pageForm);
 
         return "/look.board/look_list";
@@ -49,7 +52,13 @@ public class LookBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writeForm() {
+    public String writeForm(Model model, HttpServletRequest request) {
+        int mNumber = getAuthMNumber(request);
+        List<Member> memberList = memberService.selectAll();
+
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("mNumber", mNumber);
+
         return "/look.board/look_write";
     }
 
@@ -61,7 +70,7 @@ public class LookBoardController {
 
         String filename = lookBoardService.storeFile(writeForm.getFile(), fullPath);
 
-        writeForm.setMNumber(getAuthMember(request).getMNumber());
+        writeForm.setMNumber(writeForm.getMNumber());
         writeForm.setImgPath(filename);
 
         log.info("lookBoardWriteForm = {}", writeForm);
@@ -77,7 +86,10 @@ public class LookBoardController {
         LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(laNumber);
         log.info("수정 전 LookBoardModifyForm = {}", modifyForm);
 
+        List<Member> memberList = memberService.selectAll();
+
         model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("memberList", memberList);
 
         return "/look.board/look_modify";
     }
@@ -137,5 +149,9 @@ public class LookBoardController {
         Member member = (Member) session.getAttribute("authUser");
 
         return member;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthMember(request).getMNumber();
     }
 }

@@ -54,10 +54,34 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-        <form class="form" method="post" action="/lookBoard/auth/modify?laNumber=${modifyForm.laNumber}"
+        <form class="form" method="post" action="/lookBoard/auth/modify"
               enctype="multipart/form-data">
             <div class="modal-body">
-                <hr color="#6c757d" width="100%">
+
+                <c:if test="${authUser.grade eq '관리자'}">
+                    <div class="form-group">
+                        <label for="mNumber">
+                            회원번호 / 아이디 / 닉네임
+                        </label>
+                        <select name="mNumber" id="mNumber" class="form-control">
+                            <c:forEach var="m" items="${memberList}">
+                                <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="wrTime">작성일시 (여기를 클릭 후 스페이스바를 누르세요)</label>
+                        <input type="datetime-local" name="wrTime" class="form-control" id="wrTime"
+                               value="${modifyForm.wrTime}" max="2099-12-30 00:00"
+                               required>
+                    </div>
+                </c:if>
+                <c:if test="${authUser.grade eq '일반'}">
+                    <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
+                    <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
+                </c:if>
+
+                <hr width="100%" style="color: #9e9e9e">
                 <div class="row justify-content-start">
                     <div class="col-md-6 col-lg-4 form-check">
                         <c:choose>
@@ -127,7 +151,7 @@
                     </div>
                 </div>
 
-                <hr color="#6c757d" width="100%">
+                <hr width="100%" style="color: #9e9e9e">
 
                 <div class="form-group">
                     <label for="title">제목</label>
@@ -179,6 +203,9 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<script>
+    document.getElementById("mNumber").value = "${modifyForm.getMNumber()}";
+</script>
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
 </body>

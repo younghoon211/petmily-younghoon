@@ -16,17 +16,17 @@
         <if test='imgPath != null and imgPath !=""'>
         , IMGPATH
         </if>
-        , VIDEO, WRTIME, CHECKPUBLIC)
+        , VIDEO, CHECKPUBLIC)
         values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}
         <if test='imgPath != null and imgPath !=""'>
         , #{imgPath}
         </if>
-        , null, SYSDATE, 'Y')
+        , null, 'Y')
     </insert>
 
     <update id="update">
         update BOARD
-        set TITLE = #{title}, CONTENT = #{content}, WRTIME = SYSDATE
+        set MNUMBER = #{mNumber}, TITLE = #{title}, CONTENT = #{content}, WRTIME = #{wrTime}
         <if test='imgPath != null and imgPath !=""'>
             ,IMGPATH = #{imgPath}
         </if>

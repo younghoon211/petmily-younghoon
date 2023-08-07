@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -177,7 +179,7 @@ public class LookBoardServiceImpl implements LookBoardService {
                 domain.getLocation(),
                 domain.getAnimalState(),
                 domain.getImgPath(),
-                domain.getWrTime(),
+                domain.getWrTime().format(getFormatter()),
                 domain.getTitle(),
                 domain.getContent(),
                 domain.getViewCount()
@@ -191,24 +193,36 @@ public class LookBoardServiceImpl implements LookBoardService {
     private LookBoardModifyForm toModifyForm(LookBoard domain) {
         return new LookBoardModifyForm(
                 domain.getLaNumber(),
+                domain.getMNumber(),
                 domain.getSpecies(),
                 domain.getKind(),
                 domain.getLocation(),
                 domain.getImgPath(),
                 domain.getTitle(),
-                domain.getContent()
+                domain.getContent(),
+                domain.getWrTime().format(getFormatter())
         );
     }
 
     private LookBoard toModify(LookBoardModifyForm form) {
         return new LookBoard(
                 form.getLaNumber(),
+                form.getMNumber(),
                 form.getSpecies(),
                 form.getKind(),
                 form.getLocation(),
                 form.getImgPath(),
                 form.getTitle(),
-                form.getContent()
+                form.getContent(),
+                LocalDateTime.parse(getReplaceWrTime(form), getFormatter())
         );
+    }
+
+    private String getReplaceWrTime(LookBoardModifyForm form) {
+        return form.getWrTime().replace("T", " ");
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

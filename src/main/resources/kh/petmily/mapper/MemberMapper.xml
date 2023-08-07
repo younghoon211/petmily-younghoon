@@ -28,12 +28,6 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
-    <select id="selectmNumber" resultType="int">
-        SELECT MNUMBER
-        from MEMBER
-        where ID = #{id} and PW = #{pw}
-    </select>
-
     <select id="selectMemberById" resultType="kh.petmily.domain.member.Member">
         select *
         from MEMBER
@@ -42,24 +36,6 @@
 
     <select id="selectName" resultType="java.lang.String">
         select NAME
-        from MEMBER
-        where MNUMBER = #{pk}
-    </select>
-
-    <select id="selectBirth" resultType="java.lang.String">
-        select BIRTH
-        from MEMBER
-        where MNUMBER = #{pk}
-    </select>
-
-    <select id="selectPhone" resultType="java.lang.String">
-        select PHONE
-        from MEMBER
-        where MNUMBER = #{pk}
-    </select>
-
-    <select id="selectEmail" resultType="java.lang.String">
-        select EMAIL
         from MEMBER
         where MNUMBER = #{pk}
     </select>

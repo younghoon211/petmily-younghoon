@@ -8,6 +8,7 @@ import kh.petmily.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class BoardDao implements BasicDao {
                     b.getKindOfBoard(),
                     b.getTitle(),
                     b.getContent(),
-                    b.getWrTime(),
+                    b.getWrTime().format(getFormatter()),
                     b.getCheckPublic(),
                     b.getViewCount(),
                     selectReplyCount(b.getBNumber())
@@ -84,7 +85,7 @@ public class BoardDao implements BasicDao {
                     b.getKindOfBoard(),
                     b.getTitle(),
                     b.getContent(),
-                    b.getWrTime(),
+                    b.getWrTime().format(getFormatter()),
                     b.getCheckPublic(),
                     b.getViewCount(),
                     selectReplyCount(b.getBNumber())
@@ -98,9 +99,7 @@ public class BoardDao implements BasicDao {
 
     // 조건부 검색 게시글 개수
     public int selectCountWithCondition(BoardConditionForm form) {
-        return mapper.selectCountWithCondition(
-                form.getKindOfBoard(), form.getCondition(), form.getKeyword()
-        );
+        return mapper.selectCountWithCondition(form);
     }
 
     // 조건부 검색
@@ -118,7 +117,7 @@ public class BoardDao implements BasicDao {
                     b.getKindOfBoard(),
                     b.getTitle(),
                     b.getContent(),
-                    b.getWrTime(),
+                    b.getWrTime().format(getFormatter()),
                     b.getCheckPublic(),
                     b.getViewCount(),
                     selectReplyCount(b.getBNumber())
@@ -144,5 +143,9 @@ public class BoardDao implements BasicDao {
 
     public int selectReplyCount(int pk) {
         return mapper.selectReplyCount(pk);
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

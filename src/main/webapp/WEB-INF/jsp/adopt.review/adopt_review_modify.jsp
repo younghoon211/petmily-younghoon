@@ -65,6 +65,30 @@
 
                     <!-- 글 bNumber, title, content -->
                     <div class="modal-body">
+
+                        <c:if test="${authUser.grade eq '관리자'}">
+                            <div class="form-group">
+                                <label for="mNumber">
+                                    회원번호 / 아이디 / 닉네임
+                                </label>
+                                <select name="mNumber" id="mNumber" class="form-control">
+                                    <c:forEach var="m" items="${memberList}">
+                                        <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="wrTime">작성일시 (여기를 클릭 후 스페이스바를 누르세요)</label>
+                                <input type="datetime-local" name="wrTime" class="form-control" id="wrTime"
+                                       value="${modifyForm.wrTime}" max="2099-12-30 00:00"
+                                       required>
+                            </div>
+                        </c:if>
+                        <c:if test="${authUser.grade eq '일반'}">
+                            <input type="hidden" name="mNumber" value="${mNumber}">
+                            <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
+                        </c:if>
+
                         <div class="form-group">
                             <div>
                                 <label for="title">제목</label>
@@ -124,6 +148,10 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
+
+<script>
+    document.getElementById("mNumber").value = "${modifyForm.getMNumber()}";
+</script>
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>

@@ -3,13 +3,12 @@ package kh.petmily.domain.look_board.form;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Data
 @NoArgsConstructor
 public class LookBoardListForm {
 
     private int laNumber;
+    private int mNumber;
     private String memberId;
     private String name;
     private String species;
@@ -17,13 +16,14 @@ public class LookBoardListForm {
     private String location;
     private String animalState;
     private String imgPath;
-    private Date wrTime;
+    private String wrTime;
     private String title;
     private int viewCount;
     private String sort;
 
-    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title) {
+    public LookBoardListForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title) {
         this.laNumber = laNumber;
+        this.mNumber = mNumber;
         this.name = name;
         this.species = species;
         this.kind = kind;
@@ -34,8 +34,9 @@ public class LookBoardListForm {
         this.title = title;
     }
 
-    public LookBoardListForm(int laNumber, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+    public LookBoardListForm(int laNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title, int viewCount) {
         this.laNumber = laNumber;
+        this.mNumber = mNumber;
         this.name = name;
         this.species = species;
         this.kind = kind;
@@ -47,8 +48,9 @@ public class LookBoardListForm {
         this.viewCount = viewCount;
     }
 
-    public LookBoardListForm(int laNumber, String memberId, String name, String species, String kind, String location, String animalState, String imgPath, Date wrTime, String title, int viewCount) {
+    public LookBoardListForm(int laNumber, int mNumber, String memberId, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title, int viewCount) {
         this.laNumber = laNumber;
+        this.mNumber = mNumber;
         this.memberId = memberId;
         this.name = name;
         this.species = species;

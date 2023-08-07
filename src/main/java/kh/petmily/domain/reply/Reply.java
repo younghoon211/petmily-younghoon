@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +16,7 @@ public class Reply implements DomainObj {
     private int bNumber;
     private int mNumber;
     private String reply;
-    private Date wrTime;
+    private LocalDateTime wrTime;
 
     public Reply(int bNumber, int mNumber, String reply) {
         this.bNumber = bNumber;

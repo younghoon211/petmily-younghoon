@@ -13,6 +13,7 @@ public class LookBoardModifyForm {
     @NotNull
     private Integer laNumber;
 
+    private int mNumber;
     private String species;
     private String kind;
     private String location;
@@ -20,14 +21,17 @@ public class LookBoardModifyForm {
     private MultipartFile file;
     private String title;
     private String content;
+    private String wrTime;
 
-    public LookBoardModifyForm(int laNumber, String species, String kind, String location, String imgPath, String title, String content) {
+    public LookBoardModifyForm(int laNumber, int mNumber, String species, String kind, String location, String imgPath, String title, String content, String wrTime) {
         this.laNumber = laNumber;
+        this.mNumber = mNumber;
         this.species = species;
         this.kind = kind;
         this.location = location;
         this.imgPath = imgPath;
         this.title = title;
         this.content = content;
+        this.wrTime = wrTime;
     }
 }

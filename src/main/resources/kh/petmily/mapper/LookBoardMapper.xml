@@ -27,14 +27,16 @@
 
     <update id="update">
         update LOOKANIMALBOARD
-        set SPECIES  = #{species},
+        set MNUMBER = #{mNumber},
+            SPECIES  = #{species},
             KIND     = #{kind},
             LOCATION = #{location},
         <if test='imgPath != null and imgPath !=""'>
             IMGPATH = #{imgPath},
         </if>
             TITLE    = #{title},
-            CONTENT  = #{content}
+            CONTENT  = #{content},
+            WRTIME = #{wrTime}
         where LANUMBER = #{laNumber}
     </update>
 

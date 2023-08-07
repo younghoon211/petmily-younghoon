@@ -102,16 +102,16 @@
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
+                                <div><small>${lookBoard.wrTime}</small></div>
                                 <br>
-                                <div>상태: ${lookBoard.animalState}</div>
+                                <div><i class="far fa-eye"></i> 종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
                                 <br>
-                                <div>장소: ${lookBoard.location}</div>
+                                <div><i class="far fa-eye"></i> 상태: ${lookBoard.animalState}</div>
                                 <br>
-                                <div>작성일: ${lookBoard.wrTime}</div>
+                                <div><i class="far fa-eye"></i> 장소: ${lookBoard.location}</div>
                                 <br>
-                                <div>작성자: ${lookBoard.name}</div>
                             </div>
+                            <div><small style="color: #00bd56">${lookBoard.name}</small></div>
                             <h3 class="heading"><a
                                     href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
                             </h3>
