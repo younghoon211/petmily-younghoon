@@ -153,16 +153,24 @@ public class AdoptTempServiceImpl implements AdoptTempService {
 
     private Adopt toAdopt(AdoptTempSubmitForm form) {
         return new Adopt(
-                form.getMNumber(), form.getAbNumber(),
-                form.getResidence(), form.getMaritalStatus(),
-                form.getJob());
+                form.getMNumber(),
+                form.getAbNumber(),
+                form.getResidence(),
+                form.getMaritalStatus(),
+                form.getJob()
+        );
     }
 
     private Adopt adminToAdopt(AdminAdoptForm form) {
         return new Adopt(
-                form.getAdNumber(), form.getMNumber(), form.getAbNumber(),
-                form.getResidence(), form.getMaritalStatus(),
-                form.getJob(), form.getStatus());
+                form.getAdNumber(),
+                form.getMNumber(),
+                form.getAbNumber(),
+                form.getResidence(),
+                form.getMaritalStatus(),
+                form.getJob(),
+                form.getStatus()
+        );
     }
 
 

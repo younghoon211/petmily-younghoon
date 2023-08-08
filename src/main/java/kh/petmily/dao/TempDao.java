@@ -20,8 +20,8 @@ import java.util.List;
 public class TempDao implements BasicDao {
 
     private final TempMapper mapper;
-    private final AbandonedAnimalMapper abandonedAnimalMapper;
     private final MemberMapper memberMapper;
+    private final AbandonedAnimalMapper abandonedAnimalMapper;
 
     @Override
     public TempPet findByPk(int pk) {
@@ -128,22 +128,6 @@ public class TempDao implements BasicDao {
         mapper.tempRefuse(pk);
     }
 
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
-    public String selectAnimalName(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
-    public String selectMemberName(int mNumber) {
-        return memberMapper.selectName(mNumber);
-    }
-
-    public String selectMemberId(int mNumber) {
-        return memberMapper.selectMemberId(mNumber);
-    }
-
     public void updateStatusToTemp() {
         mapper.updateStatusToTemp();
     }
@@ -162,5 +146,21 @@ public class TempDao implements BasicDao {
 
     public void adminInsert(DomainObj obj) {
         mapper.adminInsert((TempPet) obj);
+    }
+
+    private String getAbNameByAbNumber(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
+    }
+
+    private String selectAnimalName(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
+    }
+
+    private String selectMemberName(int mNumber) {
+        return memberMapper.selectName(mNumber);
+    }
+
+    private String selectMemberId(int mNumber) {
+        return memberMapper.selectMemberId(mNumber);
     }
 }

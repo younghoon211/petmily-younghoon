@@ -3,9 +3,11 @@ package kh.petmily.service;
 import kh.petmily.dao.DonationDao;
 import kh.petmily.domain.abandoned_animal.form.DonateSubmitForm;
 import kh.petmily.domain.donation.Donation;
-import kh.petmily.domain.donation.form.*;
+import kh.petmily.domain.donation.form.AdminDonationListForm;
+import kh.petmily.domain.donation.form.AdminDonationModifyForm;
+import kh.petmily.domain.donation.form.AdminDonationPageForm;
+import kh.petmily.domain.donation.form.AdminDonationWriteForm;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +80,8 @@ public class DonateServiceImpl implements DonateService {
                 form.getDonaSum(),
                 form.getBank(),
                 form.getAccountHolder(),
-                form.getAccountNumber());
+                form.getAccountNumber()
+        );
     }
 
     private Donation toWrite(AdminDonationWriteForm form) {
@@ -88,18 +91,20 @@ public class DonateServiceImpl implements DonateService {
                 form.getDonaSum(),
                 form.getBank(),
                 form.getAccountHolder(),
-                form.getAccountNumber());
+                form.getAccountNumber()
+        );
     }
 
-    private AdminDonationModifyForm toModifyForm(Donation domain) {
+    private AdminDonationModifyForm toModifyForm(Donation donation) {
         return new AdminDonationModifyForm(
-                domain.getDNumber(),
-                domain.getAbNumber(),
-                domain.getMNumber(),
-                domain.getDonaSum(),
-                domain.getBank(),
-                domain.getAccountHolder(),
-                domain.getAccountNumber());
+                donation.getDNumber(),
+                donation.getAbNumber(),
+                donation.getMNumber(),
+                donation.getDonaSum(),
+                donation.getBank(),
+                donation.getAccountHolder(),
+                donation.getAccountNumber()
+        );
     }
 
     private Donation toModify(AdminDonationModifyForm form) {
@@ -110,6 +115,7 @@ public class DonateServiceImpl implements DonateService {
                 form.getDonaSum(),
                 form.getBank(),
                 form.getAccountHolder(),
-                form.getAccountNumber());
+                form.getAccountNumber()
+        );
     }
 }

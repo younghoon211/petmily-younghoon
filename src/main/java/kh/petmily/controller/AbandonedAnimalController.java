@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,7 +67,7 @@ public class AbandonedAnimalController {
     }
 
     //=======입양/임보=======
-    @GetMapping("/auth/adopt_temp")
+    @GetMapping("/auth/adoptTemp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
@@ -78,17 +77,13 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/adopt_temp_submit";
     }
 
-    @PostMapping("/auth/adopt_temp")
+    @PostMapping("/auth/adoptTemp")
     public String adoptTemp(@ModelAttribute AdoptTempSubmitForm submitForm,
                             @RequestParam String adoptOrTemp,
-                            HttpServletRequest request,
-                            RedirectAttributes redirectAttributes) {
-
+                            HttpServletRequest request) {
         log.info("adoptTempSubmitForm = {}", submitForm);
 
-        Member member = getAuthMember(request);
-        int mNumber = member.getMNumber();
-
+        int mNumber = getAuthMember(request).getMNumber();
         submitForm.setMNumber(mNumber);
 
         if (adoptOrTemp.equals("adopt")) {
@@ -99,7 +94,7 @@ public class AbandonedAnimalController {
             adoptTempService.temp(submitForm);
         }
 
-        redirectAttributes.addAttribute("abNumber", submitForm.getAbNumber());
+//        redirectAttributes.addAttribute("abNumber", submitForm.getAbNumber());
 
         return "/abandoned.animal/alert_submit";
     }

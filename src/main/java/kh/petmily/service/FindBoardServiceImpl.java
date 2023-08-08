@@ -167,20 +167,20 @@ public class FindBoardServiceImpl implements FindBoardService {
         return filePath + filename;
     }
 
-    private FindBoardDetailForm toDetailForm(FindBoard domain) {
+    private FindBoardDetailForm toDetailForm(FindBoard findBoard) {
         return new FindBoardDetailForm(
-                domain.getFaNumber(),
-                domain.getMNumber(),
-                getMemberName(domain.getFaNumber()),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getLocation(),
-                domain.getAnimalState(),
-                domain.getImgPath(),
-                domain.getWrTime().format(getFormatter()),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getViewCount()
+                findBoard.getFaNumber(),
+                findBoard.getMNumber(),
+                getMemberName(findBoard.getFaNumber()),
+                findBoard.getSpecies(),
+                findBoard.getKind(),
+                findBoard.getLocation(),
+                findBoard.getAnimalState(),
+                findBoard.getImgPath(),
+                findBoard.getWrTime().format(getFormatter()),
+                findBoard.getTitle(),
+                findBoard.getContent(),
+                findBoard.getViewCount()
         );
     }
 
@@ -188,17 +188,17 @@ public class FindBoardServiceImpl implements FindBoardService {
         return findBoardDao.selectName(pk);
     }
 
-    private FindBoardModifyForm toModifyForm(FindBoard domain) {
+    private FindBoardModifyForm toModifyForm(FindBoard findBoard) {
         return new FindBoardModifyForm(
-                domain.getFaNumber(),
-                domain.getMNumber(),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getLocation(),
-                domain.getImgPath(),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getWrTime().format(getFormatter())
+                findBoard.getFaNumber(),
+                findBoard.getMNumber(),
+                findBoard.getSpecies(),
+                findBoard.getKind(),
+                findBoard.getLocation(),
+                findBoard.getImgPath(),
+                findBoard.getTitle(),
+                findBoard.getContent(),
+                findBoard.getWrTime().format(getFormatter())
         );
     }
 

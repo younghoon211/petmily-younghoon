@@ -34,8 +34,20 @@ public class BoardServiceImpl implements BoardService {
     // 게시판 리스트
     @Override
     public BoardPageForm getListPage(BoardConditionForm form) {
-        int total = boardDao.selectCountWithCondition(form);
-        List<BoardListForm> content = boardDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
+        int total = boardDao.selectCountWithCondition(
+                form.getKeyword(),
+                form.getCondition(),
+                engToKoKindOfBoard(form.getKindOfBoard())
+        );
+        
+        List<BoardListForm> content = boardDao.selectIndexWithCondition(
+                (form.getPageNo() - 1) * size + 1, 
+                (form.getPageNo() - 1) * size + size, 
+                form.getSort(), 
+                form.getKeyword(), 
+                form.getCondition(), 
+                engToKoKindOfBoard(form.getKindOfBoard())
+        );
 
         return new BoardPageForm(total, form.getPageNo(), size, content);
     }
@@ -52,8 +64,13 @@ public class BoardServiceImpl implements BoardService {
     // 내가 쓴 게시글 (마이페이지)
     @Override
     public BoardPageForm getMyPost(int pageNo, int mNumber, String type, String kindOfBoard) {
-        int total = boardDao.selectCountBymNumber(mNumber, kindOfBoard);
-        List<BoardListForm> content = boardDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, kindOfBoard);
+        int total = boardDao.selectCountBymNumber(mNumber, engToKoKindOfBoard(kindOfBoard));
+
+        List<BoardListForm> content = boardDao.selectIndexBymNumber(
+                (pageNo - 1) * size + 1,
+                (pageNo - 1) * size + size, mNumber,
+                engToKoKindOfBoard(kindOfBoard)
+        );
 
         return new BoardPageForm(total, pageNo, size, content);
     }
@@ -61,8 +78,13 @@ public class BoardServiceImpl implements BoardService {
     // 게시판 리스트 (관리자 페이지)
     @Override
     public BoardPageForm getAdminListPage(String kindOfBoard, int pageNo) {
-        int total = boardDao.selectCount(kindOfBoard);
-        List<BoardListForm> content = boardDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, kindOfBoard);
+        int total = boardDao.selectCount(engToKoKindOfBoard(kindOfBoard));
+
+        List<BoardListForm> content = boardDao.selectIndex(
+                (pageNo - 1) * size + 1,
+                (pageNo - 1) * size + size,
+                engToKoKindOfBoard(kindOfBoard)
+        );
 
         return new BoardPageForm(total, pageNo, size, content);
     }
@@ -102,35 +124,36 @@ public class BoardServiceImpl implements BoardService {
     private Board toWrite(BoardWriteForm form) {
         return new Board(
                 form.getMNumber(),
-                form.getKindOfBoard(),
+                engToKoKindOfBoard(form.getKindOfBoard()),
                 form.getTitle(),
                 form.getContent(),
-                form.getCheckPublic());
-    }
-
-    private BoardDetailForm toDetailForm(Board domain, String memberName) {
-        return new BoardDetailForm(
-                domain.getBNumber(),
-                domain.getMNumber(),
-                memberName,
-                domain.getKindOfBoard(),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getWrTime().format(getFormatter()),
-                domain.getCheckPublic(),
-                domain.getViewCount()
+                form.getCheckPublic()
         );
     }
 
-    private BoardModifyForm toModifyForm(Board domain) {
+    private BoardDetailForm toDetailForm(Board board, String memberName) {
+        return new BoardDetailForm(
+                board.getBNumber(),
+                board.getMNumber(),
+                memberName,
+                koToEngKindOfBoard(board.getKindOfBoard()),
+                board.getTitle(),
+                board.getContent(),
+                board.getWrTime().format(getFormatter()),
+                board.getCheckPublic(),
+                board.getViewCount()
+        );
+    }
+
+    private BoardModifyForm toModifyForm(Board board) {
         return new BoardModifyForm(
-                domain.getBNumber(),
-                domain.getMNumber(),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getCheckPublic(),
-                domain.getKindOfBoard(),
-                domain.getWrTime().format(getFormatter())
+                board.getBNumber(),
+                board.getMNumber(),
+                board.getTitle(),
+                board.getContent(),
+                board.getCheckPublic(),
+                koToEngKindOfBoard(board.getKindOfBoard()),
+                board.getWrTime().format(getFormatter())
         );
     }
 
@@ -152,5 +175,21 @@ public class BoardServiceImpl implements BoardService {
 
     private DateTimeFormatter getFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    }
+
+    private String engToKoKindOfBoard(String kindOfBoard) {
+        if (kindOfBoard.equals("free")) {
+            return "자유";
+        } else {
+            return "문의";
+        }
+    }
+
+    private String koToEngKindOfBoard(String kindOfBoard) {
+        if (kindOfBoard.equals("자유")) {
+            return "free";
+        } else {
+            return "inquiry";
+        }
     }
 }

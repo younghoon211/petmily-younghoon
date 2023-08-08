@@ -151,14 +151,6 @@
         where B.BNUMBER = #{pk}
     </select>
 
-<!--    <select id="selectByContent" resultType="kh.petmily.domain.board.Board">-->
-<!--        select B.*, M.ID, M.NAME-->
-<!--        from BOARD B,-->
-<!--             MEMBER M-->
-<!--        where B.MNUMBER = M.MNUMBER-->
-<!--          and BNUMBER = #{pk}-->
-<!--    </select>-->
-
     <update id="updateViewCount">
         update BOARD
         set VIEWCOUNT = VIEWCOUNT + 1

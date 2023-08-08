@@ -107,8 +107,6 @@ public class LookBoardController {
         lookBoardService.modify(modifyForm);
         log.info("수정 후 LookBoardModifyForm = {}", modifyForm);
 
-        model.addAttribute("laNumber", modifyForm.getLaNumber());
-
         return "/look.board/alert_modify";
     }
 

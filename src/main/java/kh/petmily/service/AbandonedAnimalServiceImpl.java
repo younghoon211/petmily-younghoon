@@ -143,7 +143,8 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
                 form.getAdmissionDate(),
                 form.getUniqueness(),
                 form.getDescription(),
-                form.getAnimalState());
+                form.getAnimalState()
+        );
     }
 
     private String getFullPath(String filename, String filePath) {
@@ -156,24 +157,25 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return originalFilename.substring(position + 1);
     }
 
-    private AbandonedAnimalDetailForm toDetailForm(AbandonedAnimal domain) {
+    private AbandonedAnimalDetailForm toDetailForm(AbandonedAnimal abAnimal) {
         return new AbandonedAnimalDetailForm(
-                domain.getAbNumber(),
-                domain.getSNumber(),
-                domain.getAge(),
-                domain.getWeight(),
-                domain.getGender(),
-                domain.getName(),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getLocation(),
-                domain.getUniqueness(),
-                domain.getDescription(),
-                domain.getAnimalState(),
-                domain.getImgPath(),
-                domain.getAdmissionDate(),
-                getGroupName(domain.getAbNumber()),
-                getPhone(domain.getAbNumber()));
+                abAnimal.getAbNumber(),
+                abAnimal.getSNumber(),
+                abAnimal.getAge(),
+                abAnimal.getWeight(),
+                abAnimal.getGender(),
+                abAnimal.getName(),
+                abAnimal.getSpecies(),
+                abAnimal.getKind(),
+                abAnimal.getLocation(),
+                abAnimal.getUniqueness(),
+                abAnimal.getDescription(),
+                abAnimal.getAnimalState(),
+                abAnimal.getImgPath(),
+                abAnimal.getAdmissionDate(),
+                getGroupName(abAnimal.getAbNumber()),
+                getPhone(abAnimal.getAbNumber())
+        );
     }
 
     private String getGroupName(int pk) {
@@ -184,22 +186,22 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return abandonedAnimalDao.selectPhone(pk);
     }
 
-    private AdminAbandonedAnimalModifyForm toModifyForm(AbandonedAnimal domain) {
+    private AdminAbandonedAnimalModifyForm toModifyForm(AbandonedAnimal abAnimal) {
         return new AdminAbandonedAnimalModifyForm(
-                domain.getAbNumber(),
-                domain.getSNumber(),
-                domain.getName(),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getGender(),
-                domain.getAge(),
-                domain.getWeight(),
-                domain.getImgPath(),
-                domain.getLocation(),
-                domain.getAdmissionDate(),
-                domain.getUniqueness(),
-                domain.getDescription(),
-                domain.getAnimalState()
+                abAnimal.getAbNumber(),
+                abAnimal.getSNumber(),
+                abAnimal.getName(),
+                abAnimal.getSpecies(),
+                abAnimal.getKind(),
+                abAnimal.getGender(),
+                abAnimal.getAge(),
+                abAnimal.getWeight(),
+                abAnimal.getImgPath(),
+                abAnimal.getLocation(),
+                abAnimal.getAdmissionDate(),
+                abAnimal.getUniqueness(),
+                abAnimal.getDescription(),
+                abAnimal.getAnimalState()
         );
     }
 

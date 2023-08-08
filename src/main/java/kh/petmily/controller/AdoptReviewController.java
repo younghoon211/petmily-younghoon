@@ -93,8 +93,7 @@ public class AdoptReviewController {
 
     @PostMapping("/auth/modify")
     public String modify(@Validated @ModelAttribute AdoptReviewModifyForm modifyForm,
-                         HttpServletRequest request,
-                         Model model) throws IOException {
+                         HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
         fullPath = fullPath + "resources/upload/";
 
@@ -103,7 +102,6 @@ public class AdoptReviewController {
         log.info("수정 후 adoptReviewModifyForm = {}", modifyForm);
 
         adoptReviewService.modify(modifyForm);
-        model.addAttribute("bNumber", modifyForm.getBNumber());
 
         return "/adopt.review/alert_modify";
     }

@@ -177,7 +177,7 @@
                         <h3 class="heading">입양 / 임시보호하기</h3>
                         <p>이 동물을 입양 / 임시보호 해주세요!</p>
                         <a
-                                href="/abandonedAnimal/auth/adopt_temp?abNumber=${param.abNumber}"
+                                href="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}"
                                 class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read
                             more</i></a>

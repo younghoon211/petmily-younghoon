@@ -131,8 +131,8 @@
             </div>
             <div class="col">
                 <label>계좌번호</label>
-                <input name="accountNumber" type="number"
-                       class="form-control" placeholder="계좌번호" min="0" required>
+                <input name="accountNumber" type="text"
+                       class="form-control" placeholder="계좌번호" required>
             </div>
         </div>
         <br><br>

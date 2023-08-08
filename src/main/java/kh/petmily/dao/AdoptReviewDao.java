@@ -2,7 +2,6 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.adopt_review.AdoptReview;
-import kh.petmily.domain.adopt_review.form.AdoptReviewConditionForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewListForm;
 import kh.petmily.mapper.AdoptReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -97,20 +96,13 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     //====== 검색 추가 ======
-    public int selectCountWithCondition(AdoptReviewConditionForm conditionForm) {
-        return mapper.selectCountWithCondition(conditionForm);
+    public int selectCountWithCondition(String keyword, String searchType, String kindOfBoard) {
+        return mapper.selectCountWithCondition(keyword, searchType, kindOfBoard);
     }
 
-    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm conditionForm) {
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String searchType, String kindOfBoard) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
-
-        List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(
-                start, end,
-                conditionForm.getKindOfBoard(),
-                conditionForm.getSearchType(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
-        );
+        List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(start, end, sort, keyword, searchType, kindOfBoard);
 
         for (AdoptReview adoptReview : adoptReviews) {
             AdoptReviewListForm listForm = new AdoptReviewListForm(
@@ -131,16 +123,16 @@ public class AdoptReviewDao implements BasicDao {
         return adoptReviewListForms;
     }
 
-    public String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
-    }
-
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
 
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 
     private DateTimeFormatter getFormatter() {

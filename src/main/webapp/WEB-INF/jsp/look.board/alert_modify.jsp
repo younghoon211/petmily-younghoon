@@ -7,6 +7,6 @@
         location.href = "/admin/board?kindOfBoard=look";
     </c:if>
     <c:if test="${authUser.grade eq '일반'}">
-        location.href = "/lookBoard/detail?laNumber=${laNumber}";
+        location.href = "/lookBoard/detail?laNumber=${lookBoardModifyForm.laNumber}";
     </c:if>
 </script>

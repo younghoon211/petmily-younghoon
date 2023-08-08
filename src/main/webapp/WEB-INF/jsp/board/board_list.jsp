@@ -116,26 +116,17 @@
 
                             <!-- 작성자, 작성 날짜 -->
                             <div class="text-muted">
-                                <small><a href="javascript:void(0)">${board.name}</a>&nbsp;&nbsp;&nbsp;${board.wrTime}</small>
+                                <small><a href="javascript:void(0)">${board.name}</a>&nbsp;&nbsp;&nbsp;${board.wrTime}
+                                </small>
                             </div>
                         </div>
 
                         <!-- list 공개 / 비공개 -->
                         <div class="text-muted small text-center align-self-center">
-                            <c:if test="${param.kindOfBoard eq 'inquiry'}">
-                                <c:if test="${board.checkPublic eq 'Y'}">
-                                    <span><i class="far fa-comment ml-2"></i></span>
-                                    <a class="text-body" style="font-size: 1.3em;">공개</a>
-                                </c:if>
-                                <c:if test="${board.checkPublic eq 'N'}">
-                                    <span><i class="far fa-comment ml-2"></i></span>
-                                    <a class="text-body" style="font-size: 1.3em;">비공개</a>
-                                </c:if>
+                            <c:if test="${param.kindOfBoard eq 'inquiry' && board.checkPublic eq 'N'}">
+                                &#x1F512; 비공개
                             </c:if>
-
-                            <div>
-                                조회수 : ${board.viewCount}
-                            </div>
+                            <div>조회수: ${board.viewCount}</div>
                         </div>
 
                     </div>

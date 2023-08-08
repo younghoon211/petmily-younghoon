@@ -17,8 +17,8 @@ import java.util.List;
 public class DonationDao implements BasicDao {
 
     private final DonationMapper mapper;
-    private final AbandonedAnimalMapper abandonedAnimalMapper;
     private final MemberMapper memberMapper;
+    private final AbandonedAnimalMapper abandonedAnimalMapper;
 
     // =======BasicDao 메소드=======
     @Override

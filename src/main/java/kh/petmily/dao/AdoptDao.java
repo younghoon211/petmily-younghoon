@@ -20,8 +20,8 @@ import java.util.List;
 public class AdoptDao implements BasicDao {
 
     private final AdoptMapper mapper;
-    private final AbandonedAnimalMapper abandonedAnimalMapper;
     private final MemberMapper memberMapper;
+    private final AbandonedAnimalMapper abandonedAnimalMapper;
 
     @Override
     public Adopt findByPk(int pk) {
@@ -124,22 +124,6 @@ public class AdoptDao implements BasicDao {
         mapper.adoptRefuse(pk);
     }
 
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
-    public String selectAnimalName(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
-    }
-
-    public String selectMemberName(int mNumber) {
-        return memberMapper.selectName(mNumber);
-    }
-
-    public String selectMemberId(int mNumber) {
-        return memberMapper.selectMemberId(mNumber);
-    }
-
     public void updateStatusToAdopt() {
         mapper.updateStatusToAdopt();
     }
@@ -158,5 +142,21 @@ public class AdoptDao implements BasicDao {
 
     public void adminInsert(DomainObj obj) {
         mapper.adminInsert((Adopt) obj);
+    }
+
+    private String getAbNameByAbNumber(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
+    }
+
+    private String selectAnimalName(int abNumber) {
+        return abandonedAnimalMapper.selectName(abNumber);
+    }
+
+    private String selectMemberName(int mNumber) {
+        return memberMapper.selectName(mNumber);
+    }
+
+    private String selectMemberId(int mNumber) {
+        return memberMapper.selectMemberId(mNumber);
     }
 }

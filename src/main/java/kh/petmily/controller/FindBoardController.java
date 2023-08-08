@@ -106,8 +106,6 @@ public class FindBoardController {
         findBoardService.modify(modifyForm);
         log.info("수정 후 FindBoardModifyForm = {}", modifyForm);
 
-        model.addAttribute("faNumber", modifyForm.getFaNumber());
-
         return "/find.board/alert_modify";
     }
 

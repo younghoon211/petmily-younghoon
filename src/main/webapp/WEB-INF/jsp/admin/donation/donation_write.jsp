@@ -140,8 +140,8 @@
 
             <div class="col">
                 <label>계좌번호</label>
-                <input name="accountNumber" type="number"
-                       class="form-control" placeholder="계좌번호" min="0" required>
+                <input name="accountNumber" type="text"
+                       class="form-control" placeholder="계좌번호" required>
             </div>
         </div>
         <br><br>
@@ -172,7 +172,7 @@
                 </label>
             </div>
             <div class="col">
-                <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력" min="0"> 원
+                <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력"> 원
                 <br><small style="color: red">회원들에겐 최소 10,000원이상으로 명시</small>
             </div>
         </div>

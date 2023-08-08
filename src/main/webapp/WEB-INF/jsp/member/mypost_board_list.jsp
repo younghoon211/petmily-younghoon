@@ -91,112 +91,108 @@
             <label for="adoptReview">입양후기 게시판</label>
             &nbsp;&nbsp;&nbsp;
         </div>
-
         <br>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-            <section class="ftco-section bg-light">
-                <div class="container">
+            <div class="container">
 
-                    <!-- 목록 출력 -->
-                    <c:forEach var="board" items="${myPost.content}">
-                        <div class="card mb-2">
-                            <div class="card-body p-2 p-sm-3">
-                                <div class="media forum-item">
+                <!-- 목록 출력 -->
+                <c:forEach var="board" items="${myPost.content}">
+                    <div class="card mb-2">
+                        <div class="card-body p-2 p-sm-3">
+                            <div class="media forum-item">
 
-                                    <!-- 글 번호 -->
-                                    <div class="media-body">
-                                        <small><i class="far fa-eye"></i>글번호 ${board.getBNumber()}</small>
+                                <!-- 글 번호 -->
+                                <div class="media-body">
+                                    <small><i class="far fa-eye"></i>글번호 ${board.getBNumber()}</small>
 
-                                        <!-- 제목 -->
-                                        <div class="text-secondary">
-                                            <c:if test="${param.kindOfBoard eq 'free'}">
-                                                <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                                   class="text-body" style="font-size: 1.3em;">${board.title}</a>
-                                                <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
-                                            </c:if>
-                                            <c:if test="${param.kindOfBoard eq 'inquiry'}">
-                                                <c:choose>
-                                                    <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
-                                                        <a class="text-body"
-                                                           style="font-size: 1.3em;">${board.title}</a>
-                                                        <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                                           class="text-body"
-                                                           style="font-size: 1.3em;">${board.title}</a>
-                                                        <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:if>
-                                        </div>
-
-                                        <!-- 작성자, 작성 날짜 -->
-                                        <div class="text-muted">
-                                            <small><a href="javascript:void(0)">by ${board.name}</a><span>
-									<i class="far fa-comment ml-2"></i>
-									</span>date ${board.wrTime} </small>
-                                        </div>
-
+                                    <!-- 제목 -->
+                                    <div class="text-secondary">
+                                        <c:if test="${param.kindOfBoard eq 'free'}">
+                                            <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                               class="text-body" style="font-size: 1.3em;">${board.title}</a>
+                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                        </c:if>
+                                        <c:if test="${param.kindOfBoard eq 'inquiry'}">
+                                            <c:choose>
+                                                <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
+                                                    <a class="text-body"
+                                                       style="font-size: 1.3em;">${board.title}</a>
+                                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                                       class="text-body"
+                                                       style="font-size: 1.3em;">${board.title}</a>
+                                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
                                     </div>
 
-                                    <!-- list 공개 / 비공개 -->
-                                    <div class="text-muted small text-center align-self-center">
-                                        <c:if test="${param.kindOfBoard eq 'inquiry'}">
-                                            <c:if test="${board.checkPublic eq 'Y'}">
-                                                <span><i class="far fa-comment ml-2"></i></span>
-                                                <a class="text-body" style="font-size: 1.3em;">공개</a>
-                                            </c:if>
-                                            <c:if test="${board.checkPublic eq 'N'}">
-                                                <span><i class="far fa-comment ml-2"></i></span>
-                                                <a class="text-body" style="font-size: 1.3em;">비공개</a>
-                                            </c:if>
-                                        </c:if>
-
-                                        <div>
-                                            조회수 : ${board.viewCount}
-                                        </div>
+                                    <!-- 작성자, 작성 날짜 -->
+                                    <div class="text-muted">
+                                        <small><a href="javascript:void(0)">by ${board.name}</a><span>
+									<i class="far fa-comment ml-2"></i>
+									</span>date ${board.wrTime} </small>
                                     </div>
 
                                 </div>
-                            </div>
-                        </div>
-                    </c:forEach>
 
-                    <!-- 페이징 처리 -->
-                    <div class="row mt-5">
-                        <div class="col text-center">
-                            <div class="block-27">
-                                <ul>
-                                    <li>
-                                        <c:if test="${myPost.startPage > 5}">
-                                            <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${myPost.startPage - 5}">&lt;</a>
+                                <!-- list 공개 / 비공개 -->
+                                <div class="text-muted small text-center align-self-center">
+                                    <c:if test="${param.kindOfBoard eq 'inquiry'}">
+                                        <c:if test="${board.checkPublic eq 'Y'}">
+                                            <span><i class="far fa-comment ml-2"></i></span>
+                                            <a class="text-body" style="font-size: 1.3em;">공개</a>
                                         </c:if>
-                                    </li>
-                                    <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
-                                        <c:if test="${myPost.currentPage eq pNo}">
-                                            <li class="active">
-                                                <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pNo}">${pNo}</a>
-                                            </li>
+                                        <c:if test="${board.checkPublic eq 'N'}">
+                                            <span><i class="far fa-comment ml-2"></i></span>
+                                            <a class="text-body" style="font-size: 1.3em;">비공개</a>
                                         </c:if>
-                                        <c:if test="${myPost.currentPage ne pNo}">
-                                            <li>
-                                                <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pNo}">${pNo}</a>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                    <li>
-                                        <c:if test="${myPost.endPage < myPost.totalPages}">
-                                            <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${myPost.startPage + 5}">&gt;</a>
-                                        </c:if>
-                                    </li>
-                                </ul>
+                                    </c:if>
+
+                                    <div>
+                                        조회수 : ${board.viewCount}
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+                </c:forEach>
 
+                <!-- 페이징 처리 -->
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li>
+                                    <c:if test="${myPost.startPage > 5}">
+                                        <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${myPost.startPage - 5}">&lt;</a>
+                                    </c:if>
+                                </li>
+                                <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
+                                    <c:if test="${myPost.currentPage eq pNo}">
+                                        <li class="active">
+                                            <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${myPost.currentPage ne pNo}">
+                                        <li>
+                                            <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                                <li>
+                                    <c:if test="${myPost.endPage < myPost.totalPages}">
+                                        <a href="/member/auth/myPost/board?kindOfBoard=${param.kindOfBoard}&pageNo=${myPost.startPage + 5}">&gt;</a>
+                                    </c:if>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </section>

@@ -73,15 +73,17 @@ public class ShelterServiceImpl implements ShelterService {
         return new Shelter(
                 form.getGroupName(),
                 form.getLocation(),
-                form.getPhone());
+                form.getPhone()
+        );
     }
 
-    private ShelterModifyForm toModifyForm(Shelter domain) {
+    private ShelterModifyForm toModifyForm(Shelter shelter) {
         return new ShelterModifyForm(
-                domain.getSNumber(),
-                domain.getGroupName(),
-                domain.getLocation(),
-                domain.getPhone());
+                shelter.getSNumber(),
+                shelter.getGroupName(),
+                shelter.getLocation(),
+                shelter.getPhone()
+        );
     }
 
     private Shelter toModify(ShelterModifyForm form) {
@@ -89,6 +91,7 @@ public class ShelterServiceImpl implements ShelterService {
                 form.getSNumber(),
                 form.getGroupName(),
                 form.getLocation(),
-                form.getPhone());
+                form.getPhone()
+        );
     }
 }

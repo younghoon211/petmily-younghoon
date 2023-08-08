@@ -190,29 +190,29 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private Member toChange(Member domain, MemberChangeForm form) {
+    private Member toChange(Member member, MemberChangeForm form) {
         return new Member(
-                domain.getMNumber(),
+                member.getMNumber(),
                 form.getPw(),
                 form.getName(),
-                domain.getBirth(),
-                domain.getGender(),
+                member.getBirth(),
+                member.getGender(),
                 form.getEmail(),
                 form.getPhone()
         );
     }
 
-    private AdminMemberModifyForm toModifyForm(Member domain) {
+    private AdminMemberModifyForm toModifyForm(Member member) {
         return new AdminMemberModifyForm(
-                domain.getMNumber(),
-                domain.getId(),
-                domain.getPw(),
-                domain.getName(),
-                domain.getBirth(),
-                domain.getGender(),
-                domain.getEmail(),
-                domain.getPhone(),
-                domain.getGrade()
+                member.getMNumber(),
+                member.getId(),
+                member.getPw(),
+                member.getName(),
+                member.getBirth(),
+                member.getGender(),
+                member.getEmail(),
+                member.getPhone(),
+                member.getGrade()
         );
     }
 

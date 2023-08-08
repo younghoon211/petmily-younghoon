@@ -1,7 +1,6 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.adopt_review.AdoptReview;
-import kh.petmily.domain.adopt_review.form.AdoptReviewConditionForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,30 +21,38 @@ public interface AdoptReviewMapper {
 
     int selectCountBymNumber(
             @Param("mNumber") int mNumber,
-            @Param("kindOfBoard") String kindOfBoard);
+            @Param("kindOfBoard") String kindOfBoard
+    );
 
     List<AdoptReview> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
             @Param("mNumber") int mNumber,
-            @Param("kindOfBoard") String kindOfBoard);
+            @Param("kindOfBoard") String kindOfBoard
+    );
 
     int selectCount(String kindOfBoard);
 
     List<AdoptReview> selectIndex(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("kindOfBoard") String kindfBoard);
+            @Param("kindOfBoard") String kindOfBoard
+    );
 
-    int selectCountWithCondition(AdoptReviewConditionForm form);
+    int selectCountWithCondition(
+            @Param("keyword") String keyword,
+            @Param("searchType") String searchType,
+            @Param("kindOfBoard") String kindOfBoard
+    );
 
     List<AdoptReview> selectIndexWithCondition(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("kindOfBoard") String kindOfBoard,
-            @Param("searchType") String searchType,
+            @Param("sort") String sort,
             @Param("keyword") String keyword,
-            @Param("sort") String sort);
+            @Param("searchType") String searchType,
+            @Param("kindOfBoard") String kindOfBoard
+    );
 
     String selectMemberId(int pk);
 

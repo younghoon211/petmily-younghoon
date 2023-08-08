@@ -35,7 +35,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -115,6 +114,36 @@ public class AdminController {
         memberService.delete(mNumber);
 
         return "redirect:/admin/member";
+    }
+
+    // =============== 게시판 관리 ===============
+    // 게시판 리스트 (CUD는 기존 회원 폼 이용)
+    @GetMapping("/board")
+    public String boardPage(@RequestParam String kindOfBoard,
+                            @RequestParam(defaultValue = "1") int pageNo,
+                            Model model) {
+        if (kindOfBoard.equals("free")) {
+            BoardPageForm freeBoardForm = boardService.getAdminListPage("free", pageNo);
+            model.addAttribute("boardForm", freeBoardForm);
+        }
+        else if (kindOfBoard.equals("inquiry")) {
+            BoardPageForm inquiryBoardForm = boardService.getAdminListPage("inquiry", pageNo);
+            model.addAttribute("boardForm", inquiryBoardForm);
+        }
+        else if (kindOfBoard.equals("adoptReview")) {
+            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage("adoptReview", pageNo);
+            model.addAttribute("boardForm", adoptReviewBoardForm);
+        }
+        else if (kindOfBoard.equals("find")) {
+            FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(pageNo);
+            model.addAttribute("boardForm", findBoardForm);
+        }
+        else if (kindOfBoard.equals("look")) {
+            LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(pageNo);
+            model.addAttribute("boardForm", lookBoardForm);
+        }
+
+        return "/admin/board/board_list";
     }
 
     // =============== 유기동물 관리 ===============
@@ -323,6 +352,7 @@ public class AdminController {
     @PostMapping("/temp/write")
     public String tempWriteForm(@ModelAttribute AdminTempForm adminTempForm) {
         log.info("adminTempForm={}", adminTempForm);
+
         adoptTempService.adminTempWrite(adminTempForm);
         adoptTempService.updateStatusToTemp();
 
@@ -414,36 +444,6 @@ public class AdminController {
         return "/admin/temp/temp_refuse_list";
     }
 
-    // =============== 게시판 관리 ===============
-    // 게시판 리스트 (CUD는 기존 회원 폼 이용)
-    @GetMapping("/board")
-    public String boardPage(@RequestParam String kindOfBoard,
-                            @RequestParam(defaultValue = "1") int pageNo,
-                            Model model) {
-        if (kindOfBoard.equals("free")) {
-            BoardPageForm freeBoardForm = boardService.getAdminListPage("free", pageNo);
-            model.addAttribute("boardForm", freeBoardForm);
-        }
-        else if (kindOfBoard.equals("inquiry")) {
-            BoardPageForm inquiryBoardForm = boardService.getAdminListPage("inquiry", pageNo);
-            model.addAttribute("boardForm", inquiryBoardForm);
-        }
-        else if (kindOfBoard.equals("adoptReview")) {
-            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage("adoptReview", pageNo);
-            model.addAttribute("boardForm", adoptReviewBoardForm);
-        }
-        else if (kindOfBoard.equals("find")) {
-            FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(pageNo);
-            model.addAttribute("boardForm", findBoardForm);
-        }
-        else if (kindOfBoard.equals("look")) {
-            LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(pageNo);
-            model.addAttribute("boardForm", lookBoardForm);
-        }
-
-        return "/admin/board/board_list";
-    }
-
     // =============== 후원 정보 관리 ===============
     // 후원 리스트
     @GetMapping("/donation")
@@ -476,36 +476,22 @@ public class AdminController {
 
     // 후원 수정
     @GetMapping("donation/modify")
-    public String donationModifyForm(@RequestParam("dNumber") int dNumber, Model model) {
-        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
+    public String donationModifyForm(@RequestParam int dNumber, Model model) {
         List<Member> members = memberService.selectAll();
+        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
         AdminDonationModifyForm modifyForm = donateService.getModifyForm(dNumber);
 
-        modifyForm.setDNumber(dNumber);
-        log.info("dNumber = {}", dNumber);
-
-        model.addAttribute("abandonedAnimals", abandonedAnimals);
         model.addAttribute("members", members);
+        model.addAttribute("abandonedAnimals", abandonedAnimals);
         model.addAttribute("modifyForm", modifyForm);
 
         return "/admin/donation/donation_modify";
     }
 
     @PostMapping("donation/modify")
-    public String donationModify(@RequestParam("dNumber") int dNumber,
-                                 @RequestParam("abNumber") int abNumber,
-                                 @RequestParam("mNumber") int mNumber,
-                                 @ModelAttribute AdminDonationModifyForm modifyForm,
-                                 RedirectAttributes redirectAttributes) {
+    public String donationModify(@ModelAttribute AdminDonationModifyForm modifyForm) {
         log.info("adminDonationModifyForm = {}", modifyForm);
-        modifyForm.setDNumber(dNumber);
-        log.info("setDNumber = {}", dNumber);
-
         donateService.modify(modifyForm);
-
-        redirectAttributes.addAttribute("dNumber", dNumber);
-        redirectAttributes.addAttribute("abNumber", abNumber);
-        redirectAttributes.addAttribute("mNumber", mNumber);
 
         return "/admin/donation/alert_modify";
     }

@@ -3,7 +3,6 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.BoardListForm;
-import kh.petmily.domain.board.form.BoardConditionForm;
 import kh.petmily.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -98,21 +97,14 @@ public class BoardDao implements BasicDao {
     }
 
     // 조건부 검색 게시글 개수
-    public int selectCountWithCondition(BoardConditionForm conditionForm) {
-        return mapper.selectCountWithCondition(conditionForm);
+    public int selectCountWithCondition(String keyword, String condition, String kindOfBoard) {
+        return mapper.selectCountWithCondition(keyword, condition, kindOfBoard);
     }
 
     // 조건부 검색
-    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm conditionForm) {
+    public List<BoardListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String condition, String kindOfBoard) {
         List<BoardListForm> boardListForms = new ArrayList<>();
-
-        List<Board> boards = mapper.selectIndexWithCondition(
-                start, end,
-                conditionForm.getKindOfBoard(),
-                conditionForm.getCondition(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
-        );
+        List<Board> boards = mapper.selectIndexWithCondition(start, end, sort, keyword, condition, kindOfBoard);
 
         for (Board board : boards) {
             BoardListForm listForm = new BoardListForm(
@@ -134,19 +126,19 @@ public class BoardDao implements BasicDao {
         return boardListForms;
     }
 
-    public String selectName(int pk) {
-        return mapper.selectName(pk);
-    }
-
-    public String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
-    }
-
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
     }
 
-    public int selectReplyCount(int pk) {
+    private String selectName(int pk) {
+        return mapper.selectName(pk);
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
+    }
+
+    private int selectReplyCount(int pk) {
         return mapper.selectReplyCount(pk);
     }
 

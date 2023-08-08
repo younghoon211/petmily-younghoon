@@ -94,70 +94,67 @@
 
         <br>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-            <section class="ftco-section bg-light">
-                <div class="container">
+            <div class="container">
 
-                    <!-- 목록 출력 -->
-                    <br class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                    <div class="row d-flex">
-                        <c:forEach var="board" items="${myPost.content}">
-                            <div class="col-md-4">
-                                <div class="blog-entry align-self-stretch">
-                                    <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                       class="block-20 rounded"
-                                       style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
-                                    <div class="text p-4">
-                                        <div class="meta mb-2">
-                                            <div><i class="far fa-eye"></i>date ${board.wrTime}</div>
-                                            <br>
-                                            <div><i class="far fa-eye"></i>by<a
-                                                    href="javascript:void(0)"> ${board.name}</a></div>
-                                        </div>
-                                        <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
-                                            <h3 class="heading">${board.title}</h3></a>
-                                        <div class="meta mb-2">
-                                            <div>조회수: ${board.viewCount}</div>
-                                        </div>
+                <!-- 목록 출력 -->
+                <br class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                <div class="row d-flex">
+                    <c:forEach var="board" items="${myPost.content}">
+                        <div class="col-md-4">
+                            <div class="blog-entry align-self-stretch">
+                                <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                   class="block-20 rounded"
+                                   style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
+                                <div class="text p-4">
+                                    <div class="meta mb-2">
+                                        <div><i class="far fa-eye"></i>date ${board.wrTime}</div>
+                                        <br>
+                                        <div><i class="far fa-eye"></i>by<a
+                                                href="javascript:void(0)"> ${board.name}</a></div>
+                                    </div>
+                                    <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
+                                        <h3 class="heading">${board.title}</h3></a>
+                                    <div class="meta mb-2">
+                                        <div>조회수: ${board.viewCount}</div>
                                     </div>
                                 </div>
                             </div>
-                        </c:forEach>
-                    </div>
+                        </div>
+                    </c:forEach>
+                </div>
 
-                    <!-- 페이징 처리 -->
-                    <div class="row mt-5">
-                        <div class="col text-center">
-                            <div class="block-27">
-                                <ul>
-                                    <li>
-                                        <c:if test="${myPost.startPage > 5}">
-                                            <a href="/member/auth/myPost/adoptReview/list?pageNo=${myPost.startPage - 5}">&lt;</a>
-                                        </c:if>
-                                    </li>
-                                    <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
-                                        <c:if test="${myPost.currentPage eq pNo}">
-                                            <li class="active">
-                                                <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${myPost.currentPage ne pNo}">
-                                            <li>
-                                                <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                    <li>
-                                        <c:if test="${myPost.endPage < myPost.totalPages}">
-                                            <a href="/member/auth/myPost/adoptReview?pageNo=${myPost.startPage + 5}">&gt;</a>
-                                        </c:if>
-                                    </li>
-                                </ul>
-                            </div>
+                <!-- 페이징 처리 -->
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li>
+                                    <c:if test="${myPost.startPage > 5}">
+                                        <a href="/member/auth/myPost/adoptReview/list?pageNo=${myPost.startPage - 5}">&lt;</a>
+                                    </c:if>
+                                </li>
+                                <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
+                                    <c:if test="${myPost.currentPage eq pNo}">
+                                        <li class="active">
+                                            <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${myPost.currentPage ne pNo}">
+                                        <li>
+                                            <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                                <li>
+                                    <c:if test="${myPost.endPage < myPost.totalPages}">
+                                        <a href="/member/auth/myPost/adoptReview?pageNo=${myPost.startPage + 5}">&gt;</a>
+                                    </c:if>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </section>

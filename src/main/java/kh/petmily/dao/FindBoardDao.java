@@ -191,10 +191,6 @@ public class FindBoardDao implements BasicDao {
         return findBoardListForms;
     }
 
-    public String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
-    }
-
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
@@ -230,6 +226,10 @@ public class FindBoardDao implements BasicDao {
         }
 
         return findBoardListForms;
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 
     private DateTimeFormatter getFormatter() {

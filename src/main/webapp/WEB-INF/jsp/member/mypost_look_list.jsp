@@ -91,79 +91,76 @@
             <label for="adoptReview">입양후기 게시판</label>
             &nbsp;&nbsp;&nbsp;
         </div>
-
         <br>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-            <section class="ftco-section bg-light">
-                <div class="container">
+            <div class="container">
 
-                    <!-- 목록 출력 -->
-                    <div class="row d-flex">
-                        <c:forEach var="lookBoard" items="${myPost.content}">
-                            <div class="col-md-4 ftco-animate" id="d-flex-out">
-                                <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                    <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
-                                       class="block-20 rounded"
-                                       style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
-                                    </a>
-                                    <div class="text p-4">
-                                        <div class="meta mb-2">
-                                            <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
-                                            <br>
-                                            <div>상태: ${lookBoard.animalState}</div>
-                                            <br>
-                                            <div>장소: ${lookBoard.location}</div>
-                                            <br>
-                                            <div>작성일: ${lookBoard.wrTime}</div>
-                                            <br>
-                                            <div>작성자: ${lookBoard.name}</div>
-                                        </div>
-                                        <h3 class="heading">
-                                            <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
-                                        </h3>
-                                        <div class="meta mb-2">
-                                            <div>조회수: ${lookBoard.viewCount}</div>
-                                        </div>
+                <!-- 목록 출력 -->
+                <div class="row d-flex">
+                    <c:forEach var="lookBoard" items="${myPost.content}">
+                        <div class="col-md-4 ftco-animate" id="d-flex-out">
+                            <div class="blog-entry align-self-stretch" id="d-flex-in">
+                                <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
+                                   class="block-20 rounded"
+                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                </a>
+                                <div class="text p-4">
+                                    <div class="meta mb-2">
+                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
+                                        <br>
+                                        <div>상태: ${lookBoard.animalState}</div>
+                                        <br>
+                                        <div>장소: ${lookBoard.location}</div>
+                                        <br>
+                                        <div>작성일: ${lookBoard.wrTime}</div>
+                                        <br>
+                                        <div>작성자: ${lookBoard.name}</div>
+                                    </div>
+                                    <h3 class="heading">
+                                        <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
+                                    </h3>
+                                    <div class="meta mb-2">
+                                        <div>조회수: ${lookBoard.viewCount}</div>
                                     </div>
                                 </div>
                             </div>
-                        </c:forEach>
-                    </div>
+                        </div>
+                    </c:forEach>
+                </div>
 
-                    <!-- 페이징 처리 -->
-                    <div class="row mt-5">
-                        <div class="col text-center">
-                            <div class="block-27">
-                                <ul>
-                                    <li>
-                                        <c:if test="${myPost.startPage > 5}">
-                                            <a href="/member/auth/myPost/look?pageNo=${myPost.startPage - 5}">&lt;</a>
-                                        </c:if>
-                                    </li>
-                                    <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
-                                        <c:if test="${myPost.currentPage eq pNo}">
-                                            <li class="active">
-                                                <a href="/member/auth/myPost/look?pageNo=${pNo}">${pNo}</a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${myPost.currentPage ne pNo}">
-                                            <li>
-                                                <a href="/member/auth/myPost/look?pageNo=${pNo}">${pNo}</a>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                    <li>
-                                        <c:if test="${myPost.endPage < myPost.totalPages}">
-                                            <a href="/member/auth/myPost/look?pageNo=${myPost.startPage + 5}">&gt;</a>
-                                        </c:if>
-                                    </li>
-                                </ul>
-                            </div>
+                <!-- 페이징 처리 -->
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li>
+                                    <c:if test="${myPost.startPage > 5}">
+                                        <a href="/member/auth/myPost/look?pageNo=${myPost.startPage - 5}">&lt;</a>
+                                    </c:if>
+                                </li>
+                                <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
+                                    <c:if test="${myPost.currentPage eq pNo}">
+                                        <li class="active">
+                                            <a href="/member/auth/myPost/look?pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${myPost.currentPage ne pNo}">
+                                        <li>
+                                            <a href="/member/auth/myPost/look?pageNo=${pNo}">${pNo}</a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                                <li>
+                                    <c:if test="${myPost.endPage < myPost.totalPages}">
+                                        <a href="/member/auth/myPost/look?pageNo=${myPost.startPage + 5}">&gt;</a>
+                                    </c:if>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-
                 </div>
-            </section>
+
+            </div>
         </div>
     </div>
 </section>

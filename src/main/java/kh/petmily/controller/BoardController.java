@@ -79,11 +79,9 @@ public class BoardController {
     }
 
     @PostMapping("/auth/modify")
-    public String modify(@Validated @ModelAttribute BoardModifyForm modifyForm, Model model) {
+    public String modify(@Validated @ModelAttribute BoardModifyForm modifyForm) {
         log.info("수정 후 boardModifyForm = {}", modifyForm);
         boardService.modify(modifyForm);
-
-        model.addAttribute("modifyForm", modifyForm);
 
         return "/board/alert_modify";
     }

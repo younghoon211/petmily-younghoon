@@ -169,20 +169,20 @@ public class LookBoardServiceImpl implements LookBoardService {
         return filePath + filename;
     }
 
-    private LookBoardDetailForm toDetailForm(LookBoard domain) {
+    private LookBoardDetailForm toDetailForm(LookBoard lookBoard) {
         return new LookBoardDetailForm(
-                domain.getLaNumber(),
-                domain.getMNumber(),
-                getMemberName(domain.getLaNumber()),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getLocation(),
-                domain.getAnimalState(),
-                domain.getImgPath(),
-                domain.getWrTime().format(getFormatter()),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getViewCount()
+                lookBoard.getLaNumber(),
+                lookBoard.getMNumber(),
+                getMemberName(lookBoard.getLaNumber()),
+                lookBoard.getSpecies(),
+                lookBoard.getKind(),
+                lookBoard.getLocation(),
+                lookBoard.getAnimalState(),
+                lookBoard.getImgPath(),
+                lookBoard.getWrTime().format(getFormatter()),
+                lookBoard.getTitle(),
+                lookBoard.getContent(),
+                lookBoard.getViewCount()
         );
     }
 
@@ -190,17 +190,17 @@ public class LookBoardServiceImpl implements LookBoardService {
         return lookBoardDao.selectName(pk);
     }
 
-    private LookBoardModifyForm toModifyForm(LookBoard domain) {
+    private LookBoardModifyForm toModifyForm(LookBoard lookBoard) {
         return new LookBoardModifyForm(
-                domain.getLaNumber(),
-                domain.getMNumber(),
-                domain.getSpecies(),
-                domain.getKind(),
-                domain.getLocation(),
-                domain.getImgPath(),
-                domain.getTitle(),
-                domain.getContent(),
-                domain.getWrTime().format(getFormatter())
+                lookBoard.getLaNumber(),
+                lookBoard.getMNumber(),
+                lookBoard.getSpecies(),
+                lookBoard.getKind(),
+                lookBoard.getLocation(),
+                lookBoard.getImgPath(),
+                lookBoard.getTitle(),
+                lookBoard.getContent(),
+                lookBoard.getWrTime().format(getFormatter())
         );
     }
 

@@ -196,10 +196,6 @@ public class LookBoardDao implements BasicDao {
         return lookBoardListForms;
     }
 
-    public String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
-    }
-
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
@@ -240,6 +236,10 @@ public class LookBoardDao implements BasicDao {
         }
 
         return lookBoardListForms;
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 
     private DateTimeFormatter getFormatter() {

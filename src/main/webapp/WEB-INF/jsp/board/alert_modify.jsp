@@ -5,9 +5,9 @@
     alert("게시글이 수정되었습니다.");
 
     <c:if test="${authUser.grade eq '관리자'}">
-        location.href = "/admin/board?kindOfBoard=${modifyForm.kindOfBoard}";
+        location.href = "/admin/board?kindOfBoard=${boardModifyForm.kindOfBoard}";
     </c:if>
     <c:if test="${authUser.grade eq '일반'}">
-        location.href = "/board/detail?kindOfBoard=${modifyForm.kindOfBoard}&bNumber=${modifyForm.getBNumber()}";
+        location.href = "/board/detail?kindOfBoard=${boardModifyForm.kindOfBoard}&bNumber=${boardModifyForm.getBNumber()}";
     </c:if>
 </script>

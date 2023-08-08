@@ -141,15 +141,15 @@
 
             <div class="col">
                 <label>계좌번호</label>
-                <input name="accountNumber" type="number"
-                       class="form-control" value="${modifyForm.accountNumber}" min="0">
+                <input name="accountNumber" type="text"
+                       class="form-control" value="${modifyForm.accountNumber}">
             </div>
         </div>
         <br>
 
         <div class="form-group">
-            <label>후원금 <small style="color: red">※ 회원들에게는 최소금액 10,000원이상으로 명시</small></label>
-            <input type="number" name="donaSum" class="form-control" min="0"
+            <label>후원금액 <small style="color: red">※ 회원들에게는 최소금액 10,000원이상으로 명시</small></label>
+            <input type="text" name="donaSum" class="form-control"
                    value="${modifyForm.donaSum}">
         </div>
         <br>
@@ -159,6 +159,7 @@
             <button id="submit" type="submit" class="btn btn-primary">후원정보 수정</button>
         </div>
         <br>
+        <input type="hidden" name="dNumber" value="${modifyForm.getDNumber()}">
     </form>
 </div>
 

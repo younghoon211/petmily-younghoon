@@ -101,8 +101,7 @@
     <h1 id="title" class="text-center">입양 / 임시보호 신청서</h1>
     <p class="text-left">* 임시 보호의 최소 기간은 2개월입니다.</p>
 
-    <form action="/abandonedAnimal/auth/adopt_temp?abNumber=${param.abNumber}" method="post">
-
+    <form action="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}" method="post">
         <div class="form-group">
             <label>* 가족이 될 동물</label>
             <input type="text" class="form-control" value="${animal.name}" readonly>

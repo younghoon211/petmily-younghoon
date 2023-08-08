@@ -128,26 +128,26 @@
 					<ul>
 						<li>
 							<c:if test="${pageForm.startPage > 5}">
-								<a href="/admin/adopt_temp/complete/adopt?pageNo=${pageForm.startPage - 5}">&lt;</a>
+								<a href="/admin/adoptTemp/complete/adopt?pageNo=${pageForm.startPage - 5}">&lt;</a>
 							</c:if>
 						</li>
 						<li>
 							<c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
 							<c:if test="${pageForm.currentPage eq pageNo}">
 						<li class="active">
-							<a href="/admin/adopt_temp/complete/adopt?pageNo=${pageNo}">${pageNo}</a>
+							<a href="/admin/adoptTemp/complete/adopt?pageNo=${pageNo}">${pageNo}</a>
 						</li>
 						</c:if>
 						<c:if test="${pageForm.currentPage ne pageNo}">
 							<li>
-								<a href="/admin/adopt_temp/complete/adopt?pageNo=${pageNo}">${pageNo}</a>
+								<a href="/admin/adoptTemp/complete/adopt?pageNo=${pageNo}">${pageNo}</a>
 							</li>
 						</c:if>
 						</c:forEach>
 						</li>
 						<li>
 							<c:if test="${pageForm.endPage < pageForm.totalPages}">
-								<a href="/admin/adopt_temp/complete/adopt?pageNo=${pageForm.startPage + 5}">&gt;</a>
+								<a href="/admin/adoptTemp/complete/adopt?pageNo=${pageForm.startPage + 5}">&gt;</a>
 							</c:if>
 						</li>
 					</ul>
