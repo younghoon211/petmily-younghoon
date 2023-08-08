@@ -7,7 +7,6 @@ import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.DonationMapper;
 import kh.petmily.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -48,26 +47,26 @@ public class DonationDao implements BasicDao {
     }
 
     public List<AdminDonationListForm> selectIndex(int start, int end) {
-        List<AdminDonationListForm> result = new ArrayList<>();
-        List<Donation> list = mapper.selectIndex(start, end);
+        List<AdminDonationListForm> adminDonationListForms = new ArrayList<>();
+        List<Donation> donations = mapper.selectIndex(start, end);
 
-        for (Donation d : list) {
-            AdminDonationListForm li = new AdminDonationListForm(
-                    d.getDNumber(),
-                    d.getAbNumber(),
-                    findAnimalName(d.getAbNumber()),
-                    d.getMNumber(),
-                    findMemberName(d.getMNumber()),
-                    d.getDonaSum(),
-                    d.getBank(),
-                    d.getAccountHolder(),
-                    d.getAccountNumber()
+        for (Donation donation : donations) {
+            AdminDonationListForm listForm = new AdminDonationListForm(
+                    donation.getDNumber(),
+                    donation.getAbNumber(),
+                    findAnimalName(donation.getAbNumber()),
+                    donation.getMNumber(),
+                    findMemberName(donation.getMNumber()),
+                    donation.getDonaSum(),
+                    donation.getBank(),
+                    donation.getAccountHolder(),
+                    donation.getAccountNumber()
             );
 
-            result.add(li);
+            adminDonationListForms.add(listForm);
         }
 
-        return result;
+        return adminDonationListForms;
     }
 
     private String findAnimalName(int abNumber) {

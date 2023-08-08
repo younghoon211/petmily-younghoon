@@ -43,73 +43,73 @@ public class AbandonedAnimalDao implements BasicDao {
         return mapper.selectCount();
     }
 
-    public int selectCount(AbandonedAnimalConditionForm form) {
-        return mapper.selectCountWithCondition(form);
+    public int selectCount(AbandonedAnimalConditionForm conditionForm) {
+        return mapper.selectCountWithCondition(conditionForm);
     }
 
     public List<AbandonedAnimalListForm> selectIndex(int start, int end) {
-        List<AbandonedAnimalListForm> result = new ArrayList<>();
-        List<AbandonedAnimal> list = mapper.selectIndex(start, end);
+        List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
+        List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(start, end);
 
-        for (AbandonedAnimal ab : list) {
-            AbandonedAnimalListForm li = new AbandonedAnimalListForm(
-                    ab.getAbNumber(),
-                    ab.getSNumber(),
-                    ab.getName(),
-                    ab.getSpecies(),
-                    ab.getKind(),
-                    ab.getGender(),
-                    ab.getAge(),
-                    ab.getWeight(),
-                    ab.getImgPath(),
-                    ab.getLocation(),
-                    ab.getAdmissionDate(),
-                    ab.getUniqueness(),
-                    ab.getDescription(),
-                    ab.getAnimalState(),
-                    selectGroupName(ab.getAbNumber())
+        for (AbandonedAnimal abAnimal : abandonedAnimals) {
+            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
+                    abAnimal.getAbNumber(),
+                    abAnimal.getSNumber(),
+                    abAnimal.getName(),
+                    abAnimal.getSpecies(),
+                    abAnimal.getKind(),
+                    abAnimal.getGender(),
+                    abAnimal.getAge(),
+                    abAnimal.getWeight(),
+                    abAnimal.getImgPath(),
+                    abAnimal.getLocation(),
+                    abAnimal.getAdmissionDate(),
+                    abAnimal.getUniqueness(),
+                    abAnimal.getDescription(),
+                    abAnimal.getAnimalState(),
+                    selectGroupName(abAnimal.getAbNumber())
             );
 
-            result.add(li);
+            abandonedAnimalListForms.add(listForm);
         }
 
-        return result;
+        return abandonedAnimalListForms;
     }
 
-    public List<AbandonedAnimalListForm> selectIndex(int start, int end, AbandonedAnimalConditionForm form) {
-        List<AbandonedAnimalListForm> result = new ArrayList<>();
+    public List<AbandonedAnimalListForm> selectIndex(int start, int end, AbandonedAnimalConditionForm conditionForm) {
+        List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
 
-        List<AbandonedAnimal> list = mapper.selectIndexWithCondition(
+        List<AbandonedAnimal> abandonedAnimals = mapper.selectIndexWithCondition(
                 start, end,
-                form.getSpecies(),
-                form.getGender(),
-                form.getAnimalState(),
-                form.getKeyword(),
-                form.getSort()
+                conditionForm.getSpecies(),
+                conditionForm.getGender(),
+                conditionForm.getAnimalState(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
         );
 
-        for (AbandonedAnimal ab : list) {
-            AbandonedAnimalListForm li = new AbandonedAnimalListForm(
-                    ab.getAbNumber(),
-                    ab.getSNumber(),
-                    ab.getName(),
-                    ab.getSpecies(),
-                    ab.getKind(),
-                    ab.getGender(),
-                    ab.getAge(),
-                    ab.getWeight(),
-                    ab.getImgPath(),
-                    ab.getLocation(),
-                    ab.getAdmissionDate(),
-                    ab.getUniqueness(),
-                    ab.getDescription(),
-                    ab.getAnimalState()
+        for (AbandonedAnimal abAnimal : abandonedAnimals) {
+            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
+                    abAnimal.getAbNumber(),
+                    abAnimal.getSNumber(),
+                    abAnimal.getName(),
+                    abAnimal.getSpecies(),
+                    abAnimal.getKind(),
+                    abAnimal.getGender(),
+                    abAnimal.getAge(),
+                    abAnimal.getWeight(),
+                    abAnimal.getImgPath(),
+                    abAnimal.getLocation(),
+                    abAnimal.getAdmissionDate(),
+                    abAnimal.getUniqueness(),
+                    abAnimal.getDescription(),
+                    abAnimal.getAnimalState()
             );
 
-            result.add(li);
+            abandonedAnimalListForms.add(listForm);
         }
 
-        return result;
+        return abandonedAnimalListForms;
     }
 
     public String selectName(int pk) {

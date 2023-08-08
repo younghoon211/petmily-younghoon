@@ -60,7 +60,7 @@
 
                 <!-- 폼 시작 -->
 
-                <form class="form" method="post" action="/admin/abandoned_animal/modify?abNumber=${modifyForm.abNumber}"
+                <form class="form" method="post" action="/admin/abandonedAnimal/modify?abNumber=${modifyForm.abNumber}"
                       enctype='multipart/form-data'>
                     <div class="modal-body">
 

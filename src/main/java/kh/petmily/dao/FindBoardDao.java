@@ -102,59 +102,64 @@ public class FindBoardDao implements BasicDao {
     }
 
     public List<FindBoardListForm> selectIndexBymNumber(int start, int end, int mNumber) {
-        List<FindBoardListForm> result = new ArrayList<>();
-        List<FindBoard> list = mapper.selectIndexBymNumber(start, end, mNumber);
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+        List<FindBoard> findBoards = mapper.selectIndexBymNumber(start, end, mNumber);
 
-        for (FindBoard board : list) {
-            FindBoardListForm li = new FindBoardListForm(
-                    board.getFaNumber(),
-                    board.getMNumber(),
-                    selectName(board.getFaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (FindBoard findBoard : findBoards) {
+            FindBoardListForm listForm = new FindBoardListForm(
+                    findBoard.getFaNumber(),
+                    findBoard.getMNumber(),
+                    selectName(findBoard.getFaNumber()),
+                    findBoard.getSpecies(),
+                    findBoard.getKind(),
+                    findBoard.getLocation(),
+                    findBoard.getAnimalState(),
+                    findBoard.getImgPath(),
+                    findBoard.getWrTime().format(getFormatter()),
+                    findBoard.getTitle(),
+                    findBoard.getViewCount()
             );
 
-            result.add(li);
+            findBoardListForms.add(listForm);
         }
 
-        return result;
+        return findBoardListForms;
     }
 
-    public int selectCountWithCondition(FindBoardConditionForm form) {
-        return mapper.selectCountWithCondition(form);
+    public int selectCountWithCondition(FindBoardConditionForm conditionForm) {
+        return mapper.selectCountWithCondition(conditionForm);
     }
 
-    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm form) {
-        List<FindBoardListForm> result = new ArrayList<>();
-        List<FindBoard> list = mapper.selectIndexWithCondition(
-                start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword(), form.getSort()
+    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm conditionForm) {
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+
+        List<FindBoard> findBoards = mapper.selectIndexWithCondition(
+                start, end,
+                conditionForm.getSpecies(),
+                conditionForm.getAnimalState(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
         );
 
-        for (FindBoard board : list) {
-            FindBoardListForm li = new FindBoardListForm(
-                    board.getFaNumber(),
-                    board.getMNumber(),
-                    selectName(board.getFaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (FindBoard findBoard : findBoards) {
+            FindBoardListForm listForm = new FindBoardListForm(
+                    findBoard.getFaNumber(),
+                    findBoard.getMNumber(),
+                    selectName(findBoard.getFaNumber()),
+                    findBoard.getSpecies(),
+                    findBoard.getKind(),
+                    findBoard.getLocation(),
+                    findBoard.getAnimalState(),
+                    findBoard.getImgPath(),
+                    findBoard.getWrTime().format(getFormatter()),
+                    findBoard.getTitle(),
+                    findBoard.getViewCount()
             );
 
-            result.add(li);
+            findBoardListForms.add(listForm);
         }
 
-        return result;
+        return findBoardListForms;
     }
 
     public int selectCount() {
@@ -162,28 +167,28 @@ public class FindBoardDao implements BasicDao {
     }
 
     public List<FindBoardListForm> selectIndex(int start, int end) {
-        List<FindBoardListForm> result = new ArrayList<>();
-        List<FindBoard> list = mapper.selectIndex(start, end);
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+        List<FindBoard> findBoards = mapper.selectIndex(start, end);
 
-        for (FindBoard board : list) {
-            FindBoardListForm li = new FindBoardListForm(
-                    board.getFaNumber(),
-                    board.getMNumber(),
-                    selectMemberId(board.getFaNumber()),
-                    selectName(board.getFaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (FindBoard findBoard : findBoards) {
+            FindBoardListForm listForm = new FindBoardListForm(
+                    findBoard.getFaNumber(),
+                    findBoard.getMNumber(),
+                    selectMemberId(findBoard.getFaNumber()),
+                    selectName(findBoard.getFaNumber()),
+                    findBoard.getSpecies(),
+                    findBoard.getKind(),
+                    findBoard.getLocation(),
+                    findBoard.getAnimalState(),
+                    findBoard.getImgPath(),
+                    findBoard.getWrTime().format(getFormatter()),
+                    findBoard.getTitle(),
+                    findBoard.getViewCount()
             );
-            result.add(li);
+            findBoardListForms.add(listForm);
         }
 
-        return result;
+        return findBoardListForms;
     }
 
     public String selectMemberId(int pk) {
@@ -203,28 +208,28 @@ public class FindBoardDao implements BasicDao {
     }
 
     public List<FindBoardListForm> selectMemberIndex(int start, int end, int mNumber, String matched) {
-        List<FindBoardListForm> result = new ArrayList<>();
-        List<FindBoard> list = mapper.selectMemberIndex(start, end, mNumber, matched);
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+        List<FindBoard> findBoards = mapper.selectMemberIndex(start, end, mNumber, matched);
 
-        for (FindBoard f : list) {
-            FindBoardListForm li = new FindBoardListForm(
-                    f.getFaNumber(),
-                    f.getMNumber(),
-                    selectName(f.getFaNumber()),
-                    f.getSpecies(),
-                    f.getKind(),
-                    f.getLocation(),
-                    f.getAnimalState(),
-                    f.getImgPath(),
-                    f.getWrTime().format(getFormatter()),
-                    f.getTitle(),
-                    f.getViewCount()
+        for (FindBoard findBoard : findBoards) {
+            FindBoardListForm listForm = new FindBoardListForm(
+                    findBoard.getFaNumber(),
+                    findBoard.getMNumber(),
+                    selectName(findBoard.getFaNumber()),
+                    findBoard.getSpecies(),
+                    findBoard.getKind(),
+                    findBoard.getLocation(),
+                    findBoard.getAnimalState(),
+                    findBoard.getImgPath(),
+                    findBoard.getWrTime().format(getFormatter()),
+                    findBoard.getTitle(),
+                    findBoard.getViewCount()
             );
 
-            result.add(li);
+            findBoardListForms.add(listForm);
         }
 
-        return result;
+        return findBoardListForms;
     }
 
     private DateTimeFormatter getFormatter() {

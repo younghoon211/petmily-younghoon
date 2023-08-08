@@ -106,59 +106,64 @@ public class LookBoardDao implements BasicDao {
     }
 
     public List<LookBoardListForm> selectIndexBymNumber(int start, int end, int mNumber) {
-        List<LookBoardListForm> result = new ArrayList<>();
-        List<LookBoard> list = mapper.selectIndexBymNumber(start, end, mNumber);
+        List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
+        List<LookBoard> lookBoards = mapper.selectIndexBymNumber(start, end, mNumber);
 
-        for (LookBoard board : list) {
-            LookBoardListForm li = new LookBoardListForm(
-                    board.getLaNumber(),
-                    board.getMNumber(),
-                    selectName(board.getLaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (LookBoard lookBoard : lookBoards) {
+            LookBoardListForm listForm = new LookBoardListForm(
+                    lookBoard.getLaNumber(),
+                    lookBoard.getMNumber(),
+                    selectName(lookBoard.getLaNumber()),
+                    lookBoard.getSpecies(),
+                    lookBoard.getKind(),
+                    lookBoard.getLocation(),
+                    lookBoard.getAnimalState(),
+                    lookBoard.getImgPath(),
+                    lookBoard.getWrTime().format(getFormatter()),
+                    lookBoard.getTitle(),
+                    lookBoard.getViewCount()
             );
 
-            result.add(li);
+            lookBoardListForms.add(listForm);
         }
 
-        return result;
+        return lookBoardListForms;
     }
 
-    public int selectCountWithCondition(LookBoardConditionForm form) {
-        return mapper.selectCountWithCondition(form);
+    public int selectCountWithCondition(LookBoardConditionForm conditionForm) {
+        return mapper.selectCountWithCondition(conditionForm);
     }
 
-    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm form) {
-        List<LookBoardListForm> result = new ArrayList<>();
-        List<LookBoard> list = mapper.selectIndexWithCondition(
-                start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword(), form.getSort()
+    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm conditionForm) {
+        List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
+
+        List<LookBoard> lookBoards = mapper.selectIndexWithCondition(
+                start, end,
+                conditionForm.getSpecies(),
+                conditionForm.getAnimalState(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
         );
 
-        for (LookBoard board : list) {
-            LookBoardListForm li = new LookBoardListForm(
-                    board.getLaNumber(),
-                    board.getMNumber(),
-                    selectName(board.getLaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (LookBoard lookBoard : lookBoards) {
+            LookBoardListForm listForm = new LookBoardListForm(
+                    lookBoard.getLaNumber(),
+                    lookBoard.getMNumber(),
+                    selectName(lookBoard.getLaNumber()),
+                    lookBoard.getSpecies(),
+                    lookBoard.getKind(),
+                    lookBoard.getLocation(),
+                    lookBoard.getAnimalState(),
+                    lookBoard.getImgPath(),
+                    lookBoard.getWrTime().format(getFormatter()),
+                    lookBoard.getTitle(),
+                    lookBoard.getViewCount()
             );
 
-            result.add(li);
+            lookBoardListForms.add(listForm);
         }
 
-        return result;
+        return lookBoardListForms;
     }
 
     public int selectCount() {
@@ -166,29 +171,29 @@ public class LookBoardDao implements BasicDao {
     }
 
     public List<LookBoardListForm> selectIndex(int start, int end) {
-        List<LookBoardListForm> result = new ArrayList<>();
-        List<LookBoard> list = mapper.selectIndex(start, end);
+        List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
+        List<LookBoard> lookBoards = mapper.selectIndex(start, end);
 
-        for (LookBoard board : list) {
-            LookBoardListForm li = new LookBoardListForm(
-                    board.getLaNumber(),
-                    board.getMNumber(),
-                    selectMemberId(board.getLaNumber()),
-                    selectName(board.getLaNumber()),
-                    board.getSpecies(),
-                    board.getKind(),
-                    board.getLocation(),
-                    board.getAnimalState(),
-                    board.getImgPath(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getTitle(),
-                    board.getViewCount()
+        for (LookBoard lookBoard : lookBoards) {
+            LookBoardListForm listForm = new LookBoardListForm(
+                    lookBoard.getLaNumber(),
+                    lookBoard.getMNumber(),
+                    selectMemberId(lookBoard.getLaNumber()),
+                    selectName(lookBoard.getLaNumber()),
+                    lookBoard.getSpecies(),
+                    lookBoard.getKind(),
+                    lookBoard.getLocation(),
+                    lookBoard.getAnimalState(),
+                    lookBoard.getImgPath(),
+                    lookBoard.getWrTime().format(getFormatter()),
+                    lookBoard.getTitle(),
+                    lookBoard.getViewCount()
             );
 
-            result.add(li);
+            lookBoardListForms.add(listForm);
         }
 
-        return result;
+        return lookBoardListForms;
     }
 
     public String selectMemberId(int pk) {
@@ -209,32 +214,32 @@ public class LookBoardDao implements BasicDao {
     }
 
     public List<LookBoardListForm> selectMatchedIndex(int start, int end, FindBoard findBoard) {
-        List<Integer> list = findBoardMapper.selectMatchedLa(findBoard);
-        List<LookBoard> lookBoardList = new ArrayList<>();
+        List<Integer> selectMatchedLaList = findBoardMapper.selectMatchedLa(findBoard);
+        List<LookBoard> lookBoards = new ArrayList<>();
 
-        for (Integer i : list) {
-            lookBoardList.add(mapper.selectByPk(i));
+        for (Integer matchedLa : selectMatchedLaList) {
+            lookBoards.add(mapper.selectByPk(matchedLa));
         }
 
-        List<LookBoardListForm> result = new ArrayList<>();
+        List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
 
-        for (LookBoard l : lookBoardList) {
-            LookBoardListForm li = new LookBoardListForm(
-                    l.getLaNumber(),
-                    l.getMNumber(),
-                    selectName(l.getLaNumber()),
-                    l.getSpecies(),
-                    l.getKind(),
-                    l.getLocation(),
-                    l.getAnimalState(),
-                    l.getImgPath(),
-                    l.getWrTime().format(getFormatter()),
-                    l.getTitle());
+        for (LookBoard lookBoard : lookBoards) {
+            LookBoardListForm listForm = new LookBoardListForm(
+                    lookBoard.getLaNumber(),
+                    lookBoard.getMNumber(),
+                    selectName(lookBoard.getLaNumber()),
+                    lookBoard.getSpecies(),
+                    lookBoard.getKind(),
+                    lookBoard.getLocation(),
+                    lookBoard.getAnimalState(),
+                    lookBoard.getImgPath(),
+                    lookBoard.getWrTime().format(getFormatter()),
+                    lookBoard.getTitle());
 
-            result.add(li);
+            lookBoardListForms.add(listForm);
         }
 
-        return result;
+        return lookBoardListForms;
     }
 
     private DateTimeFormatter getFormatter() {

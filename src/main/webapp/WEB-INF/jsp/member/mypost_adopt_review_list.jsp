@@ -69,23 +69,23 @@
             &nbsp;&nbsp;&nbsp;
 
             <input type="radio" id="freeBoard" name="type"
-                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=자유')"
-            <c:if test="${type eq 'board' && param.kindOfBoard eq '자유'}">
+                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=free')"
+            <c:if test="${type eq 'board' && param.kindOfBoard eq 'free'}">
                    checked
             </c:if>>
             <label for="freeBoard">자유게시판</label>
             &nbsp;&nbsp;&nbsp;
 
             <input type="radio" id="inquiryBoard" name="type"
-                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=문의')"
-            <c:if test="${type eq 'board' && param.kindOfBoard eq '문의'}">
+                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=inquiry')"
+            <c:if test="${type eq 'board' && param.kindOfBoard eq 'inquiry'}">
                    checked
             </c:if>>
             <label for="inquiryBoard">문의게시판</label>
             &nbsp;&nbsp;&nbsp;
 
-            <input type="radio" id="adoptReview" name="type" onclick="redirectTo('/member/auth/myPost/입양후기')"
-            <c:if test="${type eq '입양후기'}">
+            <input type="radio" id="adoptReview" name="type" onclick="redirectTo('/member/auth/myPost/adoptReview')"
+            <c:if test="${type eq 'adoptReview'}">
                    checked
             </c:if>>
             <label for="adoptReview">입양후기 게시판</label>
@@ -103,9 +103,9 @@
                         <c:forEach var="board" items="${myPost.content}">
                             <div class="col-md-4">
                                 <div class="blog-entry align-self-stretch">
-                                    <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                    <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                                        class="block-20 rounded"
-                                       style="background-image: url('/adopt_review/upload?filename=${board.imgPath}')"></a>
+                                       style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
                                     <div class="text p-4">
                                         <div class="meta mb-2">
                                             <div><i class="far fa-eye"></i>date ${board.wrTime}</div>
@@ -113,7 +113,7 @@
                                             <div><i class="far fa-eye"></i>by<a
                                                     href="javascript:void(0)"> ${board.name}</a></div>
                                         </div>
-                                        <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
+                                        <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
                                             <h3 class="heading">${board.title}</h3></a>
                                         <div class="meta mb-2">
                                             <div>조회수: ${board.viewCount}</div>
@@ -131,24 +131,24 @@
                                 <ul>
                                     <li>
                                         <c:if test="${myPost.startPage > 5}">
-                                            <a href="/member/auth/myPost/입양후기/list?pageNo=${myPost.startPage - 5}">&lt;</a>
+                                            <a href="/member/auth/myPost/adoptReview/list?pageNo=${myPost.startPage - 5}">&lt;</a>
                                         </c:if>
                                     </li>
                                     <c:forEach var="pNo" begin="${myPost.startPage}" end="${myPost.endPage}">
                                         <c:if test="${myPost.currentPage eq pNo}">
                                             <li class="active">
-                                                <a href="/member/auth/myPost/입양후기?pageNo=${pNo}">${pNo}</a>
+                                                <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
                                             </li>
                                         </c:if>
                                         <c:if test="${myPost.currentPage ne pNo}">
                                             <li>
-                                                <a href="/member/auth/myPost/입양후기?pageNo=${pNo}">${pNo}</a>
+                                                <a href="/member/auth/myPost/adoptReview?pageNo=${pNo}">${pNo}</a>
                                             </li>
                                         </c:if>
                                     </c:forEach>
                                     <li>
                                         <c:if test="${myPost.endPage < myPost.totalPages}">
-                                            <a href="/member/auth/myPost/입양후기?pageNo=${myPost.startPage + 5}">&gt;</a>
+                                            <a href="/member/auth/myPost/adoptReview?pageNo=${myPost.startPage + 5}">&gt;</a>
                                         </c:if>
                                     </li>
                                 </ul>

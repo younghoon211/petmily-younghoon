@@ -45,26 +45,26 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
-        List<AdoptReviewListForm> result = new ArrayList<>();
-        List<AdoptReview> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
+        List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
+        List<AdoptReview> adoptReviews = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
 
-        for (AdoptReview a : list) {
-            AdoptReviewListForm li = new AdoptReviewListForm(
-                    a.getBNumber(),
-                    a.getMNumber(),
-                    selectName(a.getBNumber()),
-                    a.getKindOfBoard(),
-                    a.getTitle(),
-                    a.getContent(),
-                    a.getImgPath(),
-                    a.getWrTime().format(getFormatter()),
-                    a.getViewCount()
+        for (AdoptReview adoptReview : adoptReviews) {
+            AdoptReviewListForm listForm = new AdoptReviewListForm(
+                    adoptReview.getBNumber(),
+                    adoptReview.getMNumber(),
+                    selectName(adoptReview.getBNumber()),
+                    adoptReview.getKindOfBoard(),
+                    adoptReview.getTitle(),
+                    adoptReview.getContent(),
+                    adoptReview.getImgPath(),
+                    adoptReview.getWrTime().format(getFormatter()),
+                    adoptReview.getViewCount()
             );
 
-            result.add(li);
+            adoptReviewListForms.add(listForm);
         }
 
-        return result;
+        return adoptReviewListForms;
     }
 
     // 관리자
@@ -73,57 +73,62 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     public List<AdoptReviewListForm> selectIndex(int start, int end, String kindOfBoard) {
-        List<AdoptReviewListForm> result = new ArrayList<>();
-        List<AdoptReview> list = mapper.selectIndex(start, end, kindOfBoard);
+        List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
+        List<AdoptReview> adoptReviews = mapper.selectIndex(start, end, kindOfBoard);
 
-        for (AdoptReview a : list) {
-            AdoptReviewListForm li = new AdoptReviewListForm(
-                    a.getBNumber(),
-                    a.getMNumber(),
-                    selectMemberId(a.getBNumber()),
-                    selectName(a.getBNumber()),
-                    a.getKindOfBoard(),
-                    a.getTitle(),
-                    a.getContent(),
-                    a.getImgPath(),
-                    a.getWrTime().format(getFormatter()),
-                    a.getViewCount()
+        for (AdoptReview adoptReview : adoptReviews) {
+            AdoptReviewListForm listForm = new AdoptReviewListForm(
+                    adoptReview.getBNumber(),
+                    adoptReview.getMNumber(),
+                    selectMemberId(adoptReview.getBNumber()),
+                    selectName(adoptReview.getBNumber()),
+                    adoptReview.getKindOfBoard(),
+                    adoptReview.getTitle(),
+                    adoptReview.getContent(),
+                    adoptReview.getImgPath(),
+                    adoptReview.getWrTime().format(getFormatter()),
+                    adoptReview.getViewCount()
             );
 
-            result.add(li);
+            adoptReviewListForms.add(listForm);
         }
 
-        return result;
+        return adoptReviewListForms;
     }
 
     //====== 검색 추가 ======
-    public int selectCountWithCondition(AdoptReviewConditionForm form) {
-        return mapper.selectCountWithCondition(form);
+    public int selectCountWithCondition(AdoptReviewConditionForm conditionForm) {
+        return mapper.selectCountWithCondition(conditionForm);
     }
 
-    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm form) {
-        List<AdoptReviewListForm> result = new ArrayList<>();
-        List<AdoptReview> list = mapper.selectIndexWithCondition(
-                start, end, form.getKindOfBoard(), form.getSearchType(), form.getKeyword(), form.getSort()
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, AdoptReviewConditionForm conditionForm) {
+        List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
+
+        List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(
+                start, end,
+                conditionForm.getKindOfBoard(),
+                conditionForm.getSearchType(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
         );
 
-        for (AdoptReview a : list) {
-            AdoptReviewListForm li = new AdoptReviewListForm(
-                    a.getBNumber(),
-                    a.getMNumber(),
-                    selectName(a.getBNumber()),
-                    a.getKindOfBoard(),
-                    a.getTitle(),
-                    a.getContent(),
-                    a.getImgPath(),
-                    a.getWrTime().format(getFormatter()),
-                    a.getViewCount()
+        for (AdoptReview adoptReview : adoptReviews) {
+            AdoptReviewListForm listForm = new AdoptReviewListForm(
+                    adoptReview.getBNumber(),
+                    adoptReview.getMNumber(),
+                    selectName(adoptReview.getBNumber()),
+                    adoptReview.getKindOfBoard(),
+                    adoptReview.getTitle(),
+                    adoptReview.getContent(),
+                    adoptReview.getImgPath(),
+                    adoptReview.getWrTime().format(getFormatter()),
+                    adoptReview.getViewCount()
             );
 
-            result.add(li);
+            adoptReviewListForms.add(listForm);
         }
 
-        return result;
+        return adoptReviewListForms;
     }
 
     public String selectMemberId(int pk) {

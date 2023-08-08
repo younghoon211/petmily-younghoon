@@ -69,23 +69,23 @@
             &nbsp;&nbsp;&nbsp;
 
             <input type="radio" id="freeBoard" name="type" value="freeBoard"
-                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=자유')"
-            <c:if test="${type eq 'board' && param.kindOfBoard eq '자유'}">
+                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=free')"
+            <c:if test="${type eq 'board' && param.kindOfBoard eq 'free'}">
                    checked
             </c:if>>
             <label for="freeBoard">자유게시판</label>
             &nbsp;&nbsp;&nbsp;
 
             <input type="radio" id="inquiryBoard" name="type" value="inquiryBoard"
-                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=문의')"
-            <c:if test="${type eq 'board' && param.kindOfBoard eq '문의'}">
+                   onclick="redirectTo('/member/auth/myPost/board?kindOfBoard=inquiry')"
+            <c:if test="${type eq 'board' && param.kindOfBoard eq 'inquiry'}">
                    checked
             </c:if>>
             <label for="inquiryBoard">문의게시판</label>
             &nbsp;&nbsp;&nbsp;
 
-            <input type="radio" id="adoptReview" name="type" onclick="redirectTo('/member/auth/myPost/입양후기')"
-            <c:if test="${type eq '입양후기'}">
+            <input type="radio" id="adoptReview" name="type" onclick="redirectTo('/member/auth/myPost/adoptReview')"
+            <c:if test="${type eq 'adoptReview'}">
                    checked
             </c:if>>
             <label for="adoptReview">입양후기 게시판</label>

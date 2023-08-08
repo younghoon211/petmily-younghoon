@@ -60,7 +60,7 @@
                     <div class="media-body">
                         <h3 class="heading">유기동물 조회</h3>
                         <p>가족을 찾고 계신가요? 수 많은 아이들이 당신의 가족이 되길 기다리고 있습니다. 아이들에게 희망의 손길을 내밀어 주세요.</p>
-                        <a href="/abandoned_animal/list"
+                        <a href="/abandonedAnimal/list"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -86,9 +86,9 @@
                         <span class="flaticon-grooming"></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="heading">자유 게시판</h3>
+                        <h3 class="heading">자유게시판</h3>
                         <p>자유롭게 소통해요!</p>
-                        <a href="/board/list?kindOfBoard=자유&sort=bno"
+                        <a href="/board/list?kindOfBoard=free&sort=bno"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -406,7 +406,7 @@
     <div class="container">
         <div class="row justify-content-center pb-5 mb-3">
             <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2>오늘의 입양 후기</h2>
+                <h2>오늘의 입양후기</h2>
             </div>
         </div>
         <div class="row d-flex">

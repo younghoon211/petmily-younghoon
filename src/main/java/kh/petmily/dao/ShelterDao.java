@@ -43,21 +43,21 @@ public class ShelterDao implements BasicDao {
     }
 
     public List<ShelterListForm> selectIndex(int start, int end) {
-        List<ShelterListForm> result = new ArrayList<>();
-        List<Shelter> list = mapper.selectIndex(start, end);
+        List<ShelterListForm> shelterListForms = new ArrayList<>();
+        List<Shelter> shelters = mapper.selectIndex(start, end);
 
-        for (Shelter s : list) {
-            ShelterListForm li = new ShelterListForm(
-                    s.getSNumber(),
-                    s.getGroupName(),
-                    s.getLocation(),
-                    s.getPhone()
+        for (Shelter shelter : shelters) {
+            ShelterListForm listForm = new ShelterListForm(
+                    shelter.getSNumber(),
+                    shelter.getGroupName(),
+                    shelter.getLocation(),
+                    shelter.getPhone()
             );
 
-            result.add(li);
+            shelterListForms.add(listForm);
         }
 
-        return result;
+        return shelterListForms;
     }
 
     public List<Shelter> selectAll() {

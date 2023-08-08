@@ -59,7 +59,7 @@
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="/abandoned_animal/list?sort=abNo">유기동물 조회</a>
+					<a class="nav-link" href="/abandonedAnimal/list?sort=abNo">유기동물 조회</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/findBoard/list?sort=fno">반려동물 찾아요</a>
@@ -72,9 +72,9 @@
 						게시판
 					</a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="min-width: 6rem">
-						<li><a class="dropdown-item" href="/board/list?kindOfBoard=자유&sort=bno">자유 게시판</a></li>
-						<li><a class="dropdown-item" href="/board/list?kindOfBoard=문의&sort=bno">문의 게시판</a></li>
-						<li><a class="dropdown-item" href="/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNo">입양 후기 게시판</a></li>
+						<li><a class="dropdown-item" href="/board/list?kindOfBoard=free&sort=bno">자유게시판</a></li>
+						<li><a class="dropdown-item" href="/board/list?kindOfBoard=inquiry&sort=bno">문의게시판</a></li>
+						<li><a class="dropdown-item" href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo">입양후기 게시판</a></li>
 					</ul>
 				</li>
 			</ul>

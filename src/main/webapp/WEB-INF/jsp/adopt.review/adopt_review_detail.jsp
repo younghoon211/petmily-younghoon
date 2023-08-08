@@ -43,7 +43,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <c:if test="${param.kindOfBoard eq '입양후기'}">
+                <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Adopt Review Board - Detail<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
@@ -81,7 +81,7 @@
                 <div class="modal-footer"></div>
                 <c:choose>
                     <c:when test="${not empty detailForm.imgPath and detailForm.imgPath ne 'no_image.png'}">
-                        <img width="50%" src="/adopt_review/upload?filename=${detailForm.imgPath}"><br><br>
+                        <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>
                     </c:when>
                     <c:otherwise>
                         <img width="100%" src=" ">
@@ -96,20 +96,20 @@
                 <div class="modal-footer">
                     <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-primary"
-                                onclick="location.href='/adopt_review/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
+                                onclick="location.href='/adoptReview/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
                             수정
                         </button>
 
                         <button type="button" class="btn btn-danger"
                                 onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                        {return location.href='/adopt_review/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
+                                        {return location.href='/adoptReview/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
                             삭제
                         </button>
                     </c:if>
 
                     <!-- content 목록 이동 버튼 -->
                     <button type="button" class="btn btn-secondary"
-                            onclick="location.href='/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNo'">목록으로
+                            onclick="location.href='/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo'">목록으로
                     </button>
                     <c:if test="${authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-dark"

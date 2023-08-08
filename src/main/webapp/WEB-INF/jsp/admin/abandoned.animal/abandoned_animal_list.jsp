@@ -81,12 +81,12 @@
                                 <td>${abandonedAnimal.animalState}</td>
                                 <td>
                                     <button type="button" class="btn btn-dark"
-                                            onclick="location.href='/abandoned_animal/detail?abNumber=${abandonedAnimal.abNumber}'">상세</button>
+                                            onclick="location.href='/abandonedAnimal/detail?abNumber=${abandonedAnimal.abNumber}'">상세</button>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/abandoned_animal/modify?abNumber=${abandonedAnimal.abNumber}'">수정</button>
+                                            onclick="location.href='/admin/abandonedAnimal/modify?abNumber=${abandonedAnimal.abNumber}'">수정</button>
                                     <button type="button" class="btn btn-danger"
                                            onclick="if(confirm('삭제 시 해당 동물과 관련된 모든 정보(입양/임보/후원)가 삭제됩니다.'))
-                                                   { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/admin/abandoned_animal/delete?abNumber=${abandonedAnimal.abNumber}';}">삭제</button>
+                                                   { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/admin/abandonedAnimal/delete?abNumber=${abandonedAnimal.abNumber}';}">삭제</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -100,7 +100,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-dark" onclick="location.href='/admin'">관리자 페이지로</button>
 				<button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/abandoned_animal/write'">유기동물 추가</button>
+                        onclick="location.href='/admin/abandonedAnimal/write'">유기동물 추가</button>
 			</div>
 
             <!-- 페이징 처리 -->
@@ -111,25 +111,25 @@
                         <ul>
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/admin/abandoned_animal?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                    <a href="/admin/abandonedAnimal?pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}"
                                        end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/admin/abandoned_animal?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/admin/abandonedAnimal?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/admin/abandoned_animal?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/admin/abandonedAnimal?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/admin/abandoned_animal?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                    <a href="/admin/abandonedAnimal?pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </ul>

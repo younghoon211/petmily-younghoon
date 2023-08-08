@@ -52,68 +52,68 @@ public class AdoptDao implements BasicDao {
     }
 
     public List<AdminAdoptDetailForm> selectIndex(int start, int end) {
-        List<AdminAdoptDetailForm> result = new ArrayList<>();
-        List<Adopt> list = mapper.selectIndex(start, end);
+        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndex(start, end);
 
-        for (Adopt l : list) {
-            AdminAdoptDetailForm li = new AdminAdoptDetailForm(
-                    l.getAdNumber(),
-                    l.getMNumber(),
-                    l.getAbNumber(),
-                    l.getResidence(),
-                    l.getMaritalStatus(),
-                    l.getJob(),
-                    l.getStatus(),
-                    selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()),
-                    selectMemberId(l.getMNumber())
+        for (Adopt adopt : adopts) {
+            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
+                    adopt.getAdNumber(),
+                    adopt.getMNumber(),
+                    adopt.getAbNumber(),
+                    adopt.getResidence(),
+                    adopt.getMaritalStatus(),
+                    adopt.getJob(),
+                    adopt.getStatus(),
+                    selectAnimalName(adopt.getAbNumber()),
+                    selectMemberName(adopt.getMNumber()),
+                    selectMemberId(adopt.getMNumber())
             );
 
-            result.add(li);
+            adminAdoptDetailForms.add(detailForm);
         }
 
-        return result;
+        return adminAdoptDetailForms;
     }
 
     public List<MypageAdoptListForm> selectIndex(int start, int end, int mNumber) {
-        List<MypageAdoptListForm> result = new ArrayList<>();
-        List<Adopt> list = mapper.selectIndexBymNumber(start, end, mNumber);
+        List<MypageAdoptListForm> mypageAdoptListForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndexBymNumber(start, end, mNumber);
 
-        for (Adopt a : list) {
-            MypageAdoptListForm li = new MypageAdoptListForm(
-                    a.getAdNumber(),
-                    getAbNameByAbNumber(a.getAbNumber()),
-                    a.getStatus()
+        for (Adopt adopt : adopts) {
+            MypageAdoptListForm listForm = new MypageAdoptListForm(
+                    adopt.getAdNumber(),
+                    getAbNameByAbNumber(adopt.getAbNumber()),
+                    adopt.getStatus()
             );
 
-            result.add(li);
+            mypageAdoptListForms.add(listForm);
         }
 
-        return result;
+        return mypageAdoptListForms;
     }
 
     public List<AdminAdoptDetailForm> selectIndex(int start, int end, String status) {
-        List<AdminAdoptDetailForm> result = new ArrayList<>();
-        List<Adopt> list = mapper.selectIndexByStatus(start, end, status);
+        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndexByStatus(start, end, status);
 
-        for (Adopt l : list) {
-            AdminAdoptDetailForm li = new AdminAdoptDetailForm(
-                    l.getAdNumber(),
-                    l.getMNumber(),
-                    l.getAbNumber(),
-                    l.getResidence(),
-                    l.getMaritalStatus(),
-                    l.getJob(),
-                    l.getStatus(),
-                    selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()),
-                    selectMemberId(l.getMNumber())
+        for (Adopt adopt : adopts) {
+            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
+                    adopt.getAdNumber(),
+                    adopt.getMNumber(),
+                    adopt.getAbNumber(),
+                    adopt.getResidence(),
+                    adopt.getMaritalStatus(),
+                    adopt.getJob(),
+                    adopt.getStatus(),
+                    selectAnimalName(adopt.getAbNumber()),
+                    selectMemberName(adopt.getMNumber()),
+                    selectMemberId(adopt.getMNumber())
             );
 
-            result.add(li);
+            adminAdoptDetailForms.add(detailForm);
         }
 
-        return result;
+        return adminAdoptDetailForms;
     }
 
     public void adoptApprove(int pk) {

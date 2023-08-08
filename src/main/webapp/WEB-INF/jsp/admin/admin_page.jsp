@@ -68,7 +68,7 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">유기동물 관리</h3>
-                                        <a href="/admin/abandoned_animal"
+                                        <a href="/admin/abandonedAnimal"
                                            class="btn-custom d-flex align-items-center justify-content-center">
                                             <span class="fa fa-chevron-right"></span>
                                             <i class="sr-only">Read more</i></a>
@@ -79,7 +79,7 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">게시글 관리</h3>
-                                        <a href="/admin/board?kindOfBoard=자유"
+                                        <a href="/admin/board?kindOfBoard=free"
                                            class="btn-custom d-flex align-items-center justify-content-center">
                                             <span class="fa fa-chevron-right"></span>
                                             <i class="sr-only">Read more</i></a>

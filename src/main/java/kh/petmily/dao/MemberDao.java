@@ -55,26 +55,26 @@ public class MemberDao implements BasicDao {
     }
 
     public List<MemberDetailForm> selectIndex(int start, int end) {
-        List<MemberDetailForm> result = new ArrayList<>();
-        List<Member> list = mapper.selectIndex(start, end);
+        List<MemberDetailForm> memberDetailForms = new ArrayList<>();
+        List<Member> members = mapper.selectIndex(start, end);
 
-        for (Member m : list) {
-            MemberDetailForm li = new MemberDetailForm(
-                    m.getMNumber(),
-                    m.getId(),
-                    m.getPw(),
-                    m.getName(),
-                    m.getBirth(),
-                    m.getGender(),
-                    m.getEmail(),
-                    m.getPhone(),
-                    m.getGrade()
+        for (Member member : members) {
+            MemberDetailForm detailForm = new MemberDetailForm(
+                    member.getMNumber(),
+                    member.getId(),
+                    member.getPw(),
+                    member.getName(),
+                    member.getBirth(),
+                    member.getGender(),
+                    member.getEmail(),
+                    member.getPhone(),
+                    member.getGrade()
             );
 
-            result.add(li);
+            memberDetailForms.add(detailForm);
         }
 
-        return result;
+        return memberDetailForms;
     }
 
     public int selectIdCheck(String id) {

@@ -45,7 +45,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <c:if test="${param.kindOfBoard eq '입양후기'}">
+                <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Adopt Review Board<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
@@ -62,13 +62,13 @@
 
         <div class="modal-header">
             <div class="float-left">
-                <a href="/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNo&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo&searchType=${param.searchType}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">최신순</button>
                 </a> &nbsp;
-                <a href="/adopt_review/list?kindOfBoard=입양후기&sort=adoptReviewNoAsc&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNoAsc&searchType=${param.searchType}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">오래된순</button>
                 </a> &nbsp;
-                <a href="/adopt_review/list?kindOfBoard=입양후기&sort=viewCount&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=viewCount&searchType=${param.searchType}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">조회순</button>
                 </a> &nbsp;
             </div>
@@ -79,14 +79,14 @@
             <c:forEach var="board" items="${pageForm.content}">
                 <div class="col-md-4">
                     <div class="blog-entry align-self-stretch">
-                        <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                        <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                            class="block-20 rounded"
-                           style="background-image: url('/adopt_review/upload?filename=${board.imgPath}')"></a>
+                           style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
                         <div class="text p-4">
                             <div class="meta mb-2"><small>${board.wrTime}</small></div>
                             <div><small style="color: #00bd56">${board.name}</small></div>
                             <br>
-                            <a href="/adopt_review/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
+                            <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
                                 <h3 class="heading">${board.title}</h3></a>
                             <div class="meta mb-2">
                                 <div>조회수: ${board.viewCount}</div>
@@ -100,14 +100,14 @@
         <!-- 글쓰기 버튼  -->
         <span class="modal-footer">
       	<button type="button" class="btn btn-primary"
-                onclick="location.href='/adopt_review/auth/write?kindOfBoard=${param.kindOfBoard}'">글쓰기</button>
+                onclick="location.href='/adoptReview/auth/write?kindOfBoard=${param.kindOfBoard}'">글쓰기</button>
     </span>
 
         <!-- 검색 바 -->
         <div style="display: flex; justify-content: center;">
-            <form action="/adopt_review/list" method="get">
+            <form action="/adoptReview/list" method="get">
                 <div class="form-group row">
-                    <input type="hidden" name="kindOfBoard" value="입양후기">
+                    <input type="hidden" name="kindOfBoard" value="adoptReview">
                     <input type="hidden" name="sort" value="${param.sort}"/>
 
                     <div class="col">
@@ -145,26 +145,26 @@
                         <c:if test="${not empty param.searchType || not empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
                             <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pageNo}">
                                     <li class="active">
-                                        <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pageNo}">
                                     <li>
-                                        <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             </li>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
@@ -173,26 +173,26 @@
                         <c:if test="${empty param.searchType && empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
                             <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pageNo}">
                                     <li class="active">
-                                        <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pageNo}">
                                     <li>
-                                        <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             </li>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/adopt_review/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>

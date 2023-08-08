@@ -58,7 +58,7 @@
 
                 <!-- 폼 시작 -->
 
-                <form class="form" method="post" action="/admin/abandoned_animal/write" enctype='multipart/form-data'>
+                <form class="form" method="post" action="/admin/abandonedAnimal/write" enctype='multipart/form-data'>
                     <div class="modal-body">
 
                         <div class="row justify-content-start">

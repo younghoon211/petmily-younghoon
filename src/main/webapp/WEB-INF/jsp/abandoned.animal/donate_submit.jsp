@@ -96,7 +96,7 @@
     </div>
 
     <form name="donaform" id="survey-form" method="post"
-          action="/abandoned_animal/auth/donate?abNumber=${param.abNumber}">
+          action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}">
         <div class="form-row">
             <div class="col">
                 <label>은행명</label>

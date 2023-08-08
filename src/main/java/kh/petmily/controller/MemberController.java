@@ -265,7 +265,7 @@ public class MemberController {
 
             return "/member/mypost_board_list";
         }
-        else if (type.equals("입양후기")) {
+        else if (type.equals("adoptReview")) {
             AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getMyPost(pageNo, mNumber, type);
             model.addAttribute("myPost", adoptReviewMyPost);
 

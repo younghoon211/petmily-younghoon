@@ -45,17 +45,17 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <c:if test="${param.kindOfBoard eq '자유'}">
+                <c:if test="${param.kindOfBoard eq 'free'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Free Board<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
-                    <h1 class="mb-0 bread">자유 게시판</h1>
+                    <h1 class="mb-0 bread">자유게시판</h1>
                 </c:if>
-                <c:if test="${param.kindOfBoard eq '문의'}">
+                <c:if test="${param.kindOfBoard eq 'inquiry'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Inquiry Board<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
-                    <h1 class="mb-0 bread">문의 게시판</h1>
+                    <h1 class="mb-0 bread">문의게시판</h1>
                 </c:if>
             </div>
         </div>
@@ -94,12 +94,12 @@
 
                             <!-- 제목 -->
                             <div class="text-secondary">
-                                <c:if test="${param.kindOfBoard eq '자유'}">
+                                <c:if test="${param.kindOfBoard eq 'free'}">
                                     <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                                        class="text-body" style="font-size: 1.3em;">${board.title}</a>
                                     <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
                                 </c:if>
-                                <c:if test="${param.kindOfBoard eq '문의'}">
+                                <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                     <c:choose>
                                         <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
                                             <a class="text-body" style="font-size: 1.3em;">${board.title}</a>
@@ -122,7 +122,7 @@
 
                         <!-- list 공개 / 비공개 -->
                         <div class="text-muted small text-center align-self-center">
-                            <c:if test="${param.kindOfBoard eq '문의'}">
+                            <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                 <c:if test="${board.checkPublic eq 'Y'}">
                                     <span><i class="far fa-comment ml-2"></i></span>
                                     <a class="text-body" style="font-size: 1.3em;">공개</a>

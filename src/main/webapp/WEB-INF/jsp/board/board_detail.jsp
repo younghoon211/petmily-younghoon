@@ -47,18 +47,18 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <c:if test="${param.kindOfBoard eq '자유'}">
+                <c:if test="${param.kindOfBoard eq 'free'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Free Board - Detail<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
-                    <h1 class="mb-0 bread">자유 게시판 - 상세보기</h1>
+                    <h1 class="mb-0 bread">자유게시판 - 상세보기</h1>
                 </c:if>
-                <c:if test="${param.kindOfBoard eq '문의'}">
+                <c:if test="${param.kindOfBoard eq 'inquiry'}">
                     <p class="breadcrumbs mb-2">
                         <span class="mr-2"><span>Inquiry Board - Detail<i
                                 class="ion-ios-arrow-forward"></i></span></span>
                     </p>
-                    <h1 class="mb-0 bread">문의 게시판 - 상세보기</h1>
+                    <h1 class="mb-0 bread">문의게시판 - 상세보기</h1>
                 </c:if>
             </div>
         </div>
@@ -79,7 +79,7 @@
                         <small><a href="javascript:void(0)">${detailForm.name}</a></small>
                         <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
 
-                        <c:if test="${param.kindOfBoard eq '문의'}">
+                        <c:if test="${param.kindOfBoard eq 'inquiry'}">
                             <c:if test="${detailForm.checkPublic eq 'Y'}">
                                 <span><small><i class="far fa-comment ml-2"></i> 공개</small></span>
                             </c:if>

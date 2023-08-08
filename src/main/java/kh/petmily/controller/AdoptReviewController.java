@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/adopt_review")
+@RequestMapping("/adoptReview")
 @RequiredArgsConstructor
 @Slf4j
 public class AdoptReviewController {
@@ -118,7 +118,7 @@ public class AdoptReviewController {
         if (getAuthMember(request).getGrade().equals("관리자")) {
             return "redirect:/admin/board";
         } else {
-            return "redirect:/adopt_review/list?sort=adoptReviewNo";
+            return "redirect:/adoptReview/list?sort=adoptReviewNo";
         }
     }
 

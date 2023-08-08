@@ -162,7 +162,7 @@
                     <div class="media-body p-4">
                         <h3 class="heading">후원하기</h3>
                         <p>이 동물에게 후원해주세요!</p>
-                        <a href="/abandoned_animal/auth/donate?abNumber=${param.abNumber}"
+                        <a href="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -177,7 +177,7 @@
                         <h3 class="heading">입양 / 임시보호하기</h3>
                         <p>이 동물을 입양 / 임시보호 해주세요!</p>
                         <a
-                                href="/abandoned_animal/auth/adopt_temp?abNumber=${param.abNumber}"
+                                href="/abandonedAnimal/auth/adopt_temp?abNumber=${param.abNumber}"
                                 class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read
                             more</i></a>
@@ -194,7 +194,7 @@
                         <p>이 동물에게 봉사해주세요!<br><small>(보호중인 동물만 가능)</small></p>
                         <a
                                 <c:if test="${detailForm.animalState eq '보호'}">
-                                    href="/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}"
+                                    href="/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}"
                                 </c:if>
                                 <c:if test="${detailForm.animalState ne '보호'}">
                                     href="" id="myLink"
@@ -232,7 +232,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: '/abandoned_animal/auth/volunteer?abNumber=${param.abNumber}',
+                url: '/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}',
                 type: 'GET',
                 success: function () {
                     alert('보호중인 동물에게만 봉사할 수 있습니다.');

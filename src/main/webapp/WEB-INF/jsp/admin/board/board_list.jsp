@@ -57,33 +57,33 @@
     <div class="container" style="max-width: 1600px;">
         <div style="text-align: center">
             <input type="radio" id="free" value="free" onclick="selectKind(this.value)"
-            <c:if test="${param.kindOfBoard eq '자유'}">
+            <c:if test="${param.kindOfBoard eq 'free'}">
                    checked
             </c:if>>
-            <label for="free">자유 게시판 관리</label>
+            <label for="free">자유게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" id="inquiry" value="inquiry" onclick="selectKind(this.value)"
-            <c:if test="${param.kindOfBoard eq '문의'}">
+            <c:if test="${param.kindOfBoard eq 'inquiry'}">
                    checked
             </c:if>>
-            <label for="inquiry">문의 게시판 관리</label>
+            <label for="inquiry">문의게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" id="review" value="review" onclick="selectKind(this.value)"
-            <c:if test="${param.kindOfBoard eq '입양후기'}">
+            <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                    checked
             </c:if>>
-            <label for="review">입양 후기 게시판 관리</label>
+            <label for="review">입양후기 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" id="find" value="find" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard eq 'find'}">
                    checked
             </c:if>>
-            <label for="find">반려 동물 찾아요 게시판 관리</label>
+            <label for="find">반려동물 찾아요 게시판 관리</label>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" id="look" value="look" onclick="selectKind(this.value)"
             <c:if test="${param.kindOfBoard eq 'look'}">
                    checked
-            </c:if>> <label for="look">유기 동물 봤어요 게시판 관리</label>
+            </c:if>> <label for="look">유기동물 봤어요 게시판 관리</label>
         </div>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
             <!-- 목록 출력 -->
@@ -107,7 +107,7 @@
                                 <tbody>
                                 <tr>
 
-                                    <c:if test="${param.kindOfBoard eq '자유' || param.kindOfBoard eq '문의'}">
+                                    <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                         <td>${board.getBNumber()}</td>
                                         <td>
                                             <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
@@ -117,10 +117,10 @@
                                         </td>
                                     </c:if>
 
-                                    <c:if test="${param.kindOfBoard eq '입양후기'}">
+                                    <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                                         <td>${board.getBNumber()}</td>
                                         <td>
-                                            <a href="/adopt_review/detail?kindOfBoard=입양후기&bNumber=${board.getBNumber()}"
+                                            <a href="/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}"
                                                class="text-body">
                                                     ${board.title}
                                             </a>
@@ -148,7 +148,7 @@
                                     <td>${board.name}</td>
                                     <td>${board.wrTime}</td>
                                     <td>
-                                        <c:if test="${param.kindOfBoard eq '자유' || param.kindOfBoard eq '문의'}">
+                                        <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                             <button type="button" class="btn btn-dark"
                                                     onclick="location.href='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">상세</button>
                                             <button type="button" class="btn btn-primary"
@@ -157,14 +157,14 @@
                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
                                                            { return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}';}">삭제</button>
                                         </c:if>
-                                        <c:if test="${param.kindOfBoard eq '입양후기'}">
+                                        <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/adopt_review/detail?kindOfBoard=입양후기&bNumber=${board.getBNumber()}'">상세</button>
+                                                    onclick="location.href='/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">상세</button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/adopt_review/auth/modify?kindOfBoard=입양후기&bNumber=${board.getBNumber()}'">수정</button>
+                                                    onclick="location.href='/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">수정</button>
                                             <button type="button" class="btn btn-danger"
                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                           { return location.href='/adopt_review/auth/delete?kindOfBoard=입양후기&bNumber=${board.getBNumber()}';}">삭제</button>
+                                                           { return location.href='/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}';}">삭제</button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'find'}">
                                             <button type="button" class="btn btn-dark"
@@ -196,11 +196,11 @@
                                 관리자 페이지로
                             </button>
                             <button type="button" class="btn btn-primary" style="float: right"
-                                    <c:if test="${param.kindOfBoard eq '자유' || param.kindOfBoard eq '문의'}">
+                                    <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                         onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'"
                                     </c:if>
-                                    <c:if test="${param.kindOfBoard eq '입양후기'}">
-                                        onclick="location.href='/adopt_review/auth/write?kindOfBoard=입양후기'"
+                                    <c:if test="${param.kindOfBoard eq 'adoptReview'}">
+                                        onclick="location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
                                     </c:if>
                                     <c:if test="${param.kindOfBoard eq 'find'}">
                                         onclick="location.href='/findBoard/auth/write'"
@@ -270,11 +270,11 @@
 <script>
     function selectKind(kind) {
         if (kind == "free") {
-            window.location.href = "/admin/board?kindOfBoard=자유";
+            window.location.href = "/admin/board?kindOfBoard=free";
         } else if (kind == "inquiry") {
-            window.location.href = "/admin/board?kindOfBoard=문의";
+            window.location.href = "/admin/board?kindOfBoard=inquiry";
         } else if (kind == "review") {
-            window.location.href = "/admin/board?kindOfBoard=입양후기";
+            window.location.href = "/admin/board?kindOfBoard=adoptReview";
         } else if (kind == "find") {
             window.location.href = "/admin/board?kindOfBoard=find";
         } else if (kind == "look") {

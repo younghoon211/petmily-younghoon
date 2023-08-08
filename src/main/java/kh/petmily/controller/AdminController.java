@@ -7,16 +7,12 @@ import kh.petmily.domain.abandoned_animal.form.AdminAbandonedAnimalWriteForm;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.AdminAdoptForm;
 import kh.petmily.domain.adopt.form.AdminAdoptPageForm;
-import kh.petmily.domain.adopt_review.form.AdoptReviewModifyForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
-import kh.petmily.domain.board.form.BoardModifyForm;
 import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.donation.form.AdminDonationModifyForm;
 import kh.petmily.domain.donation.form.AdminDonationPageForm;
 import kh.petmily.domain.donation.form.AdminDonationWriteForm;
-import kh.petmily.domain.find_board.form.FindBoardModifyForm;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
-import kh.petmily.domain.look_board.form.LookBoardModifyForm;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.AdminMemberCreateForm;
@@ -123,7 +119,7 @@ public class AdminController {
 
     // =============== 유기동물 관리 ===============
     // 유기동물 리스트
-    @GetMapping("/abandoned_animal")
+    @GetMapping("/abandonedAnimal")
     public String abandonedAnimalList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
         AbandonedAnimalPageForm pageForm = abandonedAnimalService.getAdminListPage(pageNo);
         model.addAttribute("pageForm", pageForm);
@@ -132,12 +128,12 @@ public class AdminController {
     }
 
     // 유기동물 정보 추가(insert)
-    @GetMapping("/abandoned_animal/write")
+    @GetMapping("/abandonedAnimal/write")
     public String adminAbandonedWriteForm() {
         return "/admin/abandoned.animal/abandoned_animal_write";
     }
 
-    @PostMapping("/abandoned_animal/write")
+    @PostMapping("/abandonedAnimal/write")
     public String adminAbandonedWrite(@ModelAttribute AdminAbandonedAnimalWriteForm writeForm,
                                       HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
@@ -154,7 +150,7 @@ public class AdminController {
     }
 
     // 유기동물 정보 수정(update)
-    @GetMapping("/abandoned_animal/modify")
+    @GetMapping("/abandonedAnimal/modify")
     public String adminAbandonedModifyForm(@RequestParam int abNumber, Model model) {
         AdminAbandonedAnimalModifyForm modifyForm = abandonedAnimalService.getModifyForm(abNumber);
         log.info("수정 전 adminAbandonedAnimalModifyForm = {}", modifyForm);
@@ -165,7 +161,7 @@ public class AdminController {
         return "/admin/abandoned.animal/abandoned_animal_modify";
     }
 
-    @PostMapping("/abandoned_animal/modify")
+    @PostMapping("/abandonedAnimal/modify")
     public String adminAbandonedModify(@Validated @ModelAttribute AdminAbandonedAnimalModifyForm modifyForm,
                                        HttpServletRequest request) throws IOException {
         String fullPath = request.getSession().getServletContext().getRealPath("/");
@@ -181,11 +177,11 @@ public class AdminController {
     }
 
     // 유기동물 정보 삭제(delete)
-    @GetMapping("/abandoned_animal/delete")
+    @GetMapping("/abandonedAnimal/delete")
     public String adminAbandonedDelete(@RequestParam int abNumber) {
         abandonedAnimalService.delete(abNumber);
 
-        return "redirect:/admin/abandoned_animal";
+        return "redirect:/admin/abandonedAnimal";
     }
 
     // =============== 입양 정보 관리 ===============
@@ -421,26 +417,26 @@ public class AdminController {
     // =============== 게시판 관리 ===============
     // 게시판 리스트 (CUD는 기존 회원 폼 이용)
     @GetMapping("/board")
-    public String boardPage(@RequestParam("kindOfBoard") String kind,
+    public String boardPage(@RequestParam String kindOfBoard,
                             @RequestParam(defaultValue = "1") int pageNo,
                             Model model) {
-        if (kind.equals("자유")) {
-            BoardPageForm freeBoardForm = boardService.getAdminListPage("자유", pageNo);
+        if (kindOfBoard.equals("free")) {
+            BoardPageForm freeBoardForm = boardService.getAdminListPage("free", pageNo);
             model.addAttribute("boardForm", freeBoardForm);
         }
-        else if (kind.equals("문의")) {
-            BoardPageForm inquiryBoardForm = boardService.getAdminListPage("문의", pageNo);
+        else if (kindOfBoard.equals("inquiry")) {
+            BoardPageForm inquiryBoardForm = boardService.getAdminListPage("inquiry", pageNo);
             model.addAttribute("boardForm", inquiryBoardForm);
         }
-        else if (kind.equals("입양후기")) {
-            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage("입양후기", pageNo);
+        else if (kindOfBoard.equals("adoptReview")) {
+            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage("adoptReview", pageNo);
             model.addAttribute("boardForm", adoptReviewBoardForm);
         }
-        else if (kind.equals("find")) {
+        else if (kindOfBoard.equals("find")) {
             FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(pageNo);
             model.addAttribute("boardForm", findBoardForm);
         }
-        else if (kind.equals("look")) {
+        else if (kindOfBoard.equals("look")) {
             LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(pageNo);
             model.addAttribute("boardForm", lookBoardForm);
         }

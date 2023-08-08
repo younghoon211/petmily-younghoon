@@ -43,27 +43,27 @@ public class BoardDao implements BasicDao {
     }
 
     public List<BoardListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
-        List<BoardListForm> result = new ArrayList<>();
-        List<Board> list = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
+        List<BoardListForm> boardListForms = new ArrayList<>();
+        List<Board> boards = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
 
-        for (Board b : list) {
-            BoardListForm li = new BoardListForm(
-                    b.getBNumber(),
-                    b.getMNumber(),
-                    selectName(b.getBNumber()),
-                    b.getKindOfBoard(),
-                    b.getTitle(),
-                    b.getContent(),
-                    b.getWrTime().format(getFormatter()),
-                    b.getCheckPublic(),
-                    b.getViewCount(),
-                    selectReplyCount(b.getBNumber())
+        for (Board board : boards) {
+            BoardListForm listForm = new BoardListForm(
+                    board.getBNumber(),
+                    board.getMNumber(),
+                    selectName(board.getBNumber()),
+                    board.getKindOfBoard(),
+                    board.getTitle(),
+                    board.getContent(),
+                    board.getWrTime().format(getFormatter()),
+                    board.getCheckPublic(),
+                    board.getViewCount(),
+                    selectReplyCount(board.getBNumber())
             );
 
-            result.add(li);
+            boardListForms.add(listForm);
         }
 
-        return result;
+        return boardListForms;
     }
 
     // 관리자 페이지 게시글 개수
@@ -73,60 +73,65 @@ public class BoardDao implements BasicDao {
 
     // 관리자 페이지 리스트
     public List<BoardListForm> selectIndex(int start, int end, String kindOfBoard) {
-        List<BoardListForm> result = new ArrayList<>();
-        List<Board> list = mapper.selectIndex(start, end, kindOfBoard);
+        List<BoardListForm> boardListForms = new ArrayList<>();
+        List<Board> boards = mapper.selectIndex(start, end, kindOfBoard);
 
-        for (Board b : list) {
-            BoardListForm li = new BoardListForm(
-                    b.getBNumber(),
-                    b.getMNumber(),
-                    selectMemberId(b.getBNumber()),
-                    selectName(b.getBNumber()),
-                    b.getKindOfBoard(),
-                    b.getTitle(),
-                    b.getContent(),
-                    b.getWrTime().format(getFormatter()),
-                    b.getCheckPublic(),
-                    b.getViewCount(),
-                    selectReplyCount(b.getBNumber())
+        for (Board board : boards) {
+            BoardListForm listForm = new BoardListForm(
+                    board.getBNumber(),
+                    board.getMNumber(),
+                    selectMemberId(board.getBNumber()),
+                    selectName(board.getBNumber()),
+                    board.getKindOfBoard(),
+                    board.getTitle(),
+                    board.getContent(),
+                    board.getWrTime().format(getFormatter()),
+                    board.getCheckPublic(),
+                    board.getViewCount(),
+                    selectReplyCount(board.getBNumber())
             );
 
-            result.add(li);
+            boardListForms.add(listForm);
         }
 
-        return result;
+        return boardListForms;
     }
 
     // 조건부 검색 게시글 개수
-    public int selectCountWithCondition(BoardConditionForm form) {
-        return mapper.selectCountWithCondition(form);
+    public int selectCountWithCondition(BoardConditionForm conditionForm) {
+        return mapper.selectCountWithCondition(conditionForm);
     }
 
     // 조건부 검색
-    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm form) {
-        List<BoardListForm> result = new ArrayList<>();
-        List<Board> list = mapper.selectIndexWithCondition(
-                start, end, form.getKindOfBoard(), form.getCondition(), form.getKeyword(), form.getSort()
+    public List<BoardListForm> selectIndexWithCondition(int start, int end, BoardConditionForm conditionForm) {
+        List<BoardListForm> boardListForms = new ArrayList<>();
+
+        List<Board> boards = mapper.selectIndexWithCondition(
+                start, end,
+                conditionForm.getKindOfBoard(),
+                conditionForm.getCondition(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
         );
 
-        for (Board b : list) {
-            BoardListForm li = new BoardListForm(
-                    b.getBNumber(),
-                    b.getMNumber(),
-                    selectName(b.getBNumber()),
-                    b.getKindOfBoard(),
-                    b.getTitle(),
-                    b.getContent(),
-                    b.getWrTime().format(getFormatter()),
-                    b.getCheckPublic(),
-                    b.getViewCount(),
-                    selectReplyCount(b.getBNumber())
+        for (Board board : boards) {
+            BoardListForm listForm = new BoardListForm(
+                    board.getBNumber(),
+                    board.getMNumber(),
+                    selectName(board.getBNumber()),
+                    board.getKindOfBoard(),
+                    board.getTitle(),
+                    board.getContent(),
+                    board.getWrTime().format(getFormatter()),
+                    board.getCheckPublic(),
+                    board.getViewCount(),
+                    selectReplyCount(board.getBNumber())
             );
 
-            result.add(li);
+            boardListForms.add(listForm);
         }
 
-        return result;
+        return boardListForms;
     }
 
     public String selectName(int pk) {

@@ -39,22 +39,22 @@ public class ReplyDao implements BasicDao {
     }
 
     public List<ReplyListForm> selectIndexBybNumber(int bNumber) {
-        List<ReplyListForm> result = new ArrayList<>();
-        List<Reply> list = mapper.selectIndexBybNumber(bNumber);
+        List<ReplyListForm> replyListForms = new ArrayList<>();
+        List<Reply> replies = mapper.selectIndexBybNumber(bNumber);
 
-        for (Reply r : list) {
-            ReplyListForm li = new ReplyListForm(
-                    r.getBrNumber(),
-                    r.getMNumber(),
-                    r.getReply(),
-                    r.getWrTime().format(getFormatter()),
-                    memberDao.selectName(r.getMNumber())
+        for (Reply reply : replies) {
+            ReplyListForm listForm = new ReplyListForm(
+                    reply.getBrNumber(),
+                    reply.getMNumber(),
+                    reply.getReply(),
+                    reply.getWrTime().format(getFormatter()),
+                    memberDao.selectName(reply.getMNumber())
             );
 
-            result.add(li);
+            replyListForms.add(listForm);
         }
 
-        return result;
+        return replyListForms;
     }
 
     private DateTimeFormatter getFormatter() {

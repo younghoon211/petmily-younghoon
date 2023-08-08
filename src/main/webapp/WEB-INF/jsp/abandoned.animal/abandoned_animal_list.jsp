@@ -51,12 +51,12 @@
 <section class="ftco-section bg-light">
     <div class="container" style="max-width: 1400px;">
         <div class="modal-header">
-            <form action="/abandoned_animal/list" method="get">
+            <form action="/abandonedAnimal/list" method="get">
                 <div class="form-group row">
                     <div>
                         <c:if test="${empty param.species && empty param.gender && empty param.animalState}">
                             <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandoned_animal/list?sort=${sort}">
+                                <a href="/abandonedAnimal/list?sort=${sort}">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'abNo'}">최신순</c:when>
@@ -71,7 +71,7 @@
                             <c:set var="linkParams"
                                    value="?species=${param.species}&amp;gender=${param.gender}&amp;animalState=${param.animalState}&amp;keyword=${param.keyword}&amp;sort="/>
                             <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandoned_animal/list${linkParams}${sort}">
+                                <a href="/abandonedAnimal/list${linkParams}${sort}">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'abNo'}">최신순</c:when>
@@ -91,7 +91,7 @@
         <div class="row">
             <c:forEach var="abandonedAnimal" items="${pageForm.content}">
                 <div class="col-md-6 col-lg-3 ftco-animate"
-                     onclick="location.href='/abandoned_animal/detail?abNumber=${abandonedAnimal.abNumber}'">
+                     onclick="location.href='/abandonedAnimal/detail?abNumber=${abandonedAnimal.abNumber}'">
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
                             <div class="img align-self-stretch"
@@ -112,7 +112,7 @@
 
 <%--        검색--%>
         <br><div style="display: flex; justify-content: center;">
-        <form action="/abandoned_animal/list" method="get">
+        <form action="/abandonedAnimal/list" method="get">
         <div class="form-group row">
         <div class="col">
             <select name="species" class="form-control">
@@ -167,24 +167,24 @@
                         <c:if test="${not empty param.species && not empty param.animalState}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/abandoned_animal/list?pageNo=${pageForm.startPage - 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
+                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage - 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/abandoned_animal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/abandoned_animal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/abandoned_animal/list?pageNo=${pageForm.startPage + 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
+                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage + 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
@@ -192,25 +192,25 @@
                         <c:if test="${empty param.species && empty param.animalState}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/abandoned_animal/list?pageNo=${pageForm.startPage - 5}&sort=${param.sort}">&lt;</a>
+                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage - 5}&sort=${param.sort}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}"
                                        end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/abandoned_animal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/abandoned_animal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/abandoned_animal/list?pageNo=${pageForm.startPage + 5}&sort=${param.sort}">&gt;</a>
+                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage + 5}&sort=${param.sort}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>

@@ -52,69 +52,72 @@ public class TempDao implements BasicDao {
     }
 
     public List<AdminTempDetailForm> selectIndex(int start, int end) {
-        List<AdminTempDetailForm> result = new ArrayList<>();
-        List<TempPet> list = mapper.selectIndex(start, end);
+        List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
+        List<TempPet> tempPets = mapper.selectIndex(start, end);
 
-        for (TempPet l : list) {
-            AdminTempDetailForm li = new AdminTempDetailForm(
-                    l.getTNumber(),
-                    l.getAbNumber(),
-                    l.getMNumber(),
-                    l.getTempDate(),
-                    l.getTempPeriod(),
-                    l.getResidence(),
-                    l.getMaritalStatus(),
-                    l.getJob(),
-                    l.getStatus(),
-                    selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()),
-                    selectMemberId(l.getMNumber())
+        for (TempPet tempPet : tempPets) {
+            AdminTempDetailForm detailForm = new AdminTempDetailForm(
+                    tempPet.getTNumber(),
+                    tempPet.getAbNumber(),
+                    tempPet.getMNumber(),
+                    tempPet.getTempDate(),
+                    tempPet.getTempPeriod(),
+                    tempPet.getResidence(),
+                    tempPet.getMaritalStatus(),
+                    tempPet.getJob(),
+                    tempPet.getStatus(),
+                    selectAnimalName(tempPet.getAbNumber()),
+                    selectMemberName(tempPet.getMNumber()),
+                    selectMemberId(tempPet.getMNumber())
             );
 
-            result.add(li);
+            adminTempDetailForms.add(detailForm);
         }
 
-        return result;
+        return adminTempDetailForms;
     }
 
     public List<MypageTempListForm> selectIndex(int start, int end, int mNumber) {
-        List<MypageTempListForm> result = new ArrayList<>();
-        List<TempPet> list = mapper.selectIndexBymNumber(start, end, mNumber);
+        List<MypageTempListForm> mypageTempListForms = new ArrayList<>();
+        List<TempPet> tempPets = mapper.selectIndexBymNumber(start, end, mNumber);
 
-        for (TempPet t : list) {
-            MypageTempListForm li = new MypageTempListForm(
-                    t.getTNumber(), getAbNameByAbNumber(t.getAbNumber()), t.getStatus());
+        for (TempPet tempPet : tempPets) {
+            MypageTempListForm listForm = new MypageTempListForm(
+                    tempPet.getTNumber(),
+                    getAbNameByAbNumber(tempPet.getAbNumber()),
+                    tempPet.getStatus()
+            );
 
-            result.add(li);
+            mypageTempListForms.add(listForm);
         }
 
-        return result;
+        return mypageTempListForms;
     }
 
     public List<AdminTempDetailForm> selectIndex(int start, int end, String status) {
-        List<AdminTempDetailForm> result = new ArrayList<>();
-        List<TempPet> list = mapper.selectIndexByStatus(start, end, status);
+        List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
+        List<TempPet> tempPets = mapper.selectIndexByStatus(start, end, status);
 
-        for (TempPet l : list) {
-            AdminTempDetailForm li = new AdminTempDetailForm(
-                    l.getTNumber(),
-                    l.getMNumber(),
-                    l.getAbNumber(),
-                    l.getTempDate(),
-                    l.getTempPeriod(),
-                    l.getResidence(),
-                    l.getMaritalStatus(),
-                    l.getJob(),
-                    l.getStatus(),
-                    selectAnimalName(l.getAbNumber()),
-                    selectMemberName(l.getMNumber()),
-                    selectMemberId(l.getMNumber())
+        for (TempPet tempPet : tempPets) {
+            AdminTempDetailForm detailForm = new AdminTempDetailForm(
+                    tempPet.getTNumber(),
+                    tempPet.getMNumber(),
+                    tempPet.getAbNumber(),
+                    tempPet.getTempDate(),
+                    tempPet.getTempPeriod(),
+                    tempPet.getResidence(),
+                    tempPet.getMaritalStatus(),
+                    tempPet.getJob(),
+                    tempPet.getStatus(),
+                    selectAnimalName(tempPet.getAbNumber()),
+                    selectMemberName(tempPet.getMNumber()),
+                    selectMemberId(tempPet.getMNumber())
             );
 
-            result.add(li);
+            adminTempDetailForms.add(detailForm);
         }
 
-        return result;
+        return adminTempDetailForms;
     }
 
     public void tempApprove(int pk) {
