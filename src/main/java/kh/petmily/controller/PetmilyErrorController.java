@@ -16,7 +16,7 @@ public class PetmilyErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if(status != null){
-            int statusCode = Integer.valueOf(status.toString());
+            int statusCode = (int) status;
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error/error_404";

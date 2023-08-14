@@ -25,6 +25,7 @@
 </head>
 
 <body>
+
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen">
     <svg class="circular" width="48px" height="48px">
@@ -73,7 +74,8 @@
                                 </label>
                                 <select name="mNumber" id="mNumber" class="form-control">
                                     <c:forEach var="m" items="${memberList}">
-                                        <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                        <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id}
+                                            / ${m.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -85,7 +87,7 @@
                             </div>
                         </c:if>
                         <c:if test="${authUser.grade eq '일반'}">
-                            <input type="hidden" name="mNumber" value="${mNumber}">
+                            <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
                             <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
                         </c:if>
 
@@ -105,13 +107,44 @@
                         </div>
 
                         <!-- 첨부파일 -->
-                        <div class="custom-file form-control-sm mt-3" >
-                            <input type="file" name="file" id="file" accept="image/*"><br>
-                            <c:if test="${not empty modifyForm.imgPath}">
-                                <small><span>업로드 된 이미지 파일명: <b>${modifyForm.imgPath}</b></span></small>
+                        <div class="custom-file form-control-sm mt-3">
+                            <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
+                                <input type="file" name="file" id="file1" accept="image/*">
+
+                                <div id="fileDel1">
+                                    <br>
+                                    <button type="button" class="btn-danger">파일 삭제</button>
+                                    <br><br>
+                                </div>
+
+                                <div id="fileName">
+                                    <small>업로드 된 이미지 파일명: <b>${modifyForm.imgPath}</b></small>
+                                </div>
+
+                                <div id="initFileDel">
+                                    <button type="button" class="btn-danger">기존파일 삭제</button>
+                                    <br><br>
+                                </div>
+
+                                <div id="notUpload1">
+                                    <small style="color: red">이미지 파일이 업로드 되지 않은 글입니다.</small>
+                                </div>
                             </c:if>
-                            <c:if test="${empty modifyForm.imgPath}">
-                                <small><span style="color: red">이미지 파일이 업로드 되지 않은 글입니다.</span></small>
+
+                            <c:if test="${modifyForm.imgPath eq 'no_image.png'}">
+                                <input type="file" name="file" id="file2" accept="image/*">
+                                <br>
+
+                                <div id="fileDel2">
+                                    <br>
+                                    <button type="button" class="btn-danger">파일 삭제</button>
+                                    <br><br>
+                                </div>
+
+                                <div id="notUpload2">
+                                    <small><span style="color: red">이미지 파일이 업로드 되지 않은 글입니다.
+                                        </span></small>
+                                </div>
                             </c:if>
                         </div>
 
@@ -123,14 +156,13 @@
                     </div>
 
                     <input type="hidden" name="bNumber" value="${modifyForm.getBNumber()}">
+                    <input type="hidden" name="imgPath" id="imgPath" value="">
 
                 </form>
             </div>
         </div>
     </div>
 </section>
-
-<!-- modifyForm 끝 -->
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
@@ -150,7 +182,106 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    document.getElementById("mNumber").value = "${modifyForm.getMNumber()}";
+    $(document).ready(function () {
+        $("#mNumber").val(${modifyForm.getMNumber()});
+
+        <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
+            $("#notUpload1").hide();
+            $("#fileDel1").hide();
+            hasImage();
+        </c:if>
+
+        <c:if test="${modifyForm.imgPath eq 'no_image.png'}">
+            $("#fileDel2").hide();
+            noImage();
+        </c:if>
+    });
+
+    function hasImage() {
+        let fileName = $("#fileName");
+        let initFileDel = $("#initFileDel");
+        let notUpload1 = $("#notUpload1");
+        let fileDel1 = $("#fileDel1");
+        let file1 = $("#file1");
+
+        file1.change(function () {
+            let selectedFile = $(this).val();
+
+            if (selectedFile !== null) { // 파일 첨부한 경우
+                fileName.hide();
+                initFileDel.hide();
+                notUpload1.hide();
+                fileDel1.show();
+            }
+        });
+
+        fileDel1.on("click", function () {
+            const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+            if (isConfirmed) {
+                file1.val(null);
+                notUpload1.show();
+                fileDel1.hide();
+            }
+        });
+
+        initFileDel.on("click", function () {
+            const isConfirmed = confirm("기존 파일을 정말로 삭제하시겠습니까?");
+
+            if (isConfirmed) {
+                file1.val(null);
+                fileName.hide();
+                initFileDel.hide();
+                notUpload1.show();
+
+                $(document).on('submit', 'form', function () {
+                    deleteImage('${modifyForm.imgPath}');
+                });
+            }
+        });
+    }
+
+    function noImage() {
+        let fileDel2 = $("#fileDel2");
+        let notUpload2 = $("#notUpload2");
+        let file2 = $("#file2");
+
+        file2.change(function () {
+            let selectedFile = $(this).val();
+
+            if (selectedFile !== null) { // 파일 첨부한 경우
+                fileDel2.show();
+                notUpload2.hide();
+            }
+        });
+
+        fileDel2.on("click", function () {
+            const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+            if (isConfirmed) {
+                file2.val(null);
+                fileDel2.hide();
+                notUpload2.show();
+            }
+        });
+    }
+
+    function deleteImage(imgPath) {
+        console.log("imgPath=" + imgPath);
+
+        $.ajax({
+            type: 'delete',
+            url: '/adoptReview/' + imgPath,
+            data: {imgPath: imgPath},
+            dataType: 'text',
+            success: function (result) {
+                if (result == 'SUCCESS') {
+                    console.log("이미지 삭제 요청 성공 = " + result);
+                }
+            }
+        });
+
+        $("#imgPath").val("no_image.png");
+    }
 </script>
 
 <%-- footer --%>

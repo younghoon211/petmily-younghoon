@@ -73,7 +73,8 @@
                                 </label>
                                 <select name="mNumber" id="mNumber" class="form-control">
                                     <c:forEach var="m" items="${memberList}">
-                                        <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                        <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id}
+                                            / ${m.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -100,9 +101,15 @@
 
                         <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
 
-                    <!-- 첨부파일 -->
+                        <!-- 첨부파일 -->
                         <div class="custom-file form-control-sm mt-3">
                             <input type="file" name="file" id="file" accept="image/*">
+                            <br>
+                            <div id="fileDel">
+                                <br>
+                                <button type="button" class="btn-danger">파일 삭제</button>
+                                <br><br>
+                            </div>
                         </div>
 
                     </div>
@@ -117,7 +124,6 @@
     </div>
 </section>
 <!-- modifyForm 끝 -->
-
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
@@ -135,6 +141,34 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        let fileDel = $("#fileDel");
+        let file = $("#file");
+
+        fileDel.hide();
+
+        file.change(function () {
+            let selectedFile = $(this).val();
+
+            if (selectedFile !== null) {
+                fileDel.show();
+            }
+        });
+
+        fileDel.on("click", function () {
+            const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+            if (isConfirmed) {
+                file.val(null);
+                fileDel.hide();
+            }
+        });
+
+    });
+</script>
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>

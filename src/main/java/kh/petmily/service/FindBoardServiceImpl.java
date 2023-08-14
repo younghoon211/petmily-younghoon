@@ -37,11 +37,10 @@ public class FindBoardServiceImpl implements FindBoardService {
     // 파일 업로드
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
-        log.info("storeFile = {} ", file.getOriginalFilename());
-
         if (file.isEmpty()) {
             return null;
         }
+        log.info("원본 filename = {}", file.getOriginalFilename());
 
         File storeFolder = new File(filePath);
 

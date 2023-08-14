@@ -84,10 +84,10 @@
 
     <select id="tempRefuse">
         update TEMPPET set STATUS = '거절' where STATUS = '처리중'
-                                           and ABNUMBER = (select T.ABNUMBER
-                                                           from TEMPPET T join ABANDONEDANIMAL AB
-                                                                               on AB.ABNUMBER = T.ABNUMBER
-                                                           where T.TNUMBER = #{pk})
+        and ABNUMBER = (select T.ABNUMBER
+        from TEMPPET T join ABANDONEDANIMAL AB
+        on AB.ABNUMBER = T.ABNUMBER
+        where T.TNUMBER = #{pk})
     </select>
 
     <select id="selectAllExcludeTempStatus" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">

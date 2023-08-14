@@ -60,63 +60,57 @@
         <div class="media-body ml-3">
 
             <!-- content title, name, wrTime -->
-                <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
-                <h6 class="mt-1"></h6>
-                <small><a href="javascript:void(0)">${detailForm.name}</a></small>
-                <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
+            <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
+            <h6 class="mt-1"></h6>
+            <small><a href="javascript:void(0)">${detailForm.name}</a></small>
+            <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
 
+            <!-- content 내용 -->
+            <div class="modal-footer"></div>
+<%--            <c:choose>--%>
+<%--                <c:when test="${not empty detailForm.imgPath and detailForm.imgPath ne 'no_image.png'}">--%>
+<%--                    <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>--%>
+<%--                </c:when>--%>
+<%--                <c:otherwise>--%>
+<%--                    <img width="100%" src=" ">--%>
+<%--                </c:otherwise>--%>
+<%--            </c:choose>--%>
 
-<%--                <div class="card mb-2">--%>
-<%--                    <div class="card-body">--%>
-<%--                        <div class="media forum-item">--%>
-<%--                            --%>
-<%--                            <div class="media-body ml-3">--%>
-<%--                                <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>--%>
-<%--                                <h6 class="mt-1"></h6><br>--%>
-<%--                                <small>${detailForm.name}</small>--%>
-<%--                                <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>--%>
+            <c:if test="${detailForm.imgPath ne 'no_image.png'}">
+                <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>
+            </c:if>
 
+            <p>${detailForm.content}</p>
+            <br>
+<%--            <p>--%>
+<%--                <img src="images/image_2.jpg" alt="" class="img-fluid">--%>
+<%--            </p>--%>
 
-                <!-- content 내용 -->
-                <div class="modal-footer"></div>
-                <c:choose>
-                    <c:when test="${not empty detailForm.imgPath and detailForm.imgPath ne 'no_image.png'}">
-                        <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>
-                    </c:when>
-                    <c:otherwise>
-                        <img width="100%" src=" ">
-                    </c:otherwise>
-                </c:choose>
-                <p>${detailForm.content}</p>
-                <p>
-                    <img src="images/image_2.jpg" alt="" class="img-fluid">
-                </p>
-
-                <!-- content 수정, 삭제 -->
-                <div class="modal-footer">
-                    <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
-                        <button type="button" class="btn btn-primary"
-                                onclick="location.href='/adoptReview/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
-                            수정
-                        </button>
-
-                        <button type="button" class="btn btn-danger"
-                                onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                        {return location.href='/adoptReview/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
-                            삭제
-                        </button>
-                    </c:if>
-
-                    <!-- content 목록 이동 버튼 -->
-                    <button type="button" class="btn btn-secondary"
-                            onclick="location.href='/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo'">목록으로
+            <!-- content 수정, 삭제 -->
+            <div class="modal-footer">
+                <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
+                    <button type="button" class="btn btn-primary"
+                            onclick="location.href='/adoptReview/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
+                        수정
                     </button>
-                    <c:if test="${authUser.grade eq '관리자'}">
-                        <button type="button" class="btn btn-dark"
-                                onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
-                        </button>
-                    </c:if>
-                </div>
+
+                    <button type="button" class="btn btn-danger"
+                            onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                    {return location.href='/adoptReview/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
+                        삭제
+                    </button>
+                </c:if>
+
+                <!-- content 목록 이동 버튼 -->
+                <button type="button" class="btn btn-secondary"
+                        onclick="location.href='/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo'">목록으로
+                </button>
+                <c:if test="${authUser.grade eq '관리자'}">
+                    <button type="button" class="btn btn-dark"
+                            onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
+                    </button>
+                </c:if>
+            </div>
         </div>
     </div>
 </section>

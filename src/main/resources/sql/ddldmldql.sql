@@ -618,7 +618,7 @@ VALUES (2, '개', '비숑', '구로', '비숑을 잃어버렸습니다ㅠㅠ!', 
 INSERT INTO SHELTER (GROUPNAME, LOCATION, PHONE)
 VALUES ('보호소1', '강남', '02-000-0000');
 
-INSERT INTO Shelter (groupName,location,phone)
+INSERT INTO SHELTER (GROUPNAME, LOCATION, PHONE)
 VALUES('보호소2', '성남', '010-3232-1122');
 
 COMMIT;

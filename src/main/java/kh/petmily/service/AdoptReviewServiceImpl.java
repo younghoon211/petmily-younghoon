@@ -37,11 +37,10 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     // 파일 업로드
     @Override
     public String storeFile(MultipartFile file, String filePath) throws IOException {
-        log.info("storeFile = {} ", file.getOriginalFilename());
-
         if (file.isEmpty()) {
             return null;
         }
+        log.info("원본 filename = {}", file.getOriginalFilename());
 
         File storeFolder = new File(filePath);
 
@@ -119,6 +118,10 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
         return new AdoptReviewPageForm(total, pageNo, adminSize, content);
     }
 
+    @Override
+    public AdoptReview getAdoptReview(int pk) {
+        return adoptReviewDao.findByPk(pk);
+    }
     // ===================== Update =====================
     // 수정 폼
     @Override

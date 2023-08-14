@@ -147,9 +147,14 @@
                         <textarea rows="5" class="form-control" name="description" id="description" placeholder=" 소개글" maxlength="30" required></textarea>
 
                         <!-- 첨부파일 -->
-
                         <div class="custom-file form-control-sm mt-3">
                             <input type="file" name="file" id="file" accept="image/*">
+                            <br>
+                            <div id="fileDel">
+                                <br>
+                                <button type="button" class="btn-danger">파일 삭제</button>
+                                <br><br>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -180,6 +185,34 @@
 <script src="/resources/petsitting-master/js/scrollax.min.js"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        let fileDel = $("#fileDel");
+        let file = $("#file");
+
+        fileDel.hide();
+
+        file.change(function () {
+            let selectedFile = $(this).val();
+
+            if (selectedFile !== null) {
+                fileDel.show();
+            }
+        });
+
+        fileDel.on("click", function () {
+            const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+
+            if (isConfirmed) {
+                file.val(null);
+                fileDel.hide();
+            }
+        });
+
+    });
+</script>
 
 <%-- footer --%>
 <%@ include file="../../include/footer.jspf" %>

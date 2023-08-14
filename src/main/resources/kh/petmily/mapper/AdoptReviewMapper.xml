@@ -13,21 +13,25 @@
 
     <insert id="insert">
         insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT
-        <if test='imgPath != null and imgPath !=""'>
         , IMGPATH
-        </if>
         , VIDEO, CHECKPUBLIC)
         values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}
-        <if test='imgPath != null and imgPath !=""'>
+        <if test='imgPath != null'>
         , #{imgPath}
+        </if>
+        <if test='imgPath == null'>
+        , 'no_image.png'
         </if>
         , null, 'Y')
     </insert>
 
     <update id="update">
         update BOARD
-        set MNUMBER = #{mNumber}, TITLE = #{title}, CONTENT = #{content}, WRTIME = #{wrTime}
-        <if test='imgPath != null and imgPath !=""'>
+        set MNUMBER = #{mNumber},
+            TITLE = #{title},
+            CONTENT = #{content},
+            WRTIME = #{wrTime}
+        <if test='imgPath != ""'> <!-- x->o 또는 사진변경 -->
             ,IMGPATH = #{imgPath}
         </if>
         where BNUMBER = #{bNumber}

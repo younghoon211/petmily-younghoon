@@ -1,5 +1,6 @@
 package kh.petmily.service;
 
+import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,8 @@ public interface AdoptReviewService {
     AdoptReviewPageForm getMyPost(int pageNo, int mNumber, String kindOfBoard);
 
     AdoptReviewPageForm getAdminListPage(String kindOfBoard, int pageNo);
+
+    AdoptReview getAdoptReview(int pk);
 
     AdoptReviewModifyForm getModifyForm(int bNumber);
 

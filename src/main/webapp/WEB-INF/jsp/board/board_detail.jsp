@@ -208,9 +208,9 @@
 <script>
     let bNumber = ${detailForm.getBNumber()};
 
-    window.onload = function () {
+    $(document).ready(function () {
         getPage("/replies/" + bNumber);
-    }
+    });
 
     function getPage(pageInfo) {
         $.getJSON(pageInfo, function (data) {

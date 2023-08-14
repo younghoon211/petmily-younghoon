@@ -14,25 +14,35 @@
     <insert id="insert">
         insert into ABANDONEDANIMAL(SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, LOCATION, ADMISSIONDATE,
         UNIQUENESS, DESCRIPTION, VIDEO, ANIMALSTATE
-        <if test='imgPath != null and imgPath !=""'>
-            ,IMGPATH
-        </if>
+        ,IMGPATH
         )
         values (#{sNumber}, #{name}, #{species}, #{kind}, #{gender}, #{age}, #{weight},
         #{location}, #{admissionDate}, #{uniqueness}, #{description}, null, #{animalState}
-        <if test='imgPath != null and imgPath !=""'>
-            ,#{imgPath}
+        <if test='imgPath != null'>
+            , #{imgPath}
+        </if>
+        <if test='imgPath == null'>
+            , 'no_image.png'
         </if>
         )
     </insert>
 
     <update id="update">
         update ABANDONEDANIMAL
-        set SNUMBER = #{sNumber}, NAME = #{name}, SPECIES = #{species}, KIND = #{kind}, GENDER = #{gender},
-        AGE = #{age}, WEIGHT = #{weight}, LOCATION = #{location}, ADMISSIONDATE = #{admissionDate},
-        UNIQUENESS = #{uniqueness}, DESCRIPTION = #{description}, ANIMALSTATE = #{animalState}
-        <if test='imgPath != null and imgPath !=""'>
-            ,IMGPATH = #{imgPath}
+        set SNUMBER = #{sNumber},
+            NAME = #{name},
+            SPECIES = #{species},
+            KIND = #{kind},
+            GENDER = #{gender},
+            AGE = #{age},
+            WEIGHT = #{weight},
+            LOCATION = #{location},
+            ADMISSIONDATE = #{admissionDate},
+            UNIQUENESS = #{uniqueness},
+            DESCRIPTION = #{description},
+            ANIMALSTATE = #{animalState}
+        <if test='imgPath != ""'>
+            , IMGPATH = #{imgPath}
         </if>
         where ABNUMBER = #{abNumber}
     </update>

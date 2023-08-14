@@ -13,14 +13,15 @@
 
     <insert id="insert">
         insert into FINDANIMALBOARD(MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
-        <if test='imgPath != null and imgPath !=""'>
-            ,IMGPATH
-        </if>
+        ,IMGPATH
         )
         values (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
 
-        <if test='imgPath != null and imgPath !=""'>
-            ,#{imgPath}
+        <if test='imgPath != null'>
+            , #{imgPath}
+        </if>
+        <if test='imgPath == null'>
+            , 'no_image.png'
         </if>
         )
     </insert>
@@ -31,12 +32,12 @@
             SPECIES  = #{species},
             KIND     = #{kind},
             LOCATION = #{location},
-        <if test='imgPath != null and imgPath !=""'>
-            IMGPATH = #{imgPath},
-        </if>
             TITLE    = #{title},
             CONTENT  = #{content},
             WRTIME = #{wrTime}
+        <if test='imgPath != ""'>
+            , IMGPATH = #{imgPath}
+        </if>
         where FANUMBER = #{faNumber}
     </update>
 
