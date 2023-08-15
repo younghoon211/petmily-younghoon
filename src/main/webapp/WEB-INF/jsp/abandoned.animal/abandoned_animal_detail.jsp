@@ -64,7 +64,7 @@
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/admin/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
+                <img src="/abandonedAnimal/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">

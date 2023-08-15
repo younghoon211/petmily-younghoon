@@ -95,7 +95,7 @@
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
                             <div class="img align-self-stretch"
-                                 style="background-image: url(/admin/upload?filename=${abandonedAnimal.imgPath});"></div>
+                                 style="background-image: url('/abandonedAnimal/upload?filename=${abandonedAnimal.imgPath}')"></div>
                         </div>
 
                         <div class="text pt-3 px-3 pb-4 text-center">

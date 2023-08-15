@@ -127,7 +127,7 @@ public class MemberController {
     // 마이페이지
     @GetMapping("/member/auth/mypage")
     public String mypage(HttpServletRequest request, Model model) {
-        Member member = getAuthMember(request);
+        Member member = getAuthUser(request);
         model.addAttribute("member", member);
 
         return "/member/mypage";
@@ -136,7 +136,7 @@ public class MemberController {
     // 마이페이지 수정
     @GetMapping("/member/auth/change_info")
     public String changeInfo(HttpServletRequest request, Model model) {
-        Member member = getAuthMember(request);
+        Member member = getAuthUser(request);
         model.addAttribute("member", member);
 
         return "/member/member_info_change";
@@ -146,7 +146,7 @@ public class MemberController {
     public String changeInfoPost(@Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm,
                                  BindingResult bindingResult, HttpServletRequest request) {
         log.info("memberChangeForm= {}", memberChangeForm);
-        Member member = getAuthMember(request);
+        Member member = getAuthUser(request);
 
         if (bindingResult.hasErrors()) {
             log.info("changeInfo bindingResult= {}", bindingResult);
@@ -219,7 +219,7 @@ public class MemberController {
     public String getMyApply(@PathVariable String type,
                              @RequestParam(defaultValue = "1") int pageNo,
                              HttpServletRequest request, Model model) {
-        Member member = getAuthMember(request);
+        Member member = getAuthUser(request);
         int mNumber = member.getMNumber();
 
         if (type.equals("adopt")) {
@@ -241,7 +241,7 @@ public class MemberController {
                             @RequestParam(defaultValue = "1") int pageNo,
                             @RequestParam(required = false) String kindOfBoard,
                             HttpServletRequest request, Model model) {
-        Member member = getAuthMember(request);
+        Member member = getAuthUser(request);
         int mNumber = member.getMNumber();
 
         model.addAttribute("type", type);
@@ -276,14 +276,15 @@ public class MemberController {
         }
     }
 
-    private Member getAuthMember(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthMember(request).getMNumber();
+        return getAuthUser(request).getMNumber();
     }
 }

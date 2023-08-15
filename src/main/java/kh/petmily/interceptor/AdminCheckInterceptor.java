@@ -2,12 +2,14 @@ package kh.petmily.interceptor;
 
 import kh.petmily.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component
 @Slf4j
 public class AdminCheckInterceptor implements HandlerInterceptor {
 
@@ -15,10 +17,10 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("AdminCheckInterceptor 실행");
 
-        String requestURI = request.getRequestURI();
-        Member userGrade = getUserGrade(request);
+        Member authUser = getAuthUser(request);
 
-        if (requestURI.contains("/admin") && userGrade.getGrade().equals("일반")) {
+        if (authUser.getGrade().equals("일반")) {
+            log.info("일반 등급 유저 관리자 페이지 진입 시도");
             response.sendRedirect("/error");
 
             return false;
@@ -27,10 +29,11 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private Member getUserGrade(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 }

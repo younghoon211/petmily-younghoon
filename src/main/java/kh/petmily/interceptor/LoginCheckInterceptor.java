@@ -1,12 +1,14 @@
 package kh.petmily.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
@@ -18,7 +20,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (session == null || session.getAttribute("authUser") == null) {
             log.info("미인증 사용자");
-
             response.sendRedirect("/login");
 
             return false;

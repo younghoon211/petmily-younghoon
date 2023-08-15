@@ -163,7 +163,7 @@ public class LookBoardController {
 
         lookBoardService.delete(laNumber);
 
-        if (getAuthMember(request).getGrade().equals("관리자")) {
+        if (getAuthUser(request).getGrade().equals("관리자")) {
             return "redirect:/admin/board?kindOfBoard=look";
         } else {
             return "redirect:/lookBoard/list?sort=lno";
@@ -196,15 +196,16 @@ public class LookBoardController {
         }
     }
 
-    private Member getAuthMember(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthMember(request).getMNumber();
+        return getAuthUser(request).getMNumber();
     }
 
     private String getFullPath(HttpServletRequest request) {

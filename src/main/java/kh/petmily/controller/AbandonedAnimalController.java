@@ -8,6 +8,12 @@ import kh.petmily.service.DonateService;
 import kh.petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/abandonedAnimal")
@@ -83,7 +93,7 @@ public class AbandonedAnimalController {
                             HttpServletRequest request) {
         log.info("adoptTempSubmitForm = {}", submitForm);
 
-        int mNumber = getAuthMember(request).getMNumber();
+        int mNumber = getAuthUser(request).getMNumber();
         submitForm.setMNumber(mNumber);
 
         if (adoptOrTemp.equals("adopt")) {
@@ -108,13 +118,48 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/volunteer_submit";
     }
 
-    private Member getAuthMember(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthMember(request).getMNumber();
+        return getAuthUser(request).getMNumber();
+    }
+
+    @ResponseBody
+    @GetMapping("/upload")
+    public ResponseEntity<Resource> getImage(@RequestParam String filename, HttpServletRequest request) {
+        try {
+            Path imagePath = Paths.get(getFullPath(request) + filename);
+            log.info("imagePath = {} ", imagePath);
+
+            Resource resource = new UrlResource(imagePath.toUri());
+            MediaType mediaType = MediaTypeFactory.getMediaType(resource).orElse(MediaType.IMAGE_PNG);
+
+            if (!resource.exists()) {
+                throw new FileNotFoundException("존재하지 않는 파일입니다.");
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            log.error("Malformed URL = {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (FileNotFoundException e) {
+            log.error("Image not found = {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    private String getFullPath(HttpServletRequest request) {
+        String fullPath = request.getSession().getServletContext().getRealPath("/");
+        fullPath = fullPath + "resources/upload/";
+
+        return fullPath;
     }
 }

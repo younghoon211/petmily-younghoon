@@ -93,21 +93,22 @@ public class BoardController {
         boardService.delete(bNumber);
         redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
-        if (getAuthMember(request).getGrade().equals("관리자")) {
+        if (getAuthUser(request).getGrade().equals("관리자")) {
             return "redirect:/admin/board";
         } else {
             return "redirect:/board/list?sort=bno";
         }
     }
 
-    private Member getAuthMember(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthMember(request).getMNumber();
+        return getAuthUser(request).getMNumber();
     }
 }

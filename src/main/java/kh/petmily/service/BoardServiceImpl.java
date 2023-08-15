@@ -89,6 +89,12 @@ public class BoardServiceImpl implements BoardService {
         return new BoardPageForm(total, pageNo, size, content);
     }
 
+    // 게시글 조회
+    @Override
+    public Board getBoard(int pk) {
+        return boardDao.findByPk(pk);
+    }
+
     // ===================== Update =====================
     // 수정 폼
     @Override

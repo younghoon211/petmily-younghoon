@@ -161,7 +161,7 @@ public class FindBoardController {
 
         findBoardService.delete(faNumber);
 
-        String grade = getAuthMember(request).getGrade();
+        String grade = getAuthUser(request).getGrade();
 
         if (grade.equals("관리자")) {
             return "redirect:/admin/board?kindOfBoard=find";
@@ -196,15 +196,16 @@ public class FindBoardController {
         }
     }
 
-    private Member getAuthMember(HttpServletRequest request) {
+    private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Member member = (Member) session.getAttribute("authUser");
-
-        return member;
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthMember(request).getMNumber();
+        return getAuthUser(request).getMNumber();
     }
 
     private String getFullPath(HttpServletRequest request) {

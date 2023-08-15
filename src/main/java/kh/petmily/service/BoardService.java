@@ -1,10 +1,7 @@
 package kh.petmily.service;
 
-import kh.petmily.domain.board.form.BoardDetailForm;
-import kh.petmily.domain.board.form.BoardModifyForm;
-import kh.petmily.domain.board.form.BoardPageForm;
-import kh.petmily.domain.board.form.BoardWriteForm;
-import kh.petmily.domain.board.form.BoardConditionForm;
+import kh.petmily.domain.board.Board;
+import kh.petmily.domain.board.form.*;
 
 public interface BoardService {
 
@@ -17,6 +14,8 @@ public interface BoardService {
     BoardPageForm getMyPost(int pageNo, int mNumber, String type, String kindOfBoard);
 
     BoardPageForm getAdminListPage(String kindOfBoard, int pageNo);
+
+    Board getBoard(int pk);
 
     BoardModifyForm getModifyForm(int bNumber);
 

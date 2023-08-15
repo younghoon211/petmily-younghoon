@@ -79,9 +79,11 @@
             <c:forEach var="board" items="${pageForm.content}">
                 <div class="col-md-4">
                     <div class="blog-entry align-self-stretch">
+
                         <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                            class="block-20 rounded"
                            style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
+
                         <div class="text p-4">
                             <div class="meta mb-2"><small>${board.wrTime}</small></div>
                             <div><small style="color: #00bd56">${board.name}</small></div>
@@ -92,6 +94,7 @@
                                 <div>조회수: ${board.viewCount}</div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </c:forEach>
