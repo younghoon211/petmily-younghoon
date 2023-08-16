@@ -13,11 +13,11 @@
 
     <insert id="insert">
         insert into ABANDONEDANIMAL(SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, LOCATION, ADMISSIONDATE,
-        UNIQUENESS, DESCRIPTION, VIDEO, ANIMALSTATE
+        UNIQUENESS, DESCRIPTION, ANIMALSTATE
         ,IMGPATH
         )
         values (#{sNumber}, #{name}, #{species}, #{kind}, #{gender}, #{age}, #{weight},
-        #{location}, #{admissionDate}, #{uniqueness}, #{description}, null, #{animalState}
+        #{location}, #{admissionDate}, #{uniqueness}, #{description}, #{animalState}
         <if test='imgPath != null'>
             , #{imgPath}
         </if>

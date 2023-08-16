@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Blob;
 import java.sql.Date;
 
 @Getter
@@ -26,7 +25,6 @@ public class AbandonedAnimal implements DomainObj {
     private Date admissionDate;
     private String uniqueness;
     private String description;
-    private Blob video;
     private String animalState;
 
     public AbandonedAnimal(int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {

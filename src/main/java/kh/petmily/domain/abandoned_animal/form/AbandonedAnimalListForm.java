@@ -3,7 +3,6 @@ package kh.petmily.domain.abandoned_animal.form;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Blob;
 import java.sql.Date;
 
 @Data
@@ -24,7 +23,6 @@ public class AbandonedAnimalListForm {
     private String uniqueness;
     private String description;
     private String animalState;
-    private Blob video;
     private String groupName;
 
     public AbandonedAnimalListForm(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @ToString
@@ -19,7 +18,6 @@ public class AdoptReview implements DomainObj {
     private String title;
     private String content;
     private String imgPath;
-    private Blob video;
     private LocalDateTime wrTime;
     private final String checkPublic = "Y";
     private int viewCount;

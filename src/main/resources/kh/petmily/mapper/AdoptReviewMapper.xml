@@ -14,7 +14,7 @@
     <insert id="insert">
         insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT
         , IMGPATH
-        , VIDEO, CHECKPUBLIC)
+        , CHECKPUBLIC)
         values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}
         <if test='imgPath != null'>
         , #{imgPath}
@@ -22,7 +22,7 @@
         <if test='imgPath == null'>
         , 'no_image.png'
         </if>
-        , null, 'Y')
+        , 'Y')
     </insert>
 
     <update id="update">
