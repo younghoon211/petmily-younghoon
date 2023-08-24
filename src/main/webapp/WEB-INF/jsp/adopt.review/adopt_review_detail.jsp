@@ -67,14 +67,6 @@
 
             <!-- content 내용 -->
             <div class="modal-footer"></div>
-<%--            <c:choose>--%>
-<%--                <c:when test="${not empty detailForm.imgPath and detailForm.imgPath ne 'no_image.png'}">--%>
-<%--                    <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>--%>
-<%--                </c:when>--%>
-<%--                <c:otherwise>--%>
-<%--                    <img width="100%" src=" ">--%>
-<%--                </c:otherwise>--%>
-<%--            </c:choose>--%>
 
             <c:if test="${detailForm.imgPath ne 'no_image.png'}">
                 <img width="50%" src="/adoptReview/upload?filename=${detailForm.imgPath}"><br><br>
@@ -82,9 +74,6 @@
 
             <p>${detailForm.content}</p>
             <br>
-<%--            <p>--%>
-<%--                <img src="images/image_2.jpg" alt="" class="img-fluid">--%>
-<%--            </p>--%>
 
             <!-- content 수정, 삭제 -->
             <div class="modal-footer">

@@ -79,25 +79,25 @@
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="speciesInput"><b>종</b></label><br>
                             <div id="speciesInput" class="form-check form-check-inline">
-                                <span><input type="radio" class="form-check-input" name="species" id="speciesInput1" value="개"><label for="speciesInput1">개</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="species" id="speciesInput1" value="개" checked><label for="speciesInput1">개</label></span>&emsp;
                                 <span><input type="radio" class="form-check-input" name="species" id="speciesInput2" value="고양이"><label for="speciesInput2">고양이</label></span>&emsp;
-                                <span><input type="radio" class="form-check-input" name="species" id="speciesInput3" value="기타" checked><label for="speciesInput3">기타</label></span>
+                                <span><input type="radio" class="form-check-input" name="species" id="speciesInput3" value="기타"><label for="speciesInput3">기타</label></span>
                             </div>
                         </div>
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="genderInput"><b>성별</b></label><br>
                             <div id="genderInput" class="form-check form-check-inline">
-                                <span><input type="radio" class="form-check-input" name="gender" id="genderInput1" value="M"><label for="genderInput1">수컷</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="gender" id="genderInput1" value="M" checked><label for="genderInput1">수컷</label></span>&emsp;
                                 <span><input type="radio" class="form-check-input" name="gender" id="genderInput2" value="F"><label for="genderInput2">암컷</label></span>&emsp;
-                                <span><input type="radio" class="form-check-input" name="gender" id="genderInput3" value="-" checked><label for="genderInput3">모름</label></span>
+                                <span><input type="radio" class="form-check-input" name="gender" id="genderInput3" value="-"><label for="genderInput3">모름</label></span>
                             </div>
                         </div>
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="animalState"><b>상태</b></label><br>
                             <div id="animalState" class="form-check form-check-inline">
-                                <span><input type="radio" class="form-check-input" name="animalState" id="animalState1" value="입양"><label for="animalState1">입양</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="animalState" id="animalState1" value="입양" checked><label for="animalState1">입양</label></span>&emsp;
                                 <span><input type="radio" class="form-check-input" name="animalState" id="animalState2" value="임보"><label for="animalState2">임시보호</label></span>&emsp;
-                                <span><input type="radio" class="form-check-input" name="animalState" id="animalState3" value="보호" checked><label for="animalState3">보호</label></span>
+                                <span><input type="radio" class="form-check-input" name="animalState" id="animalState3" value="보호"><label for="animalState3">보호</label></span>
                             </div>
                         </div>
 
@@ -125,17 +125,18 @@
                                 <label for="locationInput">발견 장소</label>
                                 <input type="text" class="form-control" name="location" id="locationInput" placeholder="모르는 경우 '모름' 작성" maxlength="14" required>
                             </div>
+
                             <div class="form-group col-md-6 col-lg-4">
-                                <label>보호중인 보호소</label>
-                                <select name="SNumber" class="form-control">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
+                                <label for="shelter">
+                                    보호중인 보호소
+                                </label>
+                                <select name="sNumber" id="shelter" class="form-control">
+                                    <c:forEach var="s" items="${shelterList}">
+                                        <option value="${s.getSNumber()}">${s.groupName} (${s.location}) - ${s.getSNumber()}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
+
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>특이사항</label>
                                 <input type="text" class="form-control" name="uniqueness" placeholder="특이사항" maxlength="30" required>

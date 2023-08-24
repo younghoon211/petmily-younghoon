@@ -19,5 +19,5 @@ public interface ShelterService {
 
     void delete(int sNumber);
 
-    List<Shelter> selectAll();
+    List<Shelter> getShelterList();
 }

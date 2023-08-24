@@ -4,6 +4,7 @@ import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalListForm;
+import kh.petmily.domain.shelter.Shelter;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,6 @@ public class AbandonedAnimalDao implements BasicDao {
 
     private final AbandonedAnimalMapper mapper;
 
-    // =======BasicDao 메소드=======
     @Override
     public AbandonedAnimal findByPk(int pk) {
         return mapper.selectByPk(pk);
@@ -37,7 +37,6 @@ public class AbandonedAnimalDao implements BasicDao {
     public void delete(int pk) {
         mapper.delete(pk);
     }
-    // =======BasicDao 메소드=======
 
     public int selectCount() {
         return mapper.selectCount();
@@ -51,27 +50,7 @@ public class AbandonedAnimalDao implements BasicDao {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
         List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(start, end);
 
-        for (AbandonedAnimal abAnimal : abandonedAnimals) {
-            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
-                    abAnimal.getAbNumber(),
-                    abAnimal.getSNumber(),
-                    abAnimal.getName(),
-                    abAnimal.getSpecies(),
-                    abAnimal.getKind(),
-                    abAnimal.getGender(),
-                    abAnimal.getAge(),
-                    abAnimal.getWeight(),
-                    abAnimal.getImgPath(),
-                    abAnimal.getLocation(),
-                    abAnimal.getAdmissionDate(),
-                    abAnimal.getUniqueness(),
-                    abAnimal.getDescription(),
-                    abAnimal.getAnimalState(),
-                    selectGroupName(abAnimal.getAbNumber())
-            );
-
-            abandonedAnimalListForms.add(listForm);
-        }
+        addListForms(abandonedAnimalListForms, abandonedAnimals);
 
         return abandonedAnimalListForms;
     }
@@ -88,6 +67,16 @@ public class AbandonedAnimalDao implements BasicDao {
                 conditionForm.getSort()
         );
 
+        addListForms(abandonedAnimalListForms, abandonedAnimals);
+
+        return abandonedAnimalListForms;
+    }
+
+    public List<AbandonedAnimal> selectAll() {
+        return mapper.selectAll();
+    }
+
+    private void addListForms(List<AbandonedAnimalListForm> abandonedAnimalListForms, List<AbandonedAnimal> abandonedAnimals) {
         for (AbandonedAnimal abAnimal : abandonedAnimals) {
             AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
                     abAnimal.getAbNumber(),
@@ -103,28 +92,16 @@ public class AbandonedAnimalDao implements BasicDao {
                     abAnimal.getAdmissionDate(),
                     abAnimal.getUniqueness(),
                     abAnimal.getDescription(),
-                    abAnimal.getAnimalState()
+                    abAnimal.getAnimalState(),
+                    selectShelterByPk(abAnimal.getAbNumber()).getGroupName(),
+                    selectShelterByPk(abAnimal.getAbNumber()).getLocation()
             );
 
             abandonedAnimalListForms.add(listForm);
         }
-
-        return abandonedAnimalListForms;
     }
 
-    public String selectName(int pk) {
-        return mapper.selectName(pk);
-    }
-
-    public List<AbandonedAnimal> selectAll() {
-        return mapper.selectAll();
-    }
-
-    public String selectGroupName(int pk) {
-        return mapper.selectGroupName(pk);
-    }
-
-    public String selectPhone(int pk) {
-        return mapper.selectPhone(pk);
+    public Shelter selectShelterByPk(int pk) {
+        return mapper.selectShelterByPk(pk);
     }
 }

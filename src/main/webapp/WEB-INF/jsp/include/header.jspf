@@ -69,9 +69,9 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						게시판
+						 게시판
 					</a>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="min-width: 6rem">
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="text-align: center; min-width: 1rem">
 						<li><a class="dropdown-item" href="/board/list?kindOfBoard=free&sort=bno">자유게시판</a></li>
 						<li><a class="dropdown-item" href="/board/list?kindOfBoard=inquiry&sort=bno">문의게시판</a></li>
 						<li><a class="dropdown-item" href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo">입양후기 게시판</a></li>

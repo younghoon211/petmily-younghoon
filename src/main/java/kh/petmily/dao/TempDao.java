@@ -4,8 +4,8 @@ import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
-import kh.petmily.domain.temp.form.MypageTempListForm;
 import kh.petmily.domain.temp.form.AdminTempDetailForm;
+import kh.petmily.domain.temp.form.MypageTempListForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.MemberMapper;
 import kh.petmily.mapper.TempMapper;
@@ -55,24 +55,7 @@ public class TempDao implements BasicDao {
         List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndex(start, end);
 
-        for (TempPet tempPet : tempPets) {
-            AdminTempDetailForm detailForm = new AdminTempDetailForm(
-                    tempPet.getTNumber(),
-                    tempPet.getAbNumber(),
-                    tempPet.getMNumber(),
-                    tempPet.getTempDate(),
-                    tempPet.getTempPeriod(),
-                    tempPet.getResidence(),
-                    tempPet.getMaritalStatus(),
-                    tempPet.getJob(),
-                    tempPet.getStatus(),
-                    selectAnimalName(tempPet.getAbNumber()),
-                    selectMemberName(tempPet.getMNumber()),
-                    selectMemberId(tempPet.getMNumber())
-            );
-
-            adminTempDetailForms.add(detailForm);
-        }
+        addAdminTempDetailForms(adminTempDetailForms, tempPets);
 
         return adminTempDetailForms;
     }
@@ -84,7 +67,7 @@ public class TempDao implements BasicDao {
         for (TempPet tempPet : tempPets) {
             MypageTempListForm listForm = new MypageTempListForm(
                     tempPet.getTNumber(),
-                    getAbNameByAbNumber(tempPet.getAbNumber()),
+                    selectAnimalName(tempPet),
                     tempPet.getStatus()
             );
 
@@ -98,24 +81,7 @@ public class TempDao implements BasicDao {
         List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndexByStatus(start, end, status);
 
-        for (TempPet tempPet : tempPets) {
-            AdminTempDetailForm detailForm = new AdminTempDetailForm(
-                    tempPet.getTNumber(),
-                    tempPet.getMNumber(),
-                    tempPet.getAbNumber(),
-                    tempPet.getTempDate(),
-                    tempPet.getTempPeriod(),
-                    tempPet.getResidence(),
-                    tempPet.getMaritalStatus(),
-                    tempPet.getJob(),
-                    tempPet.getStatus(),
-                    selectAnimalName(tempPet.getAbNumber()),
-                    selectMemberName(tempPet.getMNumber()),
-                    selectMemberId(tempPet.getMNumber())
-            );
-
-            adminTempDetailForms.add(detailForm);
-        }
+        addAdminTempDetailForms(adminTempDetailForms, tempPets);
 
         return adminTempDetailForms;
     }
@@ -136,8 +102,8 @@ public class TempDao implements BasicDao {
         return memberMapper.selectAll();
     }
 
-    public List<AbandonedAnimal> selectAllExcludeTempStatus() {
-        return mapper.selectAllExcludeTempStatus();
+    public List<AbandonedAnimal> selectAllExcludeTemp() {
+        return mapper.selectAllExcludeTemp();
     }
 
     public List<AbandonedAnimal> selectAllAbandonedAnimal() {
@@ -148,19 +114,43 @@ public class TempDao implements BasicDao {
         mapper.adminInsert((TempPet) obj);
     }
 
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
+
+    // =============== private 메소드 ===============
+
+    private AbandonedAnimal selectAbAnimalByPk(int abNumber) {
+        return abandonedAnimalMapper.selectByPk(abNumber);
     }
 
-    private String selectAnimalName(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
+    private String selectAnimalName(TempPet tempPet) {
+        return selectAbAnimalByPk(tempPet.getAbNumber()).getName();
+    }
+
+    private String selectMemberId(int mNumber) {
+        return memberMapper.selectMemberId(mNumber);
     }
 
     private String selectMemberName(int mNumber) {
         return memberMapper.selectName(mNumber);
     }
 
-    private String selectMemberId(int mNumber) {
-        return memberMapper.selectMemberId(mNumber);
+    private void addAdminTempDetailForms(List<AdminTempDetailForm> adminTempDetailForms, List<TempPet> tempPets) {
+        for (TempPet tempPet : tempPets) {
+            AdminTempDetailForm detailForm = new AdminTempDetailForm(
+                    tempPet.getTNumber(),
+                    tempPet.getAbNumber(),
+                    tempPet.getMNumber(),
+                    tempPet.getTempDate(),
+                    tempPet.getTempPeriod(),
+                    tempPet.getResidence(),
+                    tempPet.getMaritalStatus(),
+                    tempPet.getJob(),
+                    tempPet.getStatus(),
+                    selectAnimalName(tempPet),
+                    selectMemberName(tempPet.getMNumber()),
+                    selectMemberId(tempPet.getMNumber())
+            );
+
+            adminTempDetailForms.add(detailForm);
+        }
     }
 }

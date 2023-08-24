@@ -85,7 +85,7 @@
     </div>
 </section>
 
-
+<br><br>
 <div class="container survey">
     <h1 id="title" class="text-center">봉사 신청</h1>
     <div class="container">
@@ -96,8 +96,10 @@
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
-                    <h2 class="mb-4">${detailForm.name} (${detailForm.groupName}에서 보호중)</h2>
+                    <h2 class="mb-4">${detailForm.name}</h2>
+                    <h6 class="mb-4">소속중인 보호소: ${detailForm.groupName}</h6>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span
@@ -133,11 +135,16 @@
                     </div>
                 </div><br>
                 <small><span style="color: red">※ 해당 기관에 연락하셔서 일정을 조율해 주세요.</span></small>
-                    <br>${detailForm.getGroupName()} 연락처 : ${detailForm.phone}
+                    <br>${detailForm.groupName} 연락처 : ${detailForm.phone}
             </div>
         </div>
+    </div><br>
+    <div class="modal-footer">
+        ₩
     </div>
 </div>
+
+<div class="info-wrap w-100 p-5 img"></div>
 <!--Apply form end -->
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>

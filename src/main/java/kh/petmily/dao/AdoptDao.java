@@ -55,22 +55,7 @@ public class AdoptDao implements BasicDao {
         List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndex(start, end);
 
-        for (Adopt adopt : adopts) {
-            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
-                    adopt.getAdNumber(),
-                    adopt.getMNumber(),
-                    adopt.getAbNumber(),
-                    adopt.getResidence(),
-                    adopt.getMaritalStatus(),
-                    adopt.getJob(),
-                    adopt.getStatus(),
-                    selectAnimalName(adopt.getAbNumber()),
-                    selectMemberName(adopt.getMNumber()),
-                    selectMemberId(adopt.getMNumber())
-            );
-
-            adminAdoptDetailForms.add(detailForm);
-        }
+        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
 
         return adminAdoptDetailForms;
     }
@@ -82,7 +67,7 @@ public class AdoptDao implements BasicDao {
         for (Adopt adopt : adopts) {
             MypageAdoptListForm listForm = new MypageAdoptListForm(
                     adopt.getAdNumber(),
-                    getAbNameByAbNumber(adopt.getAbNumber()),
+                    selectAnimalName(adopt),
                     adopt.getStatus()
             );
 
@@ -96,22 +81,7 @@ public class AdoptDao implements BasicDao {
         List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndexByStatus(start, end, status);
 
-        for (Adopt adopt : adopts) {
-            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
-                    adopt.getAdNumber(),
-                    adopt.getMNumber(),
-                    adopt.getAbNumber(),
-                    adopt.getResidence(),
-                    adopt.getMaritalStatus(),
-                    adopt.getJob(),
-                    adopt.getStatus(),
-                    selectAnimalName(adopt.getAbNumber()),
-                    selectMemberName(adopt.getMNumber()),
-                    selectMemberId(adopt.getMNumber())
-            );
-
-            adminAdoptDetailForms.add(detailForm);
-        }
+        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
 
         return adminAdoptDetailForms;
     }
@@ -128,29 +98,24 @@ public class AdoptDao implements BasicDao {
         mapper.updateStatusToAdopt();
     }
 
-    public List<Member> selectAllMember() {
-        return memberMapper.selectAll();
-    }
-
-    public List<AbandonedAnimal> selectAllExcludeAdoptStatus() {
-        return mapper.selectAllExcludeAdoptStatus();
-    }
-
-    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
-        return abandonedAnimalMapper.selectAll();
+    public List<AbandonedAnimal> selectAllExcludeAdopt() {
+        return mapper.selectAllExcludeAdopt();
     }
 
     public void adminInsert(DomainObj obj) {
         mapper.adminInsert((Adopt) obj);
     }
 
-    private String getAbNameByAbNumber(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
+    public List<Member> selectAllMember() {
+        return memberMapper.selectAll();
     }
 
-    private String selectAnimalName(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
+    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
+        return abandonedAnimalMapper.selectAll();
     }
+
+
+    // =============== private 메소드 ===============
 
     private String selectMemberName(int mNumber) {
         return memberMapper.selectName(mNumber);
@@ -158,5 +123,32 @@ public class AdoptDao implements BasicDao {
 
     private String selectMemberId(int mNumber) {
         return memberMapper.selectMemberId(mNumber);
+    }
+
+    private AbandonedAnimal selectAbAnimalByPk(int abNumber) {
+        return abandonedAnimalMapper.selectByPk(abNumber);
+    }
+
+    private String selectAnimalName(Adopt adopt) {
+        return selectAbAnimalByPk(adopt.getAbNumber()).getName();
+    }
+
+    private void addAdminAdoptDetailForms(List<AdminAdoptDetailForm> adminAdoptDetailForms, List<Adopt> adopts) {
+        for (Adopt adopt : adopts) {
+            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
+                    adopt.getAdNumber(),
+                    adopt.getMNumber(),
+                    adopt.getAbNumber(),
+                    adopt.getResidence(),
+                    adopt.getMaritalStatus(),
+                    adopt.getJob(),
+                    adopt.getStatus(),
+                    selectAnimalName(adopt),
+                    selectMemberName(adopt.getMNumber()),
+                    selectMemberId(adopt.getMNumber())
+            );
+
+            adminAdoptDetailForms.add(detailForm);
+        }
     }
 }

@@ -99,19 +99,19 @@ public class AdoptTempServiceImpl implements AdoptTempService {
 
     // 모든 유기동물
     @Override
-    public List<AbandonedAnimal> selectAllAbandonedAnimalAdopt() {
+    public List<AbandonedAnimal> getAbAnimalListInAdopt() {
         return adoptDao.selectAllAbandonedAnimal();
     }
 
     // 입양 '완료'인 상태 제외한 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> selectAllExcludeAdoptStatus() {
-        return adoptDao.selectAllExcludeAdoptStatus();
+    public List<AbandonedAnimal> getAbAnimalListExcludeAdopt() {
+        return adoptDao.selectAllExcludeAdopt();
     }
 
     // 모든 회원 리스트
     @Override
-    public List<Member> selectAllMemberAdopt() {
+    public List<Member> getMemberListInAdopt() {
         return adoptDao.selectAllMember();
     }
 
@@ -211,19 +211,19 @@ public class AdoptTempServiceImpl implements AdoptTempService {
 
     // 모든 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> selectAllAbandonedAnimalTemp() {
+    public List<AbandonedAnimal> getAbAnimalListInTemp() {
         return tempDao.selectAllAbandonedAnimal();
     }
 
     // 임시보호 '완료'인 상태 제외한 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> selectAllExcludeTempStatus() {
-        return tempDao.selectAllExcludeTempStatus();
+    public List<AbandonedAnimal> getAbAnimalListExcludeTemp() {
+        return tempDao.selectAllExcludeTemp();
     }
 
     // 모든 회원 리스트
     @Override
-    public List<Member> selectAllMemberTemp() {
+    public List<Member> getMemberListInTemp() {
         return tempDao.selectAllMember();
     }
 

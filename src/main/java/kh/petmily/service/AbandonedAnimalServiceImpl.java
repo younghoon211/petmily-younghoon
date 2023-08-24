@@ -3,6 +3,7 @@ package kh.petmily.service;
 import kh.petmily.dao.AbandonedAnimalDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
+import kh.petmily.domain.shelter.Shelter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -79,18 +80,13 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     }
 
     @Override
-    public List<AbandonedAnimal> selectAll() {
-        return abandonedAnimalDao.selectAll();
-    }
-
-    @Override
-    public AbandonedAnimal getAnimal(int pk) {
+    public AbandonedAnimal getAbAnimal(int pk) {
         return abandonedAnimalDao.findByPk(pk);
     }
 
     @Override
-    public String getAnimalName(int pk) {
-        return abandonedAnimalDao.selectName(pk);
+    public List<AbandonedAnimal> getAbAnimalList() {
+        return abandonedAnimalDao.selectAll();
     }
 
     // 게시판 리스트 (관리자 페이지)
@@ -173,17 +169,14 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
                 abAnimal.getAnimalState(),
                 abAnimal.getImgPath(),
                 abAnimal.getAdmissionDate(),
-                getGroupName(abAnimal.getAbNumber()),
-                getPhone(abAnimal.getAbNumber())
+                getShelter(abAnimal.getAbNumber()).getGroupName(),
+                getShelter(abAnimal.getAbNumber()).getLocation(),
+                getShelter(abAnimal.getAbNumber()).getPhone()
         );
     }
 
-    private String getGroupName(int pk) {
-        return abandonedAnimalDao.selectGroupName(pk);
-    }
-
-    private String getPhone(int pk) {
-        return abandonedAnimalDao.selectPhone(pk);
+    private Shelter getShelter(int pk) {
+        return abandonedAnimalDao.selectShelterByPk(pk);
     }
 
     private AdminAbandonedAnimalModifyForm toModifyForm(AbandonedAnimal abAnimal) {

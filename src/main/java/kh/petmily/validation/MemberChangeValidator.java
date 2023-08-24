@@ -34,12 +34,12 @@ public class MemberChangeValidator implements Validator {
         }
 
         // 이메일 중복체크
-        if (!memberService.checkDuplicatedEmailMemberChange(memberChangeForm.getEmail(), memberChangeForm.getId())) {
+        if (!memberService.checkDuplicatedEmailChangeInfo(memberChangeForm.getEmail(), memberChangeForm.getId())) {
             errors.rejectValue("email", "duplicatedEmail");
         }
 
         // 전화번호 중복체크
-        if (memberService.checkDuplicatedPhoneMemberChange(memberChangeForm)) {
+        if (memberService.checkDuplicatedPhoneChangeInfo(memberChangeForm)) {
             errors.rejectValue("phone", "duplicatedPhone");
         }
     }

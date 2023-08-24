@@ -85,9 +85,9 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     // 글 상세보기
     @Override
     public AdoptReviewDetailForm getDetailPage(int pk) {
-        AdoptReview domain = adoptReviewDao.findByPk(pk);
+        AdoptReview adoptReview = adoptReviewDao.findByPk(pk);
 
-        return toDetailForm(domain);
+        return toDetailForm(adoptReview);
     }
 
     // 내가 쓴 게시글 (마이페이지)

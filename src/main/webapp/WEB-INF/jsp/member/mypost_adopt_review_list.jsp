@@ -123,6 +123,10 @@
                     </c:forEach>
                 </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                </div>
+
                 <!-- 페이징 처리 -->
                 <div class="row mt-5">
                     <div class="col text-center">

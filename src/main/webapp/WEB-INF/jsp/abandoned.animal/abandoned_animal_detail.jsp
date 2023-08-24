@@ -41,7 +41,6 @@
 
 <!-- header -->
 <%@ include file="../include/header.jspf" %>
-
 <%-- 현재 페이지 --%>
 <section class="hero-wrap hero-wrap-2"
          style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
@@ -59,7 +58,7 @@
         </div>
     </div>
 </section>
-
+<div class="info-wrap w-100 p-5 img"></div>
 <section class="ftco-section ftco-no-pt ftco-no-pb">
     <div class="container">
         <div class="row d-flex no-gutters">
@@ -92,7 +91,7 @@
                                 class="flaticon-emergency-call"></span></div>
                         <div class="text pl-3">
                             <h4>몸무게 / 성별</h4>
-                            <p>${detailForm.weight} Kg / ${detailForm.gender}</p>
+                            <p>${detailForm.weight}kg / ${detailForm.gender}</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -116,7 +115,7 @@
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
                             <h4>보호중인 보호소</h4>
-                            <p>${detailForm.getGroupName()}</p>
+                            <p>${detailForm.groupName} (${detailForm.shelterLocation})</p>
                         </div>
                     </div>
                 </div>
@@ -208,7 +207,6 @@
         </div>
     </div>
 </section>
-
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="/resources/petsitting-master/js/popper.min.js"></script>

@@ -136,27 +136,15 @@
         </if>
     </sql>
 
-    <select id="selectName" resultType="java.lang.String">
-        select NAME
-        from ABANDONEDANIMAL
-        where ABNUMBER = #{pk}
-    </select>
-
     <select id="selectAll" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         order by ABNUMBER
     </select>
 
-    <select id="selectGroupName" resultType="java.lang.String">
-        select S.GROUPNAME
+    <select id="selectShelterByPk" resultType="kh.petmily.domain.shelter.Shelter">
+        select *
         from SHELTER S inner join ABANDONEDANIMAL AB
-                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
-    </select>
-
-    <select id="selectPhone" resultType="java.lang.String">
-        select S.PHONE
-        from SHELTER S inner join ABANDONEDANIMAL AB
-                                  on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
+        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
     </select>
 </mapper>

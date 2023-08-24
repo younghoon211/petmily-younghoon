@@ -16,7 +16,6 @@ public class ShelterDao implements BasicDao {
 
     private final ShelterMapper mapper;
 
-    // =======BasicDao 메소드=======
     @Override
     public Shelter findByPk(int pk) {
         return mapper.selectByPk(pk);
@@ -36,7 +35,6 @@ public class ShelterDao implements BasicDao {
     public void delete(int pk) {
         mapper.delete(pk);
     }
-    // =======BasicDao 메소드=======
 
     public int selectCount() {
         return mapper.selectCount();

@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 모든 회원정보 조회 (관리자)
     @Override
-    public List<Member> selectAll() {
+    public List<Member> getMemberList() {
         return memberDao.selectAll();
     }
 
@@ -85,11 +85,11 @@ public class MemberServiceImpl implements MemberService {
     // ===================== Update =====================
     // 수정
     @Override
-    public Member change(Member domain, MemberChangeForm form) {
-        Member member = toChange(domain, form);
-        memberDao.update(member);
+    public Member change(Member member, MemberChangeForm form) {
+        Member updateMember = toChange(member, form);
+        memberDao.update(updateMember);
 
-        return member;
+        return updateMember;
     }
 
     // 수정 폼 (관리자)
@@ -147,17 +147,16 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원정보 변경 검증 (이메일)
     @Override
-    public boolean checkDuplicatedEmailMemberChange(String email, String id) {
-        int emailCount = memberDao.selectEmailCheckMemberChange(email, id);
-        
+    public boolean checkDuplicatedEmailChangeInfo(String email, String id) {
+        int emailCount = memberDao.selectEmailCheckChangeInfo(email, id);
+
         return emailCount == 0;
     }
 
     // 회원정보 변경 검증 (연락처)
     @Override
-    public boolean checkDuplicatedPhoneMemberChange(MemberChangeForm form) {
-        int phoneCount = memberDao.selectPhoneCheckMemberChange(
-                         form.getPhone(), form.getId());
+    public boolean checkDuplicatedPhoneChangeInfo(MemberChangeForm form) {
+        int phoneCount = memberDao.selectPhoneCheckChangeInfo(form.getPhone(), form.getId());
         
         return phoneCount == 1;
     }

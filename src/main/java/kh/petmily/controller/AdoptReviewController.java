@@ -60,7 +60,7 @@ public class AdoptReviewController {
     @GetMapping("/auth/write")
     public String writeForm(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
-        List<Member> memberList = memberService.selectAll();
+        List<Member> memberList = memberService.getMemberList();
 
         model.addAttribute("mNumber", mNumber);
         model.addAttribute("memberList", memberList);
@@ -92,7 +92,7 @@ public class AdoptReviewController {
         AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(bNumber);
         log.info("수정 전 adoptReviewModifyForm={}", modifyForm);
 
-        List<Member> memberList = memberService.selectAll();
+        List<Member> memberList = memberService.getMemberList();
 
         model.addAttribute("modifyForm", modifyForm);
         model.addAttribute("memberList", memberList);

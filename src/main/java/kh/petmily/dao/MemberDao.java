@@ -16,7 +16,6 @@ public class MemberDao implements BasicDao {
 
     private final MemberMapper mapper;
 
-    // =======BasicDao 메소드=======
     @Override
     public Member findByPk(int pk) {
         return mapper.selectByPk(pk);
@@ -36,7 +35,6 @@ public class MemberDao implements BasicDao {
     public void delete(int pk) {
         mapper.delete(pk);
     }
-    // =======BasicDao 메소드=======
 
     public Member selectMemberById(String id) {
         return mapper.selectMemberById(id);
@@ -89,11 +87,11 @@ public class MemberDao implements BasicDao {
         return mapper.selectPhoneCheck(phone);
     }
 
-    public int selectEmailCheckMemberChange(String email, String id) {
-        return mapper.selectEmailCheckMemberChange(email, id);
+    public int selectEmailCheckChangeInfo(String email, String id) {
+        return mapper.selectEmailCheckChangeInfo(email, id);
     }
 
-    public int selectPhoneCheckMemberChange(String email, String id) {
-        return mapper.selectPhoneCheckMemberChange(email, id);
+    public int selectPhoneCheckChangeInfo(String email, String id) {
+        return mapper.selectPhoneCheckChangeInfo(email, id);
     }
 }

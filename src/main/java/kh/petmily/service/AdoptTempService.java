@@ -35,11 +35,11 @@ public interface AdoptTempService {
 
     Adopt getAdoptByPk(int adNumber);
 
-    List<AbandonedAnimal> selectAllAbandonedAnimalAdopt();
+    List<AbandonedAnimal> getAbAnimalListInAdopt();
 
-    List<AbandonedAnimal> selectAllExcludeAdoptStatus();
+    List<AbandonedAnimal> getAbAnimalListExcludeAdopt();
 
-    List<Member> selectAllMemberAdopt();
+    List<Member> getMemberListInAdopt();
 
     void adminAdoptUpdate(AdminAdoptForm form);
 
@@ -60,11 +60,11 @@ public interface AdoptTempService {
 
     TempPet getTempByPk(int tNumber);
 
-    List<AbandonedAnimal> selectAllAbandonedAnimalTemp();
+    List<AbandonedAnimal> getAbAnimalListInTemp();
 
-    List<AbandonedAnimal> selectAllExcludeTempStatus();
+    List<AbandonedAnimal> getAbAnimalListExcludeTemp();
 
-    List<Member> selectAllMemberTemp();
+    List<Member> getMemberListInTemp();
 
     void adminTempUpdate(AdminTempForm form);
 

@@ -107,7 +107,7 @@
                             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
-                                        <h3 class="heading">신청 내역</h3>
+                                        <h3 class="heading">입양/임보 신청내역</h3>
                                         <a href="/member/auth/myApply/adopt" class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
@@ -125,8 +125,8 @@
                             <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
-                                        <h3 class="heading">찾아요 매칭 결과</h3>
-                                        <a href="/member/auth/checkMatching?matched=matched" class="btn-custom d-flex align-items-center justify-content-center"><span
+                                        <h3 class="heading">찾아요/봤어요 매칭 결과</h3>
+                                        <a href="/member/auth/findMatching" class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">회원 정보 변경</h3>
-                                        <a href="/member/auth/change_info"
+                                        <a href="/member/auth/changeInfo"
                                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>

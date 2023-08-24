@@ -90,7 +90,7 @@
         where T.TNUMBER = #{pk})
     </select>
 
-    <select id="selectAllExcludeTempStatus" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+    <select id="selectAllExcludeTemp" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ABNUMBER

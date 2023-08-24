@@ -64,29 +64,29 @@
                         <thead>
                         <tr class="table table-border">
                             <th>유기동물 이름 (번호)</th>
-                            <th>보호소 이름 (번호)</th>
+                            <th>보호소 - 지역 (번호)</th>
                             <th>입소 날짜</th>
                             <th>발견 장소</th>
                             <th>상태</th>
                             <th>관리</th>
                         </tr>
                         </thead>
-                        <c:forEach var="abandonedAnimal" items="${pageForm.content}">
+                        <c:forEach var="abAnimal" items="${pageForm.content}">
                             <tbody>
                             <tr>
-                                <td>${abandonedAnimal.name} (${abandonedAnimal.abNumber})</td>
-                                <td>${abandonedAnimal.groupName} (${abandonedAnimal.getSNumber()})</td>
-                                <td>${abandonedAnimal.admissionDate}</td>
-                                <td>${abandonedAnimal.location}</td>
-                                <td>${abandonedAnimal.animalState}</td>
+                                <td>${abAnimal.name} (${abAnimal.abNumber})</td>
+                                <td>${abAnimal.groupName} - ${abAnimal.shelterLocation} (${abAnimal.getSNumber()})</td>
+                                <td>${abAnimal.admissionDate}</td>
+                                <td>${abAnimal.location}</td>
+                                <td>${abAnimal.animalState}</td>
                                 <td>
                                     <button type="button" class="btn btn-dark"
-                                            onclick="location.href='/abandonedAnimal/detail?abNumber=${abandonedAnimal.abNumber}'">상세</button>
+                                            onclick="location.href='/abandonedAnimal/detail?abNumber=${abAnimal.abNumber}'">상세</button>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/abandonedAnimal/modify?abNumber=${abandonedAnimal.abNumber}'">수정</button>
+                                            onclick="location.href='/admin/abandonedAnimal/modify?abNumber=${abAnimal.abNumber}'">수정</button>
                                     <button type="button" class="btn btn-danger"
                                            onclick="if(confirm('삭제 시 해당 동물과 관련된 모든 정보(입양/임보/후원)가 삭제됩니다.'))
-                                                   { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/admin/abandonedAnimal/delete?abNumber=${abandonedAnimal.abNumber}';}">삭제</button>
+                                                   { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/admin/abandonedAnimal/delete?abNumber=${abAnimal.abNumber}';}">삭제</button>
                                 </td>
                             </tr>
                             </tbody>

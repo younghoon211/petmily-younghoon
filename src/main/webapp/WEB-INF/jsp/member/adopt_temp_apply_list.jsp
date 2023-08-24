@@ -43,7 +43,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <h1 class="mb-0 bread">입양 임보 신청 내역 확인</h1>
+                <h1 class="mb-0 bread">입양/임보 신청내역</h1>
             </div>
         </div>
     </div>
@@ -58,12 +58,12 @@
                 <c:if test="${type eq 'adopt'}">
                     checked
                 </c:if>>
-            <label for="adopt">입양 신청 내역 확인</label>
+            <label for="adopt">입양 신청내역</label>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" id="temp" name="type" value="temp" onclick="selectType(this.value)"
             <c:if test="${type eq 'temp'}">
                    checked
-            </c:if>> <label for="temp">임시 보호 신청 내역 확인</label>
+            </c:if>> <label for="temp">임시보호 신청내역</label>
         </div>
         <br>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
@@ -96,8 +96,11 @@
                 </div>
             </c:forEach>
 
-            <!-- 페이징 처리 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+            </div>
 
+            <!-- 페이징 처리 -->
             <div class="row mt-5">
                 <div class="col text-center">
                     <div class="block-27">

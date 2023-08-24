@@ -7,8 +7,8 @@ import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
 import kh.petmily.domain.member.Member;
-import kh.petmily.domain.member.form.MemberJoinForm;
 import kh.petmily.domain.member.form.MemberChangeForm;
+import kh.petmily.domain.member.form.MemberJoinForm;
 import kh.petmily.domain.temp.form.MypageTempPageForm;
 import kh.petmily.service.*;
 import kh.petmily.validation.JoinValidator;
@@ -124,7 +124,8 @@ public class MemberController {
         return "/main/index";
     }
 
-    // 마이페이지
+    // =================== 마이페이지 ===================
+    // 마이페이지 홈
     @GetMapping("/member/auth/mypage")
     public String mypage(HttpServletRequest request, Model model) {
         Member member = getAuthUser(request);
@@ -133,17 +134,17 @@ public class MemberController {
         return "/member/mypage";
     }
 
-    // 마이페이지 수정
-    @GetMapping("/member/auth/change_info")
-    public String changeInfo(HttpServletRequest request, Model model) {
+    // 회원정보 수정
+    @GetMapping("/member/auth/changeInfo")
+    public String changeInfoForm(HttpServletRequest request, Model model) {
         Member member = getAuthUser(request);
         model.addAttribute("member", member);
 
         return "/member/member_info_change";
     }
 
-    @PostMapping("/member/auth/change_info")
-    public String changeInfoPost(@Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm,
+    @PostMapping("/member/auth/changeInfo")
+    public String changeInfo(@Validated @ModelAttribute("memberChangeForm") MemberChangeForm memberChangeForm,
                                  BindingResult bindingResult, HttpServletRequest request) {
         log.info("memberChangeForm= {}", memberChangeForm);
         Member member = getAuthUser(request);
@@ -160,7 +161,10 @@ public class MemberController {
 
     // 회원탈퇴
     @GetMapping("/member/auth/withdraw")
-    public String withdrawForm() {
+    public String withdrawForm(Model model, HttpServletRequest request) {
+        String memberName = memberService.getMemberName(getAuthMNumber(request));
+        model.addAttribute("memberName", memberName);
+
         return "/member/withdraw";
     }
 
@@ -189,32 +193,57 @@ public class MemberController {
         return "/member/alert_withdraw";
     }
 
-    @GetMapping("/member/auth/checkMatching")
-    public String checkMatching(@RequestParam(required = false) String matched,
-                                @RequestParam(defaultValue = "1") int pageNo,
+    // 찾아요 매칭된 페이지
+    @GetMapping("/member/auth/findMatching")
+    public String findMatching(@RequestParam(defaultValue = "1") int pageNo,
                                 HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
+        FindBoardPageForm pageForm = findBoardService.getMatchingFindPage(pageNo, mNumber);
 
-        FindBoardPageForm pageForm = findBoardService.getMatchingPage(pageNo, mNumber, matched);
         model.addAttribute("pageForm", pageForm);
 
-        request.getSession().setAttribute("matched", matched);
-
-        return "/member/matched_find_list";
+        return "/member/matched_find";
     }
 
-    @GetMapping("/member/auth/checkMatching/lookList")
-    public String checkMatchingDetail(@RequestParam int faNumber,
-                                      @RequestParam(defaultValue = "1") int pageNo,
-                                      Model model) {
+    // 찾아요에 매칭된 봤어요 리스트
+    @GetMapping("/member/auth/findMatching/lookList")
+    public String findMatchingLookList(@RequestParam int faNumber,
+                                       @RequestParam(defaultValue = "1") int pageNo,
+                                       Model model) {
         FindBoard findBoard = findBoardService.getFindBoard(faNumber);
+        LookBoardPageForm pageForm = lookBoardService.getLookListMatchedFind(pageNo, findBoard);
 
-        LookBoardPageForm pageForm = lookBoardService.getMatchingPage(pageNo, findBoard);
-        model.addAttribute("matchedPageForm", pageForm);
+        model.addAttribute("pageForm", pageForm);
 
-        return "/member/matched_look_list";
+        return "/member/matched_find_looklist";
     }
+    // =====================================================================================================
+//    // 봤어요 매칭된 페이지
+//    @GetMapping("/member/auth/lookMatching")
+//    public String lookMatching(@RequestParam(defaultValue = "1") int pageNo,
+//                               HttpServletRequest request, Model model) {
+//        int mNumber = getAuthMNumber(request);
+//        LookBoardPageForm pageForm = lookBoardService.getMatchingLookPage(pageNo, mNumber);
+//
+//        model.addAttribute("pageForm", pageForm);
+//
+//        return "/member/matched_look";
+//    }
+//
+//    // 봤어요에 매칭된 찾아요 리스트
+//    @GetMapping("/member/auth/lookMatching/findList")
+//    public String lookMatchingFindList(@RequestParam int laNumber,
+//                                       @RequestParam(defaultValue = "1") int pageNo,
+//                                       Model model) {
+//        LookBoard lookBoard = lookBoardService.getLookBoard(laNumber);
+//        FindBoardPageForm pageForm = findBoardService.getFindListMatchedLook(pageNo, lookBoard);
+//
+//        model.addAttribute("pageForm", pageForm);
+//
+//        return "/member/matched_look_findlist";
+//    }
 
+    // 입양, 임보 신청 현황
     @GetMapping("/member/auth/myApply/{type}")
     public String getMyApply(@PathVariable String type,
                              @RequestParam(defaultValue = "1") int pageNo,

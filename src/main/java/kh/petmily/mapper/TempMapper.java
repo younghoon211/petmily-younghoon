@@ -43,7 +43,7 @@ public interface TempMapper {
 
     void tempRefuse(int pk);
 
-    List<AbandonedAnimal> selectAllExcludeTempStatus();
+    List<AbandonedAnimal> selectAllExcludeTemp();
 
     void adminInsert(TempPet obj);
 

@@ -154,7 +154,9 @@ public class AdminController {
 
     // 유기동물 정보 추가(insert)
     @GetMapping("/abandonedAnimal/write")
-    public String adminAbandonedWriteForm() {
+    public String adminAbandonedWriteForm(Model model) {
+        model.addAttribute("shelterList", shelterService.getShelterList());
+
         return "/admin/abandoned.animal/abandoned_animal_write";
     }
 
@@ -185,7 +187,7 @@ public class AdminController {
         log.info("수정 전 adminAbandonedAnimalModifyForm = {}", modifyForm);
 
         model.addAttribute("modifyForm", modifyForm);
-        model.addAttribute("shelter", shelterService.selectAll());
+        model.addAttribute("shelterList", shelterService.getShelterList());
 
         return "/admin/abandoned.animal/abandoned_animal_modify";
     }
@@ -195,7 +197,7 @@ public class AdminController {
                                        HttpServletRequest request) throws IOException {
         String fullPath = getFullPath(request);
 
-        String initFile = abandonedAnimalService.getAnimal(modifyForm.getAbNumber()).getImgPath();
+        String initFile = abandonedAnimalService.getAbAnimal(modifyForm.getAbNumber()).getImgPath();
         log.info("initFile(기존 업로드 파일명) = {}", initFile);
 
         String newFile = adoptReviewService.storeFile(modifyForm.getFile(), fullPath);
@@ -241,7 +243,7 @@ public class AdminController {
     // 유기동물 정보 삭제(delete)
     @GetMapping("/abandonedAnimal/delete")
     public String adminAbandonedDelete(@RequestParam int abNumber, HttpServletRequest request) {
-        String filename = abandonedAnimalService.getAnimal(abNumber).getImgPath();
+        String filename = abandonedAnimalService.getAbAnimal(abNumber).getImgPath();
         boolean ExistingInitFile = filename != null && !filename.equals("no_image.png");
 
         if (ExistingInitFile) {
@@ -267,8 +269,8 @@ public class AdminController {
     // 입양 정보 추가(insert)
     @GetMapping("/adopt/write")
     public String adoptWrite(Model model) {
-        List<Member> member = adoptTempService.selectAllMemberAdopt();
-        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllExcludeAdoptStatus();
+        List<Member> member = adoptTempService.getMemberListInAdopt();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.getAbAnimalListExcludeAdopt();
 
         model.addAttribute("member", member);
         model.addAttribute("abandonedAnimal", abandonedAnimal);
@@ -288,9 +290,9 @@ public class AdminController {
     // 입양 정보 수정(update)
     @GetMapping("/adopt/modify")
     public String adoptModify(@RequestParam int adNumber, Model model) {
-        List<Member> member = adoptTempService.selectAllMemberAdopt();
+        List<Member> member = adoptTempService.getMemberListInAdopt();
         Adopt adopt = adoptTempService.getAdoptByPk(adNumber);
-        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllAbandonedAnimalAdopt();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.getAbAnimalListInAdopt();
 
         model.addAttribute("member", member);
         model.addAttribute("adopt", adopt);
@@ -381,8 +383,8 @@ public class AdminController {
     // 임시보호 정보 추가(insert)
     @GetMapping("/temp/write")
     public String tempWrite(Model model) {
-        List<Member> member = adoptTempService.selectAllMemberTemp();
-        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllExcludeTempStatus();
+        List<Member> member = adoptTempService.getMemberListInTemp();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.getAbAnimalListExcludeTemp();
 
         model.addAttribute("member", member);
         model.addAttribute("abandonedAnimal", abandonedAnimal);
@@ -403,9 +405,9 @@ public class AdminController {
     // 임시보호 정보 수정(update)
     @GetMapping("/temp/modify")
     public String tempModify(@RequestParam int tNumber, Model model) {
-        List<Member> member = adoptTempService.selectAllMemberTemp();
+        List<Member> member = adoptTempService.getMemberListInTemp();
         TempPet tempPet = adoptTempService.getTempByPk(tNumber);
-        List<AbandonedAnimal> abandonedAnimal = adoptTempService.selectAllAbandonedAnimalTemp();
+        List<AbandonedAnimal> abandonedAnimal = adoptTempService.getAbAnimalListInTemp();
 
         model.addAttribute("member", member);
         model.addAttribute("temp", tempPet);
@@ -498,8 +500,8 @@ public class AdminController {
     // 후원 추가
     @GetMapping("donation/create")
     public String donationCreateForm(Model model) {
-        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
-        List<Member> members = memberService.selectAll();
+        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
+        List<Member> members = memberService.getMemberList();
 
         model.addAttribute("abandonedAnimals", abandonedAnimals);
         model.addAttribute("members", members);
@@ -518,8 +520,8 @@ public class AdminController {
     // 후원 수정
     @GetMapping("donation/modify")
     public String donationModifyForm(@RequestParam int dNumber, Model model) {
-        List<Member> members = memberService.selectAll();
-        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.selectAll();
+        List<Member> members = memberService.getMemberList();
+        List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
         AdminDonationModifyForm modifyForm = donateService.getModifyForm(dNumber);
 
         model.addAttribute("members", members);

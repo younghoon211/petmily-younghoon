@@ -44,7 +44,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Find Animal Board<i class="ion-ios-arrow-forward"></i></span></p>
+                <p class="breadcrumbs mb-2"><span>잃어버린 반려동물을 찾고 있다면 글을 작성해주세요<i class="ion-ios-arrow-forward"></i></span></p>
                 <h1 class="mb-0 bread">반려동물 찾아요</h1>
             </div>
         </div>
@@ -105,9 +105,9 @@
                                 <br>
                                 <div><i class="far fa-eye"></i> 종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 상태: ${findBoard.animalState}</div>
+                                <div><i class="far fa-eye"></i> 실종장소: ${findBoard.location}</div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 장소: ${findBoard.location}</div>
+                                <div><i class="far fa-eye"></i> 상태: ${findBoard.animalState}</div>
                                 <br>
                             </div>
                             <div><small style="color: #00bd56">${findBoard.name}</small></div>

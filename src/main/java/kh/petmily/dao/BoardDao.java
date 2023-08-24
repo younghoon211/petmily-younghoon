@@ -45,22 +45,7 @@ public class BoardDao implements BasicDao {
         List<BoardListForm> boardListForms = new ArrayList<>();
         List<Board> boards = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
 
-        for (Board board : boards) {
-            BoardListForm listForm = new BoardListForm(
-                    board.getBNumber(),
-                    board.getMNumber(),
-                    selectName(board.getBNumber()),
-                    board.getKindOfBoard(),
-                    board.getTitle(),
-                    board.getContent(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getCheckPublic(),
-                    board.getViewCount(),
-                    selectReplyCount(board.getBNumber())
-            );
-
-            boardListForms.add(listForm);
-        }
+        addBoardListForms(boardListForms, boards);
 
         return boardListForms;
     }
@@ -106,6 +91,35 @@ public class BoardDao implements BasicDao {
         List<BoardListForm> boardListForms = new ArrayList<>();
         List<Board> boards = mapper.selectIndexWithCondition(start, end, sort, keyword, condition, kindOfBoard);
 
+        addBoardListForms(boardListForms, boards);
+
+        return boardListForms;
+    }
+
+    public int updateViewCount(int pk) {
+        return mapper.updateViewCount(pk);
+    }
+
+
+    // =============== private 메소드 ===============
+
+    private String selectName(int pk) {
+        return mapper.selectName(pk);
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
+    }
+
+    private int selectReplyCount(int pk) {
+        return mapper.selectReplyCount(pk);
+    }
+
+    private DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    }
+
+    private void addBoardListForms(List<BoardListForm> boardListForms, List<Board> boards) {
         for (Board board : boards) {
             BoardListForm listForm = new BoardListForm(
                     board.getBNumber(),
@@ -122,27 +136,5 @@ public class BoardDao implements BasicDao {
 
             boardListForms.add(listForm);
         }
-
-        return boardListForms;
-    }
-
-    public int updateViewCount(int pk) {
-        return mapper.updateViewCount(pk);
-    }
-
-    private String selectName(int pk) {
-        return mapper.selectName(pk);
-    }
-
-    private String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
-    }
-
-    private int selectReplyCount(int pk) {
-        return mapper.selectReplyCount(pk);
-    }
-
-    private DateTimeFormatter getFormatter() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
 }

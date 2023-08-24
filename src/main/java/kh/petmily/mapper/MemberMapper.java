@@ -21,13 +21,13 @@ public interface MemberMapper {
 
     Member selectMemberById(String id);
 
+    String selectMemberId(int pk);
+
     String selectName(int pk);
 
     int selectCount();
 
     List<Member> selectIndex(@Param("start") int start, @Param("end") int end);
-
-    String selectMemberId(int pk);
 
     List<Member> selectAll();
 
@@ -37,7 +37,7 @@ public interface MemberMapper {
 
     int selectPhoneCheck(String phone);
 
-    int selectEmailCheckMemberChange(@Param("email") String email, @Param("id") String id);
+    int selectEmailCheckChangeInfo(@Param("email") String email, @Param("id") String id);
 
-    int selectPhoneCheckMemberChange(@Param("phone") String phone, @Param("id") String id);
+    int selectPhoneCheckChangeInfo(@Param("phone") String phone, @Param("id") String id);
 }

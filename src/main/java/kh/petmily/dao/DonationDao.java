@@ -20,7 +20,6 @@ public class DonationDao implements BasicDao {
     private final MemberMapper memberMapper;
     private final AbandonedAnimalMapper abandonedAnimalMapper;
 
-    // =======BasicDao 메소드=======
     @Override
     public Donation findByPk(int pk) {
         return mapper.selectByPk(pk);
@@ -40,7 +39,6 @@ public class DonationDao implements BasicDao {
     public void delete(int pk) {
         mapper.delete(pk);
     }
-    // =======BasicDao 메소드=======
 
     public int selectCount() {
         return mapper.selectCount();
@@ -70,7 +68,7 @@ public class DonationDao implements BasicDao {
     }
 
     private String findAnimalName(int abNumber) {
-        return abandonedAnimalMapper.selectName(abNumber);
+        return abandonedAnimalMapper.selectByPk(abNumber).getName();
     }
 
     private String findMemberName(int mNumber) {

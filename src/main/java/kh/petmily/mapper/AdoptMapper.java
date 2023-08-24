@@ -43,7 +43,7 @@ public interface AdoptMapper {
 
     void adoptRefuse(int pk);
 
-    List<AbandonedAnimal> selectAllExcludeAdoptStatus();
+    List<AbandonedAnimal> selectAllExcludeAdopt();
 
     void adminInsert(Adopt obj);
 

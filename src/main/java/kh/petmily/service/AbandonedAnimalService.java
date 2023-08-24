@@ -2,7 +2,6 @@ package kh.petmily.service;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
-import kh.petmily.domain.shelter.Shelter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,11 +17,9 @@ public interface AbandonedAnimalService {
 
     AbandonedAnimalDetailForm getDetailPage(int abNumber);
 
-    List<AbandonedAnimal> selectAll();
+    AbandonedAnimal getAbAnimal(int abNumber);
 
-    AbandonedAnimal getAnimal(int abNumber);
-
-    String getAnimalName(int abNumber);
+    List<AbandonedAnimal> getAbAnimalList();
 
     AbandonedAnimalPageForm getAdminListPage(int pageNo);
 

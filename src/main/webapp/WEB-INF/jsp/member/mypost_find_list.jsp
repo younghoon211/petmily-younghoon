@@ -97,6 +97,7 @@
 
                 <!-- 목록 출력 -->
                 <div class="row d-flex">
+
                     <c:forEach var="findBoard" items="${myPost.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
@@ -126,6 +127,10 @@
                             </div>
                         </div>
                     </c:forEach>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
                 </div>
 
                 <!-- 페이징 처리 -->

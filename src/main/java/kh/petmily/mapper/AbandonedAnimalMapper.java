@@ -2,6 +2,7 @@ package kh.petmily.mapper;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
+import kh.petmily.domain.shelter.Shelter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -38,11 +39,7 @@ public interface AbandonedAnimalMapper {
             @Param("sort") String sort
     );
 
-    String selectName(int pk);
-
     List<AbandonedAnimal> selectAll();
 
-    String selectGroupName(int pk);
-
-    String selectPhone(int pk);
+    Shelter selectShelterByPk(int pk);
 }

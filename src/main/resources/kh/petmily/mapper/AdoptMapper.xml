@@ -89,7 +89,7 @@
                                                          where AD.ADNUMBER = #{pk})
     </select>
 
-    <select id="selectAllExcludeAdoptStatus" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+    <select id="selectAllExcludeAdopt" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ABNUMBER

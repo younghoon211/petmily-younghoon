@@ -97,17 +97,19 @@
 </section>
 
 <!-- servey form -->
+<br><br>
 <div class="container survey">
-    <h1 id="title" class="text-center">입양 / 임시보호 신청서</h1>
-    <p class="text-left">* 임시 보호의 최소 기간은 2개월입니다.</p>
+    <h1 id="title" class="text-center">입양 / 임시보호 신청서</h1><br>
+    <div class="text-center" style="color: red"><small>※ 임시 보호의 최소 기간은 2개월입니다.</small></div><br><br>
+    <div class="container">
 
     <form action="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}" method="post">
         <div class="form-group">
-            <label>* 가족이 될 동물</label>
+            <label>가족이 될 동물</label>
             <input type="text" class="form-control" value="${animal.name}" readonly>
         </div>
         <div class="form-group">
-            <label>* 닉네임</label>
+            <label>회원 닉네임</label>
             <input type="text" class="form-control" value="${memberName}" readonly>
         </div>
         <br>
@@ -192,15 +194,17 @@
 
         <br>
         <br>
-        <div class="arr">
-            <button id="submit" type="submit" class="btn btn-primary">신청하기</button>
+        <div class="modal-footer" style="justify-content: center">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+            <button type="submit" class="btn btn-primary">신청하기</button>
         </div>
         <br>
         <br>
 
     </form>
+    </div>
 </div>
-
+<div class="info-wrap w-100 p-5 img"></div>
 
 
 

@@ -60,7 +60,7 @@ public class LookBoardController {
     @GetMapping("/auth/write")
     public String writeForm(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
-        List<Member> memberList = memberService.selectAll();
+        List<Member> memberList = memberService.getMemberList();
 
         model.addAttribute("memberList", memberList);
         model.addAttribute("mNumber", mNumber);
@@ -94,7 +94,7 @@ public class LookBoardController {
         LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(laNumber);
         log.info("수정 전 LookBoardModifyForm = {}", modifyForm);
 
-        List<Member> memberList = memberService.selectAll();
+        List<Member> memberList = memberService.getMemberList();
 
         model.addAttribute("modifyForm", modifyForm);
         model.addAttribute("memberList", memberList);

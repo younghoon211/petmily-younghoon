@@ -40,7 +40,7 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>Abandoned Animal<i class="ion-ios-arrow-forward"></i></span></span>
+                    <span class="mr-2"><span>보호 또는 임시보호중인 동물을 조회하는 게시판입니다<i class="ion-ios-arrow-forward"></i></span></span>
                 </p>
                 <h1 class="mb-0 bread">유기동물 조회</h1>
             </div>
@@ -89,20 +89,20 @@
         <br>
 
         <div class="row">
-            <c:forEach var="abandonedAnimal" items="${pageForm.content}">
+            <c:forEach var="abAnimal" items="${pageForm.content}">
                 <div class="col-md-6 col-lg-3 ftco-animate"
-                     onclick="location.href='/abandonedAnimal/detail?abNumber=${abandonedAnimal.abNumber}'">
+                     onclick="location.href='/abandonedAnimal/detail?abNumber=${abAnimal.abNumber}'">
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
                             <div class="img align-self-stretch"
-                                 style="background-image: url('/abandonedAnimal/upload?filename=${abandonedAnimal.imgPath}')"></div>
+                                 style="background-image: url('/abandonedAnimal/upload?filename=${abAnimal.imgPath}')"></div>
                         </div>
 
                         <div class="text pt-3 px-3 pb-4 text-center">
-                            <h3>${abandonedAnimal.name}</h3>
-                            <span class="position mb-2">${abandonedAnimal.location}</span>
+                            <h3>${abAnimal.name}</h3>
+                            <span class="position mb-2">${abAnimal.location}</span>
                             <div class="faded">
-                                <p>${abandonedAnimal.admissionDate}</p>
+                                <p>${abAnimal.admissionDate}</p>
                             </div>
                         </div>
                     </div>

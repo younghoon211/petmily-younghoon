@@ -47,13 +47,13 @@
             <div class="col-md-9 ftco-animate pb-5">
                 <c:if test="${param.kindOfBoard eq 'free'}">
                     <p class="breadcrumbs mb-2">
-                        <span class="mr-2"><span>Free Board<i class="ion-ios-arrow-forward"></i></span></span>
+                        <span class="mr-2"><span>자유롭게 소통하는 게시판입니다<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
                     <h1 class="mb-0 bread">자유게시판</h1>
                 </c:if>
                 <c:if test="${param.kindOfBoard eq 'inquiry'}">
                     <p class="breadcrumbs mb-2">
-                        <span class="mr-2"><span>Inquiry Board<i class="ion-ios-arrow-forward"></i></span></span>
+                        <span class="mr-2"><span>문의사항이 있다면 글을 작성해주세요<i class="ion-ios-arrow-forward"></i></span></span>
                     </p>
                     <h1 class="mb-0 bread">문의게시판</h1>
                 </c:if>

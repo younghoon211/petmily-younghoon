@@ -19,7 +19,7 @@ public interface MemberService {
 
     String getMemberName(int mNumber);
 
-    List<Member> selectAll();
+    List<Member> getMemberList();
 
     MemberPageForm getAdminListPage(int pageNo);
 
@@ -39,7 +39,7 @@ public interface MemberService {
 
     boolean checkDuplicatedPhone(String phone);
 
-    boolean checkDuplicatedEmailMemberChange(String email, String id);
+    boolean checkDuplicatedEmailChangeInfo(String email, String id);
 
-    boolean checkDuplicatedPhoneMemberChange(MemberChangeForm form);
+    boolean checkDuplicatedPhoneChangeInfo(MemberChangeForm form);
 }

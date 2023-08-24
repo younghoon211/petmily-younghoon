@@ -65,7 +65,7 @@ public class ShelterServiceImpl implements ShelterService {
     // ===================== CRUD 끝 =====================
 
     @Override
-    public List<Shelter> selectAll() {
+    public List<Shelter> getShelterList() {
         return shelterDao.selectAll();
     }
 

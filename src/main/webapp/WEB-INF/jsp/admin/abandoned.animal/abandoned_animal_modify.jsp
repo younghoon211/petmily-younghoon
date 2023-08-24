@@ -208,17 +208,19 @@
                                 <input type="text" class="form-control" name="location" placeholder="모르는 경우 '모름' 작성"
                                        value="${modifyForm.location}" maxlength="14" required>
                             </div>
+
                             <div class="form-group col-md-6 col-lg-4">
-                                <label>보호중인 보호소 (보호소 번호)</label>
-                                <select name="SNumber" class="form-control" required>
-                                    <c:forEach var="s" items="${shelter}">
-                                        <option value="${s.SNumber}"
-                                                <c:if test="${modifyForm.SNumber eq s.SNumber}">selected</c:if>>
-                                                ${s.groupName} (${s.SNumber})
+                                <label for="shelter">보호중인 보호소 (보호소 번호)</label>
+                                <select name="sNumber" id="shelter" class="form-control">
+                                    <c:forEach var="s" items="${shelterList}">
+                                        <option value="${s.getSNumber()}"
+                                                <c:if test="${modifyForm.getSNumber() eq s.getSNumber()}">selected</c:if>>
+                                                ${s.groupName} (${s.location}) - ${s.getSNumber()}
                                         </option>
                                     </c:forEach>
                                 </select>
                             </div>
+
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>특이사항</label>
                                 <input type="text" class="form-control" name="uniqueness" placeholder="특이사항"

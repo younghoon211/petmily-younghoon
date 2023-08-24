@@ -34,6 +34,12 @@
         where ID = #{id}
     </select>
 
+    <select id="selectMemberId" resultType="java.lang.String">
+        select ID
+        from MEMBER
+        where MNUMBER = #{pk}
+    </select>
+
     <select id="selectName" resultType="java.lang.String">
         select NAME
         from MEMBER
@@ -58,12 +64,6 @@
         where NUM between #{start} and #{end}
     </select>
 
-    <select id="selectMemberId" resultType="java.lang.String">
-        select ID
-        from MEMBER
-        where MNUMBER = #{pk}
-    </select>
-
     <select id="selectIdCheck" resultType="int">
         select count(ID)
         from MEMBER
@@ -82,14 +82,14 @@
         where PHONE = #{phone}
     </select>
 
-    <select id="selectEmailCheckMemberChange" resultType="int">
+    <select id="selectEmailCheckChangeInfo" resultType="int">
         select count(*)
         from MEMBER
         where EMAIL = #{email}
         and ID != #{id}
     </select>
 
-    <select id="selectPhoneCheckMemberChange" resultType="int">
+    <select id="selectPhoneCheckChangeInfo" resultType="int">
         select count(*)
         from MEMBER
         where PHONE = #{phone}

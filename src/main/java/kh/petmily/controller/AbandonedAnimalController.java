@@ -58,7 +58,7 @@ public class AbandonedAnimalController {
     public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
-        model.addAttribute("animalName", abandonedAnimalService.getAnimalName(abNumber));
+        model.addAttribute("animalName", abandonedAnimalService.getAbAnimal(abNumber).getName());
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
 
         return "/abandoned.animal/donate_submit";
@@ -81,7 +81,7 @@ public class AbandonedAnimalController {
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
-        model.addAttribute("animal", abandonedAnimalService.getAnimal(abNumber));
+        model.addAttribute("animal", abandonedAnimalService.getAbAnimal(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
 
         return "/abandoned.animal/adopt_temp_submit";
@@ -93,7 +93,7 @@ public class AbandonedAnimalController {
                             HttpServletRequest request) {
         log.info("adoptTempSubmitForm = {}", submitForm);
 
-        int mNumber = getAuthUser(request).getMNumber();
+        int mNumber = getAuthMNumber(request);
         submitForm.setMNumber(mNumber);
 
         if (adoptOrTemp.equals("adopt")) {
@@ -116,18 +116,6 @@ public class AbandonedAnimalController {
         model.addAttribute("detailForm", detailForm);
 
         return "/abandoned.animal/volunteer_submit";
-    }
-
-    private Member getAuthUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
-        }
-        return null;
-    }
-
-    private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthUser(request).getMNumber();
     }
 
     @ResponseBody
@@ -161,5 +149,17 @@ public class AbandonedAnimalController {
         fullPath = fullPath + "resources/upload/";
 
         return fullPath;
+    }
+
+    private Member getAuthUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthUser(request).getMNumber();
     }
 }
