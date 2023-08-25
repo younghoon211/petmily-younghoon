@@ -73,6 +73,10 @@
                     <input type="hidden" name="mNumber" value="${mNumber}">
                 </c:if>
 
+                <div class="form-group col-md-auto col-lg-auto">
+                    <small style="color: red">※ 유기동물 봤어요 게시판의 게시글 중 종, 품종, 실종 장소와 일치하는 글이 있을 시 해당 게시글과 자동 매칭됩니다.</small>
+                </div>
+
                 <hr width="100%" style="color: #9e9e9e">
 
                 <div class="row justify-content-start">
