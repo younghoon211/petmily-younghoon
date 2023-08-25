@@ -46,7 +46,7 @@
                 <p class="breadcrumbs mb-2">
                     <span class="mr-2"><span>Member - Matched Look Board List<i class="ion-ios-arrow-forward"></i></span></span>
                 </p>
-                <h1 class="mb-0 bread">매칭된 봤어요 게시판 리스트</h1>
+                <h1 class="mb-0 bread">찾아요에 매칭된 봤어요 리스트</h1>
             </div>
         </div>
     </div>
@@ -58,61 +58,68 @@
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
 
             <!-- 목록 출력 -->
-            <c:forEach var="board" items="${matchedPageForm.content}">
-                <div class="card mb-2">
-                    <div class="card-body p-2 p-sm-3">
-                        <div class="media forum-item">
-
-                            <!-- 글 번호 -->
-                            <div class="media-body">
-                                <small><i class="far fa-eye"></i>글번호 ${board.laNumber}</small>
-
-                                <!-- 제목 -->
-                                <div class="text-secondary">
-                                    <a href="/lookBoard/detail?laNumber=${board.laNumber}"
-                                       class="text-body" style="font-size: 1.3em;">종: ${board.species} / 품종: ${board.kind} / 발견장소: ${board.location} </a>
+            <div class="container">
+                <div class="row d-flex">
+                    <c:forEach var="lookBoard" items="${pageForm.content}">
+                        <div class="col-md-4 ftco-animate" id="d-flex-out">
+                            <div class="blog-entry align-self-stretch" id="d-flex-in">
+                                <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
+                                   class="block-20 rounded"
+                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                </a>
+                                <div class="text p-4">
+                                    <div class="meta mb-2">
+                                        <div><small>${lookBoard.wrTime}</small></div>
+                                        <br>
+                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}</div>
+                                        <br>
+                                        <div>상태: ${lookBoard.animalState}</div>
+                                    </div>
+                                    <div><small style="color: #00bd56">${lookBoard.name}</small></div>
+                                    <h3 class="heading">
+                                        <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">
+                                                ${lookBoard.title}
+                                        </a></h3>
                                 </div>
-
-                                <!-- 작성자, 작성 날짜 -->
-                                <div class="text-muted">
-									<i class="far fa-comment ml-2"></i>
-									<small>date ${board.wrTime}</small>
-                                </div>
-
                             </div>
                         </div>
-                    </div>
+                    </c:forEach>
                 </div>
-            </c:forEach>
+            </div>
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/findMatching'">뒤로가기</button>
+            </div>
 
             <!-- 페이징 처리 -->
-
             <div class="row mt-5">
                 <div class="col text-center">
                     <div class="block-27">
                         <ul>
                             <li>
-                                <c:if test="${matchedPageForm.startPage > 5}">
-                                    <a href="/member/checkMatching/lookList?pageNo=${matchedPageForm.startPage - 5}">&lt;</a>
+                                <c:if test="${pageForm.startPage > 5}">
+                                    <a href="/member/auth/findMatching/lookList?pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
-                            <c:forEach var="pNo" begin="${matchedPageForm.startPage}" end="${matchedPageForm.endPage}">
-                                <c:if test="${matchedPageForm.currentPage eq pNo}">
+                            <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
+                                <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/member/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/member/auth/findMatching/lookList?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
-                                <c:if test="${matchedPageForm.currentPage ne pNo}">
+                                <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/member/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
+                                        <a href="/member/auth/findMatching/lookList?pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             </li>
                             <li>
-                                <c:if test="${matchedPageForm.endPage < matchedPageForm.totalPages}">
-                                    <a href="/member/checkMatching/lookList?pageNo=${matchedPageForm.startPage + 5}">&gt;</a>
+                                <c:if test="${pageForm.endPage < pageForm.totalPages}">
+                                    <a href="/member/auth/findMatching/lookList?pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </ul>

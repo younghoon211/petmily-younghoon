@@ -2,6 +2,7 @@ package kh.petmily.service;
 
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.*;
+import kh.petmily.domain.look_board.LookBoard;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,7 +19,9 @@ public interface FindBoardService {
 
     FindBoardDetailForm getDetailPage(int faNumber);
 
-    FindBoardPageForm getMatchingPage(int pageNo, int mNumber, String matched);
+    FindBoardPageForm getMatchingFindPage(int pageNo, int mNumber);
+
+    FindBoardPageForm getFindListMatchedLook(int pageNo, LookBoard lookBoard);
 
     FindBoard getFindBoard(int faNumber);
 

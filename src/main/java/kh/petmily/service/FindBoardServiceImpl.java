@@ -3,6 +3,7 @@ package kh.petmily.service;
 import kh.petmily.dao.FindBoardDao;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.*;
+import kh.petmily.domain.look_board.LookBoard;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -89,9 +90,18 @@ public class FindBoardServiceImpl implements FindBoardService {
 
     // 찾아요 매칭된 페이지
     @Override
-    public FindBoardPageForm getMatchingPage(int pageNo, int mNumber, String matched) {
-        int total = findBoardDao.selectMemberCount(mNumber, matched);
-        List<FindBoardListForm> content = findBoardDao.selectMemberIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber, matched);
+    public FindBoardPageForm getMatchingFindPage(int pageNo, int mNumber) {
+        int total = findBoardDao.selectCountFindMatching(mNumber);
+        List<FindBoardListForm> content = findBoardDao.selectIndexFindMatching((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
+
+        return new FindBoardPageForm(total, pageNo, size, content);
+    }
+
+    // 봤어요에 매칭된 찾아요 리스트
+    @Override
+    public FindBoardPageForm getFindListMatchedLook(int pageNo, LookBoard lookBoard) {
+        int total = findBoardDao.selectCountFindMatchedLook(lookBoard);
+        List<FindBoardListForm> content = findBoardDao.selectIndexFindMatchedLook((pageNo - 1) * size + 1, (pageNo - 1) * size + size, lookBoard);
 
         return new FindBoardPageForm(total, pageNo, size, content);
     }

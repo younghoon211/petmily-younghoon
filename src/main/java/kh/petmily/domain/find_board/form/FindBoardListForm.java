@@ -20,6 +20,19 @@ public class FindBoardListForm {
     private String title;
     private int viewCount;
 
+    public FindBoardListForm(int faNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title) {
+        this.faNumber = faNumber;
+        this.mNumber = mNumber;
+        this.name = name;
+        this.species = species;
+        this.kind = kind;
+        this.location = location;
+        this.animalState = animalState;
+        this.imgPath = imgPath;
+        this.wrTime = wrTime;
+        this.title = title;
+    }
+
     public FindBoardListForm(int faNumber, int mNumber, String name, String species, String kind, String location, String animalState, String imgPath, String wrTime, String title, int viewCount) {
         this.faNumber = faNumber;
         this.mNumber = mNumber;

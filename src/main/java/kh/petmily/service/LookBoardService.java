@@ -19,7 +19,9 @@ public interface LookBoardService {
 
     LookBoardDetailForm getDetailPage(int laNumber);
 
-    LookBoardPageForm getMatchingPage(int pageNo, FindBoard domain);
+    LookBoardPageForm getMatchingLookPage(int pageNo, int mNumber);
+
+    LookBoardPageForm getLookListMatchedFind(int pageNo, FindBoard findBoard);
 
     LookBoard getLookBoard(int laNumber);
 

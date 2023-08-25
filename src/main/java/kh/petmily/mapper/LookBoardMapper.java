@@ -1,5 +1,6 @@
 package kh.petmily.mapper;
 
+import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.LookBoardConditionForm;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,7 +11,6 @@ import java.util.List;
 @Mapper
 public interface LookBoardMapper {
 
-    // =======BasicMapper 메소드=======
     LookBoard selectByPk(int pk);
 
     void insert(LookBoard obj);
@@ -18,22 +18,13 @@ public interface LookBoardMapper {
     void update(LookBoard obj);
 
     void delete(int pk);
-    // ===============================
 
-    int selectCount();
+    // =========== 일반 회원 페이지 ===========
+    String selectName(int pk);
+
+    int updateViewCount(int pk);
 
     int selectCountWithCondition(LookBoardConditionForm form);
-
-    int selectCountBymNumber(int mNumber);
-
-    List<LookBoard> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end);
-
-    List<LookBoard> selectIndexBymNumber(
-            @Param("start") int start,
-            @Param("end") int end,
-            @Param("mNumber") int mNumber);
 
     List<LookBoard> selectIndexWithCondition(
             @Param("start") int start,
@@ -43,13 +34,39 @@ public interface LookBoardMapper {
             @Param("keyword") String keyword,
             @Param("sort") String sort);
 
-    String selectMemberId(int pk);
+    // ========= 마이페이지 - 내가 쓴 게시글 =========
+    int selectCountBymNumber(int mNumber);
 
-    String selectName(int pk);
+    List<LookBoard> selectIndexBymNumber(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber);
 
-    int updateViewCount(int pk);
-
+    // ================== 매칭 시스템 ==================
     List<Integer> selectMatchedFa(LookBoard obj);
+
+    int selectCountLookMatching(int mNumber);
+
+    List<LookBoard> selectIndexLookMatching(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("mNumber") int mNumber);
+
+    int selectCountFindMatchedLook(
+            @Param("species") String species,
+            @Param("kind") String kind,
+            @Param("location") String location);
+
+    List<FindBoard> selectIndexFindMatchedLook(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("kind") String kind,
+            @Param("location") String location);
+
+    List<LookBoard> selectAll();
+
+    int selectByPkMax();
 
     void changeState(int pk);
 
@@ -59,5 +76,13 @@ public interface LookBoardMapper {
 
     void backStateFind(int faNumber);
 
-    int selectByPkMax();
+
+    // =============== 관리자 ===============
+    int selectCount();
+
+    List<LookBoard> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
+
+    String selectMemberId(int pk);
 }

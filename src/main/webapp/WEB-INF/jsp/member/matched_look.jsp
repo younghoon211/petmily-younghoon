@@ -43,8 +43,8 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Member - Find Matching<i class="ion-ios-arrow-forward"></i></span></p>
-                <h1 class="mb-0 bread">찾아요 매칭 결과</h1>
+                <p class="breadcrumbs mb-2"><span>Member - Look Matching<i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-0 bread">봤어요 매칭 결과</h1>
             </div>
         </div>
     </div>
@@ -52,70 +52,89 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
+
+        <!-- 라디오체크 게시판 선택 -->
         <div style="text-align: center">
-            <button type="button" class="btn btn-primary" id="matched" name="matched" onclick="matchedButton()">
-                <c:if test="${matched eq null}">매칭됨만 보기</c:if>
-                <c:if test="${matched ne null}">전부 보기</c:if>
-            </button>
+            <c:set var="URI" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+
+            <input type="radio" id="find" onclick="location.href='/member/auth/findMatching'"
+            <c:if test="${URI.contains('findMatching')}">
+                   checked
+            </c:if>>
+            <label for="find">찾아요 매칭 결과</label>
+
+            &nbsp;&nbsp;&nbsp;
+
+            <input type="radio" id="look" onclick="location.href='/member/auth/lookMatching'"
+            <c:if test="${URI.contains('lookMatching')}">
+                   checked
+            </c:if>> <label for="look">봤어요 매칭 결과</label>
         </div>
-        <br><br>
-        <div class="row d-flex" style="transform: translateX(100px);">
-            <c:forEach var="findBoard" items="${pageForm.content}">
-                <div class="col-md-4 d-flex ftco-animate" id="d-flex-out">
-                    <div class="blog-entry align-self-stretch" id="d-flex-in">
-                        <a  <c:if test="${findBoard.animalState eq '매칭됨'}">
-                                href="/member/auth/checkMatching/lookList?faNumber=${findBoard.faNumber}"
-                            </c:if>
-                                <c:if test="${findBoard.animalState ne '매칭됨'}">
-                                    href="/findBoard/detail?faNumber=${findBoard.faNumber}"
-                                </c:if>
-                           class="block-20 rounded"
-                           style="background-image: url('/findBoard/upload?filename=${findBoard.imgPath}');">
-                        </a>
-                        <div class="text p-4">
-                            <div class="meta mb-2">
-                                <div><a href="#">${findBoard.species}</a></div>
-                                <div><a href="#">${findBoard.location}</a></div>
-                                <br>
-                                <div><a href="#">작성자: ${findBoard.name}</a></div>
-                                <br>
-                                <div><a href="#">${findBoard.wrTime}</a></div>
-                                <br>
-                                <div><a href="#">상태: ${findBoard.animalState}</a></div>
+
+        <br>
+
+        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div class="container">
+
+                <!-- 목록 출력 -->
+                <div class="row d-flex">
+                    <c:forEach var="lookBoard" items="${pageForm.content}">
+                        <div class="col-md-4 ftco-animate" id="d-flex-out">
+                            <div class="blog-entry align-self-stretch" id="d-flex-in">
+                                <a href="/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}"
+                                   class="block-20 rounded"
+                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                </a>
+                                <div class="text p-4">
+                                    <div class="meta mb-2">
+                                        <div><small>${lookBoard.wrTime}</small></div>
+                                        <br>
+                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}</div>
+                                        <br>
+                                        <div>상태: ${lookBoard.animalState}</div>
+                                    </div>
+                                    <div><small style="color: #00bd56">${lookBoard.name}</small></div>
+                                    <h3 class="heading">
+                                        <a href="/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}">
+                                                ${lookBoard.title}
+                                        </a></h3>
+                                </div>
                             </div>
-                            <h3 class="heading"><a href="#">${findBoard.title}</a></h3>
                         </div>
-                    </div>
+                    </c:forEach>
                 </div>
-            </c:forEach>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
         </div>
 
         <!-- 페이징 처리 -->
-
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
                         <li>
                             <c:if test="${pageForm.startPage > 5}">
-                                <a href="/member/auth/checkMatching?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                <a href="/member/auth/checkMatching/lookList?pageNo=${pageForm.startPage - 5}">&lt;</a>
                             </c:if>
                         </li>
                         <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                             <c:if test="${pageForm.currentPage eq pNo}">
                                 <li class="active">
-                                    <a href="/member/auth/checkMatching?pageNo=${pNo}">${pNo}</a>
+                                    <a href="/member/auth/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
                                 </li>
                             </c:if>
                             <c:if test="${pageForm.currentPage ne pNo}">
                                 <li>
-                                    <a href="/member/auth/checkMatching?pageNo=${pNo}">${pNo}</a>
+                                    <a href="/member/auth/checkMatching/lookList?pageNo=${pNo}">${pNo}</a>
                                 </li>
                             </c:if>
                         </c:forEach>
                         <li>
                             <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                <a href="/member/auth/checkMatching?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                <a href="/member/auth/checkMatching/lookList?pageNo=${pageForm.startPage + 5}">&gt;</a>
                             </c:if>
                         </li>
                     </ul>
@@ -141,18 +160,6 @@
 <script src="/resources/petsitting-master/js/scrollax.min.js"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
-
-<script>
-    function matchedButton() {
-        const btn = document.getElementById('matched');
-        if(btn.value == "매칭됨만 보기") {
-            window.location.href = "/member/auth/checkMatching?matched=matched";
-        }
-        else {
-            window.location.href = "/member/auth/checkMatching";
-        }
-    }
-</script>
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>

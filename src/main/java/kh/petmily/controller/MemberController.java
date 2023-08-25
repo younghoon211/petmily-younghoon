@@ -5,6 +5,7 @@ import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import kh.petmily.domain.board.form.BoardPageForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
+import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.MemberChangeForm;
@@ -217,31 +218,31 @@ public class MemberController {
 
         return "/member/matched_find_looklist";
     }
-    // =====================================================================================================
-//    // 봤어요 매칭된 페이지
-//    @GetMapping("/member/auth/lookMatching")
-//    public String lookMatching(@RequestParam(defaultValue = "1") int pageNo,
-//                               HttpServletRequest request, Model model) {
-//        int mNumber = getAuthMNumber(request);
-//        LookBoardPageForm pageForm = lookBoardService.getMatchingLookPage(pageNo, mNumber);
-//
-//        model.addAttribute("pageForm", pageForm);
-//
-//        return "/member/matched_look";
-//    }
-//
-//    // 봤어요에 매칭된 찾아요 리스트
-//    @GetMapping("/member/auth/lookMatching/findList")
-//    public String lookMatchingFindList(@RequestParam int laNumber,
-//                                       @RequestParam(defaultValue = "1") int pageNo,
-//                                       Model model) {
-//        LookBoard lookBoard = lookBoardService.getLookBoard(laNumber);
-//        FindBoardPageForm pageForm = findBoardService.getFindListMatchedLook(pageNo, lookBoard);
-//
-//        model.addAttribute("pageForm", pageForm);
-//
-//        return "/member/matched_look_findlist";
-//    }
+
+    // 봤어요 매칭된 페이지
+    @GetMapping("/member/auth/lookMatching")
+    public String lookMatching(@RequestParam(defaultValue = "1") int pageNo,
+                               HttpServletRequest request, Model model) {
+        int mNumber = getAuthMNumber(request);
+        LookBoardPageForm pageForm = lookBoardService.getMatchingLookPage(pageNo, mNumber);
+
+        model.addAttribute("pageForm", pageForm);
+
+        return "/member/matched_look";
+    }
+
+    // 봤어요에 매칭된 찾아요 리스트
+    @GetMapping("/member/auth/lookMatching/findList")
+    public String lookMatchingFindList(@RequestParam int laNumber,
+                                       @RequestParam(defaultValue = "1") int pageNo,
+                                       Model model) {
+        LookBoard lookBoard = lookBoardService.getLookBoard(laNumber);
+        FindBoardPageForm pageForm = findBoardService.getFindListMatchedLook(pageNo, lookBoard);
+
+        model.addAttribute("pageForm", pageForm);
+
+        return "/member/matched_look_findlist";
+    }
 
     // 입양, 임보 신청 현황
     @GetMapping("/member/auth/myApply/{type}")

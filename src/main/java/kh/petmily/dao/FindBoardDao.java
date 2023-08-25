@@ -4,7 +4,9 @@ import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardConditionForm;
 import kh.petmily.domain.find_board.form.FindBoardListForm;
+import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.mapper.FindBoardMapper;
+import kh.petmily.mapper.LookBoardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import java.util.Objects;
 public class FindBoardDao implements BasicDao {
 
     private final FindBoardMapper mapper;
+    private final LookBoardMapper lookBoardMapper;
 
     @Override
     public FindBoard findByPk(int pk) {
@@ -30,106 +32,97 @@ public class FindBoardDao implements BasicDao {
     public void insert(DomainObj obj) {
         FindBoard findBoard = (FindBoard) obj;
 
-        List<Integer> list = mapper.selectMatchedLa(findBoard);
-        list.removeIf(Objects::isNull);
+        List<Integer> matchedLaList = mapper.selectMatchedLa(findBoard);
+        log.info("insert : matchedLaList = {}", matchedLaList);
 
-        log.info("find insert : list = {}", list);
-
-        if (!list.isEmpty()) {
+        if (matchedLaList.isEmpty()) {
             mapper.insert(findBoard);
-
-            int faNumber = mapper.selectByPkMax();
-            log.info("find insert : MAX faNumber = {}", faNumber);
-
-            mapper.changeState(faNumber);
-
-            for (Integer i : list) {
-                mapper.changeStateLook(i);
-            }
-        } else {
-            mapper.insert(findBoard);
+            return;
         }
+
+        mapper.insert(findBoard);
+
+        int pk = mapper.selectByPkMax();
+        matchOnlyNotSameUser(pk);
     }
 
     @Override
     public void update(DomainObj obj) {
         FindBoard findBoard = (FindBoard) obj;
+        int pk = findBoard.getFaNumber();
 
-        mapper.backState(findBoard.getFaNumber());
+        // (1) 수정할 find '실종'으로, 이 글에 매칭된 look '보호'로 전부 backState
+        FindBoard initFindBoard = mapper.selectByPk(pk);
 
-        FindBoard old_findBoard = mapper.selectByPk(findBoard.getFaNumber());
-        List<Integer> old_list = mapper.selectMatchedLa(old_findBoard);
-        log.info("update : old_list = {}", old_list);
+        List<Integer> initMatchedLaList = mapper.selectMatchedLa(initFindBoard);
+        log.info("update : initMatchedLaList = {}", initMatchedLaList);
 
-        if (old_list.size() != 0) {
-            for (Integer i : old_list) {
-                mapper.backStateLook(i);
+        mapper.backState(pk);
+
+        if (!initMatchedLaList.isEmpty()) {
+            for (Integer initLaNumber : initMatchedLaList) {
+                mapper.backStateLook(initLaNumber);
             }
         }
 
-        List<Integer> list = mapper.selectMatchedLa(findBoard);
-        log.info("update : list = {}", list);
+        // (2) 수정된 내용에 따라 매칭여부 결정
+        List<Integer> matchedLaList = mapper.selectMatchedLa(findBoard);
+        log.info("update : matchedLaList = {}", matchedLaList);
 
-        if (list.size() != 0) {
-            mapper.update(findBoard);
-            mapper.changeState(findBoard.getFaNumber());
+        boolean existMatchedLa = !matchedLaList.isEmpty();
 
-            for (Integer i : list) {
-                mapper.changeStateLook(i);
-            }
-        } else {
-            mapper.update(findBoard);
+        mapper.update(findBoard);
+
+        if (existMatchedLa) {
+            matchOnlyNotSameUser(pk);
         }
+
+        maintainMatchingForLook();
     }
 
     @Override
     public void delete(int pk) {
         FindBoard findBoard = mapper.selectByPk(pk);
-        List<Integer> list = mapper.selectMatchedLa(findBoard);
-        log.info("delete : list = {}", list);
 
-        if (list.size() != 0) {
-            for (Integer i : list) {
-                mapper.backStateLook(i);
+        List<Integer> matchedLaList = mapper.selectMatchedLa(findBoard);
+        log.info("delete : matchedLaList = {}", matchedLaList);
+
+        boolean existMatchedLa = !matchedLaList.isEmpty();
+
+        if (!existMatchedLa) {
+            mapper.delete(pk);
+            return;
+        }
+
+        if (isNotSameUser()) {
+            for (Integer laNumber : matchedLaList) {
+                mapper.backStateLook(laNumber);
             }
         }
 
         mapper.delete(pk);
+
+        maintainMatchingForLook();
     }
 
-    public int selectCountBymNumber(int mNumber) {
-        return mapper.selectCountBymNumber(mNumber);
+
+    // ========================= 일반 회원 게시판 ========================
+    // 회원이름 조회
+    public String selectName(int pk) {
+        return mapper.selectName(pk);
     }
 
-    public List<FindBoardListForm> selectIndexBymNumber(int start, int end, int mNumber) {
-        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
-        List<FindBoard> findBoards = mapper.selectIndexBymNumber(start, end, mNumber);
-
-        for (FindBoard findBoard : findBoards) {
-            FindBoardListForm listForm = new FindBoardListForm(
-                    findBoard.getFaNumber(),
-                    findBoard.getMNumber(),
-                    selectName(findBoard.getFaNumber()),
-                    findBoard.getSpecies(),
-                    findBoard.getKind(),
-                    findBoard.getLocation(),
-                    findBoard.getAnimalState(),
-                    findBoard.getImgPath(),
-                    findBoard.getWrTime().format(getFormatter()),
-                    findBoard.getTitle(),
-                    findBoard.getViewCount()
-            );
-
-            findBoardListForms.add(listForm);
-        }
-
-        return findBoardListForms;
+    // 조회수 증가
+    public int updateViewCount(int pk) {
+        return mapper.updateViewCount(pk);
     }
 
+    // 게시판 - 총 게시글 수 조회
     public int selectCountWithCondition(FindBoardConditionForm conditionForm) {
         return mapper.selectCountWithCondition(conditionForm);
     }
 
+    // 게시판 - 리스트 페이지 index
     public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm conditionForm) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
 
@@ -141,6 +134,59 @@ public class FindBoardDao implements BasicDao {
                 conditionForm.getSort()
         );
 
+        addFindBoardListForms(findBoardListForms, findBoards);
+
+        return findBoardListForms;
+    }
+
+
+    // ========================= 마이페이지 ==========================
+    // 내가 쓴 게시글 - 총 게시글 수 조회
+    public int selectCountBymNumber(int mNumber) {
+        return mapper.selectCountBymNumber(mNumber);
+    }
+
+    // 내가 쓴 게시글 - 리스트 페이지 index
+    public List<FindBoardListForm> selectIndexBymNumber(int start, int end, int mNumber) {
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+        List<FindBoard> findBoards = mapper.selectIndexBymNumber(start, end, mNumber);
+
+        addFindBoardListForms(findBoardListForms, findBoards);
+
+        return findBoardListForms;
+    }
+
+
+    // ======================== 매칭 관련 시스템 ==========================
+    // 찾아요 매칭된 페이지 - 총 게시글 수 조회
+    public int selectCountFindMatching(int mNumber) {
+        return mapper.selectCountFindMatching(mNumber);
+    }
+
+    // 찾아요 매칭된 페이지 index
+    public List<FindBoardListForm> selectIndexFindMatching(int start, int end, int mNumber) {
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+        List<FindBoard> findBoards = mapper.selectIndexFindMatching(start, end, mNumber);
+
+        addFindBoardListForms(findBoardListForms, findBoards);
+
+        return findBoardListForms;
+    }
+
+    // 봤어요에 매칭된 찾아요 리스트 - 총 게시글 수 조회
+    public int selectCountFindMatchedLook(LookBoard lookBoard) {
+        return lookBoardMapper.selectCountFindMatchedLook(
+                lookBoard.getSpecies(),
+                lookBoard.getKind(),
+                lookBoard.getLocation()
+        );
+    }
+
+    // 봤어요에 매칭된 찾아요 리스트 index
+    public List<FindBoardListForm> selectIndexFindMatchedLook(int start, int end, LookBoard lookBoard) {
+        List<FindBoard> findBoards = lookBoardMapper.selectIndexFindMatchedLook(start, end, lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation());
+        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
+
         for (FindBoard findBoard : findBoards) {
             FindBoardListForm listForm = new FindBoardListForm(
                     findBoard.getFaNumber(),
@@ -152,8 +198,7 @@ public class FindBoardDao implements BasicDao {
                     findBoard.getAnimalState(),
                     findBoard.getImgPath(),
                     findBoard.getWrTime().format(getFormatter()),
-                    findBoard.getTitle(),
-                    findBoard.getViewCount()
+                    findBoard.getTitle()
             );
 
             findBoardListForms.add(listForm);
@@ -162,10 +207,14 @@ public class FindBoardDao implements BasicDao {
         return findBoardListForms;
     }
 
+
+    // ======================== 관리자 페이지 ==========================
+    // 총 게시글 수 조회
     public int selectCount() {
         return mapper.selectCount();
     }
 
+    // 리스트 페이지 index
     public List<FindBoardListForm> selectIndex(int start, int end) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
         List<FindBoard> findBoards = mapper.selectIndex(start, end);
@@ -191,22 +240,67 @@ public class FindBoardDao implements BasicDao {
         return findBoardListForms;
     }
 
-    public String selectName(int pk) {
-        return mapper.selectName(pk);
+
+    // ======================== private 메소드 ==========================
+
+    // 다른 유저일 경우만 매치 (else: 오류로 인해 같은 유저끼리 매치돼 있다면 backState)
+    private void matchOnlyNotSameUser(int pk) {
+        List<FindBoard> findBoards = mapper.selectAll();
+
+        for (FindBoard faBoard : findBoards) {
+            List<Integer> matchedLa = mapper.selectMatchedLa(faBoard);
+
+            for (Integer laNumber : matchedLa) {
+                LookBoard matchedLaBoard = lookBoardMapper.selectByPk(laNumber);
+
+                if (faBoard.getMNumber() != matchedLaBoard.getMNumber()) {
+                    mapper.changeState(pk);
+                    mapper.changeStateLook(laNumber);
+                } else {
+                    mapper.backState(pk);
+                    mapper.backStateLook(laNumber);
+                }
+            }
+        }
     }
 
-    public int updateViewCount(int pk) {
-        return mapper.updateViewCount(pk);
+    // look중 find와 매칭조건 일치하는 글 있으면 해당 look 매칭상태 유지
+    private void maintainMatchingForLook() {
+        List<FindBoard> findBoards = mapper.selectAll();
+
+        for (FindBoard faBoard : findBoards) {
+            List<Integer> matchedLa = mapper.selectMatchedLa(faBoard);
+
+            for (Integer laNumber : matchedLa) {
+                LookBoard matchedLaBoard = lookBoardMapper.selectByPk(laNumber);
+
+                if (faBoard.getMNumber() != matchedLaBoard.getMNumber()) {
+                    mapper.changeStateLook(laNumber);
+                }
+            }
+        }
     }
 
-    public int selectMemberCount(int mNumber, String matched) {
-        return mapper.selectMemberCount(mNumber, matched);
+    // find와 find에 매치된 look작성자가 다를 경우 true
+    private boolean isNotSameUser() {
+        List<FindBoard> findBoards = mapper.selectAll();
+
+        for (FindBoard faBoard : findBoards) {
+            List<Integer> matchedLa = mapper.selectMatchedLa(faBoard);
+
+            for (Integer laNumber : matchedLa) {
+                LookBoard matchedLaBoard = lookBoardMapper.selectByPk(laNumber);
+
+                if (faBoard.getMNumber() != matchedLaBoard.getMNumber()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
-    public List<FindBoardListForm> selectMemberIndex(int start, int end, int mNumber, String matched) {
-        List<FindBoardListForm> findBoardListForms = new ArrayList<>();
-        List<FindBoard> findBoards = mapper.selectMemberIndex(start, end, mNumber, matched);
-
+    private void addFindBoardListForms(List<FindBoardListForm> findBoardListForms, List<FindBoard> findBoards) {
         for (FindBoard findBoard : findBoards) {
             FindBoardListForm listForm = new FindBoardListForm(
                     findBoard.getFaNumber(),
@@ -224,15 +318,13 @@ public class FindBoardDao implements BasicDao {
 
             findBoardListForms.add(listForm);
         }
-
-        return findBoardListForms;
-    }
-
-    private String selectMemberId(int pk) {
-        return mapper.selectMemberId(pk);
     }
 
     private DateTimeFormatter getFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    }
+
+    private String selectMemberId(int pk) {
+        return mapper.selectMemberId(pk);
     }
 }

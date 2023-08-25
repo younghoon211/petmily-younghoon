@@ -90,9 +90,18 @@ public class LookBoardServiceImpl implements LookBoardService {
 
     // 봤어요 매칭된 페이지
     @Override
-    public LookBoardPageForm getMatchingPage(int pageNo, FindBoard domain) {
-        int total = lookBoardDao.selectMatchedCount(domain);
-        List<LookBoardListForm> content = lookBoardDao.selectMatchedIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, domain);
+    public LookBoardPageForm getMatchingLookPage(int pageNo, int mNumber) {
+        int total = lookBoardDao.selectCountLookMatching(mNumber);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexLookMatching((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
+
+        return new LookBoardPageForm(total, pageNo, size, content);
+    }
+
+    // 찾아요에 매칭된 봤어요 리스트
+    @Override
+    public LookBoardPageForm getLookListMatchedFind(int pageNo, FindBoard findBoard) {
+        int total = lookBoardDao.selectCountLookMatchedFind(findBoard);
+        List<LookBoardListForm> content = lookBoardDao.selectIndexLookMatchedFind((pageNo - 1) * size + 1, (pageNo - 1) * size + size, findBoard);
 
         return new LookBoardPageForm(total, pageNo, size, content);
     }
