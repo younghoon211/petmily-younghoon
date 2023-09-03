@@ -10,7 +10,6 @@ import java.sql.Date;
 @NoArgsConstructor
 public class AdminAbandonedAnimalWriteForm {
 
-    private int abNumber;
     private int sNumber;
     private String name;
     private String species;
@@ -25,4 +24,14 @@ public class AdminAbandonedAnimalWriteForm {
     private String uniqueness;
     private String description;
     private String animalState;
+
+    // 입양, 임보 추가
+    private int mNumber;
+    private String residence;
+    private String maritalStatus;
+    private String job;
+
+    // 임보 추가
+    private Date tempDate;
+    private int tempPeriod;
 }

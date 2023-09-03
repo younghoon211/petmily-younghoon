@@ -61,4 +61,7 @@ public class ShelterDao implements BasicDao {
     public List<Shelter> selectAll() {
         return mapper.selectAll();
     }
+    public List<Shelter> selectAllNot0() {
+        return mapper.selectAllNot0();
+    }
 }

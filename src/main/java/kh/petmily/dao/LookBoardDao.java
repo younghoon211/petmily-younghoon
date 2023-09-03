@@ -105,7 +105,7 @@ public class LookBoardDao implements BasicDao {
         maintainMatchingForFind();
     }
 
-    // ========================= 일반 회원 게시판 ========================
+    // ========================= 회원 페이지 ========================
     // 회원이름 조회
     public String selectName(int pk) {
         return mapper.selectName(pk);

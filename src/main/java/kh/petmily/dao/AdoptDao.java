@@ -5,7 +5,6 @@ import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.AdminAdoptDetailForm;
 import kh.petmily.domain.adopt.form.MypageAdoptListForm;
-import kh.petmily.domain.member.Member;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.AdoptMapper;
 import kh.petmily.mapper.MemberMapper;
@@ -28,6 +27,7 @@ public class AdoptDao implements BasicDao {
         return mapper.selectByPk(pk);
     }
 
+    // status '처리중' default
     @Override
     public void insert(DomainObj obj) {
         mapper.insert((Adopt) obj);
@@ -43,24 +43,14 @@ public class AdoptDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount() {
-        return mapper.selectCount();
-    }
-
-    public int selectCount(int mNumber) {
+    // ========================= 마이페이지 ========================
+    // 내가 쓴 게시글 - 총 게시글 수 조회
+    public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    public List<AdminAdoptDetailForm> selectIndex(int start, int end) {
-        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
-        List<Adopt> adopts = mapper.selectIndex(start, end);
-
-        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
-
-        return adminAdoptDetailForms;
-    }
-
-    public List<MypageAdoptListForm> selectIndex(int start, int end, int mNumber) {
+    // 내가 쓴 게시글 - 리스트 페이지 index
+    public List<MypageAdoptListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<MypageAdoptListForm> mypageAdoptListForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndexBymNumber(start, end, mNumber);
 
@@ -77,7 +67,29 @@ public class AdoptDao implements BasicDao {
         return mypageAdoptListForms;
     }
 
-    public List<AdminAdoptDetailForm> selectIndex(int start, int end, String status) {
+    // ======================== 관리자 페이지 ==========================
+    // 관리자 insert (status 선택 가능)
+    public void adminInsert(DomainObj obj) {
+        mapper.adminInsert((Adopt) obj);
+    }
+
+    // 총 게시글 수 조회
+    public int selectCount() {
+        return mapper.selectCount();
+    }
+
+    // 리스트 페이지 index
+    public List<AdminAdoptDetailForm> selectIndex(int start, int end) {
+        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndex(start, end);
+
+        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
+
+        return adminAdoptDetailForms;
+    }
+
+    // 입양 승인관리 리스트 페이지 index
+    public List<AdminAdoptDetailForm> selectIndexByStatus(int start, int end, String status) {
         List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndexByStatus(start, end, status);
 
@@ -86,32 +98,24 @@ public class AdoptDao implements BasicDao {
         return adminAdoptDetailForms;
     }
 
+    // 입양 승인
     public void adoptApprove(int pk) {
         mapper.adoptApprove(pk);
     }
 
+    // 입양 거절
     public void adoptRefuse(int pk) {
         mapper.adoptRefuse(pk);
     }
 
-    public void updateStatusToAdopt() {
-        mapper.updateStatusToAdopt();
+    // 수정 시 동일한 abNumber 중 상태 '완료' 삭제
+    public void deleteCompleteWhenUpdateAB(int abNumber) {
+        mapper.deleteCompleteWhenUpdateAB(abNumber);
     }
 
-    public List<AbandonedAnimal> selectAllExcludeAdopt() {
-        return mapper.selectAllExcludeAdopt();
-    }
-
-    public void adminInsert(DomainObj obj) {
-        mapper.adminInsert((Adopt) obj);
-    }
-
-    public List<Member> selectAllMember() {
-        return memberMapper.selectAll();
-    }
-
-    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
-        return abandonedAnimalMapper.selectAll();
+    // 수정 시 동일한 abNumber 중 상태 '처리중' 삭제
+    public void deleteWaitingWhenUpdateAB(int abNumber) {
+        mapper.deleteWaitingWhenUpdateAB(abNumber);
     }
 
 

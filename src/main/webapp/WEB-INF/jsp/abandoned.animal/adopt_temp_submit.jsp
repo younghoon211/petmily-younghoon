@@ -100,7 +100,7 @@
 <br><br>
 <div class="container survey">
     <h1 id="title" class="text-center">입양 / 임시보호 신청서</h1><br>
-    <div class="text-center" style="color: red"><small>※ 임시 보호의 최소 기간은 2개월입니다.</small></div><br><br>
+    <div class="text-center" style="color: red"><small>※ 임시 보호의 최소 기간은 1개월입니다.</small></div><br><br>
     <div class="container">
 
     <form action="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}" method="post">
@@ -149,23 +149,9 @@
         <div class="form-group">
             <label>2. 거주 지역</label>
             <select name="residence" class="form-control" required>
-                <option>서울특별시</option>
-                <option>경기도</option>
-                <option>인천광역시</option>
-                <option>대전광역시</option>
-                <option>대구광역시</option>
-                <option>광주광역시</option>
-                <option>부산광역시</option>
-                <option>울산광역시</option>
-                <option>세종특별자치시</option>
-                <option>강원특별자치도</option>
-                <option>제주특별자치도</option>
-                <option>충청북도</option>
-                <option>충청남도</option>
-                <option>경상북도</option>
-                <option>경상남도</option>
-                <option>전라북도</option>
-                <option>전라남도</option>
+                <c:forEach var="residence" items="${residences}">
+                    <option value="${residence}">${residence}</option>
+                </c:forEach>
             </select>
         </div>
 

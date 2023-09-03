@@ -45,4 +45,16 @@
         from SHELTER
         order by SNUMBER
     </select>
+
+    <select id="selectAllNot0" resultType="kh.petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER where not SNUMBER = 0
+        order by SNUMBER
+    </select>
+
+    <select id="selectAllByAbNumber" resultType="kh.petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER S inner join ABANDONEDANIMAL AB
+        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+    </select>
 </mapper>

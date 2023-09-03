@@ -51,12 +51,9 @@
         delete from ABANDONEDANIMAL
         where ABNUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드 끝=======-->
 
-    <select id="selectCount" resultType="int">
-    select count(*)
-    from ABANDONEDANIMAL
-    </select>
+
+    <!--================= 회원 페이지 =================-->
 
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
@@ -85,13 +82,6 @@
                 or DESCRIPTION like '%' || #{keyword} || '%' )
             </if>
         </where>
-    </select>
-
-    <select id="selectIndex" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
-        select * from
-            (select ROWNUM as NUM, A.* FROM
-                    (select * from ABANDONEDANIMAL order by ABNUMBER DESC) A)
-        where NUM between #{start} and #{end}
     </select>
 
     <select id="selectIndexWithCondition" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
@@ -136,15 +126,127 @@
         </if>
     </sql>
 
+
+    <!--================= 관리자 페이지 =================-->
+
+    <select id="selectCount" resultType="int">
+        select count(*)
+        from ABANDONEDANIMAL
+    </select>
+
+    <select id="selectIndex" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select * from
+            (select ROWNUM as NUM, A.* FROM
+                    (select * from ABANDONEDANIMAL order by ABNUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
     <select id="selectAll" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         order by ABNUMBER
     </select>
 
-    <select id="selectShelterByPk" resultType="kh.petmily.domain.shelter.Shelter">
+    <select id="selectAllOnlyProtect" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
-        from SHELTER S inner join ABANDONEDANIMAL AB
-        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{pk}
+        from ABANDONEDANIMAL
+        <where>
+            and ANIMALSTATE = '보호'
+            and ABNUMBER not in (select ABNUMBER from ADOPT where STATUS in ('처리중', '완료'))
+            and ABNUMBER not in (select ABNUMBER from TEMPPET where STATUS in ('처리중', '완료'))
+        </where>
+        order by ABNUMBER
     </select>
+
+    <select id="selectByPkMax" resultType="int">
+        select MAX(ABNUMBER)
+        from ABANDONEDANIMAL
+    </select>
+
+
+    <!--====================================== 입양 ======================================-->
+    <!--========== 입양 수정 폼에 받아올 유기동물 리스트 ==========-->
+
+    <select id="selectAllAdoptWait" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select *
+        from ABANDONEDANIMAL
+        where ANIMALSTATE = '보호' AND ABNUMBER
+            in (select ABNUMBER from ADOPT where STATUS = '처리중')
+        order by ABNUMBER
+    </select>
+
+    <select id="selectAllAdoptComplete" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select *
+        from ABANDONEDANIMAL
+        where ANIMALSTATE = '입양' AND ABNUMBER
+            in (select ABNUMBER from ADOPT where STATUS = '완료')
+        order by ABNUMBER
+    </select>
+
+
+    <!--========== 수정 시 유기동물 상태 수정 ==========-->
+
+    <update id="updateToAdopt">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '입양'
+        where ABNUMBER in (select ABNUMBER from ADOPT where STATUS = '완료')
+    </update>
+
+    <update id="updateToProtectInAdopt">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '보호'
+        where ABNUMBER in (select ABNUMBER from ADOPT where STATUS in ('거절', '처리중'))
+    </update>
+
+
+    <!--========== 입양완료 삭제 시 유기동물 상태 임보->보호 ==========-->
+    <update id="updateToProtectForDeleteInAdopt">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '보호'
+        where ABNUMBER in (select ABNUMBER from ADOPT where STATUS = '완료' and ADNUMBER = #{adNumber})
+    </update>
+
+
+
+    <!--==================================== 임시보호 ====================================-->
+    <!--========== 임시보호 수정 폼에 받아올 유기동물 리스트 ==========-->
+
+    <select id="selectAllTempWait" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select *
+        from ABANDONEDANIMAL
+        where ANIMALSTATE = '보호' AND ABNUMBER
+            in (select ABNUMBER from TEMPPET where STATUS = '처리중')
+        order by ABNUMBER
+    </select>
+
+    <select id="selectAllTempComplete" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select *
+        from ABANDONEDANIMAL
+        where ANIMALSTATE = '임보' AND ABNUMBER
+            in (select ABNUMBER from TEMPPET where STATUS = '완료')
+        order by ABNUMBER
+    </select>
+
+
+    <!--========== 수정 시 유기동물 상태 수정 ==========-->
+
+    <update id="updateToTemp">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '임보'
+        where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS = '완료')
+    </update>
+
+    <update id="updateToProtectInTemp">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '보호'
+        where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS in ('거절', '처리중'))
+    </update>
+
+
+    <!--========== 임시보호 완료 삭제 시 유기동물 상태 임보->보호 ==========-->
+    <update id="updateToProtectForDeleteInTemp">
+        update ABANDONEDANIMAL
+        set ANIMALSTATE = '보호'
+        where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS = '완료' and TNUMBER = #{tNumber})
+    </update>
 </mapper>

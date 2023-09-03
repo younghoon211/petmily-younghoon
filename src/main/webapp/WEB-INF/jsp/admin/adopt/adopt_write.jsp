@@ -89,25 +89,26 @@
         </div>
     </div>
 </section>
-
+<br>
 <div class="container survey">
     <h1 id="title" class="text-center">입양 추가</h1>
-<br>
+    <br>
     <form action="/admin/adopt/write" method="post">
 
         <div class="form-group">
             <label>회원ID / 닉네임 (회원번호)</label>
             <select name="mNumber" class="form-control" required>
-                <c:forEach var="m" items="${member}">
+                <c:forEach var="m" items="${members}">
                     <option value="${m.getMNumber()}">${m.id} / ${m.name} (${m.getMNumber()})</option>
                 </c:forEach>
             </select>
         </div>
 
         <div class="form-group">
-            <label>동물이름 (동물번호) <span style="color: red"><small>&nbsp;※ 입양 승인 대기중인 동물 제외 (수정에서는 제약없이 가능)</small></span></label>
+            <label>동물이름 (동물번호) <span
+                    style="color: red"><small>&nbsp;※ 입양/임보 완료됐거나, 승인 대기중인 동물 제외 (유기동물 관리에서 수정 가능)</small></span></label>
             <select name="abNumber" class="form-control" required>
-                <c:forEach var="ab" items="${abandonedAnimal}">
+                <c:forEach var="ab" items="${onlyProtectedAnimals}">
                     <option value="${ab.abNumber}">${ab.name} (${ab.abNumber})</option>
                 </c:forEach>
             </select>
@@ -116,24 +117,10 @@
         <div class="form-group">
             <label>거주지</label>
             <select name="residence" class="form-control" required>
-            <option>서울특별시</option>
-            <option>경기도</option>
-            <option>인천광역시</option>
-            <option>강원도</option>
-            <option>경상북도</option>
-            <option>경상남도</option>
-            <option>부산광역시</option>
-            <option>대구광역시</option>
-            <option>울산광역시</option>
-            <option>전라남도</option>
-            <option>전라북도</option>
-            <option>광주광역시</option>
-            <option>충청남도</option>
-            <option>충청북도</option>
-            <option>대전광역시</option>
-            <option>세종특별자치시</option>
-            <option>제주특별자치도</option>
-        </select>
+                <c:forEach var="residence" items="${residences}">
+                    <option value="${residence}">${residence}</option>
+                </c:forEach>
+            </select>
         </div>
 
         <br>
@@ -142,11 +129,11 @@
             <ul style="list-style: none;">
                 <li class="radio">
                     <input name="maritalStatus" value="married" id="married"
-                                         type="radio" class="userRatings" required checked>
+                           type="radio" class="userRatings" required checked>
                     <label for="married">&nbsp;기혼</label></li>
                 <li class="radio">
                     <input name="maritalStatus" value="single" id="single"
-                                         type="radio" class="userRatings" required>
+                           type="radio" class="userRatings" required>
                     <label for="single">&nbsp;미혼</label>
                 </li>
             </ul>
@@ -154,7 +141,8 @@
 
         <div class="form-group">
             <label for="job">직업</label>
-            <input id="job" type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." maxlength="14" required>
+            <input id="job" type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." maxlength="14"
+                   required>
         </div>
 
         <div class="form-group">
@@ -168,7 +156,8 @@
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
             <button type="submit" class="btn btn-primary">입양 추가</button>
-        </div><br>
+        </div>
+        <br>
     </form>
 </div>
 <div class="info-wrap w-100 p-5 img"></div>

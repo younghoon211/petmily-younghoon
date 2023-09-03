@@ -1,6 +1,5 @@
 package kh.petmily.mapper;
 
-import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.adopt.Adopt;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,21 +17,23 @@ public interface AdoptMapper {
     void update(Adopt obj);
 
     void delete(int pk);
-    // ===============================
 
-    // ========== 관리자 페이지 ==========
-    int selectCount();
-
+    // ========== 회원 페이지 ==========
     int selectCountBymNumber(int mNumber);
-
-    List<Adopt> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end);
 
     List<Adopt> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
             @Param("mNumber") int mNumber);
+
+    // ========== 관리자 페이지 ==========
+    void adminInsert(Adopt obj);
+
+    int selectCount();
+
+    List<Adopt> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
 
     List<Adopt> selectIndexByStatus(
             @Param("start") int start,
@@ -43,9 +44,9 @@ public interface AdoptMapper {
 
     void adoptRefuse(int pk);
 
-    List<AbandonedAnimal> selectAllExcludeAdopt();
+    Adopt selectAdoptByAbNumber(int abNumber);
 
-    void adminInsert(Adopt obj);
+    void deleteCompleteWhenUpdateAB(int abNumber);
 
-    void updateStatusToAdopt();
+    void deleteWaitingWhenUpdateAB(int abNumber);
 }

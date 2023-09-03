@@ -54,14 +54,18 @@
 </section>
 
 <!-- 보호소 관리 List -->
-
 <section class="ftco-section bg-light">
     <div class="container" style="max-width: 1200px;">
 
+
+
         <!-- 목록 출력 -->
         <div class="row align-items-center">
+
             <div class="col-lg-12">
                 <div class="col text-center">
+                    <span style="color: red">&nbsp;※ 0번 보호소 : 입양 완료 또는 임시 보호중인 동물 소속</span>
+                    <br><br>
                     <table class="table table-hover bg-white">
                         <thead>
                         <tr class="table table-border">

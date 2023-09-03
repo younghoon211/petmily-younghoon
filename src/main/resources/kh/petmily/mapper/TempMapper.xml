@@ -4,7 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.petmily.mapper.TempMapper">
 
+
     <!--=======BasicMapper 메소드=======-->
+
     <select id="selectByPk" resultType="kh.petmily.domain.temp.TempPet">
         select *
         from TEMPPET
@@ -28,11 +30,8 @@
         where TNUMBER = #{pk}
     </delete>
 
-    <!--======= 관리자 페이지 =======-->
-    <select id="selectCount" resultType="int">
-        select count(*)
-        from TEMPPET
-    </select>
+
+    <!--=============== 마이페이지 임보 신청내역 ===============-->
 
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
@@ -40,17 +39,30 @@
         where MNUMBER = #{mNumber}
     </select>
 
-    <select id="selectIndex" resultType="kh.petmily.domain.temp.TempPet">
-        select *
-        from (select ROWNUM as NUM, T.*
-              from (select * from TEMPPET order by TNUMBER DESC) T)
-        where NUM between #{start} and #{end}
-    </select>
-
     <select id="selectIndexBymNumber" resultType="kh.petmily.domain.temp.TempPet">
         select *
         from (select ROWNUM as NUM, T.*
               from (select * from TEMPPET where MNUMBER = #{mNumber} order by TNUMBER DESC) T)
+        where NUM between #{start} and #{end}
+    </select>
+
+
+    <!--==================== 관리자 페이지 ====================-->
+
+    <insert id="adminInsert">
+        insert into TEMPPET(ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD, STATUS)
+        values (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, #{tempDate}, #{tempPeriod}, #{status})
+    </insert>
+
+    <select id="selectCount" resultType="int">
+        select count(*)
+        from TEMPPET
+    </select>
+
+    <select id="selectIndex" resultType="kh.petmily.domain.temp.TempPet">
+        select *
+        from (select ROWNUM as NUM, T.*
+              from (select * from TEMPPET order by TNUMBER DESC) T)
         where NUM between #{start} and #{end}
     </select>
 
@@ -90,22 +102,22 @@
         where T.TNUMBER = #{pk})
     </select>
 
-    <select id="selectAllExcludeTemp" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+    <select id="selectTempByAbNumber" resultType="kh.petmily.domain.temp.TempPet">
         select *
-        from ABANDONEDANIMAL
-        where ABNUMBER
-        not in (select ABNUMBER from TEMPPET where STATUS = '처리중')
-        order by ABNUMBER
+        from TEMPPET
+        where ABNUMBER = #{abNumber} and STATUS = '완료'
     </select>
 
-    <insert id="adminInsert">
-        insert into TEMPPET(ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD, STATUS)
-        values (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, #{tempDate}, #{tempPeriod}, #{status})
-    </insert>
 
-    <update id="updateStatusToTemp">
-        update ABANDONEDANIMAL
-        set ANIMALSTATE = '임보'
-        where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS = '완료')
-    </update>
+    <!--========== 유기동물 수정 시 기존 임보 정보 삭제 ==========-->
+
+    <delete id="deleteCompleteWhenUpdateAB">
+        delete from TEMPPET
+        where ABNUMBER = #{abNumber} and STATUS = '완료'
+    </delete>
+
+    <delete id="deleteWaitingWhenUpdateAB">
+        delete from TEMPPET
+        where ABNUMBER = #{abNumber} and STATUS = '처리중'
+    </delete>
 </mapper>

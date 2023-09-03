@@ -13,11 +13,13 @@ public interface ShelterService {
 
     ShelterPageForm getListPage(int pageNo);
 
+    List<Shelter> getShelterList();
+
+    List<Shelter> getShelterListNotSNumber0();
+
     ShelterModifyForm getModifyForm(int sNumber);
 
     void modify(ShelterModifyForm form);
 
     void delete(int sNumber);
-
-    List<Shelter> getShelterList();
 }

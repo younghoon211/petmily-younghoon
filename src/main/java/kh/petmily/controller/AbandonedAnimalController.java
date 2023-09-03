@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Controller
 @RequestMapping("/abandonedAnimal")
@@ -80,9 +81,11 @@ public class AbandonedAnimalController {
     @GetMapping("/auth/adoptTemp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
+        List<String> residences = adoptTempService.getResidenceList();
 
         model.addAttribute("animal", abandonedAnimalService.getAbAnimal(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
+        model.addAttribute("residences", residences);
 
         return "/abandoned.animal/adopt_temp_submit";
     }

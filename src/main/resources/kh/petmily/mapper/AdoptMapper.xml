@@ -4,7 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.petmily.mapper.AdoptMapper">
 
+
     <!--=======BasicMapper 메소드=======-->
+
     <select id="selectByPk" resultType="kh.petmily.domain.adopt.Adopt">
         select *
         from ADOPT
@@ -27,11 +29,8 @@
         where ADNUMBER = #{pk}
     </delete>
 
-    <!--======= 관리자 페이지 =======-->
-    <select id="selectCount" resultType="int">
-        select count(*)
-        from ADOPT
-    </select>
+
+    <!--========== 마이페이지 입양 신청내역 ==========-->
 
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
@@ -39,17 +38,30 @@
         where MNUMBER = #{mNumber}
     </select>
 
-    <select id="selectIndex" resultType="kh.petmily.domain.adopt.Adopt">
-        select *
-        from (select ROWNUM as NUM, A.*
-              from (select * from ADOPT order by ADNUMBER DESC) A)
-        where NUM between #{start} and #{end}
-    </select>
-
     <select id="selectIndexBymNumber" resultType="kh.petmily.domain.adopt.Adopt">
         select *
         from (select ROWNUM as NUM, A.*
               from (select * from ADOPT where MNUMBER = #{mNumber} order by ADNUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+
+    <!--============== 관리자 페이지 ===============-->
+
+    <insert id="adminInsert">
+        insert into ADOPT(MNUMBER, ABNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
+        values (#{mNumber}, #{abNumber}, #{residence}, #{maritalStatus}, #{job}, #{status})
+    </insert>
+
+    <select id="selectCount" resultType="int">
+        select count(*)
+        from ADOPT
+    </select>
+
+    <select id="selectIndex" resultType="kh.petmily.domain.adopt.Adopt">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from ADOPT order by ADNUMBER DESC) A)
         where NUM between #{start} and #{end}
     </select>
 
@@ -83,28 +95,29 @@
 
     <select id="adoptRefuse">
         update ADOPT set STATUS = '거절' where STATUS = '처리중'
-                                         and ABNUMBER = (select AD.ABNUMBER
-                                                         from ADOPT AD join ABANDONEDANIMAL AB
-                                                                            on AB.ABNUMBER = AD.ABNUMBER
-                                                         where AD.ADNUMBER = #{pk})
+        and ABNUMBER = (select AD.ABNUMBER
+        from ADOPT AD join ABANDONEDANIMAL AB
+        on AB.ABNUMBER = AD.ABNUMBER
+        where AD.ADNUMBER = #{pk})
     </select>
 
-    <select id="selectAllExcludeAdopt" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+
+    <select id="selectAdoptByAbNumber" resultType="kh.petmily.domain.adopt.Adopt">
         select *
-        from ABANDONEDANIMAL
-        where ABNUMBER
-        not in (select ABNUMBER from ADOPT where STATUS in ('완료', '처리중'))
-        order by ABNUMBER
+        from ADOPT
+        where ABNUMBER = #{abNumber} and STATUS = '완료'
     </select>
 
-    <insert id="adminInsert">
-        insert into ADOPT(MNUMBER, ABNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
-        values (#{mNumber}, #{abNumber}, #{residence}, #{maritalStatus}, #{job}, #{status})
-    </insert>
 
-    <update id="updateStatusToAdopt">
-        update ABANDONEDANIMAL
-        set ANIMALSTATE = '입양'
-        where ABNUMBER in (select ABNUMBER from ADOPT where STATUS = '완료')
-    </update>
+    <!--========== 유기동물 수정 시 기존 입양 정보 삭제 ==========-->
+
+    <delete id="deleteCompleteWhenUpdateAB">
+        delete from ADOPT
+        where ABNUMBER = #{abNumber} and STATUS = '완료'
+    </delete>
+
+    <delete id="deleteWaitingWhenUpdateAB">
+        delete from ADOPT
+        where ABNUMBER = #{abNumber} and STATUS = '처리중'
+    </delete>
 </mapper>

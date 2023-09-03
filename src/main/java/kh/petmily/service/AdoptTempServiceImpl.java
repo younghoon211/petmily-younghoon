@@ -1,12 +1,12 @@
 package kh.petmily.service;
 
+import kh.petmily.dao.AbandonedAnimalDao;
 import kh.petmily.dao.AdoptDao;
 import kh.petmily.dao.TempDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AdoptTempSubmitForm;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.*;
-import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
 
     private final AdoptDao adoptDao;
     private final TempDao tempDao;
+    private final AbandonedAnimalDao abandonedAnimalDao;
     private int size = 10;
 
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 회원 페이지(입양) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -37,8 +39,8 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // 입양 신청 내역 (마이페이지)
     @Override
     public MypageAdoptPageForm getMypageAdopt(int pageNo, int mNumber, String type) {
-        int total = adoptDao.selectCount(mNumber);
-        List<MypageAdoptListForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
+        int total = adoptDao.selectCountBymNumber(mNumber);
+        List<MypageAdoptListForm> content = adoptDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 
         return new MypageAdoptPageForm(total, pageNo, size, content);
     }
@@ -54,8 +56,8 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // 임시보호 신청 내역 (마이페이지)
     @Override
     public MypageTempPageForm getMypageTemp(int pageNo, int mNumber, String type) {
-        int total = tempDao.selectCount(mNumber);
-        List<MypageTempListForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
+        int total = tempDao.selectCountBymNumber(mNumber);
+        List<MypageTempListForm> content = tempDao.selectIndexBymNumber((pageNo - 1) * size + 1, (pageNo - 1) * size + size, mNumber);
 
         return new MypageTempPageForm(total, pageNo, size, content);
     }
@@ -66,9 +68,11 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Create =====================
     // 입양 글쓰기
     @Override
-    public void adminAdoptWrite(AdminAdoptForm form) {
-        Adopt adopt = adminToAdopt(form);
+    public void adoptWrite(AdminAdoptForm form) {
+        Adopt adopt = toWrite(form);
+
         adoptDao.adminInsert(adopt);
+        abandonedAnimalDao.updateToAdopt();
     }
 
     // ===================== Read =====================
@@ -86,66 +90,65 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     @Override
     public AdminAdoptPageForm getAdminAdoptWaitPage(int pageNo, String status) {
         int total = adoptDao.selectCount();
-        List<AdminAdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+        List<AdminAdoptDetailForm> content = adoptDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
 
         return new AdminAdoptPageForm(total, pageNo, size, content);
     }
 
     // 입양 조회
     @Override
-    public Adopt getAdoptByPk(int adNumber) {
-        return adoptDao.findByPk(adNumber);
+    public Adopt getAdoptByPk(int pk) {
+        return adoptDao.findByPk(pk);
     }
 
-    // 모든 유기동물
+    // 입양 '처리중' 상태 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> getAbAnimalListInAdopt() {
-        return adoptDao.selectAllAbandonedAnimal();
+    public List<AbandonedAnimal> getAnimalListAdoptWait() {
+        return abandonedAnimalDao.selectAllAdoptWait();
     }
 
-    // 입양 '완료'인 상태 제외한 유기동물 리스트
+    // '입양' 상태 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> getAbAnimalListExcludeAdopt() {
-        return adoptDao.selectAllExcludeAdopt();
+    public List<AbandonedAnimal> getAnimalListAdoptComplete() {
+        return abandonedAnimalDao.selectAllAdoptComplete();
     }
 
-    // 모든 회원 리스트
-    @Override
-    public List<Member> getMemberListInAdopt() {
-        return adoptDao.selectAllMember();
-    }
 
     // ===================== Update =====================
     // 입양 업데이트
     @Override
     public void adminAdoptUpdate(AdminAdoptForm form) {
-        Adopt adopt = adminToAdopt(form);
+        Adopt adopt = toModify(form);
         adoptDao.update(adopt);
+
+        abandonedAnimalDao.updateToAdopt();
+        abandonedAnimalDao.updateToProtectInAdopt();
     }
 
     // 입양 '완료'인 유기동물 '입양'으로 업데이트
     @Override
     public void updateStatusToAdopt() {
-        adoptDao.updateStatusToAdopt();
+        abandonedAnimalDao.updateToAdopt();
     }
 
     // 입양 승인 버튼
     @Override
-    public void adoptApproveButton(int adNumber) {
-        adoptDao.adoptApprove(adNumber);
+    public void adoptApproveButton(int pk) {
+        adoptDao.adoptApprove(pk);
     }
 
     // 입양 거절 버튼
     @Override
-    public void adoptRefuseButton(int adNumber) {
-        adoptDao.adoptRefuse(adNumber);
+    public void adoptRefuseButton(int pk) {
+        adoptDao.adoptRefuse(pk);
     }
 
     // ===================== Delete =====================
     // 입양 삭제
     @Override
-    public void deleteAdopt(int adNumber) {
-        adoptDao.delete(adNumber);
+    public void deleteAdopt(int pk) {
+        abandonedAnimalDao.updateToProtectForDeleteInAdopt(pk);
+        adoptDao.delete(pk);
     }
 
     // ===================== CRUD 끝 =====================
@@ -161,7 +164,18 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         );
     }
 
-    private Adopt adminToAdopt(AdminAdoptForm form) {
+    private Adopt toWrite(AdminAdoptForm form) {
+        return new Adopt(
+                form.getMNumber(),
+                form.getAbNumber(),
+                form.getResidence(),
+                form.getMaritalStatus(),
+                form.getJob(),
+                form.getStatus()
+        );
+    }
+
+    private Adopt toModify(AdminAdoptForm form) {
         return new Adopt(
                 form.getAdNumber(),
                 form.getMNumber(),
@@ -179,9 +193,11 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Create =====================
     // 임시보호 글쓰기
     @Override
-    public void adminTempWrite(AdminTempForm form) {
+    public void tempWrite(AdminTempForm form) {
         TempPet tempPet = adminToTemp(form);
+
         tempDao.adminInsert(tempPet);
+        abandonedAnimalDao.updateToTemp();
     }
 
     // ===================== Read =====================
@@ -198,7 +214,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     @Override
     public AdminTempPageForm getAdminTempWaitPage(int pageNo, String status) {
         int total = tempDao.selectCount();
-        List<AdminTempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+        List<AdminTempDetailForm> content = tempDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
 
         return new AdminTempPageForm(total, pageNo, size, content);
     }
@@ -209,22 +225,16 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return tempDao.findByPk(pk);
     }
 
-    // 모든 유기동물 리스트
+    // 임시보호 상태:'처리중'인 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> getAbAnimalListInTemp() {
-        return tempDao.selectAllAbandonedAnimal();
+    public List<AbandonedAnimal> getAnimalListTempWait() {
+        return abandonedAnimalDao.selectAllTempWait();
     }
 
-    // 임시보호 '완료'인 상태 제외한 유기동물 리스트
+    // 임시보호 중인 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> getAbAnimalListExcludeTemp() {
-        return tempDao.selectAllExcludeTemp();
-    }
-
-    // 모든 회원 리스트
-    @Override
-    public List<Member> getMemberListInTemp() {
-        return tempDao.selectAllMember();
+    public List<AbandonedAnimal> getAnimalListTempComplete() {
+        return abandonedAnimalDao.selectAllTempComplete();
     }
 
     // ===================== Update =====================
@@ -233,12 +243,9 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     public void adminTempUpdate(AdminTempForm form) {
         TempPet tempPet = adminToTemp(form);
         tempDao.update(tempPet);
-    }
 
-    // 임보 '완료'인 유기동물 '임보'로 업데이트
-    @Override
-    public void updateStatusToTemp() {
-        tempDao.updateStatusToTemp();
+        abandonedAnimalDao.updateToTemp();
+        abandonedAnimalDao.updateToProtectInTemp();
     }
 
     // 임보 승인 버튼
@@ -257,12 +264,12 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // 임시보호 삭제
     @Override
     public void deleteTemp(int pk) {
+        abandonedAnimalDao.updateToProtectForDeleteInTemp(pk);
         tempDao.delete(pk);
     }
 
 
     // ===================== CRUD 끝 =====================
-
 
     private TempPet toTempPet(AdoptTempSubmitForm form) {
         return new TempPet(
@@ -286,5 +293,42 @@ public class AdoptTempServiceImpl implements AdoptTempService {
                 form.getJob(),
                 form.getStatus()
         );
+    }
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 관리자 페이지(입양/임보 관련) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    // 입양,임보 '처리중' 상태 제외한 유기동물 리스트
+    @Override
+    public List<AbandonedAnimal> getAnimalListOnlyProtect() {
+        return abandonedAnimalDao.selectAllOnlyProtect();
+    }
+
+    // 거주지 리스트
+    @Override
+    public List<String> getResidenceList() {
+        List<String> residences = new ArrayList<>();
+        residenceList(residences);
+
+        return residences;
+    }
+
+    private void residenceList(List<String> residences) {
+        residences.add("서울특별시");
+        residences.add("경기도");
+        residences.add("인천광역시");
+        residences.add("강원도");
+        residences.add("충청북도");
+        residences.add("충청남도");
+        residences.add("경상북도");
+        residences.add("경상남도");
+        residences.add("전라북도");
+        residences.add("전라남도");
+        residences.add("부산광역시");
+        residences.add("대구광역시");
+        residences.add("부산광역시");
+        residences.add("울산광역시");
+        residences.add("광주광역시");
+        residences.add("대전광역시");
+        residences.add("세종특별자치시");
+        residences.add("제주특별자치도");
     }
 }

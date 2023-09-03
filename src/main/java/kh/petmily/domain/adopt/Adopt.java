@@ -35,4 +35,13 @@ public class Adopt implements DomainObj {
         this.job = job;
         this.status = status;
     }
+
+    public Adopt(int mNumber, int abNumber, String residence, String maritalStatus, String job, String status) {
+        this.mNumber = mNumber;
+        this.abNumber = abNumber;
+        this.residence = residence;
+        this.maritalStatus = maritalStatus;
+        this.job = job;
+        this.status = status;
+    }
 }

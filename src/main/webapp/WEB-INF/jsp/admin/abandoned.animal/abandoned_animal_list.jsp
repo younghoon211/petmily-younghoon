@@ -60,11 +60,18 @@
             <!-- 목록 출력 -->
             <div class="d-flex flex-row align-items-center">
                 <div class="col-sm-5 col-lg-12 text-center">
+                    <span style="color: red">&nbsp;※ 0번 보호소 : 입양 완료 또는 임시 보호중인 동물 소속</span>
+                    <br><br>
                     <table class="table table-hover bg-white">
                         <thead>
                         <tr class="table table-border">
                             <th>유기동물 이름 (번호)</th>
-                            <th>보호소 - 지역 (번호)</th>
+                            <th>종</th>
+                            <th>품종</th>
+                            <th>성별</th>
+                            <th>나이</th>
+                            <th>보호소 이름 (번호)</th>
+                            <th>보호소 지역</th>
                             <th>입소 날짜</th>
                             <th>발견 장소</th>
                             <th>상태</th>
@@ -75,7 +82,12 @@
                             <tbody>
                             <tr>
                                 <td>${abAnimal.name} (${abAnimal.abNumber})</td>
-                                <td>${abAnimal.groupName} - ${abAnimal.shelterLocation} (${abAnimal.getSNumber()})</td>
+                                <td>${abAnimal.species}</td>
+                                <td>${abAnimal.kind}</td>
+                                <td>${abAnimal.gender}</td>
+                                <td>${abAnimal.age}</td>
+                                <td>${abAnimal.groupName} (${abAnimal.getSNumber()})</td>
+                                <td>${abAnimal.shelterLocation}</td>
                                 <td>${abAnimal.admissionDate}</td>
                                 <td>${abAnimal.location}</td>
                                 <td>${abAnimal.animalState}</td>

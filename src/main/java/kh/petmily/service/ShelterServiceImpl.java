@@ -38,6 +38,16 @@ public class ShelterServiceImpl implements ShelterService {
         return new ShelterPageForm(total, pageNo, size, content);
     }
 
+    @Override
+    public List<Shelter> getShelterList() {
+        return shelterDao.selectAll();
+    }
+
+    @Override
+    public List<Shelter> getShelterListNotSNumber0() {
+        return shelterDao.selectAllNot0();
+    }
+
     // ===================== Update =====================
     // 수정 폼
     @Override
@@ -63,11 +73,6 @@ public class ShelterServiceImpl implements ShelterService {
 
 
     // ===================== CRUD 끝 =====================
-
-    @Override
-    public List<Shelter> getShelterList() {
-        return shelterDao.selectAll();
-    }
 
     private Shelter toWrite(ShelterWriteForm form) {
         return new Shelter(

@@ -22,6 +22,22 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/jquery.timepicker.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
+
+    <style>
+        textarea {
+            width: 82%;
+        }
+        h1 {
+            font-weight: 400;
+            font-family: 'Merriweather', serif
+        }
+
+        @media ( max-width: 500px) {
+            .checkboxlabel {
+                display: block;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -57,6 +73,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-lg-12">
+                <h1 id="title" class="text-center">유기동물 수정</h1><br><br>
 
                 <!-- 폼 시작 -->
 
@@ -153,31 +170,43 @@
                                 <c:choose>
                                     <c:when test="${modifyForm.animalState eq '입양'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
-                                                     id="stateInput1" checked><label for="stateInput1">입양</label></span>&emsp;
+                                                     id="animalState1" checked><label for="animalState1">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
-                                                     id="stateInput2"><label for="stateInput2">임시보호</label></span>&emsp;
+<%--                                                     onclick="confirm('상태를 변경하면 입양 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
+                                                     id="animalState2"><label for="animalState2">임시보호</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="보호"
-                                                     id="stateInput3"><label for="stateInput3">보호</label></span>
+<%--                                                     onclick="confirm('상태를 변경하면 입양 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
+                                                     id="animalState3"><label for="animalState3">보호</label></span>
                                     </c:when>
                                     <c:when test="${modifyForm.animalState eq '임보'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
-                                                     id="stateInput4"><label for="stateInput4">입양</label></span>&emsp;
+<%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
+                                                     id="animalState4"><label for="animalState4">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
-                                                     id="stateInput5" checked><label
-                                                for="stateInput5">임시보호</label></span>&emsp;
+                                                     id="animalState5" checked><label
+                                                for="animalState5">임시보호</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="보호"
-                                                     id="stateInput6"><label for="stateInput6">보호</label></span>
+<%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
+                                                     id="animalState6"><label for="animalState6">보호</label></span>
                                     </c:when>
                                     <c:when test="${modifyForm.animalState eq '보호'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
-                                                     id="stateInput7"><label for="stateInput7">입양</label></span>&emsp;
+                                                     id="animalState7"><label for="animalState7">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
-                                                     id="stateInput8"><label for="stateInput8">임시보호</label></span>&emsp;
+                                                     id="animalState8"><label for="animalState8">임시보호</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="보호"
-                                                     id="stateInput9" checked><label for="stateInput9">보호</label></span>
+                                                     id="animalState9" checked><label for="animalState9">보호</label></span>
                                     </c:when>
                                 </c:choose>
                             </div>
+                        </div>
+
+                        <div id="adoptInfo">
+                            <!-- '입양' 선택한 경우 여기에 입양 관련 정보 선택 폼 -->
+                        </div>
+
+                        <div id="tempInfo">
+                            <!-- '임보' 선택한 경우 여기에 임보 관련 정보 선택 폼 -->
                         </div>
 
                         <hr color="#eee" width="100%">
@@ -210,15 +239,9 @@
                             </div>
 
                             <div class="form-group col-md-6 col-lg-4">
-                                <label for="shelter">보호중인 보호소 (보호소 번호)</label>
-                                <select name="sNumber" id="shelter" class="form-control">
-                                    <c:forEach var="s" items="${shelterList}">
-                                        <option value="${s.getSNumber()}"
-                                                <c:if test="${modifyForm.getSNumber() eq s.getSNumber()}">selected</c:if>>
-                                                ${s.groupName} (${s.location}) - ${s.getSNumber()}
-                                        </option>
-                                    </c:forEach>
-                                </select>
+                                <div id="shelter">
+                                    <!-- '보호' 선택한 경우 여기에 보호소 리스트 -->
+                                </div>
                             </div>
 
                             <div class="form-group col-md-6 col-lg-4">
@@ -309,6 +332,37 @@
 
 <script>
     $(document).ready(function () {
+
+        // 입양, 임보 작성 폼 및 보호소 선택
+        let adoptInfo = document.getElementById('adoptInfo');
+        let tempInfo = document.getElementById('tempInfo');
+        let shelter = document.getElementById('shelter');
+        let animalStateInputs = $("input[name='animalState']");
+
+        showOrHideForm(animalStateInputs.filter(':checked').val());
+
+        animalStateInputs.change(function () {
+            let selectedState = $(this).val();
+            showOrHideForm(selectedState);
+        });
+
+        function showOrHideForm(animalState) {
+            adoptInfo.innerHTML = "";
+            tempInfo.innerHTML = "";
+            shelter.innerHTML = "";
+
+            if (animalState === "보호") {
+                shelter.innerHTML = selectShelterHtml;
+            } else if (animalState === "입양") {
+                adoptInfo.innerHTML = adoptInfoHtml;
+                shelter.innerHTML = notShelterHtml;
+            } else if (animalState === "임보") {
+                tempInfo.innerHTML = tempInfoHtml;
+                shelter.innerHTML = notShelterHtml;
+            }
+        }
+
+        // 파일 첨부 기능
         <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
             $("#notUpload1").hide();
             $("#fileDel1").hide();
@@ -321,6 +375,146 @@
         </c:if>
     });
 
+    // 입양, 임보 작성 폼 및 보호소 선택 폼
+    const adoptInfoHtml = `
+                        <span style="color: red; font-size: larger">&nbsp;※ 입양할 회원 정보 추가</span>
+                        <br>
+                        <div class="row justify-content-start">
+                            <div class="form-group col-md-6 col-lg-4">
+                                <label>입양할 회원ID / 닉네임 (회원번호)</label>
+                                <select name="mNumber" class="form-control" required>
+                                    <c:forEach var="m" items="${members}">
+                                        <option value="${m.getMNumber()}" ${selectedAdopt.getMNumber() eq m.getMNumber() ? 'selected' : ''}>${m.id} / ${m.name} (${m.getMNumber()})
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-start">
+                        <div class="col-md-6 col-lg-4">
+                            <label for="maritalStatus">결혼여부</label><br>
+                            <div id="maritalStatus" class="form-check form-check-inline">
+                                <c:if test="${selectedAdopt.maritalStatus eq 'married' || (selectedAdopt.maritalStatus ne 'married' && selectedAdopt.maritalStatus ne 'single')}">
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="married"
+                                             value="married" checked><label for="married">기혼</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="single"
+                                             value="single"><label for="single">미혼</label></span>&emsp;
+                                </c:if>
+                                <c:if test="${selectedAdopt.maritalStatus eq 'single'}">
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="married"
+                                             value="married"><label for="married">기혼</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="single"
+                                             value="single" checked><label for="single">미혼</label></span>&emsp;
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-4">
+                            <label>거주지</label>
+                            <select name="residence" class="form-control" required>
+                                <c:forEach var="residence" items="${residences}">
+                              <option value="${residence}" ${selectedAdopt.residence eq residence ? 'selected' : ''}>${residence}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-4">
+                            <label for="job">직업</label>
+                            <input id="job" type="text" name="job" class="form-control" placeholder="직업을 입력해주세요."
+                                   value="${selectedAdopt.job}" maxlength="14" required>
+                        </div>
+                    </div>
+    `;
+
+    const tempInfoHtml = `
+                        <span style="color: red; font-size: larger">&nbsp;※ 임시보호 정보 및 회원 정보 추가</span>
+                        <br>
+                        <div class="row justify-content-start">
+                            <div class="form-group col-md-6 col-lg-4">
+                                <label>임시보호할 회원ID / 닉네임 (회원번호)</label>
+                                <select name="mNumber" class="form-control" required>
+                                    <c:forEach var="m" items="${members}">
+                                        <option value="${m.getMNumber()}" ${selectedTemp.getMNumber() eq m.getMNumber() ? 'selected' : ''}>${m.id} / ${m.name} (${m.getMNumber()})
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6 col-lg-4">
+                                <label>임시보호 시작 날짜</label>
+                                <input type="date" name="tempDate" class="form-control" min="1900-01-01"
+                                       max="2099-12-31" value="${selectedTemp.tempDate}" required>
+                            </div>
+
+                            <div class="form-group col-md-6 col-lg-4">
+                                <label>임시보호 기간 <span
+                                        style="color: red"><small>&nbsp;※ 회원들에게는 임시보호 최소기간 1개월로 명시</small></span></label>
+                                <input type="number" name="tempPeriod" class="form-control" placeholder="개월수를 입력해주세요."
+                                       min="1" max="100" value="${selectedTemp.tempPeriod}" required>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-start">
+                        <div class="col-md-6 col-lg-4">
+                            <label for="maritalStatus">결혼여부</label><br>
+                            <div id="maritalStatus" class="form-check form-check-inline">
+                                <c:if test="${selectedTemp.maritalStatus eq 'married' || (selectedTemp.maritalStatus ne 'married' && selectedTemp.maritalStatus ne 'single')}">
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="married"
+                                             value="married" checked><label for="married">기혼</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="single"
+                                             value="single"><label for="single">미혼</label></span>&emsp;
+                                </c:if>
+                                <c:if test="${selectedTemp.maritalStatus eq 'single'}">
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="married"
+                                             value="married"><label for="married">기혼</label></span>&emsp;
+                                <span><input type="radio" class="form-check-input" name="maritalStatus" id="single"
+                                             value="single" checked><label for="single">미혼</label></span>&emsp;
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-4">
+                            <label>거주지</label>
+                            <select name="residence" class="form-control" required>
+                                <c:forEach var="residence" items="${residences}">
+                              <option value="${residence}" ${selectedTemp.residence eq residence ? 'selected' : ''}>${residence}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-4">
+                            <label for="job">직업</label>
+                            <input id="job" type="text" name="job" class="form-control" placeholder="직업을 입력해주세요."
+                                   value="${selectedTemp.job}" maxlength="14" required>
+                        </div>
+                    </div>
+    `;
+
+    const selectShelterHtml = `
+                        <label for="shelter">
+                            보호소 이름 (지역) - 번호
+                        </label>
+                        <select name="sNumber" id="shelter" class="form-control">
+                            <c:forEach var="s" items="${shelters}">
+                            <option value="${s.getSNumber()}"
+                                <c:if test="${modifyForm.getSNumber() eq s.getSNumber()}">selected</c:if>
+                            >${s.groupName} (${s.location}) - ${s.getSNumber()}</option>
+                            </c:forEach>
+                        </select>
+    `;
+
+    const notShelterHtml = `
+                    <label for="notShelter">
+                        <span style="color: red"><small>&nbsp;※ 입양 또는 임보중인 동물은 보호소 선택이 불가합니다.</small></span>
+                    </label>
+                    <select id="notShelter" class="form-control" disabled>
+                        <option>입양/임보중</option>
+                    </select>
+                    <input name="sNumber" value="0" hidden>
+    `;
+
+    // 파일 첨부 기능
     function hasImage() {
         let fileName = $("#fileName");
         let initFileDel = $("#initFileDel");

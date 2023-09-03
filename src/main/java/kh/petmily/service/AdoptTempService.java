@@ -6,7 +6,6 @@ import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.AdminAdoptForm;
 import kh.petmily.domain.adopt.form.AdminAdoptPageForm;
 import kh.petmily.domain.adopt.form.MypageAdoptPageForm;
-import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.AdminTempForm;
 import kh.petmily.domain.temp.form.AdminTempPageForm;
@@ -27,7 +26,7 @@ public interface AdoptTempService {
     MypageTempPageForm getMypageTemp(int pageNo, int mNumber, String type);
 
     // 입양 관리
-    void adminAdoptWrite(AdminAdoptForm form);
+    void adoptWrite(AdminAdoptForm form);
 
     AdminAdoptPageForm getAdminAdoptListPage(int pageNo);
 
@@ -35,11 +34,9 @@ public interface AdoptTempService {
 
     Adopt getAdoptByPk(int adNumber);
 
-    List<AbandonedAnimal> getAbAnimalListInAdopt();
+    List<AbandonedAnimal> getAnimalListAdoptWait();
 
-    List<AbandonedAnimal> getAbAnimalListExcludeAdopt();
-
-    List<Member> getMemberListInAdopt();
+    List<AbandonedAnimal> getAnimalListAdoptComplete();
 
     void adminAdoptUpdate(AdminAdoptForm form);
 
@@ -52,7 +49,7 @@ public interface AdoptTempService {
     void deleteAdopt(int adNumber);
 
     // 임보 관리
-    void adminTempWrite(AdminTempForm form);
+    void tempWrite(AdminTempForm form);
 
     AdminTempPageForm getAdminTempListPage(int pageNo);
 
@@ -60,19 +57,20 @@ public interface AdoptTempService {
 
     TempPet getTempByPk(int tNumber);
 
-    List<AbandonedAnimal> getAbAnimalListInTemp();
+    List<AbandonedAnimal> getAnimalListTempWait();
 
-    List<AbandonedAnimal> getAbAnimalListExcludeTemp();
-
-    List<Member> getMemberListInTemp();
+    List<AbandonedAnimal> getAnimalListTempComplete();
 
     void adminTempUpdate(AdminTempForm form);
-
-    void updateStatusToTemp();
 
     void tempApproveButton(int tNumber);
 
     void tempRefuseButton(int tNumber);
 
     void deleteTemp(int tNumber);
+
+    // 입양/임보
+    List<AbandonedAnimal> getAnimalListOnlyProtect();
+
+    List<String> getResidenceList();
 }

@@ -2,7 +2,6 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
-import kh.petmily.domain.member.Member;
 import kh.petmily.domain.temp.TempPet;
 import kh.petmily.domain.temp.form.AdminTempDetailForm;
 import kh.petmily.domain.temp.form.MypageTempListForm;
@@ -43,24 +42,14 @@ public class TempDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount() {
-        return mapper.selectCount();
-    }
 
-    public int selectCount(int mNumber) {
+    // ================ 회원 페이지 ================
+
+    public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    public List<AdminTempDetailForm> selectIndex(int start, int end) {
-        List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
-        List<TempPet> tempPets = mapper.selectIndex(start, end);
-
-        addAdminTempDetailForms(adminTempDetailForms, tempPets);
-
-        return adminTempDetailForms;
-    }
-
-    public List<MypageTempListForm> selectIndex(int start, int end, int mNumber) {
+    public List<MypageTempListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<MypageTempListForm> mypageTempListForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndexBymNumber(start, end, mNumber);
 
@@ -77,7 +66,31 @@ public class TempDao implements BasicDao {
         return mypageTempListForms;
     }
 
-    public List<AdminTempDetailForm> selectIndex(int start, int end, String status) {
+
+    // ================ 관리자 페이지 ================
+
+    // 관리자 insert (status 선택 가능)
+    public void adminInsert(DomainObj obj) {
+        mapper.adminInsert((TempPet) obj);
+    }
+
+    // 총 게시글 수 조회
+    public int selectCount() {
+        return mapper.selectCount();
+    }
+
+    // 리스트 페이지 index
+    public List<AdminTempDetailForm> selectIndex(int start, int end) {
+        List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
+        List<TempPet> tempPets = mapper.selectIndex(start, end);
+
+        addAdminTempDetailForms(adminTempDetailForms, tempPets);
+
+        return adminTempDetailForms;
+    }
+
+    // 임시보호 승인관리 리스트 페이지 index
+    public List<AdminTempDetailForm> selectIndexByStatus(int start, int end, String status) {
         List<AdminTempDetailForm> adminTempDetailForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndexByStatus(start, end, status);
 
@@ -86,32 +99,24 @@ public class TempDao implements BasicDao {
         return adminTempDetailForms;
     }
 
+    // 임시보호 승인
     public void tempApprove(int pk) {
         mapper.tempApprove(pk);
     }
 
+    // 임시보호 거절
     public void tempRefuse(int pk) {
         mapper.tempRefuse(pk);
     }
 
-    public void updateStatusToTemp() {
-        mapper.updateStatusToTemp();
+    // 수정 시 동일한 abNumber 중 상태 '완료' 삭제
+    public void deleteCompleteWhenUpdateAB(int abNumber) {
+        mapper.deleteCompleteWhenUpdateAB(abNumber);
     }
 
-    public List<Member> selectAllMember() {
-        return memberMapper.selectAll();
-    }
-
-    public List<AbandonedAnimal> selectAllExcludeTemp() {
-        return mapper.selectAllExcludeTemp();
-    }
-
-    public List<AbandonedAnimal> selectAllAbandonedAnimal() {
-        return abandonedAnimalMapper.selectAll();
-    }
-
-    public void adminInsert(DomainObj obj) {
-        mapper.adminInsert((TempPet) obj);
+    // 수정 시 동일한 abNumber 중 상태 '처리중' 삭제
+    public void deleteWaitingWhenUpdateAB(int abNumber) {
+        mapper.deleteWaitingWhenUpdateAB(abNumber);
     }
 
 

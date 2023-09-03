@@ -89,7 +89,7 @@
         </div>
     </div>
 </section>
-
+<br>
 <div class="container survey">
     <h1 id="title" class="text-center">임시보호 추가</h1>
     <br>
@@ -98,16 +98,16 @@
         <div class="form-group">
             <label>회원ID / 닉네임 (회원번호)</label>
             <select name="mNumber" class="form-control" required>
-                <c:forEach var="m" items="${member}">
+                <c:forEach var="m" items="${members}">
                     <option value="${m.getMNumber()}">${m.id} / ${m.name} (${m.getMNumber()})</option>
                 </c:forEach>
             </select>
         </div>
 
         <div class="form-group">
-            <label>동물이름 (동물번호) <span style="color: red"><small>&nbsp;※ 임시보호 승인 대기중인 동물 제외 (수정에서는 제약없이 가능)</small></span></label>
+            <label>동물이름 (동물번호) <span style="color: red"><small>&nbsp;※ 입양/임보 완료됐거나, 승인 대기중인 동물 제외 (유기동물 관리에서 수정 가능)</small></span></label>
             <select name="abNumber" class="form-control" required>
-                <c:forEach var="ab" items="${abandonedAnimal}">
+                <c:forEach var="ab" items="${onlyProtectedAnimals}">
                     <option value="${ab.abNumber}">${ab.name} (${ab.abNumber})</option>
                 </c:forEach>
             </select>
@@ -119,30 +119,16 @@
         </div>
 
         <div class="form-group">
-            <label>임시보호 기간 <span style="color: red"><small>&nbsp;※ 회원들에게는 임시보호 가능한 최소기간 1개월로 명시</small></span></label>
+            <label>임시보호 기간 <span style="color: red"><small>&nbsp;※ 회원들에게는 임시보호 최소기간 1개월로 명시</small></span></label>
             <input type="number" name="tempPeriod" class="form-control" placeholder="개월수를 입력해주세요." min="1" max="100" required>
         </div>
 
         <div class="form-group">
             <label>거주지</label>
             <select name="residence" class="form-control" required>
-                <option>서울특별시</option>
-                <option>경기도</option>
-                <option>인천광역시</option>
-                <option>강원도</option>
-                <option>경상북도</option>
-                <option>경상남도</option>
-                <option>부산광역시</option>
-                <option>대구광역시</option>
-                <option>울산광역시</option>
-                <option>전라남도</option>
-                <option>전라북도</option>
-                <option>광주광역시</option>
-                <option>충청남도</option>
-                <option>충청북도</option>
-                <option>대전광역시</option>
-                <option>세종특별자치시</option>
-                <option>제주특별자치도</option>
+                <c:forEach var="residence" items="${residences}">
+                    <option value="${residence}">${residence}</option>
+                </c:forEach>
             </select>
         </div>
 

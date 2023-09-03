@@ -89,7 +89,7 @@
         </div>
     </div>
 </section>
-
+<br>
 <div class="container survey">
     <h1 id="title" class="text-center">임시보호 수정</h1>
     <br>
@@ -98,60 +98,78 @@
         <div class="form-group">
             <label>회원ID / 닉네임 (회원번호)</label>
             <select name="mNumber" class="form-control" required>
-                <c:forEach var="m" items="${member}">
+                <c:forEach var="m" items="${members}">
                     <option value="${m.getMNumber()}"
-                            <c:if test="${temp.getMNumber() eq m.getMNumber()}">selected</c:if>
+                            <c:if test="${selectedTemp.getMNumber() eq m.getMNumber()}">selected</c:if>
                     >${m.id} / ${m.name} (${m.getMNumber()})
                     </option>
                 </c:forEach>
             </select>
         </div>
 
+        <%-- 화면에 보여지는 부분 --%>
         <div class="form-group">
-            <label>동물이름 (동물번호)</label>
-            <select name="abNumber" class="form-control" required>
-                <c:forEach var="ab" items="${abandonedAnimal}">
+            <label>동물이름 (동물번호) <span style="color: red"><small>&nbsp;※ 유기동물 관리에서 수정 가능</small></span></label>
+            <select class="form-control" disabled>
+                <c:forEach var="ab" items="${onlyProtectedAnimals}">
                     <option value="${ab.abNumber}"
-                            <c:if test="${temp.abNumber eq ab.abNumber}">selected</c:if>
+                            <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>
                     >${ab.name} (${ab.abNumber})
+                    </option>
+                </c:forEach>
+                <c:forEach var="ab" items="${tempWaitingAnimals}">
+                    <option value="${ab.abNumber}"
+                            <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>
+                    >${ab.name} (${ab.abNumber}) : 임시보호 승인 대기중
+                    </option>
+                </c:forEach>
+                <c:forEach var="ab" items="${tempCompleteAnimals}">
+                    <option value="${ab.abNumber}"
+                            <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>
+                    >${ab.name} (${ab.abNumber}) : 임시보호중
                     </option>
                 </c:forEach>
             </select>
         </div>
 
+        <%-- 서버에 abNumber넘기는 용 --%>
+        <select name="abNumber" hidden>
+            <c:forEach var="ab" items="${onlyProtectedAnimals}">
+                <option value="${ab.abNumber}"
+                        <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>>
+                </option>
+            </c:forEach>
+            <c:forEach var="ab" items="${tempWaitingAnimals}">
+                <option value="${ab.abNumber}"
+                        <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>>임시보호 승인 대기중
+                </option>
+            </c:forEach>
+            <c:forEach var="ab" items="${tempCompleteAnimals}">
+                <option value="${ab.abNumber}"
+                        <c:if test="${selectedTemp.abNumber eq ab.abNumber}">selected</c:if>>임시보호중
+                </option>
+            </c:forEach>
+        </select>
+
         <div class="form-group">
             <label>시작 날짜</label>
-            <input type="date" name="tempDate" class="form-control" placeholder="일수를 입력해주세요." value="${temp.tempDate}"
+            <input type="date" name="tempDate" class="form-control" placeholder="일수를 입력해주세요." value="${selectedTemp.tempDate}"
                    required>
         </div>
 
         <div class="form-group">
             <label>임시보호 기간 (일수)</label>
             <input type="text" name="tempPeriod" class="form-control" placeholder="일수를 입력해주세요."
-                   value="${temp.tempPeriod}"
+                   value="${selectedTemp.tempPeriod}"
                    required>
         </div>
 
         <div class="form-group">
             <label>거주지</label>
-            <select id="residence" name="residence" class="form-control" required>
-                <option>서울특별시</option>
-                <option>경기도</option>
-                <option>인천광역시</option>
-                <option>강원도</option>
-                <option>경상북도</option>
-                <option>경상남도</option>
-                <option>부산광역시</option>
-                <option>대구광역시</option>
-                <option>울산광역시</option>
-                <option>전라남도</option>
-                <option>전라북도</option>
-                <option>광주광역시</option>
-                <option>충청남도</option>
-                <option>충청북도</option>
-                <option>대전광역시</option>
-                <option>세종특별자치시</option>
-                <option>제주특별자치도</option>
+            <select name="residence" class="form-control" required>
+                <c:forEach var="residence" items="${residences}">
+                    <option value="${residence}" ${selectedTemp.residence eq residence ? 'selected' : ''}>${residence}</option>
+                </c:forEach>
             </select>
         </div>
 
@@ -159,7 +177,7 @@
         <div class="radiobuttons">
             <p>결혼여부</p>
             <ul style="list-style: none;">
-                <c:if test="${temp.maritalStatus eq 'married'}">
+                <c:if test="${selectedTemp.maritalStatus eq 'married'}">
                     <li class="radio">
                         <input name="maritalStatus" value="married" id="married"
                                type="radio" class="userRatings" required checked>
@@ -170,7 +188,7 @@
                         <label for="single">&nbsp;미혼</label>
                     </li>
                 </c:if>
-                <c:if test="${temp.maritalStatus eq 'single'}">
+                <c:if test="${selectedTemp.maritalStatus eq 'single'}">
                     <li class="radio">
                         <input name="maritalStatus" value="married" id="married2"
                                type="radio" class="userRatings" required>
@@ -186,23 +204,21 @@
 
         <div class="form-group">
             <label>직업</label>
-            <input type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." value="${temp.job}" maxlength="14" required>
+            <input type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." value="${selectedTemp.job}"
+                   maxlength="14" required>
         </div>
 
         <div class="form-group">
-            <label>상태</label>
-            <select id="status" name="status" class="form-control" required>
-                <option>완료</option>
-                <option>거절</option>
-                <option>처리중</option>
-            </select>
+            <div id="statusContainer">
+            </div>
         </div>
+
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
             <button id="submit" type="submit" class="btn btn-primary">임시보호 수정</button>
         </div>
         <br>
-        <input type="hidden" name="tNumber" value="${temp.getTNumber()}">
+        <input type="hidden" name="tNumber" value="${selectedTemp.getTNumber()}">
     </form>
 </div>
 
@@ -226,8 +242,50 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    document.getElementById("residence").value = "${temp.residence}";
-    document.getElementById("status").value = "${temp.status}";
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectElement = document.querySelector('select[name="abNumber"]');
+        updateStatusInput(selectElement);
+
+        selectElement.addEventListener('change', function() {
+            updateStatusInput(selectElement);
+        });
+    });
+
+    function updateStatusInput(selectElement) {
+        const selectedText = selectElement.options[selectElement.selectedIndex].text;
+        const statusContainer = document.getElementById('statusContainer');
+
+        if (selectedText.includes('임시보호 승인 대기중')) {
+            statusContainer.innerHTML = `
+                <label>상태<span style="color: red"><small>&nbsp;&nbsp;※ 임시보호 승인 대기중인 동물은 '처리중'만 가능</small></span></label>
+                <select class="form-control" disabled>
+                    <option>처리중</option>
+                </select>
+                <select name="status" hidden>
+                    <option selected>처리중</option>
+                </select>
+            `;
+        } else if (selectedText.includes('임시보호중')) {
+            statusContainer.innerHTML = `
+                <label>상태<span style="color: red"><small>&nbsp;&nbsp;※ 임시보호중인 동물은 '완료'만 가능</small></span></label>
+                <select class="form-control" disabled>
+                    <option>완료</option>
+                </select>
+                <select name="status" hidden>
+                    <option selected>완료</option>
+                </select>
+            `;
+        } else {
+            statusContainer.innerHTML = `
+                <label>상태</label>
+                <select name="status" class="form-control" required>
+                    <option>완료</option>
+                    <option selected>거절</option>
+                    <option>처리중</option>
+                </select>
+            `;
+        }
+    }
 </script>
 
 <%-- footer --%>

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminAdoptForm {
 
-    private int adNumber;
     private int mNumber;
+    private int adNumber;
     private int abNumber;
     private String residence;
     private String maritalStatus;

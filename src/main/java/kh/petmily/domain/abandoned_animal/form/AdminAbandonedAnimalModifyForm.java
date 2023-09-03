@@ -29,6 +29,17 @@ public class AdminAbandonedAnimalModifyForm {
     private String description;
     private String animalState;
 
+    // 입양, 임보 추가
+    private int adNumber;
+    private int mNumber;
+    private String residence;
+    private String maritalStatus;
+    private String job;
+
+    // 임보 추가
+    private Date tempDate;
+    private int tempPeriod;
+
     public AdminAbandonedAnimalModifyForm(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;

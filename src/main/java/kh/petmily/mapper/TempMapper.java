@@ -1,6 +1,5 @@
 package kh.petmily.mapper;
 
-import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.temp.TempPet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,21 +17,23 @@ public interface TempMapper {
     void update(TempPet obj);
 
     void delete(int pk);
-    // ===============================
 
-    // ========== 관리자 페이지 ==========
-    int selectCount();
-
+    // ========== 회원 페이지 ==========
     int selectCountBymNumber(int mNumber);
-
-    List<TempPet> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end);
 
     List<TempPet> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
             @Param("mNumber") int mNumber);
+
+    // ========== 관리자 페이지 ==========
+    void adminInsert(TempPet obj);
+
+    int selectCount();
+
+    List<TempPet> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
 
     List<TempPet> selectIndexByStatus(
             @Param("start") int start,
@@ -43,9 +44,9 @@ public interface TempMapper {
 
     void tempRefuse(int pk);
 
-    List<AbandonedAnimal> selectAllExcludeTemp();
+    TempPet selectTempByAbNumber(int abNumber);
 
-    void adminInsert(TempPet obj);
+    void deleteCompleteWhenUpdateAB(int abNumber);
 
-    void updateStatusToTemp();
+    void deleteWaitingWhenUpdateAB(int abNumber);
 }

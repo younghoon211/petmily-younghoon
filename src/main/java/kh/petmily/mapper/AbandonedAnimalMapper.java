@@ -2,7 +2,6 @@ package kh.petmily.mapper;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
-import kh.petmily.domain.shelter.Shelter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,15 +18,9 @@ public interface AbandonedAnimalMapper {
     void update(AbandonedAnimal obj);
 
     void delete(int pk);
-    // ===============================
 
-    int selectCount();
-
+    // ========== 회원 페이지 ==========
     int selectCountWithCondition(AbandonedAnimalConditionForm form);
-
-    List<AbandonedAnimal> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end);
 
     List<AbandonedAnimal> selectIndexWithCondition(
             @Param("start") int start,
@@ -39,7 +32,38 @@ public interface AbandonedAnimalMapper {
             @Param("sort") String sort
     );
 
+    // ========== 관리자 페이지 ==========
+    int selectCount();
+
+    List<AbandonedAnimal> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end);
+
     List<AbandonedAnimal> selectAll();
 
-    Shelter selectShelterByPk(int pk);
+    List<AbandonedAnimal> selectAllOnlyProtect();
+
+    int selectByPkMax();
+
+    // 입양
+    List<AbandonedAnimal> selectAllAdoptWait();
+
+    List<AbandonedAnimal> selectAllAdoptComplete();
+
+    void updateToAdopt();
+
+    void updateToProtectInAdopt();
+
+    void updateToProtectForDeleteInAdopt(int adNumber);
+
+    // 임보
+    List<AbandonedAnimal> selectAllTempWait();
+
+    List<AbandonedAnimal> selectAllTempComplete();
+
+    void updateToTemp();
+
+    void updateToProtectInTemp();
+
+    void updateToProtectForDeleteInTemp(int tNumber);
 }

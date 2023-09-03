@@ -30,6 +30,17 @@ public class TempPet implements DomainObj {
         this.job = job;
     }
 
+    public TempPet(int abNumber, int mNumber, Date tempDate, int tempPeriod, String residence, String maritalStatus, String job, String status) {
+        this.abNumber = abNumber;
+        this.mNumber = mNumber;
+        this.tempDate = tempDate;
+        this.tempPeriod = tempPeriod;
+        this.residence = residence;
+        this.maritalStatus = maritalStatus;
+        this.job = job;
+        this.status = status;
+    }
+
     public TempPet(int tNumber, int abNumber, int mNumber, Date tempDate, int tempPeriod, String residence, String maritalStatus, String job, String status) {
         this.tNumber = tNumber;
         this.abNumber = abNumber;

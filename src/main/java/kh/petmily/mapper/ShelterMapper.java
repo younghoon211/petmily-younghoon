@@ -24,4 +24,8 @@ public interface ShelterMapper {
     List<Shelter> selectIndex(@Param("start") int start, @Param("end") int end);
 
     List<Shelter> selectAll();
+
+    List<Shelter> selectAllNot0();
+
+    Shelter selectAllByAbNumber(int abNumber);
 }
