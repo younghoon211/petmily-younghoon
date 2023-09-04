@@ -18,9 +18,9 @@ public class AdminAbandonedAnimalModifyForm {
     private String name;
     private String species;
     private String kind;
-    private char gender;
+    private String gender;
     private int age;
-    private float weight;
+    private double weight;
     private String imgPath;
     private MultipartFile file;
     private String location;
@@ -40,7 +40,7 @@ public class AdminAbandonedAnimalModifyForm {
     private Date tempDate;
     private int tempPeriod;
 
-    public AdminAbandonedAnimalModifyForm(int abNumber, int sNumber, String name, String species, String kind, char gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AdminAbandonedAnimalModifyForm(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.name = name;

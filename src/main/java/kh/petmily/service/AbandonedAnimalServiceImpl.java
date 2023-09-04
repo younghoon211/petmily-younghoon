@@ -92,6 +92,15 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return new AbandonedAnimalPageForm(total, form.getPageNo(), size, content);
     }
 
+    // 입양 완료 리스트
+    @Override
+    public AbandonedAnimalPageForm getAdoptedListPage(AbandonedAnimalConditionForm form) {
+        int total = abandonedAnimalDao.selectCountAdopted(form);
+        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndexAdopted((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
+
+        return new AbandonedAnimalPageForm(total, form.getPageNo(), size, content);
+    }
+
     // 글 상세보기
     @Override
     public AbandonedAnimalDetailForm getDetailPage(int pk) {

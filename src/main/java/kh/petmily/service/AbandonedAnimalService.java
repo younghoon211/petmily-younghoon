@@ -21,6 +21,8 @@ public interface AbandonedAnimalService {
 
     AbandonedAnimalPageForm getListPage(AbandonedAnimalConditionForm form);
 
+    AbandonedAnimalPageForm getAdoptedListPage(AbandonedAnimalConditionForm form);
+
     AbandonedAnimalDetailForm getDetailPage(int abNumber);
 
     AbandonedAnimal getAbAnimal(int abNumber);

@@ -38,6 +38,7 @@ public class AbandonedAnimalController {
     private final DonateService donateService;
     private final MemberService memberService;
 
+    // 유기동물 리스트
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute AbandonedAnimalConditionForm conditionForm, Model model) {
         AbandonedAnimalPageForm pageForm = abandonedAnimalService.getListPage(conditionForm);
@@ -46,6 +47,7 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/abandoned_animal_list";
     }
 
+    // 유기동물 상세보기
     @GetMapping("/detail")
     public String detail(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailPage(abNumber);
@@ -54,7 +56,18 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/abandoned_animal_detail";
     }
 
-    //=======후원=======
+    // 입양완료 리스트
+    @GetMapping("/adoptedList")
+    public String adoptedList(@ModelAttribute AbandonedAnimalConditionForm conditionForm, Model model) {
+        log.info("AbandonedAnimalConditionForm = {}", conditionForm);
+        AbandonedAnimalPageForm pageForm = abandonedAnimalService.getAdoptedListPage(conditionForm);
+
+        model.addAttribute("pageForm", pageForm);
+
+        return "/abandoned.animal/adopted_animal_list";
+    }
+
+    // 후원 신청
     @GetMapping("/auth/donate")
     public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
@@ -77,7 +90,7 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/alert_submit";
     }
 
-    //=======입양/임보=======
+    // 입양/임보
     @GetMapping("/auth/adoptTemp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
@@ -112,7 +125,7 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/alert_submit";
     }
 
-    //=======봉사=======
+    // 봉사 신청
     @GetMapping("/auth/volunteer")
     public String volunteerForm(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailPage(abNumber);
@@ -121,6 +134,7 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/volunteer_submit";
     }
 
+    // 이미지파일 불러오기
     @ResponseBody
     @GetMapping("/upload")
     public ResponseEntity<Resource> getImage(@RequestParam String filename, HttpServletRequest request) {

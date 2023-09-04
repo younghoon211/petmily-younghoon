@@ -20,6 +20,7 @@ public interface AbandonedAnimalMapper {
     void delete(int pk);
 
     // ========== 회원 페이지 ==========
+    // 유기동물 조회
     int selectCountWithCondition(AbandonedAnimalConditionForm form);
 
     List<AbandonedAnimal> selectIndexWithCondition(
@@ -28,6 +29,18 @@ public interface AbandonedAnimalMapper {
             @Param("species") String species,
             @Param("gender") String gender,
             @Param("animalState") String animalState,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort
+    );
+
+    // 입양완료 조회
+    int selectCountAdopted(AbandonedAnimalConditionForm form);
+
+    List<AbandonedAnimal> selectIndexAdopted(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("gender") String gender,
             @Param("keyword") String keyword,
             @Param("sort") String sort
     );

@@ -12,8 +12,8 @@ public class AbandonedAnimalDetailForm {
     private int abNumber;
     private int sNumber; // 보호소 번호
     private int age;
-    private float weight;
-    private char gender;
+    private double weight;
+    private String gender;
     private String name;
     private String species;
     private String kind;
@@ -29,7 +29,7 @@ public class AbandonedAnimalDetailForm {
     private String shelterLocation;
     private String phone;
 
-    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, float weight, char gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName, String shelterLocation, String phone) {
+    public AbandonedAnimalDetailForm(int abNumber, int sNumber, int age, double weight, String gender, String name, String species, String kind, String location, String uniqueness, String description, String animalState, String imgPath, Date admissionDate, String groupName, String shelterLocation, String phone) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.age = age;

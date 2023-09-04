@@ -65,9 +65,54 @@ public class AbandonedAnimalDao implements BasicDao {
                 conditionForm.getSort()
         );
 
-        addListForms(abandonedAnimalListForms, abandonedAnimals);
+        for (AbandonedAnimal abAnimal : abandonedAnimals) {
+            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
+                    abAnimal.getAbNumber(),
+                    abAnimal.getName(),
+                    abAnimal.getImgPath(),
+                    abAnimal.getLocation(),
+                    abAnimal.getAdmissionDate()
+            );
+
+            abandonedAnimalListForms.add(listForm);
+        }
 
         return abandonedAnimalListForms;
+    }
+
+    // 입양 완료 리스트 : 조건부 검색 총 게시글 수 조회
+    public int selectCountAdopted(AbandonedAnimalConditionForm conditionForm) {
+        return mapper.selectCountAdopted(conditionForm);
+    }
+
+    // 입양 완료 리스트 : 조건부 검색 리스트 페이지 index
+    public List<AbandonedAnimalListForm> selectIndexAdopted(int start, int end, AbandonedAnimalConditionForm conditionForm) {
+        List<AbandonedAnimalListForm> adoptedListForms = new ArrayList<>();
+
+        List<AbandonedAnimal> abandonedAnimals = mapper.selectIndexAdopted(
+                start, end,
+                conditionForm.getSpecies(),
+                conditionForm.getGender(),
+                conditionForm.getKeyword(),
+                conditionForm.getSort()
+        );
+
+        for (AbandonedAnimal abAnimal : abandonedAnimals) {
+            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
+                    abAnimal.getAbNumber(),
+                    abAnimal.getName(),
+                    abAnimal.getSpecies(),
+                    abAnimal.getKind(),
+                    abAnimal.getGender(),
+                    abAnimal.getAge(),
+                    abAnimal.getWeight(),
+                    abAnimal.getImgPath()
+            );
+
+            adoptedListForms.add(listForm);
+        }
+
+        return adoptedListForms;
     }
 
     // ======================== 관리자 페이지 ==========================
@@ -81,7 +126,28 @@ public class AbandonedAnimalDao implements BasicDao {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
         List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(start, end);
 
-        addListForms(abandonedAnimalListForms, abandonedAnimals);
+        for (AbandonedAnimal abAnimal : abandonedAnimals) {
+            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
+                    abAnimal.getAbNumber(),
+                    abAnimal.getSNumber(),
+                    abAnimal.getName(),
+                    abAnimal.getSpecies(),
+                    abAnimal.getKind(),
+                    abAnimal.getGender(),
+                    abAnimal.getAge(),
+                    abAnimal.getWeight(),
+                    abAnimal.getImgPath(),
+                    abAnimal.getLocation(),
+                    abAnimal.getAdmissionDate(),
+                    abAnimal.getUniqueness(),
+                    abAnimal.getDescription(),
+                    abAnimal.getAnimalState(),
+                    selectShelterByPk(abAnimal.getAbNumber()).getGroupName(),
+                    selectShelterByPk(abAnimal.getAbNumber()).getLocation()
+            );
+
+            abandonedAnimalListForms.add(listForm);
+        }
 
         return abandonedAnimalListForms;
     }
@@ -166,32 +232,5 @@ public class AbandonedAnimalDao implements BasicDao {
     // 임시보호 '완료' 삭제 시 유기동물 상태 '임보'->'보호'
     public void updateToProtectForDeleteInTemp(int pk) {
         mapper.updateToProtectForDeleteInTemp(pk);
-    }
-
-
-    // ======================== private 메소드 ==========================
-    private void addListForms(List<AbandonedAnimalListForm> abandonedAnimalListForms, List<AbandonedAnimal> abandonedAnimals) {
-        for (AbandonedAnimal abAnimal : abandonedAnimals) {
-            AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(
-                    abAnimal.getAbNumber(),
-                    abAnimal.getSNumber(),
-                    abAnimal.getName(),
-                    abAnimal.getSpecies(),
-                    abAnimal.getKind(),
-                    abAnimal.getGender(),
-                    abAnimal.getAge(),
-                    abAnimal.getWeight(),
-                    abAnimal.getImgPath(),
-                    abAnimal.getLocation(),
-                    abAnimal.getAdmissionDate(),
-                    abAnimal.getUniqueness(),
-                    abAnimal.getDescription(),
-                    abAnimal.getAnimalState(),
-                    selectShelterByPk(abAnimal.getAbNumber()).getGroupName(),
-                    selectShelterByPk(abAnimal.getAbNumber()).getLocation()
-            );
-
-            abandonedAnimalListForms.add(listForm);
-        }
     }
 }

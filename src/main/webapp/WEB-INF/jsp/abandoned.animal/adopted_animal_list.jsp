@@ -7,7 +7,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/animate.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/owl.carousel.min.css">
@@ -33,16 +34,17 @@
 <%@ include file="../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
-<section class="hero-wrap hero-wrap-2" style="background-image: url(../../../resources/petsitting-master/images/bg_2.jpg);"
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url(../../../resources/petsitting-master/images/bg_2.jpg);"
          data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>보호 또는 임시보호중인 동물을 조회하는 게시판입니다<i class="ion-ios-arrow-forward"></i></span></span>
+                    <span class="mr-2"><span>입양 완료된 동물을 조회하는 게시판입니다<i class="ion-ios-arrow-forward"></i></span></span>
                 </p>
-                <h1 class="mb-0 bread">유기동물 조회</h1>
+                <h1 class="mb-0 bread">입양 완료된 동물 조회</h1>
             </div>
         </div>
     </div>
@@ -51,12 +53,12 @@
 <section class="ftco-section bg-light">
     <div class="container" style="max-width: 1400px;">
         <div class="modal-header">
-            <form action="/abandonedAnimal/list" method="get">
+            <form action="/abandonedAnimal/adoptedList" method="get">
                 <div class="form-group row">
                     <div>
-                        <c:if test="${empty param.species && empty param.gender && empty param.animalState}">
+                        <c:if test="${empty param.species && empty param.gender}">
                             <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandonedAnimal/list?sort=${sort}">
+                                <a href="/abandonedAnimal/adoptedList?sort=${sort}">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'abNo'}">최신순</c:when>
@@ -67,11 +69,11 @@
                             </c:forEach>
                         </c:if>
 
-                        <c:if test="${not empty param.species && not empty param.gender && not empty param.animalState}">
+                        <c:if test="${not empty param.species && not empty param.gender}">
                             <c:set var="linkParams"
-                                   value="?species=${param.species}&amp;gender=${param.gender}&amp;animalState=${param.animalState}&amp;keyword=${param.keyword}&amp;sort="/>
+                                   value="?species=${param.species}&amp;gender=${param.gender}&amp;keyword=${param.keyword}&amp;sort="/>
                             <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandonedAnimal/list${linkParams}${sort}">
+                                <a href="/abandonedAnimal/adoptedList${linkParams}${sort}">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'abNo'}">최신순</c:when>
@@ -90,19 +92,27 @@
 
         <div class="row">
             <c:forEach var="abAnimal" items="${pageForm.content}">
-                <div class="col-md-6 col-lg-3 ftco-animate"
-                     onclick="location.href='/abandonedAnimal/detail?abNumber=${abAnimal.abNumber}'">
+                <div class="col-md-6 col-lg-3 ftco-animate">
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
                             <div class="img align-self-stretch"
                                  style="background-image: url('/abandonedAnimal/upload?filename=${abAnimal.imgPath}')"></div>
                         </div>
-
-                        <div class="text pt-3 px-3 pb-4 text-center">
+                        <div class="text pt-3 px-3 pb-4 text-center"><br>
                             <h3>${abAnimal.name}</h3>
-                            <span class="position mb-2">${abAnimal.location}</span>
+                            <span class="position mb-2">${abAnimal.species} / ${abAnimal.kind}</span>
                             <div class="faded">
-                                <p>${abAnimal.admissionDate}</p>
+                                <c:choose>
+                                    <c:when test="${abAnimal.gender eq 'M'}">
+                                        <p>${abAnimal.age}살 / 수컷 / ${abAnimal.weight}kg</p>
+                                    </c:when>
+                                    <c:when test="${abAnimal.gender eq 'F'}">
+                                        <p>${abAnimal.age}살 / 암컷 / ${abAnimal.weight}kg</p>
+                                    </c:when>
+                                    <c:when test="${abAnimal.gender eq '-'}">
+                                        <p>${abAnimal.age}살 / 모름 / ${abAnimal.weight}kg</p>
+                                    </c:when>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
@@ -110,107 +120,98 @@
             </c:forEach>
         </div>
 
-<%--        검색--%>
-        <br><div style="display: flex; justify-content: center;">
-        <form action="/abandonedAnimal/list" method="get">
-        <div class="form-group row">
-        <div class="col">
-            <select name="species" class="form-control">
-                <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
-                    <option value="${animal}" <c:if test="${param.species eq animal}">selected</c:if>>
-                        <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
-                    </option>
-                </c:forEach>
-            </select>
-        </div>
+        <%-- 검색 --%>
+        <br>
+        <div style="display: flex; justify-content: center;">
+            <form action="/abandonedAnimal/adoptedList" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <select name="species" class="form-control">
+                            <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
+                                <option value="${animal}" <c:if test="${param.species eq animal}">selected</c:if>>
+                                    <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
 
-        <div class="col">
-            <select name="gender" class="form-control">
-                <option value="allGender" <c:if test="${param.gender eq 'allGender'}">selected</c:if>>모든 성별
-                </option>
-                <option value="-" <c:if test="${param.gender eq '-'}">selected</c:if>>모름</option>
-                <option value="M" <c:if test="${param.gender eq 'M'}">selected</c:if>>수컷</option>
-                <option value="F" <c:if test="${param.gender eq 'F'}">selected</c:if>>암컷</option>
-            </select>
-        </div>
+                    <div class="col">
+                        <select name="gender" class="form-control">
+                            <option value="allGender" <c:if test="${param.gender eq 'allGender'}">selected</c:if>>모든 성별
+                            </option>
+                            <option value="-" <c:if test="${param.gender eq '-'}">selected</c:if>>모름</option>
+                            <option value="M" <c:if test="${param.gender eq 'M'}">selected</c:if>>수컷</option>
+                            <option value="F" <c:if test="${param.gender eq 'F'}">selected</c:if>>암컷</option>
+                        </select>
+                    </div>
 
-        <div class="col">
-            <select name="animalState" class="form-control">
-                <option value="allAnimalState"
-                        <c:if test="${param.animalState eq 'allAnimalState'}">selected</c:if>>모든 상태
-                </option>
-                <option value="보호" <c:if test="${param.animalState eq '보호'}">selected</c:if>>보호중</option>
-                <option value="임보" <c:if test="${param.animalState eq '임보'}">selected</c:if>>임시보호중</option>
-            </select>
-        </div>
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
 
-        <div class="col">
-            <input type="text" name="keyword" class="form-control" placeholder="검색어"
-                   value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    <div class="col">
+                        <button name="sort" type="submit" class="btn btn-primary"
+                                value="${param.sort}">검색
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div class="col">
-            <button name="sort" type="submit" class="btn btn-primary"
-                    value="${param.sort}">검색
-            </button>
-        </div>
-        </div>
-        </form>
-        </div>
-<%--        검색 끝--%>
+        <%-- 검색 끝 --%>
 
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
 
-                        <c:if test="${not empty param.species && not empty param.animalState}">
+                        <c:if test="${not empty param.species}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage - 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
+                                    <a href="/abandonedAnimal/adoptedList?pageNo=${pageForm.startPage - 5}&species=${param.species}&gender=${param.gender}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/adoptedList?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/adoptedList?pageNo=${pNo}&species=${param.species}&gender=${param.gender}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage + 5}&species=${param.species}&gender=${param.gender}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
+                                    <a href="/abandonedAnimal/adoptedList?pageNo=${pageForm.startPage + 5}&species=${param.species}&gender=${param.gender}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
 
-                        <c:if test="${empty param.species && empty param.animalState}">
+                        <c:if test="${empty param.species}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage - 5}&sort=${param.sort}">&lt;</a>
+                                    <a href="/abandonedAnimal/adoptedList?pageNo=${pageForm.startPage - 5}&sort=${param.sort}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}"
                                        end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/adoptedList?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/abandonedAnimal/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/abandonedAnimal/adoptedList?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/abandonedAnimal/list?pageNo=${pageForm.startPage + 5}&sort=${param.sort}">&gt;</a>
+                                    <a href="/abandonedAnimal/adoptedList?pageNo=${pageForm.startPage + 5}&sort=${param.sort}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
@@ -221,9 +222,6 @@
         </div>
     </div>
 </section>
-
-
-
 
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>

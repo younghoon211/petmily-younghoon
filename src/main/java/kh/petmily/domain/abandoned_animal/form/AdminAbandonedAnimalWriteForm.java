@@ -14,9 +14,9 @@ public class AdminAbandonedAnimalWriteForm {
     private String name;
     private String species;
     private String kind;
-    private char gender;
+    private String gender;
     private int age;
-    private float weight;
+    private double weight;
     private String imgPath;
     private MultipartFile file;
     private String location;

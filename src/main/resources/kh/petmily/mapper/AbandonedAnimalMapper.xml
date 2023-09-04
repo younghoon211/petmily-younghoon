@@ -86,7 +86,7 @@
 
     <select id="selectIndexWithCondition" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select * from
-        (select ROWNUM as NUM, A.ABNUMBER, A.NAME, A.LOCATION, A.ADMISSIONDATE, A.IMGPATH FROM
+        (select ROWNUM as NUM, A.ABNUMBER, A.NAME, A.LOCATION, A.ADMISSIONDATE, A.IMGPATH from
         (select * from ABANDONEDANIMAL
         <where>
             ANIMALSTATE in('보호', '임보')
@@ -114,6 +114,60 @@
         </where>
         <include refid="sort"/>
         ) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+    <select id="selectCountAdopted" resultType="int">
+        select count(*)
+        from ABANDONEDANIMAL
+        <where>
+            ANIMALSTATE = '입양'
+
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="gender != null and gender != 'allGender'">
+                and GENDER = #{gender}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and ( NAME like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or AGE like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or UNIQUENESS like '%' || #{keyword} || '%'
+                or DESCRIPTION like '%' || #{keyword} || '%' )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIndexAdopted" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
+        select * from
+        (select ROWNUM as NUM, AB.ABNUMBER, AB.NAME, AB.SPECIES, AB.KIND, AB.GENDER, AB.AGE, AB.WEIGHT, AB.IMGPATH from
+        (select * from ABANDONEDANIMAL
+        <where>
+            ANIMALSTATE = '입양'
+
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="gender != null and gender != 'allGender'">
+                and GENDER = #{gender}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and ( NAME like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or AGE like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or UNIQUENESS like '%' || #{keyword} || '%'
+                or DESCRIPTION like '%' || #{keyword} || '%' )
+            </if>
+        </where>
+        <include refid="sort"/>
+        ) AB)
         where NUM between #{start} and #{end}
     </select>
 
