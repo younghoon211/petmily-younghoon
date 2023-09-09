@@ -2,6 +2,7 @@ package kh.petmily.service;
 
 import kh.petmily.dao.BoardDao;
 import kh.petmily.dao.MemberDao;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.board.Board;
 import kh.petmily.domain.board.form.*;
 import kh.petmily.domain.board.form.BoardConditionForm;
@@ -75,24 +76,30 @@ public class BoardServiceImpl implements BoardService {
         return new BoardPageForm(total, pageNo, size, content);
     }
 
-    // 게시판 리스트 (관리자 페이지)
-    @Override
-    public BoardPageForm getAdminListPage(String kindOfBoard, int pageNo) {
-        int total = boardDao.selectCount(engToKoKindOfBoard(kindOfBoard));
-
-        List<BoardListForm> content = boardDao.selectIndex(
-                (pageNo - 1) * size + 1,
-                (pageNo - 1) * size + size,
-                engToKoKindOfBoard(kindOfBoard)
-        );
-
-        return new BoardPageForm(total, pageNo, size, content);
-    }
-
     // 게시글 조회
     @Override
     public Board getBoard(int pk) {
         return boardDao.findByPk(pk);
+    }
+
+    // 게시판 리스트 (관리자)
+    @Override
+    public BoardPageForm getAdminListPage(AdminBoardConditionForm form) {
+        int total = boardDao.selectCountWithCondition(
+                form.getKeyword(),
+                form.getCondition(),
+                engToKoKindOfBoard(form.getKindOfBoard())
+        );
+
+        List<BoardListForm> content = boardDao.selectIndexByPkDesc(
+                (form.getPageNo() - 1) * size + 1,
+                (form.getPageNo() - 1) * size + size,
+                form.getKeyword(),
+                form.getCondition(),
+                engToKoKindOfBoard(form.getKindOfBoard())
+        );
+
+        return new BoardPageForm(total, form.getPageNo(), size, content);
     }
 
     // ===================== Update =====================

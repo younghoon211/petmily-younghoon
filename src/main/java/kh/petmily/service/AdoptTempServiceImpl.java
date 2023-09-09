@@ -5,6 +5,7 @@ import kh.petmily.dao.AdoptDao;
 import kh.petmily.dao.TempDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AdoptTempSubmitForm;
+import kh.petmily.domain.admin_form.*;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.adopt.form.*;
 import kh.petmily.domain.temp.TempPet;
@@ -68,8 +69,8 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Create =====================
     // 입양 글쓰기
     @Override
-    public void adoptWrite(AdminAdoptForm form) {
-        Adopt adopt = toWrite(form);
+    public void adoptInsert(AdoptForm form) {
+        Adopt adopt = toInsert(form);
 
         adoptDao.adminInsert(adopt);
         abandonedAnimalDao.updateToAdopt();
@@ -79,20 +80,20 @@ public class AdoptTempServiceImpl implements AdoptTempService {
 
     // 입양 관리 리스트 페이지
     @Override
-    public AdminAdoptPageForm getAdminAdoptListPage(int pageNo) {
-        int total = adoptDao.selectCount();
-        List<AdminAdoptDetailForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+    public AdoptPageForm getAdminAdoptListPage(int pageNo, String keyword) {
+        int total = adoptDao.selectCount(keyword);
+        List<AdoptListForm> content = adoptDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword);
 
-        return new AdminAdoptPageForm(total, pageNo, size, content);
+        return new AdoptPageForm(total, pageNo, size, content);
     }
 
-    // 입양 승인 관리 페이지
+    // 입양 승인관리 및 승인, 거절된 리스트 페이지
     @Override
-    public AdminAdoptPageForm getAdminAdoptWaitPage(int pageNo, String status) {
-        int total = adoptDao.selectCount();
-        List<AdminAdoptDetailForm> content = adoptDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+    public AdoptPageForm getAdminAdoptWaitPage(int pageNo, String keyword, String status) {
+        int total = adoptDao.selectCountByStatus(keyword, status);
+        List<AdoptListForm> content = adoptDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword, status);
 
-        return new AdminAdoptPageForm(total, pageNo, size, content);
+        return new AdoptPageForm(total, pageNo, size, content);
     }
 
     // 입양 조회
@@ -117,18 +118,12 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Update =====================
     // 입양 업데이트
     @Override
-    public void adminAdoptUpdate(AdminAdoptForm form) {
+    public void adminAdoptUpdate(AdoptForm form) {
         Adopt adopt = toModify(form);
         adoptDao.update(adopt);
 
         abandonedAnimalDao.updateToAdopt();
         abandonedAnimalDao.updateToProtectInAdopt();
-    }
-
-    // 입양 '완료'인 유기동물 '입양'으로 업데이트
-    @Override
-    public void updateStatusToAdopt() {
-        abandonedAnimalDao.updateToAdopt();
     }
 
     // 입양 승인 버튼
@@ -164,7 +159,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         );
     }
 
-    private Adopt toWrite(AdminAdoptForm form) {
+    private Adopt toInsert(AdoptForm form) {
         return new Adopt(
                 form.getMNumber(),
                 form.getAbNumber(),
@@ -175,7 +170,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         );
     }
 
-    private Adopt toModify(AdminAdoptForm form) {
+    private Adopt toModify(AdoptForm form) {
         return new Adopt(
                 form.getAdNumber(),
                 form.getMNumber(),
@@ -193,7 +188,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Create =====================
     // 임시보호 글쓰기
     @Override
-    public void tempWrite(AdminTempForm form) {
+    public void tempInsert(TempForm form) {
         TempPet tempPet = adminToTemp(form);
 
         tempDao.adminInsert(tempPet);
@@ -203,20 +198,20 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Read =====================
     // 임보 관리 리스트 페이지
     @Override
-    public AdminTempPageForm getAdminTempListPage(int pageNo) {
-        int total = tempDao.selectCount();
-        List<AdminTempDetailForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+    public TempPageForm getAdminTempListPage(int pageNo, String keyword) {
+        int total = tempDao.selectCount(keyword);
+        List<TempListForm> content = tempDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword);
 
-        return new AdminTempPageForm(total, pageNo, size, content);
+        return new TempPageForm(total, pageNo, size, content);
     }
 
     // 임보 승인 관리 페이지
     @Override
-    public AdminTempPageForm getAdminTempWaitPage(int pageNo, String status) {
-        int total = tempDao.selectCount();
-        List<AdminTempDetailForm> content = tempDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, status);
+    public TempPageForm getAdminTempWaitPage(int pageNo, String keyword, String status) {
+        int total = tempDao.selectCountByStatus(keyword, status);
+        List<TempListForm> content = tempDao.selectIndexByStatus((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword, status);
 
-        return new AdminTempPageForm(total, pageNo, size, content);
+        return new TempPageForm(total, pageNo, size, content);
     }
 
     // 임시보호 조회
@@ -240,7 +235,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ===================== Update =====================
     // 임시보호 업데이트
     @Override
-    public void adminTempUpdate(AdminTempForm form) {
+    public void adminTempUpdate(TempForm form) {
         TempPet tempPet = adminToTemp(form);
         tempDao.update(tempPet);
 
@@ -281,7 +276,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         );
     }
 
-    private TempPet adminToTemp(AdminTempForm form) {
+    private TempPet adminToTemp(TempForm form) {
         return new TempPet(
                 form.getTNumber(),
                 form.getAbNumber(),

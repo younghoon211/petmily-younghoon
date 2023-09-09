@@ -158,7 +158,7 @@
                                value="${keyword eq 'allKeyword' ? '' : param.keyword}">
                     </div>
 
-                    <div class="col">
+                    <div class="col-md-auto">
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
@@ -173,24 +173,24 @@
                         <c:if test="${not empty param.species || not empty param.animalState || not empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/findBoard/list?pageNo=${pageForm.startPage - 5}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&lt;</a>
+                                    <a href="/findBoard/list?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/findBoard/list?pageNo=${pNo}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/findBoard/list?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}&pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/findBoard/list?pageNo=${pNo}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/findBoard/list?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}&pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/findBoard/list?pageNo=${pageForm.startPage + 5}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}">&gt;</a>
+                                    <a href="/findBoard/list?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort=${param.sort}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
@@ -199,24 +199,24 @@
                         <c:if test="${empty param.species && empty param.animalState && empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/findBoard/list?pageNo=${pageForm.startPage - 5}&sort=${param.sort}">&lt;</a>
+                                    <a href="/findBoard/list?sort=${param.sort}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <c:forEach var="pNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pNo}">
                                     <li class="active">
-                                        <a href="/findBoard/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/findBoard/list?sort=${param.sort}&pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pNo}">
                                     <li>
-                                        <a href="/findBoard/list?pageNo=${pNo}&sort=${param.sort}">${pNo}</a>
+                                        <a href="/findBoard/list?sort=${param.sort}&pageNo=${pNo}">${pNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/findBoard/list?pageNo=${pageForm.startPage + 5}&sort=${param.sort}">&gt;</a>
+                                    <a href="/findBoard/list?sort=${param.sort}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>

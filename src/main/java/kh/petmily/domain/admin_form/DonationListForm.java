@@ -1,31 +1,33 @@
-package kh.petmily.domain.donation.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminDonationListForm {
+public class DonationListForm {
 
     private int dNumber;
     private int abNumber;
-    private String animalName;
     private int mNumber;
-    private String memberName;
     private int donaSum;
     private String bank;
     private String accountHolder;
     private String accountNumber;
+    private String animalName;
+    private String memberId;
+    private String memberName;
 
-    public AdminDonationListForm(int dNumber, int abNumber, String animalName, int mNumber, String memberName, int donaSum, String bank, String accountHolder, String accountNumber) {
+    public DonationListForm(int dNumber, int abNumber, int mNumber, int donaSum, String bank, String accountHolder, String accountNumber, String animalName, String memberId, String memberName) {
         this.dNumber = dNumber;
         this.abNumber = abNumber;
-        this.animalName = animalName;
         this.mNumber = mNumber;
-        this.memberName = memberName;
         this.donaSum = donaSum;
         this.bank = bank;
         this.accountHolder = accountHolder;
         this.accountNumber = accountNumber;
+        this.animalName = animalName;
+        this.memberId = memberId;
+        this.memberName = memberName;
     }
 }

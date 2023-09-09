@@ -1,6 +1,7 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.AdoptReviewDao;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.*;
 import lombok.RequiredArgsConstructor;
@@ -64,19 +65,14 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     // 게시판 리스트
     @Override
     public AdoptReviewPageForm getListPage(AdoptReviewConditionForm form) {
-        int total = adoptReviewDao.selectCountWithCondition(
-                form.getKeyword(),
-                form.getSearchType(),
-                engToKoKindOfBoard(form.getKindOfBoard())
-        );
+        int total = adoptReviewDao.selectCountWithCondition(form.getKeyword(), form.getCondition());
         
         List<AdoptReviewListForm> content = adoptReviewDao.selectIndexWithCondition(
                 (form.getPageNo() - 1) * size + 1, 
                 (form.getPageNo() - 1) * size + size, 
                 form.getSort(),
                 form.getKeyword(),
-                form.getSearchType(),
-                engToKoKindOfBoard(form.getKindOfBoard())
+                form.getCondition()
         );
 
         return new AdoptReviewPageForm(total, form.getPageNo(), size, content);
@@ -92,13 +88,13 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
 
     // 내가 쓴 게시글 (마이페이지)
     @Override
-    public AdoptReviewPageForm getMyPost(int pageNo, int mNumber, String kindOfBoard) {
-        int total = adoptReviewDao.selectCountBymNumber(mNumber, engToKoKindOfBoard(kindOfBoard));
+    public AdoptReviewPageForm getMyPost(int pageNo, int mNumber) {
+        int total = adoptReviewDao.selectCountBymNumber(mNumber);
         
         List<AdoptReviewListForm> content = adoptReviewDao.selectIndexBymNumber(
                 (pageNo - 1) * size + 1, 
-                (pageNo - 1) * size + size, mNumber, 
-                engToKoKindOfBoard(kindOfBoard)
+                (pageNo - 1) * size + size,
+                mNumber
         );
 
         return new AdoptReviewPageForm(total, pageNo, size, content);
@@ -106,16 +102,17 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
 
     // 게시판 리스트 (관리자 페이지)
     @Override
-    public AdoptReviewPageForm getAdminListPage(String kindOfBoard, int pageNo) {
-        int total = adoptReviewDao.selectCount(engToKoKindOfBoard(kindOfBoard));
+    public AdoptReviewPageForm getAdminListPage(AdminBoardConditionForm form) {
+        int total = adoptReviewDao.selectCountWithCondition(form.getKeyword(), form.getCondition());
         
-        List<AdoptReviewListForm> content = adoptReviewDao.selectIndex(
-                (pageNo - 1) * adminSize + 1, 
-                (pageNo - 1) * adminSize + adminSize, 
-                engToKoKindOfBoard(kindOfBoard)
+        List<AdoptReviewListForm> content = adoptReviewDao.selectIndexByPkDesc(
+                (form.getPageNo() - 1) * adminSize + 1,
+                (form.getPageNo() - 1) * adminSize + adminSize,
+                form.getKeyword(),
+                form.getCondition()
         );
 
-        return new AdoptReviewPageForm(total, pageNo, adminSize, content);
+        return new AdoptReviewPageForm(total, form.getPageNo(), adminSize, content);
     }
 
     @Override
@@ -157,7 +154,6 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     private AdoptReview toWrite(AdoptReviewWriteForm form) {
         return new AdoptReview(
                 form.getMNumber(),
-                engToKoKindOfBoard(form.getKindOfBoard()),
                 form.getTitle(),
                 form.getContent(),
                 form.getImgPath()
@@ -179,7 +175,7 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
                 adoptReview.getBNumber(),
                 adoptReview.getMNumber(),
                 getMemberName(adoptReview.getBNumber()),
-                koToEngKindOfBoard(adoptReview.getKindOfBoard()),
+                "adoptReview",
                 adoptReview.getTitle(),
                 adoptReview.getContent(),
                 adoptReview.getImgPath(),
@@ -220,21 +216,5 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
 
     private DateTimeFormatter getFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    }
-
-    private String engToKoKindOfBoard(String kindOfBoard) {
-        if (kindOfBoard.equals("adoptReview")) {
-            return "입양후기";
-        }
-
-        return null;
-    }
-
-    private String koToEngKindOfBoard(String kindOfBoard) {
-        if (kindOfBoard.equals("입양후기")) {
-            return "adoptReview";
-        }
-
-        return null;
     }
 }

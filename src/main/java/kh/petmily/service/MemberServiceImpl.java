@@ -1,6 +1,8 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.MemberDao;
+import kh.petmily.domain.admin_form.MemberInsertForm;
+import kh.petmily.domain.admin_form.MemberUpdateForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.*;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원정보 추가 (관리자)
     @Override
-    public void create(AdminMemberCreateForm form) {
-        Member member = toCreate(form);
+    public void insert(MemberInsertForm form) {
+        Member member = toInsert(form);
         memberDao.insert(member);
     }
 
@@ -75,9 +77,9 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원 리스트 페이지 (관리자)
     @Override
-    public MemberPageForm getAdminListPage(int pageNo) {
-        int total = memberDao.selectCount();
-        List<MemberDetailForm> content = memberDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+    public MemberPageForm getAdminListPage(int pageNo, String keyword) {
+        int total = memberDao.selectCount(keyword);
+        List<MemberDetailForm> content = memberDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword);
 
         return new MemberPageForm(total, pageNo, size, content);
     }
@@ -94,16 +96,16 @@ public class MemberServiceImpl implements MemberService {
 
     // 수정 폼 (관리자)
     @Override
-    public AdminMemberModifyForm getModifyForm(int pk) {
+    public MemberUpdateForm getUpdateForm(int pk) {
         Member member = memberDao.findByPk(pk);
 
-        return toModifyForm(member);
+        return toUpdateForm(member);
     }
 
     // 수정 (관리자)
     @Override
-    public void modify(AdminMemberModifyForm form) {
-        Member member = toModify(form);
+    public void update(MemberUpdateForm form) {
+        Member member = toUpdate(form);
         memberDao.update(member);
     }
 
@@ -177,7 +179,7 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private Member toCreate(AdminMemberCreateForm form) {
+    private Member toInsert(MemberInsertForm form) {
         return new Member(
                 form.getId(),
                 form.getPw(),
@@ -201,8 +203,8 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private AdminMemberModifyForm toModifyForm(Member member) {
-        return new AdminMemberModifyForm(
+    private MemberUpdateForm toUpdateForm(Member member) {
+        return new MemberUpdateForm(
                 member.getMNumber(),
                 member.getId(),
                 member.getPw(),
@@ -215,7 +217,7 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private Member toModify(AdminMemberModifyForm form) {
+    private Member toUpdate(MemberUpdateForm form) {
         return new Member(
                 form.getMNumber(),
                 form.getPw(),

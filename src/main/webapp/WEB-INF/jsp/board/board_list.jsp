@@ -166,7 +166,7 @@
                                value="${keyword eq 'allKeyword' ? '' : param.keyword}">
                     </div>
 
-                    <div class="col">
+                    <div class="col-md-auto">
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>

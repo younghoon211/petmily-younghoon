@@ -41,7 +41,8 @@
 <%@ include file="../../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
-<section class="hero-wrap hero-wrap-2" style="background-image: url('../../../../resources/petsitting-master/images/bg_2.jpg');"
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('../../../../resources/petsitting-master/images/bg_2.jpg');"
          data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -115,11 +116,14 @@
                             <td>${adopt.job}</td>
                             <td>${adopt.status}</td>
                             <td>
-                            <button type="button" class="btn btn-primary"
-                                    onclick="location.href='/admin/adopt/modify?adNumber=${adopt.adNumber}'">수정</button>
-                            <button type="button" class="btn btn-danger"
-                                   onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                           { return location.href='/admin/adopt/delete?adNumber=${adopt.adNumber}';}">삭제</button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="location.href='/admin/adopt/update?adNumber=${adopt.adNumber}'">수정
+                                </button>
+                                <button type="button" class="btn btn-danger"
+                                        onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                { return location.href='/admin/adopt/delete?adNumber=${adopt.adNumber}';}">
+                                    삭제
+                                </button>
                             </td>
                             </tbody>
                         </c:forEach>
@@ -133,38 +137,86 @@
             <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
                 관리자 페이지로
             </button>
-    			<button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/adopt/write'">입양 추가</button>
-    	</div>
+            <button type="button" class="btn btn-primary"
+                    onclick="location.href='/admin/adopt/insert'">입양 추가
+            </button>
+        </div>
 
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/adopt" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 페이징 -->
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-                        <li>
-                            <c:if test="${pageForm.startPage > 5}">
-                                <a href="/admin/adopt?pageNo=${pageForm.startPage - 5}">&lt;</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
-                            <c:if test="${pageForm.currentPage eq pageNo}">
-                        <li class="active">
-                            <a href="/admin/adopt?pageNo=${pageNo}">${pageNo}</a>
-                        </li>
-                        </c:if>
-                        <c:if test="${pageForm.currentPage ne pageNo}">
+                        <!-- 검색값 있을 시 -->
+                        <c:if test="${not empty param.keyword}">
                             <li>
-                                <a href="/admin/adopt?pageNo=${pageNo}">${pageNo}</a>
+                                <c:if test="${pageForm.startPage > 5}">
+                                    <a href="/admin/adopt?keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <li>
+                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
+                                <c:if test="${pageForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/adopt?keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${pageForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/adopt?keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            </li>
+                            <li>
+                                <c:if test="${pageForm.endPage < adopt.totalPages}">
+                                    <a href="/admin/adopt?keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                </c:if>
                             </li>
                         </c:if>
-                        </c:forEach>
-                        </li>
-                        <li>
-                            <c:if test="${pageForm.endPage < adopt.totalPages}">
-                                <a href="/admin/adopt?pageNo=${pageForm.startPage + 5}">&gt;</a>
-                            </c:if>
-                        </li>
+
+                        <!-- 검색값 없을 시 -->
+                        <c:if test="${empty param.keyword}">
+                            <li>
+                                <c:if test="${pageForm.startPage > 5}">
+                                    <a href="/admin/adopt?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <li>
+                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
+                                <c:if test="${pageForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/adopt?pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${pageForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/adopt?pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            </li>
+                            <li>
+                                <c:if test="${pageForm.endPage < adopt.totalPages}">
+                                    <a href="/admin/adopt?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>

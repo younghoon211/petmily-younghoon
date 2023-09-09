@@ -24,21 +24,31 @@ public interface TempMapper {
     List<TempPet> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("mNumber") int mNumber);
+            @Param("mNumber") int mNumber
+    );
 
     // ========== 관리자 페이지 ==========
     void adminInsert(TempPet obj);
 
-    int selectCount();
+    int selectCount(String keyword);
 
     List<TempPet> selectIndex(
             @Param("start") int start,
-            @Param("end") int end);
+            @Param("end") int end,
+            @Param("keyword") String keyword
+    );
+
+    int selectCountByStatus(
+            @Param("keyword") String keyword,
+            @Param("status") String status
+    );
 
     List<TempPet> selectIndexByStatus(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("status") String status);
+            @Param("keyword") String keyword,
+            @Param("status") String status
+    );
 
     void tempApprove(int pk);
 

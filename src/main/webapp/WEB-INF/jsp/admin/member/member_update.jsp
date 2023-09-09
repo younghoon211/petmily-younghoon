@@ -43,16 +43,16 @@
         </div>
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
-                <form action="/admin/member/modify" method="POST" class="contactForm">
+                <form action="/admin/member/update" method="POST" class="contactForm">
                     <div class="row">
 
-                        <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
+                        <input type="hidden" name="mNumber" value="${updateForm.getMNumber()}">
 
                         <div class="col-md-12 form-group">
                             <label class="label">아이디</label>
                             <input type="text"
                                    class="form-control" name="id"
-                                   value="${modifyForm.id}"
+                                   value="${updateForm.id}"
                                    id="inputId"
                                    readonly>
                         </div>
@@ -60,18 +60,18 @@
                             <label class="label">비밀번호</label>
                             <input type="text"
                                    class="form-control" name="pw" maxlength="16"
-                                   value="${modifyForm.pw}" required>
+                                   value="${updateForm.pw}" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">닉네임</label>
                             <input type="text"
                                    class="form-control" name="name"
-                                   value="${modifyForm.name}" maxlength="10" required>
+                                   value="${updateForm.name}" maxlength="10" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">생년월일</label>
                             <input class="form-control" type="date" name="birth" placeholder="생년월일"
-                                   min="1900-01-01" max="2099-12-31" value="${modifyForm.birth}" required>
+                                   min="1900-01-01" max="2099-12-31" value="${updateForm.birth}" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">성별</label>
@@ -84,19 +84,19 @@
                             <label class="label">이메일</label>
                             <input type="email" maxlength="30"
                                    class="form-control" name="email"
-                                   value="${modifyForm.email}" required>
+                                   value="${updateForm.email}" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">연락처</label>
                             <input type="tel" class="form-control" name="phone"
-                                   value="${modifyForm.phone}" pattern="^010\d{8}$" maxlength="11"
+                                   value="${updateForm.phone}" pattern="^010\d{8}$" maxlength="11"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <label class="label">회원 등급</label>
                             <input type="text"
                                    class="form-control" name="grade"
-                                   value="${modifyForm.grade}" readonly>
+                                   value="${updateForm.grade}" readonly>
                         </div>
                     </div>
                     <br>
@@ -129,7 +129,7 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    document.getElementById("gender").value = "${modifyForm.gender}";
+    document.getElementById("gender").value = "${updateForm.gender}";
 </script>
 
 <%-- footer --%>

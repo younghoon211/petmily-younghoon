@@ -1,7 +1,6 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.find_board.FindBoard;
-import kh.petmily.domain.find_board.form.FindBoardConditionForm;
 import kh.petmily.domain.look_board.LookBoard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,7 +24,11 @@ public interface FindBoardMapper {
 
     int updateViewCount(int pk);
 
-    int selectCountWithCondition(FindBoardConditionForm form);
+    int selectCountWithCondition(
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword
+    );
 
     List<FindBoard> selectIndexWithCondition(
             @Param("start") int start,
@@ -33,7 +36,8 @@ public interface FindBoardMapper {
             @Param("species") String species,
             @Param("animalState") String animalState,
             @Param("keyword") String keyword,
-            @Param("sort") String sort);
+            @Param("sort") String sort
+    );
 
 
     // ========= 마이페이지 - 내가 쓴 게시글 =========
@@ -42,7 +46,8 @@ public interface FindBoardMapper {
     List<FindBoard> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("mNumber") int mNumber);
+            @Param("mNumber") int mNumber
+    );
 
 
     // ============== 매칭 시스템  ==============
@@ -53,19 +58,22 @@ public interface FindBoardMapper {
     List<FindBoard> selectIndexFindMatching(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("mNumber") int mNumber);
+            @Param("mNumber") int mNumber
+    );
 
     int selectCountLookMatchedFind(
             @Param("species") String species,
             @Param("kind") String kind,
-            @Param("location") String location);
+            @Param("location") String location
+    );
 
     List<LookBoard> selectIndexLookMatchedFind(
             @Param("start") int start,
             @Param("end") int end,
             @Param("species") String species,
             @Param("kind") String kind,
-            @Param("location") String location);
+            @Param("location") String location
+    );
 
     List<FindBoard> selectAll();
 
@@ -80,11 +88,13 @@ public interface FindBoardMapper {
     void backStateLook(int laNumber);
 
     // =============== 관리자 ===============
-    int selectCount();
-
-    List<FindBoard> selectIndex(
+    List<FindBoard> selectIndexByPkDesc(
             @Param("start") int start,
-            @Param("end") int end);
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword
+    );
 
     String selectMemberId(int pk);
 }

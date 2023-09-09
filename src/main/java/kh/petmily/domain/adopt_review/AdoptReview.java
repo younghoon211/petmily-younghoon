@@ -14,7 +14,6 @@ public class AdoptReview implements DomainObj {
 
     private int bNumber; // 게시판 번호
     private int mNumber;
-    private String kindOfBoard;
     private String title;
     private String content;
     private String imgPath;
@@ -22,9 +21,8 @@ public class AdoptReview implements DomainObj {
     private final String checkPublic = "Y";
     private int viewCount;
 
-    public AdoptReview(int mNumber, String kindOfBoard, String title, String content, String imgPath) {
+    public AdoptReview(int mNumber, String title, String content, String imgPath) {
         this.mNumber = mNumber;
-        this.kindOfBoard = kindOfBoard;
         this.title = title;
         this.content = content;
         this.imgPath = imgPath;

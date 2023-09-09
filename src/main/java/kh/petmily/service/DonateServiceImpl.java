@@ -3,10 +3,10 @@ package kh.petmily.service;
 import kh.petmily.dao.DonationDao;
 import kh.petmily.domain.abandoned_animal.form.DonateSubmitForm;
 import kh.petmily.domain.donation.Donation;
-import kh.petmily.domain.donation.form.AdminDonationListForm;
-import kh.petmily.domain.donation.form.AdminDonationModifyForm;
-import kh.petmily.domain.donation.form.AdminDonationPageForm;
-import kh.petmily.domain.donation.form.AdminDonationWriteForm;
+import kh.petmily.domain.admin_form.DonationListForm;
+import kh.petmily.domain.admin_form.DonationUpdateForm;
+import kh.petmily.domain.admin_form.DonationPageForm;
+import kh.petmily.domain.admin_form.DonationInsertForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,34 +31,34 @@ public class DonateServiceImpl implements DonateService {
 
     // 후원 추가
     @Override
-    public void create(AdminDonationWriteForm form) {
-        Donation donation = toWrite(form);
+    public void insert(DonationInsertForm form) {
+        Donation donation = toInsert(form);
         donationDao.insert(donation);
     }
 
     // ===================== Read =====================
     // 후원 리스트 페이지
     @Override
-    public AdminDonationPageForm getListPage(int pageNo) {
-        int total = donationDao.selectCount();
-        List<AdminDonationListForm> content = donationDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size);
+    public DonationPageForm getListPage(int pageNo, String keyword) {
+        int total = donationDao.selectCount(keyword);
+        List<DonationListForm> content = donationDao.selectIndex((pageNo - 1) * size + 1, (pageNo - 1) * size + size, keyword);
 
-        return new AdminDonationPageForm(total, pageNo, size, content);
+        return new DonationPageForm(total, pageNo, size, content);
     }
 
     // ===================== Update =====================
     // 수정 폼
     @Override
-    public AdminDonationModifyForm getModifyForm(int pk) {
+    public DonationUpdateForm getUpdateForm(int pk) {
         Donation donation = donationDao.findByPk(pk);
 
-        return toModifyForm(donation);
+        return toUpdateForm(donation);
     }
 
     // 수정하기
     @Override
-    public void modify(AdminDonationModifyForm form) {
-        Donation donation = toModify(form);
+    public void update(DonationUpdateForm form) {
+        Donation donation = toUpdate(form);
         donationDao.update(donation);
     }
 
@@ -84,7 +84,7 @@ public class DonateServiceImpl implements DonateService {
         );
     }
 
-    private Donation toWrite(AdminDonationWriteForm form) {
+    private Donation toInsert(DonationInsertForm form) {
         return new Donation(
                 form.getAbNumber(),
                 form.getMNumber(),
@@ -95,8 +95,8 @@ public class DonateServiceImpl implements DonateService {
         );
     }
 
-    private AdminDonationModifyForm toModifyForm(Donation donation) {
-        return new AdminDonationModifyForm(
+    private DonationUpdateForm toUpdateForm(Donation donation) {
+        return new DonationUpdateForm(
                 donation.getDNumber(),
                 donation.getAbNumber(),
                 donation.getMNumber(),
@@ -107,7 +107,7 @@ public class DonateServiceImpl implements DonateService {
         );
     }
 
-    private Donation toModify(AdminDonationModifyForm form) {
+    private Donation toUpdate(DonationUpdateForm form) {
         return new Donation(
                 form.getDNumber(),
                 form.getAbNumber(),

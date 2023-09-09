@@ -2,7 +2,7 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.donation.Donation;
-import kh.petmily.domain.donation.form.AdminDonationListForm;
+import kh.petmily.domain.admin_form.DonationListForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.DonationMapper;
 import kh.petmily.mapper.MemberMapper;
@@ -40,38 +40,43 @@ public class DonationDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount() {
-        return mapper.selectCount();
+    public int selectCount(String keyword) {
+        return mapper.selectCount(keyword);
     }
 
-    public List<AdminDonationListForm> selectIndex(int start, int end) {
-        List<AdminDonationListForm> adminDonationListForms = new ArrayList<>();
-        List<Donation> donations = mapper.selectIndex(start, end);
+    public List<DonationListForm> selectIndex(int start, int end, String keyword) {
+        List<DonationListForm> donationListForms = new ArrayList<>();
+        List<Donation> donations = mapper.selectIndex(start, end, keyword);
 
         for (Donation donation : donations) {
-            AdminDonationListForm listForm = new AdminDonationListForm(
+            DonationListForm listForm = new DonationListForm(
                     donation.getDNumber(),
                     donation.getAbNumber(),
-                    findAnimalName(donation.getAbNumber()),
                     donation.getMNumber(),
-                    findMemberName(donation.getMNumber()),
                     donation.getDonaSum(),
                     donation.getBank(),
                     donation.getAccountHolder(),
-                    donation.getAccountNumber()
+                    donation.getAccountNumber(),
+                    getAnimalName(donation.getAbNumber()),
+                    getMemberId(donation.getAbNumber()),
+                    getMemberName(donation.getMNumber())
             );
 
-            adminDonationListForms.add(listForm);
+            donationListForms.add(listForm);
         }
 
-        return adminDonationListForms;
+        return donationListForms;
     }
 
-    private String findAnimalName(int abNumber) {
+    private String getAnimalName(int abNumber) {
         return abandonedAnimalMapper.selectByPk(abNumber).getName();
     }
 
-    private String findMemberName(int mNumber) {
+    private String getMemberId(int mNumber) {
+        return memberMapper.selectMemberId(mNumber);
+    }
+
+    private String getMemberName(int mNumber) {
         return memberMapper.selectName(mNumber);
     }
 }

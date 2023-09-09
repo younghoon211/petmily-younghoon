@@ -1,5 +1,6 @@
 package kh.petmily.service;
 
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.adopt_review.AdoptReview;
 import kh.petmily.domain.adopt_review.form.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +17,9 @@ public interface AdoptReviewService {
 
     AdoptReviewDetailForm getDetailPage(int bNumber);
 
-    AdoptReviewPageForm getMyPost(int pageNo, int mNumber, String kindOfBoard);
+    AdoptReviewPageForm getMyPost(int pageNo, int mNumber);
 
-    AdoptReviewPageForm getAdminListPage(String kindOfBoard, int pageNo);
+    AdoptReviewPageForm getAdminListPage(AdminBoardConditionForm form);
 
     AdoptReview getAdoptReview(int pk);
 

@@ -1,20 +1,22 @@
-package kh.petmily.domain.temp.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-public class AdminTempPageForm {
+@NoArgsConstructor
+public class DonationPageForm {
 
     private int total;
     private int currentPage;
-    private List<AdminTempDetailForm> content;
+    private List<DonationListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public AdminTempPageForm(int total, int currentPage, int size, List<AdminTempDetailForm> content) {
+    public DonationPageForm(int total, int currentPage, int size, List<DonationListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;

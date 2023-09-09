@@ -61,7 +61,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Abandoned Animal - Modify<i class="ion-ios-arrow-forward"></i></span>
+                <p class="breadcrumbs mb-2"><span>Abandoned Animal - Update<i class="ion-ios-arrow-forward"></i></span>
                 </p>
                 <h1 class="mb-0 bread">유기동물 관리 - 글 수정하기</h1>
             </div>
@@ -77,7 +77,7 @@
 
                 <!-- 폼 시작 -->
 
-                <form class="form" method="post" action="/admin/abandonedAnimal/modify?abNumber=${modifyForm.abNumber}"
+                <form class="form" method="post" action="/admin/abandonedAnimal/update?abNumber=${updateForm.abNumber}"
                       enctype='multipart/form-data'>
                     <div class="modal-body">
 
@@ -85,11 +85,11 @@
                             <div class="form-group col-md-6 col-lg-6">
                                 <label>이름</label>
                                 <input type="text" class="form-control" name="name" placeholder="이름을 입력해주세요"
-                                       value="${modifyForm.name}" maxlength="10" required>
+                                       value="${updateForm.name}" maxlength="10" required>
                             </div>
                             <div class="form-group col-md-6 col-lg-6">
                                 <label>입소날짜</label>
-                                <input type="date" class="form-control" value="${modifyForm.admissionDate}"
+                                <input type="date" class="form-control" value="${updateForm.admissionDate}"
                                        name="admissionDate" min="1900-01-01" max="2099-12-31" required>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                             <label>종</label><br>
                             <div class="form-check form-check-inline">
                                 <c:choose>
-                                    <c:when test="${modifyForm.species eq '개'}">
+                                    <c:when test="${updateForm.species eq '개'}">
                                         <span><input type="radio" class="form-check-input" name="species" value="개"
                                                      id="speciesInput1" checked><label
                                                 for="speciesInput1">개</label></span>&emsp;
@@ -109,7 +109,7 @@
                                         <span><input type="radio" class="form-check-input" name="species" value="기타"
                                                      id="speciesInput3"><label for="speciesInput3">기타</label></span>
                                     </c:when>
-                                    <c:when test="${modifyForm.species eq '고양이'}">
+                                    <c:when test="${updateForm.species eq '고양이'}">
                                         <span><input type="radio" class="form-check-input" name="species" value="개"
                                                      id="speciesInput4"><label for="speciesInput4">개</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="species" value="고양이"
@@ -118,7 +118,7 @@
                                         <span><input type="radio" class="form-check-input" name="species" value="기타"
                                                      id="speciesInput6"><label for="speciesInput6">기타</label></span>
                                     </c:when>
-                                    <c:when test="${modifyForm.species eq '기타'}">
+                                    <c:when test="${updateForm.species eq '기타'}">
                                         <span><input type="radio" class="form-check-input" name="species" value="개"
                                                      id="speciesInput7"><label for="speciesInput7">개</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="species" value="고양이"
@@ -134,7 +134,7 @@
                             <label>성별</label><br>
                             <div class="form-check form-check-inline">
                                 <c:choose>
-                                    <c:when test="${fn:contains(modifyForm.gender, 'M')}">
+                                    <c:when test="${fn:contains(updateForm.gender, 'M')}">
                                         <span><input type="radio" class="form-check-input" name="gender" value="M"
                                                      id="genderInput1" checked><label
                                                 for="genderInput1">수컷</label></span>&emsp;
@@ -143,7 +143,7 @@
                                         <span><input type="radio" class="form-check-input" name="gender" value="-"
                                                      id="genderInput3"><label for="genderInput3">모름</label></span>
                                     </c:when>
-                                    <c:when test="${fn:contains(modifyForm.gender, 'F')}">
+                                    <c:when test="${fn:contains(updateForm.gender, 'F')}">
                                         <span><input type="radio" class="form-check-input" name="gender" value="M"
                                                      id="genderInput4"><label for="genderInput4">수컷</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="gender" value="F"
@@ -152,7 +152,7 @@
                                         <span><input type="radio" class="form-check-input" name="gender" value="-"
                                                      id="genderInput6"><label for="genderInput6">모름</label></span>
                                     </c:when>
-                                    <c:when test="${fn:contains(modifyForm.gender, '-')}">
+                                    <c:when test="${fn:contains(updateForm.gender, '-')}">
                                         <span><input type="radio" class="form-check-input" name="gender" value="M"
                                                      id="genderInput7"><label for="genderInput7">수컷</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="gender" value="F"
@@ -168,7 +168,7 @@
                             <label>상태</label><br>
                             <div class="form-check form-check-inline">
                                 <c:choose>
-                                    <c:when test="${modifyForm.animalState eq '입양'}">
+                                    <c:when test="${updateForm.animalState eq '입양'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
                                                      id="animalState1" checked><label for="animalState1">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
@@ -178,7 +178,7 @@
 <%--                                                     onclick="confirm('상태를 변경하면 입양 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState3"><label for="animalState3">보호</label></span>
                                     </c:when>
-                                    <c:when test="${modifyForm.animalState eq '임보'}">
+                                    <c:when test="${updateForm.animalState eq '임보'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
 <%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState4"><label for="animalState4">입양</label></span>&emsp;
@@ -189,7 +189,7 @@
 <%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState6"><label for="animalState6">보호</label></span>
                                     </c:when>
-                                    <c:when test="${modifyForm.animalState eq '보호'}">
+                                    <c:when test="${updateForm.animalState eq '보호'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
                                                      id="animalState7"><label for="animalState7">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
@@ -215,17 +215,17 @@
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>품종</label>
                                 <input type="text" class="form-control" name="kind" placeholder="모르는 경우 '모름' 작성"
-                                       value="${modifyForm.kind}" maxlength="14" required>
+                                       value="${updateForm.kind}" maxlength="14" required>
                             </div>
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>나이</label>
                                 <input type="number" class="form-control" name="age" placeholder="숫자만 입력해주세요"
-                                       value="${modifyForm.age}" min="1" max="100" required>
+                                       value="${updateForm.age}" min="1" max="100" required>
                             </div>
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>몸무게</label>
                                 <input type="number" class="form-control" name="weight" placeholder="숫자만 입력해주세요"
-                                       value="${modifyForm.weight}" min="0" max="1000" step="any" required>
+                                       value="${updateForm.weight}" min="0" max="1000" step="any" required>
                             </div>
                         </div>
 
@@ -235,7 +235,7 @@
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>발견 장소</label>
                                 <input type="text" class="form-control" name="location" placeholder="모르는 경우 '모름' 작성"
-                                       value="${modifyForm.location}" maxlength="14" required>
+                                       value="${updateForm.location}" maxlength="14" required>
                             </div>
 
                             <div class="form-group col-md-6 col-lg-4">
@@ -247,18 +247,18 @@
                             <div class="form-group col-md-6 col-lg-4">
                                 <label>특이사항</label>
                                 <input type="text" class="form-control" name="uniqueness" placeholder="특이사항"
-                                       value="${modifyForm.uniqueness}" maxlength="30" required>
+                                       value="${updateForm.uniqueness}" maxlength="30" required>
                             </div>
                         </div>
 
                         <hr color="#eee" width="100%">
 
                         <textarea rows="5" class="form-control" name="description" id="description" placeholder=" 소개글"
-                                  maxlength="30" required>${modifyForm.description}</textarea>
+                                  maxlength="30" required>${updateForm.description}</textarea>
 
                         <!-- 첨부파일 -->
                         <div class="custom-file form-control-sm mt-3">
-                            <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
+                            <c:if test="${not empty updateForm.imgPath && updateForm.imgPath ne 'no_image.png'}">
                                 <input type="file" name="file" id="file1" accept="image/*">
 
                                 <div id="fileDel1">
@@ -268,7 +268,7 @@
                                 </div>
 
                                 <div id="fileName">
-                                    <small>업로드 된 이미지 파일명: <b>${modifyForm.imgPath}</b></small>
+                                    <small>업로드 된 이미지 파일명: <b>${updateForm.imgPath}</b></small>
                                 </div>
 
                                 <div id="initFileDel">
@@ -281,7 +281,7 @@
                                 </div>
                             </c:if>
 
-                            <c:if test="${modifyForm.imgPath eq 'no_image.png'}">
+                            <c:if test="${updateForm.imgPath eq 'no_image.png'}">
                                 <input type="file" name="file" id="file2" accept="image/*">
                                 <br>
 
@@ -304,7 +304,7 @@
                         <button type="submit" class="btn btn-primary">수정 등록</button>
                     </div>
 
-                    <input type="hidden" name="abNumber" value="${modifyForm.abNumber}">
+                    <input type="hidden" name="abNumber" value="${updateForm.abNumber}">
                     <input type="hidden" name="imgPath" id="imgPath" value="">
 
                 </form>
@@ -363,13 +363,13 @@
         }
 
         // 파일 첨부 기능
-        <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
+        <c:if test="${not empty updateForm.imgPath && updateForm.imgPath ne 'no_image.png'}">
             $("#notUpload1").hide();
             $("#fileDel1").hide();
             hasImage();
         </c:if>
 
-        <c:if test="${modifyForm.imgPath eq 'no_image.png'}">
+        <c:if test="${updateForm.imgPath eq 'no_image.png'}">
             $("#fileDel2").hide();
             noImage();
         </c:if>
@@ -498,7 +498,7 @@
                         <select name="sNumber" id="shelter" class="form-control">
                             <c:forEach var="s" items="${shelters}">
                             <option value="${s.getSNumber()}"
-                                <c:if test="${modifyForm.getSNumber() eq s.getSNumber()}">selected</c:if>
+                                <c:if test="${updateForm.getSNumber() eq s.getSNumber()}">selected</c:if>
                             >${s.groupName} (${s.location}) - ${s.getSNumber()}</option>
                             </c:forEach>
                         </select>
@@ -553,7 +553,7 @@
                 notUpload1.show();
 
                 $(document).on('submit', 'form', function () {
-                    deleteImage('${modifyForm.imgPath}');
+                    deleteImage('${updateForm.imgPath}');
                 });
             }
         });

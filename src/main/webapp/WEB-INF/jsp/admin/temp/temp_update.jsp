@@ -82,7 +82,7 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>temp Modify<i class="ion-ios-arrow-forward"></i></span></span>
+                    <span class="mr-2"><span>temp Update<i class="ion-ios-arrow-forward"></i></span></span>
                 </p>
                 <h1 class="mb-0 bread">임시보호 수정</h1>
             </div>
@@ -93,7 +93,7 @@
 <div class="container survey">
     <h1 id="title" class="text-center">임시보호 수정</h1>
     <br>
-    <form action="/admin/temp/modify" method="post">
+    <form action="/admin/temp/update" method="post">
 
         <div class="form-group">
             <label>회원ID / 닉네임 (회원번호)</label>

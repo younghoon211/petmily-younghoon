@@ -1,11 +1,11 @@
-package kh.petmily.domain.donation.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminDonationModifyForm {
+public class DonationUpdateForm {
 
     private int dNumber;
     private int abNumber;
@@ -15,7 +15,7 @@ public class AdminDonationModifyForm {
     private String accountHolder;
     private String accountNumber;
 
-    public AdminDonationModifyForm(int dNumber, int abNumber, int mNumber, int donaSum, String bank, String accountHolder, String accountNumber) {
+    public DonationUpdateForm(int dNumber, int abNumber, int mNumber, int donaSum, String bank, String accountHolder, String accountNumber) {
         this.dNumber = dNumber;
         this.abNumber = abNumber;
         this.mNumber = mNumber;

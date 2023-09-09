@@ -85,55 +85,54 @@
             </c:if>>
             <label for="refuse">임시보호 거절된 리스트</label>
         </div>
+
         <br>
+
         <!-- 목록 출력 -->
         <div class="row align-items-center">
-                <div class="col text-center">
-                    <table class="table table-hover bg-white">
-                        <thead>
-                        <tr class="table table-border">
-                            <th>임보번호</th>
-                            <th>아이디 (번호)</th>
-                            <th>동물이름 (번호)</th>
-                            <th>닉네임</th>
-                            <th>시작날짜</th>
-                            <th>기간</th>
-                            <th>거주지</th>
-                            <th>결혼여부</th>
-                            <th>직업</th>
-                            <th>임보상태</th>
-                            <th>관리버튼</th>
-                        </tr>
-                        </thead>
-                        <c:forEach var="temp" items="${pageForm.content}">
-                            <tbody>
-                            <td>${temp.getTNumber()}</td>
-                            <td>${temp.memberId} (${temp.getMNumber()})</td>
-                            <td>${temp.animalName} (${temp.abNumber})</td>
-                            <td>${temp.memberName}</td>
-                            <td>${temp.tempDate}</td>
-                            <td>${temp.tempPeriod}개월</td>
-                            <td>${temp.residence}</td>
-                            <td>
-                                <c:if test="${temp.maritalStatus eq 'married'}">O</c:if>
-                                <c:if test="${temp.maritalStatus eq 'single'}">X</c:if>
-                            </td>
-                            <td>${temp.job}</td>
-                            <td>${temp.status}</td>
-                            <td>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="location.href='/admin/temp/modify?tNumber=${temp.getTNumber()}'">수정
-                                </button>
-                                <button type="button" class="btn btn-danger"
-                                        onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                { return location.href='/admin/temp/delete?tNumber=${temp.getTNumber()}';}">
-                                    삭제
-                                </button>
-                            </td>
-                            </tbody>
-                        </c:forEach>
-                    </table>
-                </div>
+            <div class="col text-center">
+                <table class="table table-hover bg-white">
+                    <thead>
+                    <tr class="table table-border">
+                        <th>임보번호</th>
+                        <th>아이디 (번호)</th>
+                        <th>동물이름 (번호)</th>
+                        <th>닉네임</th>
+                        <th>시작날짜</th>
+                        <th>기간</th>
+                        <th>거주지</th>
+                        <th>결혼여부</th>
+                        <th>직업</th>
+                        <th>임보상태</th>
+                        <th>관리버튼</th>
+                    </tr>
+                    </thead>
+                    <c:forEach var="temp" items="${pageForm.content}">
+                        <tbody>
+                        <td>${temp.getTNumber()}</td>
+                        <td>${temp.memberId} (${temp.getMNumber()})</td>
+                        <td>${temp.animalName} (${temp.abNumber})</td>
+                        <td>${temp.memberName}</td>
+                        <td>${temp.tempDate}</td>
+                        <td>${temp.tempPeriod}개월</td>
+                        <td>${temp.residence}</td>
+                        <td>${temp.maritalStatus}</td>
+                        <td>${temp.job}</td>
+                        <td>${temp.status}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="location.href='/admin/temp/update?tNumber=${temp.getTNumber()}'">수정
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                            { return location.href='/admin/temp/delete?tNumber=${temp.getTNumber()}';}">
+                                삭제
+                            </button>
+                        </td>
+                        </tbody>
+                    </c:forEach>
+                </table>
+            </div>
         </div>
 
         <!-- 임시보호 추가 버튼  -->
@@ -142,38 +141,87 @@
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/temp/write'">임시보호 추가
+                    onclick="location.href='/admin/temp/insert'">임시보호 추가
             </button>
         </div>
 
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/temp" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 페이징 -->
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-                        <li>
-                            <c:if test="${pageForm.startPage > 5}">
-                                <a href="/admin/temp?pageNo=${pageForm.startPage - 5}">&lt;</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
-                            <c:if test="${pageForm.currentPage eq pageNo}">
-                        <li class="active">
-                            <a href="/admin/temp?pageNo=${pageNo}">${pageNo}</a>
-                        </li>
-                        </c:if>
-                        <c:if test="${pageForm.currentPage ne pageNo}">
+
+                        <!-- 검색값 있을 시 -->
+                        <c:if test="${not empty param.keyword}">
                             <li>
-                                <a href="/admin/temp?pageNo=${pageNo}">${pageNo}</a>
+                                <c:if test="${pageForm.startPage > 5}">
+                                    <a href="/admin/temp?keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <li>
+                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
+                                <c:if test="${pageForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/temp?keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${pageForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/temp?keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            </li>
+                            <li>
+                                <c:if test="${pageForm.endPage < pageForm.totalPages}">
+                                    <a href="/admin/temp?keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                </c:if>
                             </li>
                         </c:if>
-                        </c:forEach>
-                        </li>
-                        <li>
-                            <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                <a href="/admin/temp?pageNo=${pageForm.startPage + 5}">&gt;</a>
-                            </c:if>
-                        </li>
+
+                        <!-- 검색값 없을 시 -->
+                        <c:if test="${empty param.keyword}">
+                            <li>
+                                <c:if test="${pageForm.startPage > 5}">
+                                    <a href="/admin/temp?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <li>
+                            <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
+                                <c:if test="${pageForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/temp?pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${pageForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/temp?pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            </li>
+                            <li>
+                                <c:if test="${pageForm.endPage < pageForm.totalPages}">
+                                    <a href="/admin/temp?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+
                     </ul>
                 </div>
             </div>
@@ -214,7 +262,7 @@
     }
 </script>
 
-<%-- footer --%>
+    <%-- footer --%>
 <%@ include file="../../include/footer.jspf" %>
 </body>
 </html>

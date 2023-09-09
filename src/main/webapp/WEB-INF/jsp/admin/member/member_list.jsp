@@ -90,12 +90,15 @@
                                 <td>${member.grade}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/member/modify?mNumber=${member.getMNumber()}'">수정</button>
+                                            onclick="location.href='/admin/member/update?mNumber=${member.getMNumber()}'">
+                                        수정
+                                    </button>
                                     <button type="button" class="btn btn-danger"
-                                           onclick="if(confirm('삭제 시 해당 회원과 관련된 모든 정보(작성글/댓글/입양/임보/후원)가 삭제됩니다.')) {
+                                            onclick="if(confirm('삭제 시 해당 회원과 관련된 모든 정보(작성글/댓글/입양/임보/후원)가 삭제됩니다.')) {
                                                     if(confirm('정말로 삭제하시겠습니까?'))
-                                                       return location.href='/admin/member/delete?mNumber=${member.getMNumber()}';}
-                                                   deleteMember()">삭제</button>
+                                                    return location.href='/admin/member/delete?mNumber=${member.getMNumber()}';}
+                                                    deleteMember()">삭제
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -104,6 +107,7 @@
                 </div>
             </div>
         </div>
+
         <div class="modal-footer">
             <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
                 관리자 페이지로
@@ -113,6 +117,21 @@
             </button>
         </div>
 
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/member" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- 페이징 처리 -->
         <div class="row mt-5">
             <div class="col text-center">
@@ -120,7 +139,7 @@
                     <ul>
                         <li>
                             <c:if test="${pageForm.startPage > 5}">
-                                <a href="/admin/member/?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                <a href="/admin/member/?keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                             </c:if>
                         </li>
                         <li>
@@ -128,19 +147,19 @@
                                        end="${pageForm.endPage}">
                             <c:if test="${pageForm.currentPage eq pNo}">
                         <li class="active">
-                            <a href="/admin/member?pageNo=${pNo}">${pNo}</a>
+                            <a href="/admin/member?keyword=${param.keyword}&pageNo=${pNo}">${pNo}</a>
                         </li>
                         </c:if>
                         <c:if test="${pageForm.currentPage ne pNo}">
                             <li>
-                                <a href="/admin/member?pageNo=${pNo}">${pNo}</a>
+                                <a href="/admin/member?keyword=${param.keyword}&pageNo=${pNo}">${pNo}</a>
                             </li>
                         </c:if>
                         </c:forEach>
                         </li>
                         <li>
                             <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                <a href="/admin/member?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                <a href="/admin/member?keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                             </c:if>
                         </li>
                     </ul>

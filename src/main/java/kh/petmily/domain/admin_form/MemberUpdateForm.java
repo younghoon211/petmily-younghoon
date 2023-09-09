@@ -1,11 +1,11 @@
-package kh.petmily.domain.member.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminMemberModifyForm {
+public class MemberUpdateForm {
 
     private int mNumber;
     private String id;
@@ -17,7 +17,7 @@ public class AdminMemberModifyForm {
     private String phone;
     private String grade;
 
-    public AdminMemberModifyForm(int mNumber, String id, String pw, String name, String birth, String gender, String email, String phone, String grade) {
+    public MemberUpdateForm(int mNumber, String id, String pw, String name, String birth, String gender, String email, String phone, String grade) {
         this.mNumber = mNumber;
         this.id = id;
         this.pw = pw;

@@ -64,7 +64,7 @@
 
             <div class="col-lg-12">
                 <div class="col text-center">
-                    <span style="color: red">&nbsp;※ 0번 보호소 : 입양 완료 또는 임시 보호중인 동물 소속</span>
+                    <span style="color: red">&nbsp;※ 0번 보호소 : 입양 완료 or 임시 보호중인 동물</span>
                     <br><br>
                     <table class="table table-hover bg-white">
                         <thead>
@@ -87,7 +87,7 @@
                                 <td>${shelter.phone}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/shelter/modify?sNumber=${shelter.getSNumber()}'">
+                                            onclick="location.href='/admin/shelter/update?sNumber=${shelter.getSNumber()}'">
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
@@ -106,18 +106,31 @@
         </div>
 
         <!-- 생성, 관리자 페이지 이동 버튼  -->
-
         <div class="modal-footer">
             <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/shelter/create'">보호소 추가
+                    onclick="location.href='/admin/shelter/insert'">보호소 추가
             </button>
         </div>
 
-        <!-- 페이징 처리 -->
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/shelter" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
+        <!-- 페이징 처리 -->
         <div class="row mt-5">
             <div class="col text-center">
                 <div class="block-27">

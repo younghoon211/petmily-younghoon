@@ -19,30 +19,24 @@ public interface AdoptReviewMapper {
     void delete(int pk);
     // ===============================
 
-    int selectCountBymNumber(
-            @Param("mNumber") int mNumber,
-            @Param("kindOfBoard") String kindOfBoard
-    );
+    int selectCountBymNumber(int mNumber);
 
     List<AdoptReview> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("mNumber") int mNumber,
-            @Param("kindOfBoard") String kindOfBoard
+            @Param("mNumber") int mNumber
     );
 
-    int selectCount(String kindOfBoard);
-
-    List<AdoptReview> selectIndex(
+    List<AdoptReview> selectIndexByPkDesc(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("kindOfBoard") String kindOfBoard
+            @Param("keyword") String keyword,
+            @Param("condition") String condition
     );
 
     int selectCountWithCondition(
             @Param("keyword") String keyword,
-            @Param("searchType") String searchType,
-            @Param("kindOfBoard") String kindOfBoard
+            @Param("condition") String condition
     );
 
     List<AdoptReview> selectIndexWithCondition(
@@ -50,8 +44,7 @@ public interface AdoptReviewMapper {
             @Param("end") int end,
             @Param("sort") String sort,
             @Param("keyword") String keyword,
-            @Param("searchType") String searchType,
-            @Param("kindOfBoard") String kindOfBoard
+            @Param("condition") String condition
     );
 
     String selectMemberId(int pk);

@@ -48,21 +48,21 @@ public class AbandonedAnimalDao implements BasicDao {
 
     // ========================= 회원 페이지 ========================
     // 조건부 검색 총 게시글 수 조회
-    public int selectCountWithCondition(AbandonedAnimalConditionForm conditionForm) {
-        return mapper.selectCountWithCondition(conditionForm);
+    public int selectCountWithCondition(AbandonedAnimalConditionForm form) {
+        return mapper.selectCountWithCondition(form);
     }
 
     // 조건부 검색 리스트 페이지 index
-    public List<AbandonedAnimalListForm> selectIndexWithCondition(int start, int end, AbandonedAnimalConditionForm conditionForm) {
+    public List<AbandonedAnimalListForm> selectIndexWithCondition(int start, int end, AbandonedAnimalConditionForm form) {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
 
         List<AbandonedAnimal> abandonedAnimals = mapper.selectIndexWithCondition(
                 start, end,
-                conditionForm.getSpecies(),
-                conditionForm.getGender(),
-                conditionForm.getAnimalState(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
+                form.getSpecies(),
+                form.getGender(),
+                form.getAnimalState(),
+                form.getKeyword(),
+                form.getSort()
         );
 
         for (AbandonedAnimal abAnimal : abandonedAnimals) {
@@ -81,20 +81,20 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     // 입양 완료 리스트 : 조건부 검색 총 게시글 수 조회
-    public int selectCountAdopted(AbandonedAnimalConditionForm conditionForm) {
-        return mapper.selectCountAdopted(conditionForm);
+    public int selectCountAdopted(AbandonedAnimalConditionForm form) {
+        return mapper.selectCountAdopted(form);
     }
 
     // 입양 완료 리스트 : 조건부 검색 리스트 페이지 index
-    public List<AbandonedAnimalListForm> selectIndexAdopted(int start, int end, AbandonedAnimalConditionForm conditionForm) {
+    public List<AbandonedAnimalListForm> selectIndexAdopted(int start, int end, AbandonedAnimalConditionForm form) {
         List<AbandonedAnimalListForm> adoptedListForms = new ArrayList<>();
 
         List<AbandonedAnimal> abandonedAnimals = mapper.selectIndexAdopted(
                 start, end,
-                conditionForm.getSpecies(),
-                conditionForm.getGender(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
+                form.getSpecies(),
+                form.getGender(),
+                form.getKeyword(),
+                form.getSort()
         );
 
         for (AbandonedAnimal abAnimal : abandonedAnimals) {
@@ -117,14 +117,16 @@ public class AbandonedAnimalDao implements BasicDao {
 
     // ======================== 관리자 페이지 ==========================
     // 총 게시글 수 조회
-    public int selectCount() {
-        return mapper.selectCount();
+    public int selectCount(AbandonedAnimalConditionForm form) {
+        return mapper.selectCount(form);
     }
 
     // 리스트 페이지 index
-    public List<AbandonedAnimalListForm> selectIndex(int start, int end) {
+    public List<AbandonedAnimalListForm> selectIndex(AbandonedAnimalConditionForm form, int start, int end) {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
-        List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(start, end);
+        List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(
+                start, end, form.getSpecies(), form.getGender(), form.getAnimalState(), form.getKeyword()
+        );
 
         for (AbandonedAnimal abAnimal : abandonedAnimals) {
             AbandonedAnimalListForm listForm = new AbandonedAnimalListForm(

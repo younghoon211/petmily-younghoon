@@ -1,4 +1,4 @@
-package kh.petmily.domain.temp.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Data
 @NoArgsConstructor
-public class AdminTempDetailForm {
+public class TempListForm {
 
     private int tNumber;
     private int abNumber;
@@ -22,7 +22,7 @@ public class AdminTempDetailForm {
     private String memberName;
     private String memberId;
 
-    public AdminTempDetailForm(int tNumber, int abNumber, int mNumber, Date tempDate, int tempPeriod, String residence, String maritalStatus, String job, String status, String animalName, String memberName, String memberId) {
+    public TempListForm(int tNumber, int abNumber, int mNumber, Date tempDate, int tempPeriod, String residence, String maritalStatus, String job, String status, String animalName, String memberName, String memberId) {
         this.tNumber = tNumber;
         this.abNumber = abNumber;
         this.mNumber = mNumber;

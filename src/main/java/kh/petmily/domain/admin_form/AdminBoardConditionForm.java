@@ -1,4 +1,4 @@
-package kh.petmily.domain.adopt_review.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
-public class AdoptReviewConditionForm {
+public class AdminBoardConditionForm {
 
     int pageNo = 1;
 
@@ -16,7 +16,6 @@ public class AdoptReviewConditionForm {
 
     String condition;
     String keyword;
-
-    @NotBlank
-    String sort;
+    String species;
+    String animalState;
 }

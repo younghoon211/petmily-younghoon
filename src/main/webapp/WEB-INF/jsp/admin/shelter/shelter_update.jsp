@@ -80,31 +80,34 @@
 
 <div class="container survey">
 
-    <h1 id="title" class="text-center">보호소 추가</h1>
+    <h1 id="title" class="text-center">보호소 수정</h1>
     <p id="description" class="text-center"></p> <br><br>
 
-    <form method="post" action="/admin/shelter/create">
+    <form method="post" action="/admin/shelter/update?sNumber=${updateForm.getSNumber()}">
 
         <div class="form-group">
             <label>보호소 이름</label>
             <input type="text" name="groupName" class="form-control" placeholder="보호소의 이름을 입력해주세요."
-                   maxlength="10" required>
+                   maxlength="10"
+                   value="${updateForm.groupName}" required>
         </div>
         <div class="form-group">
             <label>지역</label>
             <input type="text" name="location" class="form-control" placeholder="보호소의 지역을 입력해주세요."
-                   maxlength="10" required>
+                   maxlength="10"
+                   value="${updateForm.location}" required>
         </div>
         <div class="form-group">
             <label>연락처</label>
             <input type="tel" name="phone" class="form-control" placeholder="보호소의 연락처를 입력해주세요."
-                   maxlength="11"
-                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-        </div><br>
+                          maxlength="11"
+                          oninput="this.value = this.value.replace(/[^0-9]/g, '')";
+                   value="${updateForm.phone}" required>
+        </div>
 
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-            <button id="submit" type="submit" class="btn btn-primary">보호소 추가</button>
+            <button id="submit" type="submit" class="btn btn-primary">보호소정보 수정</button>
         </div>
         <br>
     </form>
@@ -128,10 +131,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
-
-<script>
-    document.getElementById("bank").value = "${modifyForm.bank}";
-</script>
 
 <%-- footer --%>
 <%@ include file="../../include/footer.jspf" %>

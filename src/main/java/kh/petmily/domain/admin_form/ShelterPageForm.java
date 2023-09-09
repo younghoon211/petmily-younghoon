@@ -1,4 +1,4 @@
-package kh.petmily.domain.donation.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,16 +7,16 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class AdminDonationPageForm {
+public class ShelterPageForm {
 
     private int total;
     private int currentPage;
-    private List<AdminDonationListForm> content;
+    private List<ShelterListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public AdminDonationPageForm(int total, int currentPage, int size, List<AdminDonationListForm> content) {
+    public ShelterPageForm(int total, int currentPage, int size, List<ShelterListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;

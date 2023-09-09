@@ -56,20 +56,143 @@
     <select id="selectCount" resultType="int">
         select count(*)
         from ADOPT
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                RESIDENCE like '%' || #{keyword} || '%'
+                or
+                MARITALSTATUS like '%' || #{keyword} || '%'
+                or
+                JOB like '%' || #{keyword} || '%'
+                or
+                STATUS like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                ABNUMBER in (
+                select ABNUMBER
+                from ABANDONEDANIMAL
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
     </select>
 
     <select id="selectIndex" resultType="kh.petmily.domain.adopt.Adopt">
         select *
-        from (select ROWNUM as NUM, A.*
-              from (select * from ADOPT order by ADNUMBER DESC) A)
+        from (select ROWNUM as NUM, AD.*
+        from (select *
+        from ADOPT
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                RESIDENCE like '%' || #{keyword} || '%'
+                or
+                MARITALSTATUS like '%' || #{keyword} || '%'
+                or
+                JOB like '%' || #{keyword} || '%'
+                or
+                STATUS like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                ABNUMBER in (
+                select ABNUMBER
+                from ABANDONEDANIMAL
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by ADNUMBER desc
+        ) AD)
         where NUM between #{start} and #{end}
+    </select>
+
+    <select id="selectCountByStatus" resultType="int">
+        select count(*)
+        from ADOPT
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                RESIDENCE like '%' || #{keyword} || '%'
+                or
+                MARITALSTATUS like '%' || #{keyword} || '%'
+                or
+                JOB like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                ABNUMBER in (
+                select ABNUMBER
+                from ABANDONEDANIMAL
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
     </select>
 
     <select id="selectIndexByStatus" resultType="kh.petmily.domain.adopt.Adopt">
         select *
-        from (select ROWNUM as NUM, A.*
-              from (select * from ADOPT order by ADNUMBER DESC) A)
-        where (NUM between #{start} and #{end}) and status = #{status}
+        from (select ROWNUM as NUM, AD.*
+        from (select *
+        from ADOPT
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                RESIDENCE like '%' || #{keyword} || '%'
+                or
+                MARITALSTATUS like '%' || #{keyword} || '%'
+                or
+                JOB like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                ABNUMBER in (
+                select ABNUMBER
+                from ABANDONEDANIMAL
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by ADNUMBER desc
+        ) AD)
+        where (NUM between #{start} and #{end}) and STATUS = #{status}
     </select>
 
     <select id="adoptApprove">

@@ -1,6 +1,7 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.FindBoardDao;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.*;
 import kh.petmily.domain.look_board.LookBoard;
@@ -62,22 +63,24 @@ public class FindBoardServiceImpl implements FindBoardService {
     }
 
     // ===================== Read =====================
-    // 반려동물 찾아요 리스트 페이지
+    // 찾아요 리스트 페이지 (일반회원)
     @Override
     public FindBoardPageForm getListPage(FindBoardConditionForm form) {
-        int total = findBoardDao.selectCountWithCondition(form);
+        int total = findBoardDao.selectCountWithCondition(form.getSpecies(), form.getAnimalState(), form.getKeyword());
         List<FindBoardListForm> content = findBoardDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
 
         return new FindBoardPageForm(total, form.getPageNo(), size, content);
     }
 
-    // 반려동물 찾아요 리스트 페이지 (관리자)
+    // 찾아요 리스트 페이지 (관리자)
     @Override
-    public FindBoardPageForm getAdminListPage(int pageNo) {
-        int total = findBoardDao.selectCount();
-        List<FindBoardListForm> content = findBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
+    public FindBoardPageForm getAdminListPage(AdminBoardConditionForm form) {
+        int total = findBoardDao.selectCountWithCondition(form.getSpecies(), form.getAnimalState(), form.getKeyword());
+        List<FindBoardListForm> content = findBoardDao.selectIndexByPkDesc(
+                (form.getPageNo() - 1) * adminSize + 1, (form.getPageNo() - 1) * adminSize + adminSize, form
+        );
 
-        return new FindBoardPageForm(total, pageNo, adminSize, content);
+        return new FindBoardPageForm(total, form.getPageNo(), adminSize, content);
     }
 
     // 상세보기 페이지

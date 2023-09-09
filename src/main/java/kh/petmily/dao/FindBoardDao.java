@@ -1,6 +1,7 @@
 package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.find_board.form.FindBoardConditionForm;
 import kh.petmily.domain.find_board.form.FindBoardListForm;
@@ -118,20 +119,20 @@ public class FindBoardDao implements BasicDao {
     }
 
     // 게시판 - 총 게시글 수 조회
-    public int selectCountWithCondition(FindBoardConditionForm conditionForm) {
-        return mapper.selectCountWithCondition(conditionForm);
+    public int selectCountWithCondition(String species, String animalState, String keyword) {
+        return mapper.selectCountWithCondition(species, animalState, keyword);
     }
 
     // 게시판 - 리스트 페이지 index
-    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm conditionForm) {
+    public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm form) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
 
         List<FindBoard> findBoards = mapper.selectIndexWithCondition(
                 start, end,
-                conditionForm.getSpecies(),
-                conditionForm.getAnimalState(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
+                form.getSpecies(),
+                form.getAnimalState(),
+                form.getKeyword(),
+                form.getSort()
         );
 
         addFindBoardListForms(findBoardListForms, findBoards);
@@ -209,15 +210,10 @@ public class FindBoardDao implements BasicDao {
 
 
     // ======================== 관리자 페이지 ==========================
-    // 총 게시글 수 조회
-    public int selectCount() {
-        return mapper.selectCount();
-    }
-
     // 리스트 페이지 index
-    public List<FindBoardListForm> selectIndex(int start, int end) {
+    public List<FindBoardListForm> selectIndexByPkDesc(int start, int end, AdminBoardConditionForm form) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
-        List<FindBoard> findBoards = mapper.selectIndex(start, end);
+        List<FindBoard> findBoards = mapper.selectIndexByPkDesc(start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword());
 
         for (FindBoard findBoard : findBoards) {
             FindBoardListForm listForm = new FindBoardListForm(

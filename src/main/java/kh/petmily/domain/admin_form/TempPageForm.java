@@ -1,22 +1,20 @@
-package kh.petmily.domain.shelter.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-public class ShelterPageForm {
+public class TempPageForm {
 
     private int total;
     private int currentPage;
-    private List<ShelterListForm> content;
+    private List<TempListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public ShelterPageForm(int total, int currentPage, int size, List<ShelterListForm> content) {
+    public TempPageForm(int total, int currentPage, int size, List<TempListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;

@@ -27,7 +27,10 @@ public interface MemberMapper {
 
     int selectCount();
 
-    List<Member> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<Member> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end
+    );
 
     List<Member> selectAll();
 
@@ -37,7 +40,21 @@ public interface MemberMapper {
 
     int selectPhoneCheck(String phone);
 
-    int selectEmailCheckChangeInfo(@Param("email") String email, @Param("id") String id);
+    int selectEmailCheckChangeInfo(
+            @Param("email") String email,
+            @Param("id") String id
+    );
 
-    int selectPhoneCheckChangeInfo(@Param("phone") String phone, @Param("id") String id);
+    int selectPhoneCheckChangeInfo(
+            @Param("phone") String phone,
+            @Param("id") String id
+    );
+
+    int selectCount(String keyword);
+
+    List<Member> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("keyword") String keyword
+    );
 }

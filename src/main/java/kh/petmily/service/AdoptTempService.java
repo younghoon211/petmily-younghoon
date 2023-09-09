@@ -3,12 +3,12 @@ package kh.petmily.service;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.AdoptTempSubmitForm;
 import kh.petmily.domain.adopt.Adopt;
-import kh.petmily.domain.adopt.form.AdminAdoptForm;
-import kh.petmily.domain.adopt.form.AdminAdoptPageForm;
+import kh.petmily.domain.admin_form.AdoptForm;
+import kh.petmily.domain.admin_form.AdoptPageForm;
 import kh.petmily.domain.adopt.form.MypageAdoptPageForm;
 import kh.petmily.domain.temp.TempPet;
-import kh.petmily.domain.temp.form.AdminTempForm;
-import kh.petmily.domain.temp.form.AdminTempPageForm;
+import kh.petmily.domain.admin_form.TempForm;
+import kh.petmily.domain.admin_form.TempPageForm;
 import kh.petmily.domain.temp.form.MypageTempPageForm;
 
 import java.util.List;
@@ -26,11 +26,11 @@ public interface AdoptTempService {
     MypageTempPageForm getMypageTemp(int pageNo, int mNumber, String type);
 
     // 입양 관리
-    void adoptWrite(AdminAdoptForm form);
+    void adoptInsert(AdoptForm form);
 
-    AdminAdoptPageForm getAdminAdoptListPage(int pageNo);
+    AdoptPageForm getAdminAdoptListPage(int pageNo, String keyword);
 
-    AdminAdoptPageForm getAdminAdoptWaitPage(int pageNo, String status);
+    AdoptPageForm getAdminAdoptWaitPage(int pageNo, String status, String keyword);
 
     Adopt getAdoptByPk(int adNumber);
 
@@ -38,9 +38,7 @@ public interface AdoptTempService {
 
     List<AbandonedAnimal> getAnimalListAdoptComplete();
 
-    void adminAdoptUpdate(AdminAdoptForm form);
-
-    void updateStatusToAdopt();
+    void adminAdoptUpdate(AdoptForm form);
 
     void adoptApproveButton(int adNumber);
 
@@ -49,11 +47,11 @@ public interface AdoptTempService {
     void deleteAdopt(int adNumber);
 
     // 임보 관리
-    void tempWrite(AdminTempForm form);
+    void tempInsert(TempForm form);
 
-    AdminTempPageForm getAdminTempListPage(int pageNo);
+    TempPageForm getAdminTempListPage(int pageNo, String keyword);
 
-    AdminTempPageForm getAdminTempWaitPage(int pageNo, String status);
+    TempPageForm getAdminTempWaitPage(int pageNo, String keyword, String status);
 
     TempPet getTempByPk(int tNumber);
 
@@ -61,7 +59,7 @@ public interface AdoptTempService {
 
     List<AbandonedAnimal> getAnimalListTempComplete();
 
-    void adminTempUpdate(AdminTempForm form);
+    void adminTempUpdate(TempForm form);
 
     void tempApproveButton(int tNumber);
 

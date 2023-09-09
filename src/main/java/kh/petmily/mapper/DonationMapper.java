@@ -1,7 +1,6 @@
 package kh.petmily.mapper;
 
 import kh.petmily.domain.donation.Donation;
-import kh.petmily.domain.donation.form.AdminDonationListForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,7 +19,11 @@ public interface DonationMapper {
     void delete(int pk);
     // ===============================
 
-    int selectCount();
+    int selectCount(String keyword);
 
-    List<Donation> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<Donation> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("keyword") String keyword
+    );
 }

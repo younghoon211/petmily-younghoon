@@ -48,33 +48,6 @@ public class MemberDao implements BasicDao {
         return mapper.selectAll();
     }
 
-    public int selectCount() {
-        return mapper.selectCount();
-    }
-
-    public List<MemberDetailForm> selectIndex(int start, int end) {
-        List<MemberDetailForm> memberDetailForms = new ArrayList<>();
-        List<Member> members = mapper.selectIndex(start, end);
-
-        for (Member member : members) {
-            MemberDetailForm detailForm = new MemberDetailForm(
-                    member.getMNumber(),
-                    member.getId(),
-                    member.getPw(),
-                    member.getName(),
-                    member.getBirth(),
-                    member.getGender(),
-                    member.getEmail(),
-                    member.getPhone(),
-                    member.getGrade()
-            );
-
-            memberDetailForms.add(detailForm);
-        }
-
-        return memberDetailForms;
-    }
-
     public int selectIdCheck(String id) {
         return mapper.selectIdCheck(id);
     }
@@ -93,5 +66,34 @@ public class MemberDao implements BasicDao {
 
     public int selectPhoneCheckChangeInfo(String email, String id) {
         return mapper.selectPhoneCheckChangeInfo(email, id);
+    }
+
+    // 관리자 페이지 조건부검색 회원 총 개수
+    public int selectCount(String keyword) {
+        return mapper.selectCount(keyword);
+    }
+
+    // 관리자 페이지 조건부검색 회원 리스트
+    public List<MemberDetailForm> selectIndex(int start, int end, String keyword) {
+        List<MemberDetailForm> memberDetailForms = new ArrayList<>();
+        List<Member> members = mapper.selectIndex(start, end, keyword);
+
+        for (Member member : members) {
+            MemberDetailForm detailForm = new MemberDetailForm(
+                    member.getMNumber(),
+                    member.getId(),
+                    member.getPw(),
+                    member.getName(),
+                    member.getBirth(),
+                    member.getGender(),
+                    member.getEmail(),
+                    member.getPhone(),
+                    member.getGrade()
+            );
+
+            memberDetailForms.add(detailForm);
+        }
+
+        return memberDetailForms;
     }
 }

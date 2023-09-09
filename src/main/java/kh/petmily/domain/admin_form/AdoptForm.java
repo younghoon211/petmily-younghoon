@@ -1,11 +1,11 @@
-package kh.petmily.domain.adopt.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminAdoptForm {
+public class AdoptForm {
 
     private int mNumber;
     private int adNumber;

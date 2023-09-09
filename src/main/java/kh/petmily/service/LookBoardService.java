@@ -1,5 +1,6 @@
 package kh.petmily.service;
 
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.*;
@@ -15,7 +16,7 @@ public interface LookBoardService {
 
     LookBoardPageForm getListPage(LookBoardConditionForm form);
 
-    LookBoardPageForm getAdminListPage(int pageNo);
+    LookBoardPageForm getAdminListPage(AdminBoardConditionForm form);
 
     LookBoardDetailForm getDetailPage(int laNumber);
 

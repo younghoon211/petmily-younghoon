@@ -5,6 +5,8 @@ import kh.petmily.dao.AdoptDao;
 import kh.petmily.dao.TempDao;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
+import kh.petmily.domain.admin_form.AbandonedAnimalUpdateForm;
+import kh.petmily.domain.admin_form.AbandonedAnimalInsertForm;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.shelter.Shelter;
 import kh.petmily.domain.temp.TempPet;
@@ -36,22 +38,22 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     // ===================== Create =====================
     // 글쓰기 (보호)
     @Override
-    public void write(AdminAbandonedAnimalWriteForm form) {
-        AbandonedAnimal abandonedAnimal = toWrite(form);
+    public void insert(AbandonedAnimalInsertForm form) {
+        AbandonedAnimal abandonedAnimal = toInsert(form);
         abandonedAnimalDao.insert(abandonedAnimal);
     }
 
     // 글쓰기 (입양)
     @Override
-    public void writeWithAdopt(AdminAbandonedAnimalWriteForm form) {
-        Adopt adopt = toWriteAdopt(form);
+    public void insertWithAdopt(AbandonedAnimalInsertForm form) {
+        Adopt adopt = toInsertAdopt(form);
         adoptDao.adminInsert(adopt);
     }
 
     // 글쓰기 (임보)
     @Override
-    public void writeWithTemp(AdminAbandonedAnimalWriteForm form) {
-        TempPet temp = toWriteTemp(form);
+    public void insertWithTemp(AbandonedAnimalInsertForm form) {
+        TempPet temp = toInsertTemp(form);
         tempDao.adminInsert(temp);
     }
 
@@ -123,9 +125,9 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
 
     // 게시판 리스트 (관리자 페이지)
     @Override
-    public AbandonedAnimalPageForm getAdminListPage(int pageNo) {
-        int total = abandonedAnimalDao.selectCount();
-        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex((pageNo - 1) * size, size);
+    public AbandonedAnimalPageForm getAdminListPage(AbandonedAnimalConditionForm form, int pageNo) {
+        int total = abandonedAnimalDao.selectCount(form);
+        List<AbandonedAnimalListForm> content = abandonedAnimalDao.selectIndex(form, (pageNo - 1) * size, size);
 
         return new AbandonedAnimalPageForm(total, pageNo, size, content);
     }
@@ -155,23 +157,23 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     // ===================== Update =====================
     // 수정 폼
     @Override
-    public AdminAbandonedAnimalModifyForm getModifyForm(int pk) {
+    public AbandonedAnimalUpdateForm getUpdateForm(int pk) {
         AbandonedAnimal abandonedAnimal = abandonedAnimalDao.findByPk(pk);
 
-        return toModifyForm(abandonedAnimal);
+        return toUpdateForm(abandonedAnimal);
     }
 
     // 수정 폼 제출
     @Override
-    public void modify(AdminAbandonedAnimalModifyForm form) {
-        AbandonedAnimal abandonedAnimal = toModify(form);
+    public void update(AbandonedAnimalUpdateForm form) {
+        AbandonedAnimal abandonedAnimal = toUpdate(form);
         abandonedAnimalDao.update(abandonedAnimal);
     }
 
     // 수정 시 입양 insert 및 동일한 abNumber중 '처리중' 상태 + 기존 임보 정보 delete
     @Override
-    public void modifyWithAdopt(AdminAbandonedAnimalModifyForm form) {
-        Adopt adopt = toModifyAdopt(form);
+    public void updateWithAdopt(AbandonedAnimalUpdateForm form) {
+        Adopt adopt = toUpdateAdopt(form);
         adoptDao.adminInsert(adopt);
 
         adoptDao.deleteWaitingWhenUpdateAB(form.getAbNumber());
@@ -180,8 +182,8 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
 
     // 수정 시 임보 insert 및 동일한 abNumber중 '처리중' 상태 + 기존 입양 정보 delete
     @Override
-    public void modifyWithTemp(AdminAbandonedAnimalModifyForm form) {
-        TempPet temp = toModifyTemp(form);
+    public void updateWithTemp(AbandonedAnimalUpdateForm form) {
+        TempPet temp = toUpdateTemp(form);
         tempDao.adminInsert(temp);
 
         tempDao.deleteWaitingWhenUpdateAB(form.getAbNumber());
@@ -207,7 +209,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     // ===================== CRUD 끝 =====================
 
 
-    private AbandonedAnimal toWrite(AdminAbandonedAnimalWriteForm form) {
+    private AbandonedAnimal toInsert(AbandonedAnimalInsertForm form) {
         return new AbandonedAnimal(
                 form.getSNumber(),
                 form.getName(),
@@ -225,7 +227,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private Adopt toWriteAdopt(AdminAbandonedAnimalWriteForm form) {
+    private Adopt toInsertAdopt(AbandonedAnimalInsertForm form) {
         return new Adopt(
                 form.getMNumber(),
                 abandonedAnimalDao.selectByPkMax(),
@@ -236,7 +238,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private TempPet toWriteTemp(AdminAbandonedAnimalWriteForm form) {
+    private TempPet toInsertTemp(AbandonedAnimalInsertForm form) {
         return new TempPet(
                 abandonedAnimalDao.selectByPkMax(),
                 form.getMNumber(),
@@ -285,8 +287,8 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return abandonedAnimalDao.selectShelterByPk(pk);
     }
 
-    private AdminAbandonedAnimalModifyForm toModifyForm(AbandonedAnimal abAnimal) {
-        return new AdminAbandonedAnimalModifyForm(
+    private AbandonedAnimalUpdateForm toUpdateForm(AbandonedAnimal abAnimal) {
+        return new AbandonedAnimalUpdateForm(
                 abAnimal.getAbNumber(),
                 abAnimal.getSNumber(),
                 abAnimal.getName(),
@@ -304,7 +306,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private AbandonedAnimal toModify(AdminAbandonedAnimalModifyForm form) {
+    private AbandonedAnimal toUpdate(AbandonedAnimalUpdateForm form) {
         return new AbandonedAnimal(
                 form.getAbNumber(),
                 form.getSNumber(),
@@ -323,7 +325,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private Adopt toModifyAdopt(AdminAbandonedAnimalModifyForm form) {
+    private Adopt toUpdateAdopt(AbandonedAnimalUpdateForm form) {
         return new Adopt(
                 form.getMNumber(),
                 form.getAbNumber(),
@@ -334,7 +336,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         );
     }
 
-    private TempPet toModifyTemp(AdminAbandonedAnimalModifyForm form) {
+    private TempPet toUpdateTemp(AbandonedAnimalUpdateForm form) {
         return new TempPet(
                 form.getAbNumber(),
                 form.getMNumber(),

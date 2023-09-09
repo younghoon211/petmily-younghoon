@@ -1,11 +1,11 @@
-package kh.petmily.domain.donation.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminDonationWriteForm {
+public class DonationInsertForm {
 
     private int abNumber;
     private int mNumber;

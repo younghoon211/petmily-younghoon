@@ -1,4 +1,4 @@
-package kh.petmily.domain.abandoned_animal.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import java.sql.Date;
 
 @Data
 @NoArgsConstructor
-public class AdminAbandonedAnimalWriteForm {
+public class AbandonedAnimalInsertForm {
 
     private int sNumber;
     private String name;

@@ -1,6 +1,7 @@
 package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.LookBoardConditionForm;
@@ -117,20 +118,20 @@ public class LookBoardDao implements BasicDao {
     }
 
     // 총 게시글 수 조회
-    public int selectCountWithCondition(LookBoardConditionForm conditionForm) {
-        return mapper.selectCountWithCondition(conditionForm);
+    public int selectCountWithCondition(String species, String animalState, String keyword) {
+        return mapper.selectCountWithCondition(species, animalState, keyword);
     }
 
     // 리스트 페이지 index
-    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm conditionForm) {
+    public List<LookBoardListForm> selectIndexWithCondition(int start, int end, LookBoardConditionForm form) {
         List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
 
         List<LookBoard> lookBoards = mapper.selectIndexWithCondition(
                 start, end,
-                conditionForm.getSpecies(),
-                conditionForm.getAnimalState(),
-                conditionForm.getKeyword(),
-                conditionForm.getSort()
+                form.getSpecies(),
+                form.getAnimalState(),
+                form.getKeyword(),
+                form.getSort()
         );
 
         addLookBoardListForms(lookBoardListForms, lookBoards);
@@ -208,15 +209,10 @@ public class LookBoardDao implements BasicDao {
 
 
     // ======================== 관리자 페이지 ==========================
-    // 총 게시글 수 조회
-    public int selectCount() {
-        return mapper.selectCount();
-    }
-
     // 리스트 페이지 index
-    public List<LookBoardListForm> selectIndex(int start, int end) {
+    public List<LookBoardListForm> selectIndexByPkDesc(int start, int end, AdminBoardConditionForm form) {
         List<LookBoardListForm> lookBoardListForms = new ArrayList<>();
-        List<LookBoard> lookBoards = mapper.selectIndex(start, end);
+        List<LookBoard> lookBoards = mapper.selectIndexByPkDesc(start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword());
 
         for (LookBoard lookBoard : lookBoards) {
             LookBoardListForm listForm = new LookBoardListForm(

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8" %>
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>-->
+         pageEncoding="UTF-8" %>
+<!--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,11 +54,10 @@ pageEncoding="UTF-8" %>
 </section>
 
 <!-- 후원 관리 List -->
-
 <section class="ftco-section bg-light">
     <div class="container" style="max-width: 1600px;">
 
-            <!-- 목록 출력 -->
+        <!-- 목록 출력 -->
         <div class="row align-items-center">
             <div class="col-lg-12">
                 <div class="col text-center">
@@ -66,7 +67,8 @@ pageEncoding="UTF-8" %>
                         <tr class="table table-border">
                             <th>후원번호</th>
                             <th>후원받은 동물 (번호)</th>
-                            <th>회원 닉네임 (번호)</th>
+                            <th>아이디 (번호)</th>
+                            <th>닉네임</th>
                             <th>후원금액</th>
                             <th>은행</th>
                             <th>예금주</th>
@@ -80,17 +82,22 @@ pageEncoding="UTF-8" %>
                             <tr>
                                 <td>${donation.getDNumber()}</td>
                                 <td>${donation.animalName} (${donation.abNumber})</td>
-                                <td>${donation.memberName} (${donation.getMNumber()})</td>
+                                <td>${donation.memberId} (${donation.getMNumber()})</td>
+                                <td>${donation.memberName}</td>
                                 <td>${donation.donaSum}</td>
                                 <td>${donation.bank}</td>
                                 <td>${donation.accountHolder}</td>
                                 <td>${donation.accountNumber}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/donation/modify?dNumber=${donation.getDNumber()}'">수정</button>
+                                            onclick="location.href='/admin/donation/update?dNumber=${donation.getDNumber()}'">
+                                        수정
+                                    </button>
                                     <button type="button" class="btn btn-danger"
-                                           onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                   { return location.href='/admin/donation/delete?dNumber=${donation.getDNumber()}';}">삭제</button>
+                                            onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                    { return location.href='/admin/donation/delete?dNumber=${donation.getDNumber()}';}">
+                                        삭제
+                                    </button>
                                 </td>
                             </tr>
 
@@ -99,58 +106,70 @@ pageEncoding="UTF-8" %>
                         </c:forEach>
                     </table>
                 </div>
-                </div>
             </div>
+        </div>
 
-            <!-- 생성, 관리자 페이지 이동 버튼  -->
+        <!-- 생성, 관리자 페이지 이동 버튼  -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+                관리자 페이지로
+            </button>
+            <button type="button" class="btn btn-primary"
+                    onclick="location.href='/admin/donation/insert'">후원 추가
+            </button>
+        </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
-                    관리자 페이지로
-                </button>
-				<button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/donation/create'">후원 추가</button>
-			</div>
-
-            <!-- 페이징 처리 -->
-
-            <div class="row mt-5">
-                <div class="col text-center">
-                    <div class="block-27">
-                        <ul>
-                            <li>
-                                <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/admin/donation/?pageNo=${pageForm.startPage - 5}">&lt;</a>
-                                </c:if>
-                            </li>
-                            <li>
-                                <c:forEach var="pNo" begin="${pageForm.startPage}"
-                                           end="${pageForm.endPage}">
-                                    <c:if test="${pageForm.currentPage eq pNo}">
-                            <li class="active">
-                                <a href="/admin/donation?pageNo=${pNo}">${pNo}</a>
-                            </li>
-                            </c:if>
-                            <c:if test="${pageForm.currentPage ne pNo}">
-                                <li>
-                                    <a href="/admin/donation?pageNo=${pNo}">${pNo}</a>
-                                </li>
-                            </c:if>
-                            </c:forEach>
-                            </li>
-                            <li>
-                                <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/admin/donation?pageNo=${pageForm.startPage + 5}">&gt;</a>
-                                </c:if>
-                            </li>
-                        </ul>
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/donation" method="get">
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${param.keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
-            </div>
-    </div>
+            </form>
+        </div>
 
+        <!-- 페이징 처리 -->
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                        <li>
+                            <c:if test="${pageForm.startPage > 5}">
+                                <a href="/admin/donation/?pageNo=${pageForm.startPage - 5}">&lt;</a>
+                            </c:if>
+                        </li>
+                        <li>
+                            <c:forEach var="pNo" begin="${pageForm.startPage}"
+                                       end="${pageForm.endPage}">
+                            <c:if test="${pageForm.currentPage eq pNo}">
+                        <li class="active">
+                            <a href="/admin/donation?pageNo=${pNo}">${pNo}</a>
+                        </li>
+                        </c:if>
+                        <c:if test="${pageForm.currentPage ne pNo}">
+                            <li>
+                                <a href="/admin/donation?pageNo=${pNo}">${pNo}</a>
+                            </li>
+                        </c:if>
+                        </c:forEach>
+                        </li>
+                        <li>
+                            <c:if test="${pageForm.endPage < pageForm.totalPages}">
+                                <a href="/admin/donation?pageNo=${pageForm.startPage + 5}">&gt;</a>
+                            </c:if>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- 후원 관리 List 끝 -->
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
 <script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>

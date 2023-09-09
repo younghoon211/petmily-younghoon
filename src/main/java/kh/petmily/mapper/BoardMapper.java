@@ -31,14 +31,6 @@ public interface BoardMapper {
             @Param("kindOfBoard") String kindOfBoard
     );
 
-    int selectCount(String kindOfBoard);
-
-    List<Board> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end,
-            @Param("kindOfBoard") String kindOfBoard
-    );
-
     int selectCountWithCondition(
             @Param("keyword") String keyword,
             @Param("condition") String condition,
@@ -49,6 +41,14 @@ public interface BoardMapper {
             @Param("start") int start,
             @Param("end") int end,
             @Param("sort") String sort,
+            @Param("keyword") String keyword,
+            @Param("condition") String condition,
+            @Param("kindOfBoard") String kindOfBoard
+    );
+
+    List<Board> selectIndexByPkDesc(
+            @Param("start") int start,
+            @Param("end") int end,
             @Param("keyword") String keyword,
             @Param("condition") String condition,
             @Param("kindOfBoard") String kindOfBoard

@@ -1,5 +1,7 @@
 package kh.petmily.service;
 
+import kh.petmily.domain.admin_form.MemberInsertForm;
+import kh.petmily.domain.admin_form.MemberUpdateForm;
 import kh.petmily.domain.member.Member;
 import kh.petmily.domain.member.form.*;
 
@@ -9,7 +11,7 @@ public interface MemberService {
 
     void join(MemberJoinForm form);
 
-    void create(AdminMemberCreateForm form);
+    void insert(MemberInsertForm form);
 
     Member login(String id, String pw);
 
@@ -21,13 +23,13 @@ public interface MemberService {
 
     List<Member> getMemberList();
 
-    MemberPageForm getAdminListPage(int pageNo);
+    MemberPageForm getAdminListPage(int pageNo, String keyword);
 
     Member change(Member member, MemberChangeForm form);
 
-    AdminMemberModifyForm getModifyForm(int mNumber);
+    MemberUpdateForm getUpdateForm(int mNumber);
 
-    void modify(AdminMemberModifyForm form);
+    void update(MemberUpdateForm form);
 
     void withdraw(int mNumber);
 

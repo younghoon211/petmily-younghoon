@@ -59,7 +59,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs mb-2"><span>Abandoned Animal - Write<i class="ion-ios-arrow-forward"></i></span>
+                <p class="breadcrumbs mb-2"><span>Abandoned Animal - Insert<i class="ion-ios-arrow-forward"></i></span>
                 </p>
                 <h1 class="mb-0 bread">유기동물 추가</h1>
             </div>
@@ -74,7 +74,7 @@
                 <h1 id="title" class="text-center">유기동물 추가</h1><br><br>
                 <!-- 폼 시작 -->
 
-                <form class="form" method="post" action="/admin/abandonedAnimal/write" enctype='multipart/form-data'>
+                <form class="form" method="post" action="/admin/abandonedAnimal/insert" enctype='multipart/form-data'>
 
                     <div class="row justify-content-start">
                         <div class="form-group col-md-6 col-lg-6">

@@ -1,4 +1,4 @@
-package kh.petmily.domain.abandoned_animal.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.sql.Date;
 
 @Data
 @NoArgsConstructor
-public class AdminAbandonedAnimalModifyForm {
+public class AbandonedAnimalUpdateForm {
 
     @NotNull
     private Integer abNumber;
@@ -40,7 +40,7 @@ public class AdminAbandonedAnimalModifyForm {
     private Date tempDate;
     private int tempPeriod;
 
-    public AdminAbandonedAnimalModifyForm(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AbandonedAnimalUpdateForm(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.name = name;

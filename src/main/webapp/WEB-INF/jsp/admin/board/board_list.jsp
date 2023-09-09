@@ -150,39 +150,63 @@
                                     <td>
                                         <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">상세</button>
+                                                    onclick="location.href='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
+                                                상세
+                                            </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">수정</button>
+                                                    onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
+                                                수정
+                                            </button>
                                             <button type="button" class="btn btn-danger"
-                                                   onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                           { return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}';}">삭제</button>
+                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                            { return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}';}">
+                                                삭제
+                                            </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">상세</button>
+                                                    onclick="location.href='/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
+                                                상세
+                                            </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">수정</button>
+                                                    onclick="location.href='/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
+                                                수정
+                                            </button>
                                             <button type="button" class="btn btn-danger"
-                                                   onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                           { return location.href='/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}';}">삭제</button>
+                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                            { return location.href='/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}';}">
+                                                삭제
+                                            </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'find'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/findBoard/detail?faNumber=${board.faNumber}'">상세</button>
+                                                    onclick="location.href='/findBoard/detail?faNumber=${board.faNumber}'">
+                                                상세
+                                            </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/findBoard/auth/modify?faNumber=${board.faNumber}'">수정</button>
+                                                    onclick="location.href='/findBoard/auth/modify?faNumber=${board.faNumber}'">
+                                                수정
+                                            </button>
                                             <button type="button" class="btn btn-danger"
-                                                   onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                           { return location.href='/findBoard/auth/delete?faNumber=${board.faNumber}';}">삭제</button>
+                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                            { return location.href='/findBoard/auth/delete?faNumber=${board.faNumber}';}">
+                                                삭제
+                                            </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'look'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/lookBoard/detail?laNumber=${board.laNumber}'">상세</button>
+                                                    onclick="location.href='/lookBoard/detail?laNumber=${board.laNumber}'">
+                                                상세
+                                            </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/lookBoard/auth/modify?laNumber=${board.laNumber}'">수정</button>
+                                                    onclick="location.href='/lookBoard/auth/modify?laNumber=${board.laNumber}'">
+                                                수정
+                                            </button>
                                             <button type="button" class="btn btn-danger"
-                                                   onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                           { return location.href='/lookBoard/auth/delete?laNumber=${board.laNumber}';}">삭제</button>
+                                                    onclick="if(confirm('정말로 삭제하시겠습니까?'))
+                                                            { return location.href='/lookBoard/auth/delete?laNumber=${board.laNumber}';}">
+                                                삭제
+                                            </button>
                                         </c:if>
                                     </td>
                                 </tr>
@@ -192,9 +216,12 @@
                         </table>
 
                         <div class="modal-footer">
+                            <!-- 돌아가기 -->
                             <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
                                 관리자 페이지로
                             </button>
+
+                            <!-- 글쓰기 -->
                             <button type="button" class="btn btn-primary" style="float: right"
                                     <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                         onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'"
@@ -207,11 +234,82 @@
                                     </c:if>
                                     <c:if test="${param.kindOfBoard eq 'look'}">
                                         onclick="location.href='/lookBoard/auth/write'"
-                                    </c:if>>글쓰기</button>
+                                    </c:if>>글쓰기
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- 검색 -->
+        <div style="display: flex; justify-content: center;">
+            <form action="/admin/board" method="get">
+                <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
+                <div class="form-group row">
+
+                    <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry' || param.kindOfBoard eq 'adoptReview'}">
+                        <div class="col">
+                            <select name="condition" class="form-control">
+                                <option value="title" <c:if test="${param.condition eq 'title'}">selected</c:if>>제목
+                                </option>
+                                <option value="content" <c:if test="${param.condition eq 'content'}">selected</c:if>>내용
+                                </option>
+                                <option value="titleAndContent"
+                                        <c:if test="${param.condition eq 'titleAndContent'}">selected</c:if>>제목+내용
+                                </option>
+                                <option value="writer" <c:if test="${param.condition eq 'writer'}">selected</c:if>>작성자
+                                </option>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${param.kindOfBoard eq 'find' || param.kindOfBoard eq 'look'}">
+                        <div class="col">
+                            <select name="species" class="form-control">
+                                <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
+                                    <option value="${animal}" <c:if test="${param.species eq animal}">selected</c:if>>
+                                        <c:out value="${animal eq 'allSpecies' ? '모든 동물' : animal}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${param.kindOfBoard eq 'find'}">
+                        <div class="col">
+                            <select name="animalState" class="form-control">
+                                <c:forEach var="state" items="${['allAnimalState', '실종', '매칭됨', '완료']}">
+                                    <option value="${state}" <c:if test="${param.animalState eq state}">selected</c:if>>
+                                        <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${param.kindOfBoard eq 'look'}">
+                        <div class="col">
+                            <select name="animalState" class="form-control">
+                                <c:forEach var="state" items="${['allAnimalState', '보호', '매칭됨', '완료']}">
+                                    <option value="${state}" <c:if test="${param.animalState eq state}">selected</c:if>>
+                                        <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <div class="col">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어"
+                               value="${keyword eq 'allKeyword' ? '' : param.keyword}">
+                    </div>
+
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- 페이징 처리 -->
@@ -219,28 +317,57 @@
             <div class="col text-center">
                 <div class="block-27">
                     <ul>
-                        <li>
-                            <c:if test="${boardForm.startPage > 5}">
-                                <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${boardForm.startPage - 5}">&lt;</a>
-                            </c:if>
-                        </li>
-                        <c:forEach var="pageNo" begin="${boardForm.startPage}" end="${boardForm.endPage}">
-                            <c:if test="${boardForm.currentPage eq pageNo}">
-                                <li class="active">
-                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pageNo}">${pageNo}</a>
-                                </li>
-                            </c:if>
-                            <c:if test="${boardForm.currentPage ne pageNo}">
-                                <li>
-                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pageNo}">${pageNo}</a>
-                                </li>
-                            </c:if>
-                        </c:forEach>
-                        <li>
-                            <c:if test="${boardForm.endPage < boardForm.totalPages}">
-                                <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${boardForm.startPage + 5}">&gt;</a>
-                            </c:if>
-                        </li>
+                        <!-- 조건부 검색에 조건 또는 검색값 중 하나라도 있을 시 -->
+                        <c:if test="${not empty param.species || not empty param.animalState || not empty param.keyword}">
+                            <li>
+                                <c:if test="${boardForm.startPage > 5}">
+                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&pageNo=${boardForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <c:forEach var="pageNo" begin="${boardForm.startPage}" end="${boardForm.endPage}">
+                                <c:if test="${boardForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${boardForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            <li>
+                                <c:if test="${boardForm.endPage < boardForm.totalPages}">
+                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&pageNo=${boardForm.startPage + 5}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
+
+                        <!-- 조건부 검색에 조건, 검색값 전부 없을 시 -->
+                        <c:if test="${empty param.species && empty param.animalState && empty param.keyword}">
+                            <li>
+                                <c:if test="${boardForm.startPage > 5}">
+                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${boardForm.startPage - 5}">&lt;</a>
+                                </c:if>
+                            </li>
+                            <c:forEach var="pageNo" begin="${boardForm.startPage}" end="${boardForm.endPage}">
+                                <c:if test="${boardForm.currentPage eq pageNo}">
+                                    <li class="active">
+                                        <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${boardForm.currentPage ne pageNo}">
+                                    <li>
+                                        <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${pageNo}">${pageNo}</a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            <li>
+                                <c:if test="${boardForm.endPage < boardForm.totalPages}">
+                                    <a href="/admin/board?kindOfBoard=${param.kindOfBoard}&pageNo=${boardForm.startPage + 5}">&gt;</a>
+                                </c:if>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>

@@ -2,6 +2,8 @@ package kh.petmily.service;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.abandoned_animal.form.*;
+import kh.petmily.domain.admin_form.AbandonedAnimalUpdateForm;
+import kh.petmily.domain.admin_form.AbandonedAnimalInsertForm;
 import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.temp.TempPet;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,11 +13,11 @@ import java.util.List;
 
 public interface AbandonedAnimalService {
 
-    void write(AdminAbandonedAnimalWriteForm form);
+    void insert(AbandonedAnimalInsertForm form);
 
-    void writeWithAdopt(AdminAbandonedAnimalWriteForm form);
+    void insertWithAdopt(AbandonedAnimalInsertForm form);
 
-    void writeWithTemp(AdminAbandonedAnimalWriteForm form);
+    void insertWithTemp(AbandonedAnimalInsertForm form);
 
     String storeFile(MultipartFile file, String filePath) throws IOException;
 
@@ -29,7 +31,7 @@ public interface AbandonedAnimalService {
 
     List<AbandonedAnimal> getAbAnimalList();
 
-    AbandonedAnimalPageForm getAdminListPage(int pageNo);
+    AbandonedAnimalPageForm getAdminListPage(AbandonedAnimalConditionForm form, int pageNo);
 
     Adopt getAdoptByPk(int pk);
 
@@ -37,13 +39,13 @@ public interface AbandonedAnimalService {
 
     List<String> getResidenceList();
 
-    AdminAbandonedAnimalModifyForm getModifyForm(int abNumber);
+    AbandonedAnimalUpdateForm getUpdateForm(int abNumber);
 
-    void modify(AdminAbandonedAnimalModifyForm form);
+    void update(AbandonedAnimalUpdateForm form);
 
-    void modifyWithAdopt(AdminAbandonedAnimalModifyForm form);
+    void updateWithAdopt(AbandonedAnimalUpdateForm form);
 
-    void modifyWithTemp(AdminAbandonedAnimalModifyForm form);
+    void updateWithTemp(AbandonedAnimalUpdateForm form);
 
     void delete(int abNumber);
 

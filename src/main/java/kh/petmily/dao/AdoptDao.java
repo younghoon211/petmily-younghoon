@@ -3,7 +3,7 @@ package kh.petmily.dao;
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
 import kh.petmily.domain.adopt.Adopt;
-import kh.petmily.domain.adopt.form.AdminAdoptDetailForm;
+import kh.petmily.domain.admin_form.AdoptListForm;
 import kh.petmily.domain.adopt.form.MypageAdoptListForm;
 import kh.petmily.mapper.AbandonedAnimalMapper;
 import kh.petmily.mapper.AdoptMapper;
@@ -74,28 +74,33 @@ public class AdoptDao implements BasicDao {
     }
 
     // 총 게시글 수 조회
-    public int selectCount() {
-        return mapper.selectCount();
+    public int selectCount(String keyword) {
+        return mapper.selectCount(keyword);
     }
 
     // 리스트 페이지 index
-    public List<AdminAdoptDetailForm> selectIndex(int start, int end) {
-        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
-        List<Adopt> adopts = mapper.selectIndex(start, end);
+    public List<AdoptListForm> selectIndex(int start, int end, String keyword) {
+        List<AdoptListForm> adoptListForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndex(start, end, keyword);
 
-        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
+        addAdminAdoptDetailForms(adoptListForms, adopts);
 
-        return adminAdoptDetailForms;
+        return adoptListForms;
     }
 
-    // 입양 승인관리 리스트 페이지 index
-    public List<AdminAdoptDetailForm> selectIndexByStatus(int start, int end, String status) {
-        List<AdminAdoptDetailForm> adminAdoptDetailForms = new ArrayList<>();
-        List<Adopt> adopts = mapper.selectIndexByStatus(start, end, status);
+    // 입양 승인관리 및 승인, 거절된 리스트 페이지 총 게시글 조회
+    public int selectCountByStatus(String keyword, String status) {
+        return mapper.selectCountByStatus(keyword, status);
+    }
 
-        addAdminAdoptDetailForms(adminAdoptDetailForms, adopts);
+    // 입양 승인관리 및 승인, 거절된 리스트 페이지 index
+    public List<AdoptListForm> selectIndexByStatus(int start, int end, String keyword, String status) {
+        List<AdoptListForm> adoptListForms = new ArrayList<>();
+        List<Adopt> adopts = mapper.selectIndexByStatus(start, end, keyword, status);
 
-        return adminAdoptDetailForms;
+        addAdminAdoptDetailForms(adoptListForms, adopts);
+
+        return adoptListForms;
     }
 
     // 입양 승인
@@ -137,9 +142,9 @@ public class AdoptDao implements BasicDao {
         return selectAbAnimalByPk(adopt.getAbNumber()).getName();
     }
 
-    private void addAdminAdoptDetailForms(List<AdminAdoptDetailForm> adminAdoptDetailForms, List<Adopt> adopts) {
+    private void addAdminAdoptDetailForms(List<AdoptListForm> adoptListForms, List<Adopt> adopts) {
         for (Adopt adopt : adopts) {
-            AdminAdoptDetailForm detailForm = new AdminAdoptDetailForm(
+            AdoptListForm detailForm = new AdoptListForm(
                     adopt.getAdNumber(),
                     adopt.getMNumber(),
                     adopt.getAbNumber(),
@@ -152,7 +157,7 @@ public class AdoptDao implements BasicDao {
                     selectMemberId(adopt.getMNumber())
             );
 
-            adminAdoptDetailForms.add(detailForm);
+            adoptListForms.add(detailForm);
         }
     }
 }

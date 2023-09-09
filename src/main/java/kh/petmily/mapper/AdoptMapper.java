@@ -24,21 +24,31 @@ public interface AdoptMapper {
     List<Adopt> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("mNumber") int mNumber);
+            @Param("mNumber") int mNumber
+    );
 
     // ========== 관리자 페이지 ==========
     void adminInsert(Adopt obj);
 
-    int selectCount();
+    int selectCount(String keyword);
 
     List<Adopt> selectIndex(
             @Param("start") int start,
-            @Param("end") int end);
+            @Param("end") int end,
+            @Param("keyword") String keyword
+    );
+
+    int selectCountByStatus(
+            @Param("keyword") String keyword,
+            @Param("status") String status
+    );
 
     List<Adopt> selectIndexByStatus(
             @Param("start") int start,
             @Param("end") int end,
-            @Param("status") String status);
+            @Param("keyword") String keyword,
+            @Param("status") String status
+    );
 
     void adoptApprove(int pk);
 

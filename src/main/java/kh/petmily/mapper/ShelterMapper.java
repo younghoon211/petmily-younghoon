@@ -19,9 +19,13 @@ public interface ShelterMapper {
     void delete(int pk);
     // ===============================
 
-    int selectCount();
+    int selectCount(String keyword);
 
-    List<Shelter> selectIndex(@Param("start") int start, @Param("end") int end);
+    List<Shelter> selectIndex(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("keyword") String keyword
+    );
 
     List<Shelter> selectAll();
 

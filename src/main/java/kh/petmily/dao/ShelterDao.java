@@ -2,7 +2,7 @@ package kh.petmily.dao;
 
 import kh.petmily.domain.DomainObj;
 import kh.petmily.domain.shelter.Shelter;
-import kh.petmily.domain.shelter.form.ShelterListForm;
+import kh.petmily.domain.admin_form.ShelterListForm;
 import kh.petmily.mapper.ShelterMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -36,13 +36,13 @@ public class ShelterDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCount() {
-        return mapper.selectCount();
+    public int selectCount(String keyword) {
+        return mapper.selectCount(keyword);
     }
 
-    public List<ShelterListForm> selectIndex(int start, int end) {
+    public List<ShelterListForm> selectIndex(int start, int end, String keyword) {
         List<ShelterListForm> shelterListForms = new ArrayList<>();
-        List<Shelter> shelters = mapper.selectIndex(start, end);
+        List<Shelter> shelters = mapper.selectIndex(start, end, keyword);
 
         for (Shelter shelter : shelters) {
             ShelterListForm listForm = new ShelterListForm(

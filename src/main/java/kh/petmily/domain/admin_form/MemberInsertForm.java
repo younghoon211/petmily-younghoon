@@ -1,11 +1,11 @@
-package kh.petmily.domain.member.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminMemberCreateForm {
+public class MemberInsertForm {
 
     private String id;
     private String pw;

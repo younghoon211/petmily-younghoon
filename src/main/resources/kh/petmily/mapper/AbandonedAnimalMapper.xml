@@ -12,11 +12,14 @@
     </select>
 
     <insert id="insert">
-        insert into ABANDONEDANIMAL(SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, LOCATION, ADMISSIONDATE,
-        UNIQUENESS, DESCRIPTION, ANIMALSTATE
-        ,IMGPATH
+        insert into ABANDONEDANIMAL
+        (
+        SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, LOCATION, ADMISSIONDATE,
+        UNIQUENESS, DESCRIPTION, ANIMALSTATE, IMGPATH
         )
-        values (#{sNumber}, #{name}, #{species}, #{kind}, #{gender}, #{age}, #{weight},
+        values
+        (
+        #{sNumber}, #{name}, #{species}, #{kind}, #{gender}, #{age}, #{weight},
         #{location}, #{admissionDate}, #{uniqueness}, #{description}, #{animalState}
         <if test='imgPath != null'>
             , #{imgPath}
@@ -29,18 +32,11 @@
 
     <update id="update">
         update ABANDONEDANIMAL
-        set SNUMBER = #{sNumber},
-            NAME = #{name},
-            SPECIES = #{species},
-            KIND = #{kind},
-            GENDER = #{gender},
-            AGE = #{age},
-            WEIGHT = #{weight},
-            LOCATION = #{location},
-            ADMISSIONDATE = #{admissionDate},
-            UNIQUENESS = #{uniqueness},
-            DESCRIPTION = #{description},
-            ANIMALSTATE = #{animalState}
+        set
+        SNUMBER = #{sNumber}, NAME = #{name}, SPECIES = #{species}, KIND = #{kind},
+        GENDER = #{gender}, AGE = #{age}, WEIGHT = #{weight}, LOCATION = #{location},
+        ADMISSIONDATE = #{admissionDate}, UNIQUENESS = #{uniqueness},
+        DESCRIPTION = #{description}, ANIMALSTATE = #{animalState}
         <if test='imgPath != ""'>
             , IMGPATH = #{imgPath}
         </if>
@@ -48,7 +44,8 @@
     </update>
 
     <delete id="delete">
-        delete from ABANDONEDANIMAL
+        delete
+        from ABANDONEDANIMAL
         where ABNUMBER = #{pk}
     </delete>
 
@@ -74,12 +71,10 @@
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword'">
-                and ( NAME like '%' || #{keyword} || '%'
+                and (NAME like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or AGE like '%' || #{keyword} || '%'
-                or LOCATION like '%' || #{keyword} || '%'
-                or UNIQUENESS like '%' || #{keyword} || '%'
-                or DESCRIPTION like '%' || #{keyword} || '%' )
+                or LOCATION like '%' || #{keyword} || '%')
             </if>
         </where>
     </select>
@@ -95,21 +90,19 @@
                 and SPECIES = #{species}
             </if>
 
-            <if test="animalState != null and animalState != 'allAnimalState'">
-                and ANIMALSTATE = #{animalState}
-            </if>
-
             <if test="gender != null and gender != 'allGender'">
                 and GENDER = #{gender}
             </if>
 
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
             <if test="keyword != null and keyword != 'allKeyword'">
-                and ( NAME like '%' || #{keyword} || '%'
+                and (NAME like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or AGE like '%' || #{keyword} || '%'
-                or LOCATION like '%' || #{keyword} || '%'
-                or UNIQUENESS like '%' || #{keyword} || '%'
-                or DESCRIPTION like '%' || #{keyword} || '%' )
+                or LOCATION like '%' || #{keyword} || '%')
             </if>
         </where>
         <include refid="sort"/>
@@ -132,12 +125,10 @@
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword'">
-                and ( NAME like '%' || #{keyword} || '%'
+                and (NAME like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or AGE like '%' || #{keyword} || '%'
-                or LOCATION like '%' || #{keyword} || '%'
-                or UNIQUENESS like '%' || #{keyword} || '%'
-                or DESCRIPTION like '%' || #{keyword} || '%' )
+                or LOCATION like '%' || #{keyword} || '%')
             </if>
         </where>
     </select>
@@ -158,12 +149,10 @@
             </if>
 
             <if test="keyword != null and keyword != 'allKeyword'">
-                and ( NAME like '%' || #{keyword} || '%'
+                and (NAME like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or AGE like '%' || #{keyword} || '%'
-                or LOCATION like '%' || #{keyword} || '%'
-                or UNIQUENESS like '%' || #{keyword} || '%'
-                or DESCRIPTION like '%' || #{keyword} || '%' )
+                or LOCATION like '%' || #{keyword} || '%')
             </if>
         </where>
         <include refid="sort"/>
@@ -186,12 +175,78 @@
     <select id="selectCount" resultType="int">
         select count(*)
         from ABANDONEDANIMAL
+
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="gender != null and gender != 'allGender'">
+                and GENDER = #{gender}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and (NAME like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or AGE like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or
+                SNUMBER in (
+                select SNUMBER
+                from SHELTER
+                where LOCATION like '%' || #{keyword} || '%')
+                or
+                SNUMBER in (
+                select SNUMBER
+                from SHELTER
+                where GROUPNAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
     </select>
 
     <select id="selectIndex" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select * from
-            (select ROWNUM as NUM, A.* FROM
-                    (select * from ABANDONEDANIMAL order by ABNUMBER DESC) A)
+        (select ROWNUM as NUM, A.* from
+        (select * from ABANDONEDANIMAL
+
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="gender != null and gender != 'allGender'">
+                and GENDER = #{gender}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and (NAME like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or AGE like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or
+                SNUMBER in (
+                select SNUMBER
+                from SHELTER
+                where LOCATION like '%' || #{keyword} || '%')
+                or
+                SNUMBER in (
+                select SNUMBER
+                from SHELTER
+                where GROUPNAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by ABNUMBER desc
+        ) A)
         where NUM between #{start} and #{end}
     </select>
 
@@ -224,7 +279,8 @@
     <select id="selectAllAdoptWait" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
-        where ANIMALSTATE = '보호' AND ABNUMBER
+        where ANIMALSTATE = '보호'
+          AND ABNUMBER
             in (select ABNUMBER from ADOPT where STATUS = '처리중')
         order by ABNUMBER
     </select>
@@ -232,7 +288,8 @@
     <select id="selectAllAdoptComplete" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
-        where ANIMALSTATE = '입양' AND ABNUMBER
+        where ANIMALSTATE = '입양'
+          AND ABNUMBER
             in (select ABNUMBER from ADOPT where STATUS = '완료')
         order by ABNUMBER
     </select>
@@ -261,14 +318,14 @@
     </update>
 
 
-
     <!--==================================== 임시보호 ====================================-->
     <!--========== 임시보호 수정 폼에 받아올 유기동물 리스트 ==========-->
 
     <select id="selectAllTempWait" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
-        where ANIMALSTATE = '보호' AND ABNUMBER
+        where ANIMALSTATE = '보호'
+          AND ABNUMBER
             in (select ABNUMBER from TEMPPET where STATUS = '처리중')
         order by ABNUMBER
     </select>
@@ -276,7 +333,8 @@
     <select id="selectAllTempComplete" resultType="kh.petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
-        where ANIMALSTATE = '임보' AND ABNUMBER
+        where ANIMALSTATE = '임보'
+          AND ABNUMBER
             in (select ABNUMBER from TEMPPET where STATUS = '완료')
         order by ABNUMBER
     </select>

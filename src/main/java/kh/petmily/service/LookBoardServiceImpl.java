@@ -1,6 +1,7 @@
 package kh.petmily.service;
 
 import kh.petmily.dao.LookBoardDao;
+import kh.petmily.domain.admin_form.AdminBoardConditionForm;
 import kh.petmily.domain.find_board.FindBoard;
 import kh.petmily.domain.look_board.LookBoard;
 import kh.petmily.domain.look_board.form.*;
@@ -62,22 +63,24 @@ public class LookBoardServiceImpl implements LookBoardService {
     }
 
     // ===================== Read =====================
-    // 유기동물 봤어요 리스트 페이지
+    // 봤어요 리스트 (일반회원)
     @Override
     public LookBoardPageForm getListPage(LookBoardConditionForm form) {
-        int total = lookBoardDao.selectCountWithCondition(form);
+        int total = lookBoardDao.selectCountWithCondition(form.getSpecies(), form.getAnimalState(), form.getKeyword());
         List<LookBoardListForm> content = lookBoardDao.selectIndexWithCondition((form.getPageNo() - 1) * size + 1, (form.getPageNo() - 1) * size + size, form);
 
         return new LookBoardPageForm(total, form.getPageNo(), size, content);
     }
 
-    // 유기동물 봤어요 리스트 페이지 (관리자)
+    // 봤어요 리스트 (관리자)
     @Override
-    public LookBoardPageForm getAdminListPage(int pageNo) {
-        int total = lookBoardDao.selectCount();
-        List<LookBoardListForm> content = lookBoardDao.selectIndex((pageNo - 1) * adminSize + 1, (pageNo - 1) * adminSize + adminSize);
+    public LookBoardPageForm getAdminListPage(AdminBoardConditionForm form) {
+        int total = lookBoardDao.selectCountWithCondition(form.getSpecies(), form.getAnimalState(), form.getKeyword());
+        List<LookBoardListForm> content = lookBoardDao.selectIndexByPkDesc(
+                (form.getPageNo() - 1) * adminSize + 1, (form.getPageNo() - 1) * adminSize + adminSize, form
+        );
 
-        return new LookBoardPageForm(total, pageNo, adminSize, content);
+        return new LookBoardPageForm(total, form.getPageNo(), adminSize, content);
     }
 
     // 상세보기 페이지

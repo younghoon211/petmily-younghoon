@@ -1,4 +1,4 @@
-package kh.petmily.domain.shelter.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

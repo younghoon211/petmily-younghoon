@@ -37,13 +37,26 @@ public class AdoptReviewDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    public int selectCountBymNumber(int mNumber, String kindOfBoard) {
-        return mapper.selectCountBymNumber(mNumber, kindOfBoard);
+    public int selectCountBymNumber(int mNumber) {
+        return mapper.selectCountBymNumber(mNumber);
     }
 
-    public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber, String kindOfBoard) {
+    public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
-        List<AdoptReview> adoptReviews = mapper.selectIndexBymNumber(start, end, mNumber, kindOfBoard);
+        List<AdoptReview> adoptReviews = mapper.selectIndexBymNumber(start, end, mNumber);
+
+        addAdoptReviewListForms(adoptReviewListForms, adoptReviews);
+
+        return adoptReviewListForms;
+    }
+
+    public int selectCountWithCondition(String keyword, String condition) {
+        return mapper.selectCountWithCondition(keyword, condition);
+    }
+
+    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String condition) {
+        List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
+        List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(start, end, sort, keyword, condition);
 
         addAdoptReviewListForms(adoptReviewListForms, adoptReviews);
 
@@ -51,13 +64,9 @@ public class AdoptReviewDao implements BasicDao {
     }
 
     // 관리자
-    public int selectCount(String kindOfBoard) {
-        return mapper.selectCount(kindOfBoard);
-    }
-
-    public List<AdoptReviewListForm> selectIndex(int start, int end, String kindOfBoard) {
+    public List<AdoptReviewListForm> selectIndexByPkDesc(int start, int end, String keyword, String condition) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
-        List<AdoptReview> adoptReviews = mapper.selectIndex(start, end, kindOfBoard);
+        List<AdoptReview> adoptReviews = mapper.selectIndexByPkDesc(start, end, keyword, condition);
 
         for (AdoptReview adoptReview : adoptReviews) {
             AdoptReviewListForm listForm = new AdoptReviewListForm(
@@ -65,7 +74,7 @@ public class AdoptReviewDao implements BasicDao {
                     adoptReview.getMNumber(),
                     selectMemberId(adoptReview.getBNumber()),
                     selectName(adoptReview.getBNumber()),
-                    adoptReview.getKindOfBoard(),
+                    "입양후기",
                     adoptReview.getTitle(),
                     adoptReview.getContent(),
                     adoptReview.getImgPath(),
@@ -75,19 +84,6 @@ public class AdoptReviewDao implements BasicDao {
 
             adoptReviewListForms.add(listForm);
         }
-
-        return adoptReviewListForms;
-    }
-
-    public int selectCountWithCondition(String keyword, String searchType, String kindOfBoard) {
-        return mapper.selectCountWithCondition(keyword, searchType, kindOfBoard);
-    }
-
-    public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String searchType, String kindOfBoard) {
-        List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
-        List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(start, end, sort, keyword, searchType, kindOfBoard);
-
-        addAdoptReviewListForms(adoptReviewListForms, adoptReviews);
 
         return adoptReviewListForms;
     }
@@ -117,7 +113,7 @@ public class AdoptReviewDao implements BasicDao {
                     adoptReview.getBNumber(),
                     adoptReview.getMNumber(),
                     selectName(adoptReview.getBNumber()),
-                    adoptReview.getKindOfBoard(),
+                    "입양후기",
                     adoptReview.getTitle(),
                     adoptReview.getContent(),
                     adoptReview.getImgPath(),

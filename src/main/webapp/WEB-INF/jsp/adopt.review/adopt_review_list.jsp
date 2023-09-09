@@ -62,13 +62,13 @@
 
         <div class="modal-header">
             <div class="float-left">
-                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo&condition=${param.condition}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">최신순</button>
                 </a> &nbsp;
-                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNoAsc&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNoAsc&condition=${param.condition}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">오래된순</button>
                 </a> &nbsp;
-                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=viewCount&searchType=${param.searchType}&keyword=${param.keyword}">
+                <a href="/adoptReview/list?kindOfBoard=adoptReview&sort=viewCount&condition=${param.condition}&keyword=${param.keyword}">
                     <button type="button" class="btn btn-primary">조회순</button>
                 </a> &nbsp;
             </div>
@@ -109,20 +109,21 @@
         <!-- 검색 바 -->
         <div style="display: flex; justify-content: center;">
             <form action="/adoptReview/list" method="get">
+
                 <div class="form-group row">
                     <input type="hidden" name="kindOfBoard" value="adoptReview">
                     <input type="hidden" name="sort" value="${param.sort}"/>
 
                     <div class="col">
-                        <select name="searchType" class="form-control">
-                            <option value="title" <c:if test="${param.searchType eq 'title'}">selected</c:if>>제목
+                        <select name="condition" class="form-control">
+                            <option value="title" <c:if test="${param.condition eq 'title'}">selected</c:if>>제목
                             </option>
-                            <option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용
+                            <option value="content" <c:if test="${param.condition eq 'content'}">selected</c:if>>내용
                             </option>
                             <option value="titleAndContent"
-                                    <c:if test="${param.searchType eq 'titleAndContent'}">selected</c:if>>제목+내용
+                                    <c:if test="${param.condition eq 'titleAndContent'}">selected</c:if>>제목+내용
                             </option>
-                            <option value="writer" <c:if test="${param.searchType eq 'writer'}">selected</c:if>>작성자
+                            <option value="writer" <c:if test="${param.condition eq 'writer'}">selected</c:if>>작성자
                             </option>
                         </select>
                     </div>
@@ -132,7 +133,7 @@
                                value="${keyword eq 'allKeyword' ? '' : param.keyword}">
                     </div>
 
-                    <div class="col">
+                    <div class="col-md-auto">
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
@@ -145,35 +146,35 @@
                 <div class="block-27">
                     <ul>
                         <!-- 조건부 검색에 조건 또는 검색값 중 하나라도 있을 시 -->
-                        <c:if test="${not empty param.searchType || not empty param.keyword}">
+                        <c:if test="${not empty param.condition || not empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
-                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pageNo=${pageForm.startPage - 5}">&lt;</a>
                                 </c:if>
                             </li>
                             <li>
                             <c:forEach var="pageNo" begin="${pageForm.startPage}" end="${pageForm.endPage}">
                                 <c:if test="${pageForm.currentPage eq pageNo}">
                                     <li class="active">
-                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                                 <c:if test="${pageForm.currentPage ne pageNo}">
                                     <li>
-                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
+                                        <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pageNo=${pageNo}">${pageNo}</a>
                                     </li>
                                 </c:if>
                             </c:forEach>
                             </li>
                             <li>
                                 <c:if test="${pageForm.endPage < pageForm.totalPages}">
-                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&searchType=${param.searchType}&keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
+                                    <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&condition=${param.condition}&keyword=${param.keyword}&pageNo=${pageForm.startPage + 5}">&gt;</a>
                                 </c:if>
                             </li>
                         </c:if>
 
                         <!-- 조건부 검색에 조건, 검색값 전부 없을 시 -->
-                        <c:if test="${empty param.searchType && empty param.keyword}">
+                        <c:if test="${empty param.condition && empty param.keyword}">
                             <li>
                                 <c:if test="${pageForm.startPage > 5}">
                                     <a href="/adoptReview/list?kindOfBoard=${param.kindOfBoard}&sort=${param.sort}&pageNo=${pageForm.startPage - 5}">&lt;</a>

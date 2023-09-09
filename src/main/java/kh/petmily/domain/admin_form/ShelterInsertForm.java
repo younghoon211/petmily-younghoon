@@ -1,11 +1,11 @@
-package kh.petmily.domain.shelter.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ShelterWriteForm {
+public class ShelterInsertForm {
 
     private int sNumber;
     private String groupName;

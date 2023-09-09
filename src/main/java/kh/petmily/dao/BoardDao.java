@@ -50,37 +50,6 @@ public class BoardDao implements BasicDao {
         return boardListForms;
     }
 
-    // 관리자 페이지 게시글 개수
-    public int selectCount(String kindOfBoard) {
-        return mapper.selectCount(kindOfBoard);
-    }
-
-    // 관리자 페이지 리스트
-    public List<BoardListForm> selectIndex(int start, int end, String kindOfBoard) {
-        List<BoardListForm> boardListForms = new ArrayList<>();
-        List<Board> boards = mapper.selectIndex(start, end, kindOfBoard);
-
-        for (Board board : boards) {
-            BoardListForm listForm = new BoardListForm(
-                    board.getBNumber(),
-                    board.getMNumber(),
-                    selectMemberId(board.getBNumber()),
-                    selectName(board.getBNumber()),
-                    board.getKindOfBoard(),
-                    board.getTitle(),
-                    board.getContent(),
-                    board.getWrTime().format(getFormatter()),
-                    board.getCheckPublic(),
-                    board.getViewCount(),
-                    selectReplyCount(board.getBNumber())
-            );
-
-            boardListForms.add(listForm);
-        }
-
-        return boardListForms;
-    }
-
     // 조건부 검색 게시글 개수
     public int selectCountWithCondition(String keyword, String condition, String kindOfBoard) {
         return mapper.selectCountWithCondition(keyword, condition, kindOfBoard);
@@ -90,6 +59,16 @@ public class BoardDao implements BasicDao {
     public List<BoardListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String condition, String kindOfBoard) {
         List<BoardListForm> boardListForms = new ArrayList<>();
         List<Board> boards = mapper.selectIndexWithCondition(start, end, sort, keyword, condition, kindOfBoard);
+
+        addBoardListForms(boardListForms, boards);
+
+        return boardListForms;
+    }
+
+    // 관리자 페이지 리스트
+    public List<BoardListForm> selectIndexByPkDesc(int start, int end, String keyword, String condition, String kindOfBoard) {
+        List<BoardListForm> boardListForms = new ArrayList<>();
+        List<Board> boards = mapper.selectIndexByPkDesc(start, end, keyword, condition, kindOfBoard);
 
         addBoardListForms(boardListForms, boards);
 

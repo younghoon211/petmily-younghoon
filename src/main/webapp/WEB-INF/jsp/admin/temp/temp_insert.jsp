@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-    <title>Petmily - Don't buy, Do Adopt</title>
+    <title>Petmily - Don't buy, Do temp</title>
 
     <meta charset="utf-8">
     <meta name="viewport"
@@ -82,18 +82,18 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2">
-                    <span class="mr-2"><span>Adopt Insert<i class="ion-ios-arrow-forward"></i></span></span>
+                    <span class="mr-2"><span>Temp Insert<i class="ion-ios-arrow-forward"></i></span></span>
                 </p>
-                <h1 class="mb-0 bread">입양 추가</h1>
+                <h1 class="mb-0 bread">임시보호 추가</h1>
             </div>
         </div>
     </div>
 </section>
 <br>
 <div class="container survey">
-    <h1 id="title" class="text-center">입양 추가</h1>
+    <h1 id="title" class="text-center">임시보호 추가</h1>
     <br>
-    <form action="/admin/adopt/write" method="post">
+    <form action="/admin/temp/insert" method="post">
 
         <div class="form-group">
             <label>회원ID / 닉네임 (회원번호)</label>
@@ -105,13 +105,22 @@
         </div>
 
         <div class="form-group">
-            <label>동물이름 (동물번호) <span
-                    style="color: red"><small>&nbsp;※ 입양/임보 완료됐거나, 승인 대기중인 동물 제외 (유기동물 관리에서 수정 가능)</small></span></label>
+            <label>동물이름 (동물번호) <span style="color: red"><small>&nbsp;※ 입양/임보 완료됐거나, 승인 대기중인 동물 제외 (유기동물 관리에서 수정 가능)</small></span></label>
             <select name="abNumber" class="form-control" required>
                 <c:forEach var="ab" items="${onlyProtectedAnimals}">
                     <option value="${ab.abNumber}">${ab.name} (${ab.abNumber})</option>
                 </c:forEach>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label>시작 날짜</label>
+            <input type="date" name="tempDate" class="form-control" min="1900-01-01" max="2099-12-31" required>
+        </div>
+
+        <div class="form-group">
+            <label>임시보호 기간 <span style="color: red"><small>&nbsp;※ 회원들에게는 임시보호 최소기간 1개월로 명시</small></span></label>
+            <input type="number" name="tempPeriod" class="form-control" placeholder="개월수를 입력해주세요." min="1" max="100" required>
         </div>
 
         <div class="form-group">
@@ -140,9 +149,8 @@
         </div>
 
         <div class="form-group">
-            <label for="job">직업</label>
-            <input id="job" type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." maxlength="14"
-                   required>
+            <label>직업</label>
+            <input type="text" name="job" class="form-control" placeholder="직업을 입력해주세요." maxlength="14" required>
         </div>
 
         <div class="form-group">
@@ -155,7 +163,7 @@
         </div>
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-            <button type="submit" class="btn btn-primary">입양 추가</button>
+            <button id="submit" type="submit" class="btn btn-primary">임시보호 추가</button>
         </div>
         <br>
     </form>

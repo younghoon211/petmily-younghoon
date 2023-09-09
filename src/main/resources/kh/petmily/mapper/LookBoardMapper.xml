@@ -76,7 +76,6 @@
 
             <if test="keyword != null and keyword != 'allKeyword'">
                 and ( TITLE like '%' || #{keyword} || '%'
-                or CONTENT like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or LOCATION like '%' || #{keyword} || '%' )
             </if>
@@ -99,7 +98,6 @@
 
             <if test="keyword != null and keyword != 'allKeyword'">
                 and ( TITLE like '%' || #{keyword} || '%'
-                or CONTENT like '%' || #{keyword} || '%'
                 or KIND like '%' || #{keyword} || '%'
                 or LOCATION like '%' || #{keyword} || '%' )
             </if>
@@ -245,18 +243,40 @@
 
     <!--================== 관리자 ==================-->
 
-    <select id="selectCount" resultType="int">
-        select count(*)
-        from LOOKANIMALBOARD
-    </select>
-
-    <select id="selectIndex" resultType="kh.petmily.domain.look_board.LookBoard">
+    <select id="selectIndexByPkDesc" resultType="kh.petmily.domain.look_board.LookBoard">
         select *
-        from (select ROWNUM as NUM, A.*
-              FROM (select *
-                    from LOOKANIMALBOARD
-                    order by LANUMBER desc
-                   ) A)
+        from (select ROWNUM as NUM, A.* from
+        (select * from LOOKANIMALBOARD
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                TITLE like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by LANUMBER desc
+        ) A)
         where NUM between #{start} and #{end}
     </select>
 

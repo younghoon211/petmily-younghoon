@@ -1,4 +1,4 @@
-package kh.petmily.domain.adopt.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,16 +7,16 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class AdminAdoptPageForm {
+public class AdoptPageForm {
 
     private int total;
     private int currentPage;
-    private List<AdminAdoptDetailForm> content;
+    private List<AdoptListForm> content;
     private int totalPages;
     private int startPage;
     private int endPage;
 
-    public AdminAdoptPageForm(int total, int currentPage, int size, List<AdminAdoptDetailForm> content) {
+    public AdoptPageForm(int total, int currentPage, int size, List<AdoptListForm> content) {
         this.total = total;
         this.currentPage = currentPage;
         this.content = content;

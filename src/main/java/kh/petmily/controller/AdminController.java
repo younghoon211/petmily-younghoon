@@ -1,30 +1,18 @@
 package kh.petmily.controller;
 
 import kh.petmily.domain.abandoned_animal.AbandonedAnimal;
+import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalConditionForm;
 import kh.petmily.domain.abandoned_animal.form.AbandonedAnimalPageForm;
-import kh.petmily.domain.abandoned_animal.form.AdminAbandonedAnimalModifyForm;
-import kh.petmily.domain.abandoned_animal.form.AdminAbandonedAnimalWriteForm;
+import kh.petmily.domain.admin_form.*;
 import kh.petmily.domain.adopt.Adopt;
-import kh.petmily.domain.adopt.form.AdminAdoptForm;
-import kh.petmily.domain.adopt.form.AdminAdoptPageForm;
 import kh.petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import kh.petmily.domain.board.form.BoardPageForm;
-import kh.petmily.domain.donation.form.AdminDonationModifyForm;
-import kh.petmily.domain.donation.form.AdminDonationPageForm;
-import kh.petmily.domain.donation.form.AdminDonationWriteForm;
 import kh.petmily.domain.find_board.form.FindBoardPageForm;
 import kh.petmily.domain.look_board.form.LookBoardPageForm;
 import kh.petmily.domain.member.Member;
-import kh.petmily.domain.member.form.AdminMemberCreateForm;
-import kh.petmily.domain.member.form.AdminMemberModifyForm;
 import kh.petmily.domain.member.form.MemberPageForm;
 import kh.petmily.domain.shelter.Shelter;
-import kh.petmily.domain.shelter.form.ShelterModifyForm;
-import kh.petmily.domain.shelter.form.ShelterPageForm;
-import kh.petmily.domain.shelter.form.ShelterWriteForm;
 import kh.petmily.domain.temp.TempPet;
-import kh.petmily.domain.temp.form.AdminTempForm;
-import kh.petmily.domain.temp.form.AdminTempPageForm;
 import kh.petmily.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,8 +52,10 @@ public class AdminController {
     // =============== 회원정보 관리 ===============
     // 회원 리스트
     @GetMapping("/member")
-    public String memberPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        MemberPageForm pageForm = memberService.getAdminListPage(pageNo);
+    public String memberList(@RequestParam(defaultValue = "1") int pageNo,
+                             @RequestParam(required = false) String keyword,
+                             Model model) {
+        MemberPageForm pageForm = memberService.getAdminListPage(pageNo, keyword);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/member/member_list";
@@ -73,41 +63,41 @@ public class AdminController {
 
     // 회원 추가 (insert)
     @GetMapping("/member/insert")
-    public String memberCreateForm() {
+    public String memberInsertForm() {
         return "admin/member/member_insert";
     }
 
     @PostMapping("/member/insert")
-    public String join(@ModelAttribute AdminMemberCreateForm adminMemberCreateForm) {
-        log.info("adminMemberCreateForm = {}", adminMemberCreateForm);
+    public String memberInsert(@ModelAttribute MemberInsertForm memberInsertForm) {
+        log.info("MemberInsertForm = {}", memberInsertForm);
 
-        memberService.create(adminMemberCreateForm);
+        memberService.insert(memberInsertForm);
 
         return "/admin/member/alert_insert";
     }
 
     // 회원정보 수정 (update)
-    @GetMapping("/member/modify")
-    public String memberDetailModify(@RequestParam int mNumber, Model model) {
-        AdminMemberModifyForm modifyForm = memberService.getModifyForm(mNumber);
-        log.info("수정 전 adminMemberModifyForm = {}", modifyForm);
+    @GetMapping("/member/update")
+    public String memberUpdateForm(@RequestParam int mNumber, Model model) {
+        MemberUpdateForm updateForm = memberService.getUpdateForm(mNumber);
+        log.info("수정 전 MemberUpdateForm = {}", updateForm);
 
-        model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("updateForm", updateForm);
 
-        return "admin/member/member_modify";
+        return "admin/member/member_update";
     }
 
-    @PostMapping("/member/modify")
-    public String memberModify(@ModelAttribute AdminMemberModifyForm modifyForm) {
-        memberService.modify(modifyForm);
-        log.info("수정 후 adminMemberModifyForm = {}", modifyForm);
+    @PostMapping("/member/update")
+    public String memberUpdate(@ModelAttribute MemberUpdateForm updateForm) {
+        memberService.update(updateForm);
+        log.info("수정 후 MemberUpdateForm = {}", updateForm);
 
-        return "/admin/member/alert_modify";
+        return "/admin/member/alert_update";
     }
 
     // 회원정보 삭제 (delete)
     @GetMapping("/member/delete")
-    public String MemberDelete(@RequestParam int mNumber) {
+    public String memberDelete(@RequestParam int mNumber) {
         memberService.delete(mNumber);
 
         return "redirect:/admin/member";
@@ -116,27 +106,24 @@ public class AdminController {
     // =============== 게시판 관리 ===============
     // 게시판 리스트 (CUD는 기존 회원 폼 이용)
     @GetMapping("/board")
-    public String boardPage(@RequestParam String kindOfBoard,
-                            @RequestParam(defaultValue = "1") int pageNo,
+    public String boardList(@Validated @ModelAttribute AdminBoardConditionForm conditionForm,
                             Model model) {
+        String kindOfBoard = conditionForm.getKindOfBoard();
+
         if (kindOfBoard.equals("free")) {
-            BoardPageForm freeBoardForm = boardService.getAdminListPage("free", pageNo);
+            BoardPageForm freeBoardForm = boardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", freeBoardForm);
-        }
-        else if (kindOfBoard.equals("inquiry")) {
-            BoardPageForm inquiryBoardForm = boardService.getAdminListPage("inquiry", pageNo);
+        } else if (kindOfBoard.equals("inquiry")) {
+            BoardPageForm inquiryBoardForm = boardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", inquiryBoardForm);
-        }
-        else if (kindOfBoard.equals("adoptReview")) {
-            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage("adoptReview", pageNo);
+        } else if (kindOfBoard.equals("adoptReview")) {
+            AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", adoptReviewBoardForm);
-        }
-        else if (kindOfBoard.equals("find")) {
-            FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(pageNo);
+        } else if (kindOfBoard.equals("find")) {
+            FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", findBoardForm);
-        }
-        else if (kindOfBoard.equals("look")) {
-            LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(pageNo);
+        } else if (kindOfBoard.equals("look")) {
+            LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", lookBoardForm);
         }
 
@@ -146,16 +133,18 @@ public class AdminController {
     // =============== 유기동물 관리 ===============
     // 유기동물 리스트
     @GetMapping("/abandonedAnimal")
-    public String abandonedAnimalList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        AbandonedAnimalPageForm pageForm = abandonedAnimalService.getAdminListPage(pageNo);
+    public String abandonedAnimalList(@ModelAttribute AbandonedAnimalConditionForm conditionForm,
+                                      @RequestParam(defaultValue = "1") int pageNo,
+                                      Model model) {
+        AbandonedAnimalPageForm pageForm = abandonedAnimalService.getAdminListPage(conditionForm, pageNo);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/abandoned.animal/abandoned_animal_list";
     }
 
     // 유기동물 추가 (insert)
-    @GetMapping("/abandonedAnimal/write")
-    public String adminAbandonedWriteForm(Model model) {
+    @GetMapping("/abandonedAnimal/insert")
+    public String abandonedAnimalInsertForm(Model model) {
         List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
         List<Member> members = memberService.getMemberList();
         List<String> residences = abandonedAnimalService.getResidenceList();
@@ -164,14 +153,14 @@ public class AdminController {
         model.addAttribute("members", members);
         model.addAttribute("residences", residences);
 
-        return "/admin/abandoned.animal/abandoned_animal_write";
+        return "/admin/abandoned.animal/abandoned_animal_insert";
     }
 
-    @PostMapping("/abandonedAnimal/write")
-    public String adminAbandonedWrite(@ModelAttribute AdminAbandonedAnimalWriteForm writeForm,
-                                      HttpServletRequest request) throws IOException {
+    @PostMapping("/abandonedAnimal/insert")
+    public String abandonedAnimalInsert(@ModelAttribute AbandonedAnimalInsertForm insertForm,
+                                        HttpServletRequest request) throws IOException {
         String fullPath = getFullPath(request);
-        String newFile = abandonedAnimalService.storeFile(writeForm.getFile(), fullPath);
+        String newFile = abandonedAnimalService.storeFile(insertForm.getFile(), fullPath);
 
         if (newFile == null) {
             log.info("이미지파일 업로드 x");
@@ -179,25 +168,25 @@ public class AdminController {
             log.info("업로드 될 newFile = {}", newFile);
         }
 
-        writeForm.setImgPath(newFile);
-        log.info("adminAbandonedAnimalWriteForm = {}", writeForm);
+        insertForm.setImgPath(newFile);
+        log.info("AbandonedAnimalInsertForm = {}", insertForm);
 
-        abandonedAnimalService.write(writeForm);
+        abandonedAnimalService.insert(insertForm);
 
-        if (writeForm.getAnimalState().equals("입양")) {
-            abandonedAnimalService.writeWithAdopt(writeForm);
-        } else if (writeForm.getAnimalState().equals("임보")) {
-            abandonedAnimalService.writeWithTemp(writeForm);
+        if (insertForm.getAnimalState().equals("입양")) {
+            abandonedAnimalService.insertWithAdopt(insertForm);
+        } else if (insertForm.getAnimalState().equals("임보")) {
+            abandonedAnimalService.insertWithTemp(insertForm);
         }
 
-        return "/admin/abandoned.animal/alert_write";
+        return "/admin/abandoned.animal/alert_insert";
     }
 
     // 유기동물 수정 (update)
-    @GetMapping("/abandonedAnimal/modify")
-    public String adminAbandonedModifyForm(@RequestParam int abNumber, Model model) {
-        AdminAbandonedAnimalModifyForm modifyForm = abandonedAnimalService.getModifyForm(abNumber);
-        log.info("수정 전 adminAbandonedAnimalModifyForm = {}", modifyForm);
+    @GetMapping("/abandonedAnimal/update")
+    public String abandonedAnimalUpdateForm(@RequestParam int abNumber, Model model) {
+        AbandonedAnimalUpdateForm updateForm = abandonedAnimalService.getUpdateForm(abNumber);
+        log.info("수정 전 AbandonedAnimalUpdateForm = {}", updateForm);
 
         List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
         List<Member> members = memberService.getMemberList();
@@ -205,52 +194,52 @@ public class AdminController {
         TempPet selectedTemp = abandonedAnimalService.getTempByPk(abNumber);
         List<String> residences = abandonedAnimalService.getResidenceList();
 
-        model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("updateForm", updateForm);
         model.addAttribute("shelters", shelters);
         model.addAttribute("members", members);
         model.addAttribute("selectedAdopt", selectedAdopt);
         model.addAttribute("selectedTemp", selectedTemp);
         model.addAttribute("residences", residences);
 
-        return "/admin/abandoned.animal/abandoned_animal_modify";
+        return "/admin/abandoned.animal/abandoned_animal_update";
     }
 
-    @PostMapping("/abandonedAnimal/modify")
-    public String adminAbandonedModify(@Validated @ModelAttribute AdminAbandonedAnimalModifyForm modifyForm,
-                                       HttpServletRequest request) throws IOException {
-        log.info("수정 후 abandonedAnimalModifyForm = {}", modifyForm);
+    @PostMapping("/abandonedAnimal/update")
+    public String abandonedAnimalUpdate(@Validated @ModelAttribute AbandonedAnimalUpdateForm updateForm,
+                                        HttpServletRequest request) throws IOException {
+        log.info("수정 후 AbandonedAnimalUpdateForm = {}", updateForm);
 
         String fullPath = getFullPath(request);
 
-        String initFile = abandonedAnimalService.getAbAnimal(modifyForm.getAbNumber()).getImgPath();
+        String initFile = abandonedAnimalService.getAbAnimal(updateForm.getAbNumber()).getImgPath();
         log.info("initFile(기존 업로드 파일명) = {}", initFile);
 
-        String newFile = adoptReviewService.storeFile(modifyForm.getFile(), fullPath);
+        String newFile = adoptReviewService.storeFile(updateForm.getFile(), fullPath);
         log.info("newFile(새로 업로드한 파일명) = {}", newFile);
 
         boolean hasExistingImage = !initFile.equals("no_image.png");
 
         if (newFile != null && !hasExistingImage) {
-            modifyForm.setImgPath(newFile);
+            updateForm.setImgPath(newFile);
         }
 
         if (newFile != null && hasExistingImage) {
             String deletePath = fullPath + initFile;
             deleteFile(deletePath); // 예전사진 삭제
-            modifyForm.setImgPath(newFile);
+            updateForm.setImgPath(newFile);
         }
 
-        abandonedAnimalService.modify(modifyForm);
+        abandonedAnimalService.update(updateForm);
 
-        if (modifyForm.getAnimalState().equals("입양")) {
-            abandonedAnimalService.modifyWithAdopt(modifyForm);
-        } else if (modifyForm.getAnimalState().equals("임보")) {
-            abandonedAnimalService.modifyWithTemp(modifyForm);
+        if (updateForm.getAnimalState().equals("입양")) {
+            abandonedAnimalService.updateWithAdopt(updateForm);
+        } else if (updateForm.getAnimalState().equals("임보")) {
+            abandonedAnimalService.updateWithTemp(updateForm);
         } else {
-            abandonedAnimalService.deleteAdoptAndTemp(modifyForm.getAbNumber());
+            abandonedAnimalService.deleteAdoptAndTemp(updateForm.getAbNumber());
         }
 
-        return "/admin/abandoned.animal/alert_modify";
+        return "/admin/abandoned.animal/alert_update";
     }
 
     // 수정 전 업로드됐던 이미지파일 삭제
@@ -274,7 +263,7 @@ public class AdminController {
 
     // 유기동물 삭제 (delete)
     @GetMapping("/abandonedAnimal/delete")
-    public String adminAbandonedDelete(@RequestParam int abNumber, HttpServletRequest request) {
+    public String abandonedAnimalDelete(@RequestParam int abNumber, HttpServletRequest request) {
         String filename = abandonedAnimalService.getAbAnimal(abNumber).getImgPath();
         boolean existInitFile = filename != null && !filename.equals("no_image.png");
 
@@ -291,16 +280,18 @@ public class AdminController {
     // =============== 입양 관리 ===============
     // 입양 리스트
     @GetMapping("/adopt")
-    public String adoptList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        AdminAdoptPageForm pageForm = adoptTempService.getAdminAdoptListPage(pageNo);
+    public String adoptList(@RequestParam(defaultValue = "1") int pageNo,
+                            @RequestParam(required = false) String keyword,
+                            Model model) {
+        AdoptPageForm pageForm = adoptTempService.getAdminAdoptListPage(pageNo, keyword);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/adopt/adopt_list";
     }
 
     // 입양 추가 (insert)
-    @GetMapping("/adopt/write")
-    public String adoptWrite(Model model) {
+    @GetMapping("/adopt/insert")
+    public String adoptInsertForm(Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
         List<String> residences = adoptTempService.getResidenceList();
@@ -309,20 +300,20 @@ public class AdminController {
         model.addAttribute("onlyProtectedAnimals", onlyProtectedAnimals);
         model.addAttribute("residences", residences);
 
-        return "/admin/adopt/adopt_write";
+        return "/admin/adopt/adopt_insert";
     }
 
-    @PostMapping("/adopt/write")
-    public String adoptWriteForm(@ModelAttribute AdminAdoptForm adminAdoptForm) {
-        log.info("adminAdoptForm = {}", adminAdoptForm);
-        adoptTempService.adoptWrite(adminAdoptForm);
+    @PostMapping("/adopt/insert")
+    public String adoptInsert(@ModelAttribute AdoptForm adoptForm) {
+        log.info("AdoptForm = {}", adoptForm);
+        adoptTempService.adoptInsert(adoptForm);
 
-        return "/admin/adopt/alert_write";
+        return "/admin/adopt/alert_insert";
     }
 
     // 입양 수정 (update)
-    @GetMapping("/adopt/modify")
-    public String adoptModify(@RequestParam int adNumber, Model model) {
+    @GetMapping("/adopt/update")
+    public String adoptUpdateForm(@RequestParam int adNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         Adopt selectedAdopt = adoptTempService.getAdoptByPk(adNumber);
 
@@ -339,15 +330,15 @@ public class AdminController {
         model.addAttribute("adoptCompleteAnimals", adoptCompleteAnimals);
         model.addAttribute("residences", residences);
 
-        return "/admin/adopt/adopt_modify";
+        return "/admin/adopt/adopt_update";
     }
 
-    @PostMapping("/adopt/modify")
-    public String adoptModifyForm(@ModelAttribute AdminAdoptForm adminAdoptForm) {
-        adoptTempService.adminAdoptUpdate(adminAdoptForm);
-        log.info("수정 후 adminAdoptForm = {}", adminAdoptForm);
+    @PostMapping("/adopt/update")
+    public String adoptUpdate(@ModelAttribute AdoptForm adoptForm) {
+        adoptTempService.adminAdoptUpdate(adoptForm);
+        log.info("수정 후 AdoptForm = {}", adoptForm);
 
-        return "/admin/adopt/alert_modify";
+        return "/admin/adopt/alert_update";
     }
 
     // 입양 삭제 (delete)
@@ -360,10 +351,11 @@ public class AdminController {
 
     // 입양 승인 관리 페이지
     @GetMapping("/adopt/wait")
-    public String adoptWait(@RequestParam(defaultValue = "1") int pageNo,
-                            @RequestParam(defaultValue = "처리중") String status,
-                            Model model) {
-        AdminAdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
+    public String adoptWaitList(@RequestParam(defaultValue = "1") int pageNo,
+                                @RequestParam(required = false) String keyword,
+                                @RequestParam(defaultValue = "처리중") String status,
+                                Model model) {
+        AdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/adopt/adopt_wait_list";
@@ -387,10 +379,11 @@ public class AdminController {
 
     // 입양 완료된 리스트
     @GetMapping("/adopt/complete")
-    public String adoptComplete(@RequestParam(defaultValue = "1") int pageNo,
-                                @RequestParam(defaultValue = "완료") String status,
-                                Model model) {
-        AdminAdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
+    public String adoptCompleteList(@RequestParam(defaultValue = "1") int pageNo,
+                                    @RequestParam(required = false) String keyword,
+                                    @RequestParam(defaultValue = "완료") String status,
+                                    Model model) {
+        AdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/adopt/adopt_complete_list";
@@ -398,11 +391,12 @@ public class AdminController {
 
     // 입양 거절된 리스트
     @GetMapping("/adopt/refuse")
-    public String adoptRefuse(@RequestParam(defaultValue = "1") int pageNo,
-                              @RequestParam(defaultValue = "거절") String status,
-                              Model model) {
+    public String adoptRefuseList(@RequestParam(defaultValue = "1") int pageNo,
+                                  @RequestParam(required = false) String keyword,
+                                  @RequestParam(defaultValue = "거절") String status,
+                                  Model model) {
 
-        AdminAdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, status);
+        AdoptPageForm pageForm = adoptTempService.getAdminAdoptWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/adopt/adopt_refuse_list";
@@ -411,16 +405,18 @@ public class AdminController {
     // =============== 임시보호 관리 ===============
     // 임시보호 리스트
     @GetMapping("/temp")
-    public String tempList(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        AdminTempPageForm pageForm = adoptTempService.getAdminTempListPage(pageNo);
+    public String tempList(@RequestParam(defaultValue = "1") int pageNo,
+                           @RequestParam(required = false) String  keyword,
+                           Model model) {
+        TempPageForm pageForm = adoptTempService.getAdminTempListPage(pageNo, keyword);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/temp/temp_list";
     }
 
     // 임시보호 추가 (insert)
-    @GetMapping("/temp/write")
-    public String tempWrite(Model model) {
+    @GetMapping("/temp/insert")
+    public String tempInsertForm(Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
         List<String> residences = adoptTempService.getResidenceList();
@@ -429,20 +425,20 @@ public class AdminController {
         model.addAttribute("onlyProtectedAnimals", onlyProtectedAnimals);
         model.addAttribute("residences", residences);
 
-        return "/admin/temp/temp_write";
+        return "/admin/temp/temp_insert";
     }
 
-    @PostMapping("/temp/write")
-    public String tempWriteForm(@ModelAttribute AdminTempForm adminTempForm) {
-        log.info("adminTempForm={}", adminTempForm);
-        adoptTempService.tempWrite(adminTempForm);
+    @PostMapping("/temp/insert")
+    public String tempInsert(@ModelAttribute TempForm tempForm) {
+        log.info("TempForm={}", tempForm);
+        adoptTempService.tempInsert(tempForm);
 
-        return "/admin/temp/alert_write";
+        return "/admin/temp/alert_insert";
     }
 
     // 임시보호 수정 (update)
-    @GetMapping("/temp/modify")
-    public String tempModify(@RequestParam int tNumber, Model model) {
+    @GetMapping("/temp/update")
+    public String tempUpdateForm(@RequestParam int tNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         TempPet selectedTemp = adoptTempService.getTempByPk(tNumber);
 
@@ -459,15 +455,15 @@ public class AdminController {
         model.addAttribute("tempCompleteAnimals", tempCompleteAnimals);
         model.addAttribute("residences", residences);
 
-        return "/admin/temp/temp_modify";
+        return "/admin/temp/temp_update";
     }
 
-    @PostMapping("/temp/modify")
-    public String tempModifyForm(@ModelAttribute AdminTempForm adminTempForm) {
-        adoptTempService.adminTempUpdate(adminTempForm);
-        log.info("수정 후 adminTempForm={}", adminTempForm);
+    @PostMapping("/temp/update")
+    public String tempUpdate(@ModelAttribute TempForm tempForm) {
+        adoptTempService.adminTempUpdate(tempForm);
+        log.info("수정 후 TempForm={}", tempForm);
 
-        return "/admin/temp/alert_modify";
+        return "/admin/temp/alert_update";
     }
 
     // 임시보호 삭제 (delete)
@@ -480,11 +476,12 @@ public class AdminController {
 
     // 임시보호 승인 관리 페이지
     @GetMapping("/temp/wait")
-    public String tempWait(@RequestParam(defaultValue = "1") int pageNo,
-                           @RequestParam(defaultValue = "처리중") String status,
-                           Model model) {
+    public String tempWaitList(@RequestParam(defaultValue = "1") int pageNo,
+                               @RequestParam(required = false) String keyword,
+                               @RequestParam(defaultValue = "처리중") String status,
+                               Model model) {
 
-        AdminTempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        TempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/temp/temp_wait_list";
@@ -508,11 +505,12 @@ public class AdminController {
 
     // 임시보호 완료된 리스트
     @GetMapping("/temp/complete")
-    public String tempComplete(@RequestParam(defaultValue = "1") int pageNo,
-                               @RequestParam(defaultValue = "완료") String status,
-                               Model model) {
+    public String tempCompleteList(@RequestParam(defaultValue = "1") int pageNo,
+                                   @RequestParam(required = false) String keyword,
+                                   @RequestParam(defaultValue = "완료") String status,
+                                   Model model) {
 
-        AdminTempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        TempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/temp/temp_complete_list";
@@ -520,11 +518,12 @@ public class AdminController {
 
     // 임시보호 거절된 리스트
     @GetMapping("/temp/refuse")
-    public String tempRefuse(@RequestParam(defaultValue = "1") int pageNo,
-                             @RequestParam(defaultValue = "거절") String status,
-                             Model model) {
+    public String tempRefuseList(@RequestParam(defaultValue = "1") int pageNo,
+                                 @RequestParam(required = false) String keyword,
+                                 @RequestParam(defaultValue = "거절") String status,
+                                 Model model) {
 
-        AdminTempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, status);
+        TempPageForm pageForm = adoptTempService.getAdminTempWaitPage(pageNo, keyword, status);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/temp/temp_refuse_list";
@@ -533,58 +532,60 @@ public class AdminController {
     // =============== 후원 관리 ===============
     // 후원 리스트
     @GetMapping("/donation")
-    public String donationPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        AdminDonationPageForm pageForm = donateService.getListPage(pageNo);
+    public String donationList(@RequestParam(defaultValue = "1") int pageNo,
+                               @RequestParam(required = false) String keyword,
+                               Model model) {
+        DonationPageForm pageForm = donateService.getListPage(pageNo, keyword);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/donation/donation_list";
     }
 
     // 후원 추가
-    @GetMapping("donation/create")
-    public String donationCreateForm(Model model) {
+    @GetMapping("donation/insert")
+    public String donationInsertForm(Model model) {
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
         List<Member> members = memberService.getMemberList();
 
         model.addAttribute("abandonedAnimals", abandonedAnimals);
         model.addAttribute("members", members);
 
-        return "/admin/donation/donation_write";
+        return "/admin/donation/donation_insert";
     }
 
-    @PostMapping("donation/create")
-    public String donationCreate(@ModelAttribute AdminDonationWriteForm writeForm) {
-        log.info("adminDonationWriteForm = {}", writeForm);
-        donateService.create(writeForm);
+    @PostMapping("donation/insert")
+    public String donationInsert(@ModelAttribute DonationInsertForm insertForm) {
+        log.info("DonationInsertForm = {}", insertForm);
+        donateService.insert(insertForm);
 
-        return "/admin/donation/alert_write";
+        return "/admin/donation/alert_insert";
     }
 
     // 후원 수정
-    @GetMapping("donation/modify")
-    public String donationModifyForm(@RequestParam int dNumber, Model model) {
+    @GetMapping("donation/update")
+    public String donationUpdateForm(@RequestParam int dNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
-        AdminDonationModifyForm modifyForm = donateService.getModifyForm(dNumber);
+        DonationUpdateForm updateForm = donateService.getUpdateForm(dNumber);
 
         model.addAttribute("members", members);
         model.addAttribute("abandonedAnimals", abandonedAnimals);
-        model.addAttribute("modifyForm", modifyForm);
+        model.addAttribute("updateForm", updateForm);
 
-        return "/admin/donation/donation_modify";
+        return "/admin/donation/donation_update";
     }
 
-    @PostMapping("donation/modify")
-    public String donationModify(@ModelAttribute AdminDonationModifyForm modifyForm) {
-        log.info("adminDonationModifyForm = {}", modifyForm);
-        donateService.modify(modifyForm);
+    @PostMapping("donation/update")
+    public String donationUpdate(@ModelAttribute DonationUpdateForm updateForm) {
+        log.info("DonationUpdateForm = {}", updateForm);
+        donateService.update(updateForm);
 
-        return "/admin/donation/alert_modify";
+        return "/admin/donation/alert_update";
     }
 
     // 후원 삭제
     @GetMapping("/donation/delete")
-    public String delete(@RequestParam("dNumber") int dNumber) {
+    public String donationDelete(@RequestParam("dNumber") int dNumber) {
         donateService.delete(dNumber);
 
         return "redirect:/admin/donation";
@@ -593,43 +594,45 @@ public class AdminController {
     // =============== 보호소 관리 ===============
     // 보호소 리스트
     @GetMapping("/shelter")
-    public String shelterPage(@RequestParam(defaultValue = "1") int pageNo, Model model) {
-        ShelterPageForm pageForm = shelterService.getListPage(pageNo);
+    public String shelterList(@RequestParam(defaultValue = "1") int pageNo,
+                              @RequestParam(required = false) String keyword,
+                              Model model) {
+        ShelterPageForm pageForm = shelterService.getListPage(pageNo, keyword);
         model.addAttribute("pageForm", pageForm);
 
         return "/admin/shelter/shelter_list";
     }
 
     // 보호소 추가
-    @GetMapping("/shelter/create")
-    public String shelterCreateForm() {
-        return "/admin/shelter/shelter_write";
+    @GetMapping("/shelter/insert")
+    public String shelterInsertForm() {
+        return "/admin/shelter/shelter_insert";
     }
 
-    @PostMapping("/shelter/create")
-    public String shelterCreate(@ModelAttribute ShelterWriteForm writeForm) {
-        log.info("ShelterWriteForm = {}", writeForm);
-        shelterService.create(writeForm);
+    @PostMapping("/shelter/insert")
+    public String shelterInsert(@ModelAttribute ShelterInsertForm insertForm) {
+        log.info("ShelterInsertForm = {}", insertForm);
+        shelterService.insert(insertForm);
 
-        return "/admin/shelter/alert_write";
+        return "/admin/shelter/alert_insert";
     }
 
     // 보호소 수정
-    @GetMapping("/shelter/modify")
-    public String shelterModifyForm(@RequestParam int sNumber, Model model) {
-        ShelterModifyForm modifyForm = shelterService.getModifyForm(sNumber);
-        log.info("보호소 수정 전 modifyForm = {}", modifyForm);
-        model.addAttribute("modifyForm", modifyForm);
+    @GetMapping("/shelter/update")
+    public String shelterUpdateForm(@RequestParam int sNumber, Model model) {
+        ShelterUpdateForm updateForm = shelterService.getUpdateForm(sNumber);
+        log.info("보호소 수정 전 ShelterUpdateForm = {}", updateForm);
+        model.addAttribute("updateForm", updateForm);
 
-        return "/admin/shelter/shelter_modify";
+        return "/admin/shelter/shelter_update";
     }
 
-    @PostMapping("/shelter/modify")
-    public String shelterModify(@ModelAttribute ShelterModifyForm modifyForm) {
-        shelterService.modify(modifyForm);
-        log.info("보호소 수정 후 modifyForm = {}", modifyForm);
+    @PostMapping("/shelter/update")
+    public String shelterUpdate(@ModelAttribute ShelterUpdateForm updateForm) {
+        shelterService.update(updateForm);
+        log.info("보호소 수정 후 ShelterUpdateForm = {}", updateForm);
 
-        return "/admin/shelter/alert_modify";
+        return "/admin/shelter/alert_update";
     }
 
     // 보호소 삭제
@@ -646,7 +649,6 @@ public class AdminController {
 
         return fullPath;
     }
-
 
     private void deleteFile(String deletePath) {
         File fileToDelete = new File(deletePath);

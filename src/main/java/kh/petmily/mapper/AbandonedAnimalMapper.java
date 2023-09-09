@@ -46,11 +46,15 @@ public interface AbandonedAnimalMapper {
     );
 
     // ========== 관리자 페이지 ==========
-    int selectCount();
+    int selectCount(AbandonedAnimalConditionForm form);
 
     List<AbandonedAnimal> selectIndex(
             @Param("start") int start,
-            @Param("end") int end);
+            @Param("end") int end,
+            @Param("species") String species,
+            @Param("gender") String gender,
+            @Param("animalState") String animalState,
+            @Param("keyword") String keyword);
 
     List<AbandonedAnimal> selectAll();
 

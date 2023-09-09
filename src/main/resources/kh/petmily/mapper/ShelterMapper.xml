@@ -28,18 +28,6 @@
     </delete>
     <!--=======BasicMapper 메소드=======-->
 
-    <select id="selectCount" resultType="int">
-        select count(*)
-        from SHELTER
-    </select>
-
-    <select id="selectIndex" resultType="kh.petmily.domain.shelter.Shelter">
-        select * from
-        (select ROWNUM as NUM, A.* from
-        (select * from SHELTER order by SNUMBER desc) A)
-        where NUM between #{start} and #{end}
-    </select>
-
     <select id="selectAll" resultType="kh.petmily.domain.shelter.Shelter">
         select *
         from SHELTER
@@ -56,5 +44,47 @@
         select *
         from SHELTER S inner join ABANDONEDANIMAL AB
         on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+    </select>
+
+
+
+    <!--================= 관리자 페이지 =================-->
+    <select id="selectCount" resultType="int">
+        select count(*)
+        from SHELTER
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                GROUPNAME like '%' || #{keyword} || '%'
+                or
+                LOCATION like '%' || #{keyword} || '%'
+                or
+                PHONE like '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIndex" resultType="kh.petmily.domain.shelter.Shelter">
+        select *
+        from (select ROWNUM as NUM, S.*
+        from (select *
+        from SHELTER
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                GROUPNAME like '%' || #{keyword} || '%'
+                or
+                LOCATION like '%' || #{keyword} || '%'
+                or
+                PHONE like '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+        order by SNUMBER desc
+        ) S)
+        where NUM between #{start} and #{end}
     </select>
 </mapper>

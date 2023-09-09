@@ -1,11 +1,11 @@
-package kh.petmily.domain.adopt.form;
+package kh.petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AdminAdoptDetailForm {
+public class AdoptListForm {
 
     private int adNumber;
     private int mNumber;
@@ -18,7 +18,7 @@ public class AdminAdoptDetailForm {
     private String memberName;
     private String memberId;
 
-    public AdminAdoptDetailForm(int adNumber, int mNumber, int abNumber, String residence, String maritalStatus, String job, String status, String animalName, String memberName, String memberId) {
+    public AdoptListForm(int adNumber, int mNumber, int abNumber, String residence, String maritalStatus, String job, String status, String animalName, String memberName, String memberId) {
         this.adNumber = adNumber;
         this.mNumber = mNumber;
         this.abNumber = abNumber;

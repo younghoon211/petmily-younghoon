@@ -1,25 +1,23 @@
 package kh.petmily.service;
 
 import kh.petmily.domain.shelter.Shelter;
-import kh.petmily.domain.shelter.form.ShelterModifyForm;
-import kh.petmily.domain.shelter.form.ShelterPageForm;
-import kh.petmily.domain.shelter.form.ShelterWriteForm;
+import kh.petmily.domain.admin_form.ShelterUpdateForm;
+import kh.petmily.domain.admin_form.ShelterPageForm;
+import kh.petmily.domain.admin_form.ShelterInsertForm;
 
 import java.util.List;
 
 public interface ShelterService {
 
-    void create(ShelterWriteForm form);
+    void insert(ShelterInsertForm form);
 
-    ShelterPageForm getListPage(int pageNo);
-
-    List<Shelter> getShelterList();
+    ShelterPageForm getListPage(int pageNo, String keyword);
 
     List<Shelter> getShelterListNotSNumber0();
 
-    ShelterModifyForm getModifyForm(int sNumber);
+    ShelterUpdateForm getUpdateForm(int sNumber);
 
-    void modify(ShelterModifyForm form);
+    void update(ShelterUpdateForm form);
 
     void delete(int sNumber);
 }
