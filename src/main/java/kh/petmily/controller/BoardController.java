@@ -62,7 +62,7 @@ public class BoardController {
         log.info("BoardWriteForm = {}", writeForm);
         boardService.write(writeForm);
 
-        return "/board/alert_write";
+        return "/alert/common/board_write";
     }
 
     @GetMapping("/auth/modify")
@@ -83,7 +83,7 @@ public class BoardController {
         log.info("수정 후 boardModifyForm = {}", modifyForm);
         boardService.modify(modifyForm);
 
-        return "/board/alert_modify";
+        return "/alert/common/board_modify";
     }
 
     @GetMapping("/auth/delete")

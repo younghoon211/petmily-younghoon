@@ -73,7 +73,7 @@ public class AdminController {
 
         memberService.insert(memberInsertForm);
 
-        return "/admin/member/alert_insert";
+        return "/alert/admin/member_insert";
     }
 
     // 회원정보 수정 (update)
@@ -84,7 +84,7 @@ public class AdminController {
 
         model.addAttribute("updateForm", updateForm);
 
-        return "admin/member/member_update";
+        return "/admin/member/member_update";
     }
 
     @PostMapping("/member/update")
@@ -92,7 +92,7 @@ public class AdminController {
         memberService.update(updateForm);
         log.info("수정 후 MemberUpdateForm = {}", updateForm);
 
-        return "/admin/member/alert_update";
+        return "/alert/admin/member_update";
     }
 
     // 회원정보 삭제 (delete)
@@ -179,7 +179,7 @@ public class AdminController {
             abandonedAnimalService.insertWithTemp(insertForm);
         }
 
-        return "/admin/abandoned.animal/alert_insert";
+        return "/alert/admin/abandoned_animal_insert";
     }
 
     // 유기동물 수정 (update)
@@ -239,7 +239,7 @@ public class AdminController {
             abandonedAnimalService.deleteAdoptAndTemp(updateForm.getAbNumber());
         }
 
-        return "/admin/abandoned.animal/alert_update";
+        return "/alert/admin/abandoned_animal_update";
     }
 
     // 수정 전 업로드됐던 이미지파일 삭제
@@ -308,7 +308,7 @@ public class AdminController {
         log.info("AdoptForm = {}", adoptForm);
         adoptTempService.adoptInsert(adoptForm);
 
-        return "/admin/adopt/alert_insert";
+        return "/alert/admin/adopt_insert";
     }
 
     // 입양 수정 (update)
@@ -338,7 +338,7 @@ public class AdminController {
         adoptTempService.adminAdoptUpdate(adoptForm);
         log.info("수정 후 AdoptForm = {}", adoptForm);
 
-        return "/admin/adopt/alert_update";
+        return "/alert/admin/adopt_insert";
     }
 
     // 입양 삭제 (delete)
@@ -433,7 +433,7 @@ public class AdminController {
         log.info("TempForm={}", tempForm);
         adoptTempService.tempInsert(tempForm);
 
-        return "/admin/temp/alert_insert";
+        return "/alert/admin/temp_insert";
     }
 
     // 임시보호 수정 (update)
@@ -463,7 +463,7 @@ public class AdminController {
         adoptTempService.adminTempUpdate(tempForm);
         log.info("수정 후 TempForm={}", tempForm);
 
-        return "/admin/temp/alert_update";
+        return "/alert/admin/temp_update";
     }
 
     // 임시보호 삭제 (delete)
@@ -558,7 +558,7 @@ public class AdminController {
         log.info("DonationInsertForm = {}", insertForm);
         donateService.insert(insertForm);
 
-        return "/admin/donation/alert_insert";
+        return "/alert/admin/donation_insert";
     }
 
     // 후원 수정
@@ -580,7 +580,7 @@ public class AdminController {
         log.info("DonationUpdateForm = {}", updateForm);
         donateService.update(updateForm);
 
-        return "/admin/donation/alert_update";
+        return "/alert/admin/donation_update";
     }
 
     // 후원 삭제
@@ -614,7 +614,7 @@ public class AdminController {
         log.info("ShelterInsertForm = {}", insertForm);
         shelterService.insert(insertForm);
 
-        return "/admin/shelter/alert_insert";
+        return "/alert/admin/shelter_insert";
     }
 
     // 보호소 수정
@@ -632,7 +632,7 @@ public class AdminController {
         shelterService.update(updateForm);
         log.info("보호소 수정 후 ShelterUpdateForm = {}", updateForm);
 
-        return "/admin/shelter/alert_update";
+        return "/alert/admin/shelter_update";
     }
 
     // 보호소 삭제

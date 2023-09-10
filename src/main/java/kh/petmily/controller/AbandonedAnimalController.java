@@ -68,7 +68,7 @@ public class AbandonedAnimalController {
 
         model.addAttribute("pageForm", pageForm);
 
-        return "/abandoned.animal/adopted_animal_board";
+        return "/abandoned.animal/adopted_animal_list";
     }
 
     // 후원 신청
@@ -89,7 +89,7 @@ public class AbandonedAnimalController {
 
         donateService.donate(donateSubmitForm);
 
-        return "/abandoned.animal/alert_donate_submit";
+        return "/alert/member/donate_submit";
     }
 
     // 입양/임보 신청
@@ -114,12 +114,12 @@ public class AbandonedAnimalController {
 
         if (submitForm.getAdoptOrTemp().equals("adopt")) {
             adoptTempService.adopt(submitForm);
-            return "/abandoned.animal/alert_adopt_submit";
+            return "/alert/member/adopt_submit";
         }
 
         if (submitForm.getAdoptOrTemp().equals("temp")) {
             adoptTempService.temp(submitForm);
-            return "/abandoned.animal/alert_temp_submit";
+            return "/alert/member/temp_submit";
         }
 
         return null;

@@ -84,7 +84,7 @@ public class FindBoardController {
 
         findBoardService.write(writeForm);
 
-        return "/find.board/alert_write";
+        return "/alert/member/find_write";
     }
 
     //=======수정=======
@@ -126,7 +126,7 @@ public class FindBoardController {
         log.info("수정 후 FindBoardModifyForm = {}", modifyForm);
         findBoardService.modify(modifyForm);
 
-        return "/find.board/alert_modify";
+        return "/alert/member/find_modify";
     }
 
     // 수정 전 업로드됐던 이미지파일 삭제

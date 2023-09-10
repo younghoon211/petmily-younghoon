@@ -84,7 +84,7 @@ public class AdoptReviewController {
 
         adoptReviewService.write(writeForm);
 
-        return "/adopt.review/alert_write";
+        return "/alert/member/adopt_review_write";
     }
 
     @GetMapping("/auth/modify")
@@ -126,7 +126,7 @@ public class AdoptReviewController {
         log.info("수정 후 adoptReviewModifyForm = {}", modifyForm);
         adoptReviewService.modify(modifyForm);
 
-        return "/adopt.review/alert_modify";
+        return "/alert/member/adopt_review_modify";
     }
 
     // 수정 전 업로드됐던 이미지파일 삭제

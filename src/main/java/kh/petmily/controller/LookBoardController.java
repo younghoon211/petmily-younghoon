@@ -85,7 +85,7 @@ public class LookBoardController {
 
         lookBoardService.write(writeForm);
 
-        return "/look.board/alert_write";
+        return "/alert/member/look_write";
     }
 
     //=======수정=======
@@ -128,7 +128,7 @@ public class LookBoardController {
         log.info("수정 후 LookBoardModifyForm = {}", modifyForm);
         lookBoardService.modify(modifyForm);
 
-        return "/look.board/alert_modify";
+        return "/alert/member/look_modify";
     }
 
     // 수정 전 업로드됐던 이미지파일 삭제

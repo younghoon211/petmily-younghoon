@@ -71,7 +71,7 @@ public class MemberController {
 
         memberService.join(memberJoinForm);
 
-        return "/login/alert_join";
+        return "/alert/member/join";
     }
 
     // 로그인
@@ -157,7 +157,7 @@ public class MemberController {
 
         memberService.change(member, memberChangeForm);
 
-        return "/member/alert_change";
+        return "/alert/member/member_info_change";
     }
 
     // 회원탈퇴
@@ -191,7 +191,7 @@ public class MemberController {
         memberService.withdraw(mNumber);
         request.getSession().invalidate();
 
-        return "/member/alert_withdraw";
+        return "/alert/member/withdraw";
     }
 
     // 찾아요 매칭된 페이지
