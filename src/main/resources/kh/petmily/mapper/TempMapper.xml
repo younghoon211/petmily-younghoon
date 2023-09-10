@@ -233,11 +233,18 @@
         where T.TNUMBER = #{pk})
     </select>
 
-    <select id="selectTempByAbNumber" resultType="kh.petmily.domain.temp.TempPet">
+    <select id="selectAllByAbNumber" resultType="kh.petmily.domain.temp.TempPet">
+        select *
+        from TEMPPET
+        where ABNUMBER = #{abNumber}
+    </select>
+
+    <select id="selectAllCompleteByAbNumber" resultType="kh.petmily.domain.temp.TempPet">
         select *
         from TEMPPET
         where ABNUMBER = #{abNumber} and STATUS = '완료'
     </select>
+
 
 
     <!--========== 유기동물 수정 시 기존 임보 정보 삭제 ==========-->

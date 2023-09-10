@@ -172,21 +172,17 @@
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
                                                      id="animalState1" checked><label for="animalState1">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
-<%--                                                     onclick="confirm('상태를 변경하면 입양 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState2"><label for="animalState2">임시보호</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="보호"
-<%--                                                     onclick="confirm('상태를 변경하면 입양 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState3"><label for="animalState3">보호</label></span>
                                     </c:when>
                                     <c:when test="${updateForm.animalState eq '임보'}">
                                         <span><input type="radio" class="form-check-input" name="animalState" value="입양"
-<%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState4"><label for="animalState4">입양</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="임보"
                                                      id="animalState5" checked><label
                                                 for="animalState5">임시보호</label></span>&emsp;
                                         <span><input type="radio" class="form-check-input" name="animalState" value="보호"
-<%--                                                     onclick="confirm('상태를 변경하면 임시보호 정보가 초기화됩니다. 정말로 변경하시겠습니까?')"--%>
                                                      id="animalState6"><label for="animalState6">보호</label></span>
                                     </c:when>
                                     <c:when test="${updateForm.animalState eq '보호'}">

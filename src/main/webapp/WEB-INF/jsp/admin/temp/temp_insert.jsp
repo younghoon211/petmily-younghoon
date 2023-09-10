@@ -119,8 +119,8 @@
         </div>
 
         <div class="form-group">
-            <label>임시보호 기간 <span style="color: red"><small>&nbsp;※ 회원들에게는 임시보호 최소기간 1개월로 명시</small></span></label>
-            <input type="number" name="tempPeriod" class="form-control" placeholder="개월수를 입력해주세요." min="1" max="100" required>
+            <label>임시보호 기간 <small style="color: red">&nbsp;※ 회원들에게는 최소 기간 1개월로 명시</small></label>
+            <input type="number" name="tempPeriod" class="form-control" placeholder="임시보호 개월수를 입력해주세요." min="1" max="100" required>
         </div>
 
         <div class="form-group">

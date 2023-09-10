@@ -54,7 +54,9 @@ public interface AdoptMapper {
 
     void adoptRefuse(int pk);
 
-    Adopt selectAdoptByAbNumber(int abNumber);
+    Adopt selectAllByAbNumber(int abNumber);
+
+    Adopt selectAllCompleteByAbNumber(int abNumber);
 
     void deleteCompleteWhenUpdateAB(int abNumber);
 

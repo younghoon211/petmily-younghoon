@@ -115,6 +115,14 @@ public class AbandonedAnimalDao implements BasicDao {
         return adoptedListForms;
     }
 
+    public Adopt selectAdoptByAbNumber(int pk) {
+        return adoptMapper.selectAllByAbNumber(pk);
+    }
+
+    public TempPet selectTempByAbNumber(int pk) {
+        return tempMapper.selectAllByAbNumber(pk);
+    }
+
     // ======================== 관리자 페이지 ==========================
     // 총 게시글 수 조회
     public int selectCount(AbandonedAnimalConditionForm form) {
@@ -175,13 +183,13 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     // pk로 입양 조회
-    public Adopt selectAdoptByPk(int pk) {
-        return adoptMapper.selectAdoptByAbNumber(pk);
+    public Adopt selectAdoptCompleteByPk(int pk) {
+        return adoptMapper.selectAllCompleteByAbNumber(pk);
     }
 
     // pk로 임보 조회
-    public TempPet selectTempByPk(int pk) {
-        return tempMapper.selectTempByAbNumber(pk);
+    public TempPet selectTempCompleteByPk(int pk) {
+        return tempMapper.selectAllCompleteByAbNumber(pk);
     }
 
     // ============================= 입양 ===============================

@@ -83,7 +83,7 @@
     <h1 id="title" class="text-center">후원 관리 추가</h1>
     <p id="description" class="text-center"></p> <br><br>
 
-    <form action="/admin/donation/insert" method="post">
+    <form action="/admin/donation/insert" method="post" onsubmit="return validateForm();">
 
         <label>후원받을 동물 (번호)</label>
         <select class="form-control" name="abNumber" required>
@@ -206,8 +206,8 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    const customAmountInput = document.getElementById("customAmount");
-    const radioButtons = document.querySelectorAll('input[type="radio"].userRatings');
+    let customAmountInput = document.getElementById("customAmount");
+    let radioButtons = document.querySelectorAll('input[type="radio"].userRatings');
 
     // "직접 입력" 필드를 클릭하거나 값을 입력할 때 라디오 버튼 체크 해제
     customAmountInput.addEventListener("click", function () {
@@ -228,6 +228,27 @@
             customAmountInput.value = "";
         });
     });
+
+    function validateForm() {
+        // 라디오 버튼 체크 여부 확인
+        let radioButtons = document.getElementsByName("donaSum");
+        let radioChecked = false;
+
+        for (var i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                radioChecked = true;
+                break;
+            }
+        }
+
+        // 텍스트 입력 필드 값 확인
+        let customAmountValue = customAmountInput.value.trim();
+
+        if (!radioChecked && customAmountValue === "") {
+            alert("후원 금액을 선택하거나 입력해주세요.");
+            return false;
+        }
+    }
 </script>
 
 <%-- footer --%>

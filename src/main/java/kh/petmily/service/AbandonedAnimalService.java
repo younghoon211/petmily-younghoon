@@ -27,15 +27,19 @@ public interface AbandonedAnimalService {
 
     AbandonedAnimalDetailForm getDetailPage(int abNumber);
 
+    Adopt getAdoptByPk(int pk);
+
+    TempPet getTempByPk(int pk);
+
     AbandonedAnimal getAbAnimal(int abNumber);
 
     List<AbandonedAnimal> getAbAnimalList();
 
     AbandonedAnimalPageForm getAdminListPage(AbandonedAnimalConditionForm form, int pageNo);
 
-    Adopt getAdoptByPk(int pk);
+    Adopt getAdoptCompleteByPk(int pk);
 
-    TempPet getTempByPk(int pk);
+    TempPet getTempCompleteByPk(int pk);
 
     List<String> getResidenceList();
 

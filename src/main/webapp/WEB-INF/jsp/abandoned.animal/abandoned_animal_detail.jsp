@@ -176,7 +176,12 @@
                         <h3 class="heading">입양 / 임시보호하기</h3>
                         <p>이 동물을 입양 / 임시보호 해주세요!</p>
                         <a
-                                href="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}"
+                                <c:if test="${adopt.status ne '처리중'}">
+                                    href="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}"
+                                </c:if>
+                                <c:if test="${adopt.status eq '처리중'}">
+                                    href="" id="adoptWait"
+                                </c:if>
                                 class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read
                             more</i></a>
@@ -196,7 +201,7 @@
                                     href="/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}"
                                 </c:if>
                                 <c:if test="${detailForm.animalState ne '보호'}">
-                                    href="" id="myLink"
+                                    href="" id="notProtected"
                                 </c:if>
                                 class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read
@@ -204,6 +209,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <br><br><br><br>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                    onclick="location.href='/abandonedAnimal/list?sort=abNo'">목록으로
+            </button>
+            <c:if test="${authUser.grade eq '관리자'}">
+                <button type="button" class="btn btn-dark"
+                        onclick="location.href='/admin/abandonedAnimal'">유기동물 관리로
+                </button>
+            </c:if>
         </div>
     </div>
 </section>
@@ -226,14 +242,28 @@
 
 <script>
     $(document).ready(function () {
-        $('#myLink').click(function (event) {
+        $('#adoptWait').click(function (event) {
+
+            event.preventDefault();
+
+            $.ajax({
+                url: '/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}',
+                type: 'GET',
+                success: function () {
+                    alert('해당 동물은 현재 입양 신청 처리중입니다.');
+                },
+            });
+        });
+
+        $('#notProtected').click(function (event) {
+
             event.preventDefault();
 
             $.ajax({
                 url: '/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}',
                 type: 'GET',
                 success: function () {
-                    alert('보호중인 동물에게만 봉사할 수 있습니다.');
+                    alert('보호중인 동물만 봉사 가능합니다.');
                 },
             });
         });

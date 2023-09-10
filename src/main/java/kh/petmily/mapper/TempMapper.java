@@ -54,7 +54,9 @@ public interface TempMapper {
 
     void tempRefuse(int pk);
 
-    TempPet selectTempByAbNumber(int abNumber);
+    TempPet selectAllByAbNumber(int abNumber);
+
+    TempPet selectAllCompleteByAbNumber(int abNumber);
 
     void deleteCompleteWhenUpdateAB(int abNumber);
 

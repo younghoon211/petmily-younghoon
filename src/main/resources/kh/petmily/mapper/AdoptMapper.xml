@@ -224,8 +224,13 @@
         where AD.ADNUMBER = #{pk})
     </select>
 
+    <select id="selectAllByAbNumber" resultType="kh.petmily.domain.adopt.Adopt">
+        select *
+        from ADOPT
+        where ABNUMBER = #{abNumber}
+    </select>
 
-    <select id="selectAdoptByAbNumber" resultType="kh.petmily.domain.adopt.Adopt">
+    <select id="selectAllCompleteByAbNumber" resultType="kh.petmily.domain.adopt.Adopt">
         select *
         from ADOPT
         where ABNUMBER = #{abNumber} and STATUS = '완료'

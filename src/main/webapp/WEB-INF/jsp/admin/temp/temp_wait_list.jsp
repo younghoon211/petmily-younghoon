@@ -110,7 +110,7 @@
                             <td>${wait.animalName} (${wait.abNumber})</td>
                             <td>${wait.memberName}</td>
                             <td>${wait.tempDate}</td>
-                            <td>${wait.tempPeriod}일</td>
+                            <td>${wait.tempPeriod}개월</td>
                             <td>${wait.residence}</td>
                             <td>${wait.maritalStatus}</td>
                             <td>${wait.job}</td>

@@ -87,7 +87,7 @@
 
     <div class="form-group">
         <label>후원받을 동물</label>
-        <input type="text" class="form-control" value="${animalName}"
+        <input type="text" class="form-control" value="${abAnimal.name}"
                readonly>
     </div>
     <div class="form-group">
@@ -95,8 +95,8 @@
         <input type="text" class="form-control" value="${memberName}" readonly>
     </div>
 
-    <form name="donaform" id="survey-form" method="post"
-          action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}">
+    <form id="survey-form" method="post"
+          action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}" onsubmit="return validateForm();">
         <div class="form-row">
             <div class="col">
                 <label>은행명</label>
@@ -163,7 +163,7 @@
                 </label>
             </div>
             <div class="col">
-                <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력" min="10000"> 원
+                <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력" min="10000"> 원
                 <br><small
 <%--                    style="color: red" 만약 validated걸리거나 ajax로 걸리면 이거 추가--%>
             >최소 10,000원부터 가능합니다.</small>
@@ -175,6 +175,9 @@
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
             <button type="submit" class="btn btn-primary">후원하기</button>
         </div>
+
+        <input name="mNumber" value="${mNumber}" hidden>
+        <input name="abNumber" value="${abAnimal.abNumber}" hidden>
     </form>
     </div>
 </div>
@@ -220,6 +223,27 @@
             customAmountInput.value = "";
         });
     });
+
+    function validateForm() {
+        // 라디오 버튼 체크 여부 확인
+        let radioButtons = document.getElementsByName("donaSum");
+        let radioChecked = false;
+
+        for (var i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                radioChecked = true;
+                break;
+            }
+        }
+
+        // 텍스트 입력 필드 값 확인
+        let customAmountValue = customAmountInput.value.trim();
+
+        if (!radioChecked && customAmountValue === "") {
+            alert("후원 금액을 선택하거나 입력해주세요.");
+            return false;
+        }
+    }
 </script>
 
 <%-- footer --%>

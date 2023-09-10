@@ -190,8 +190,8 @@ public class AdminController {
 
         List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
         List<Member> members = memberService.getMemberList();
-        Adopt selectedAdopt = abandonedAnimalService.getAdoptByPk(abNumber);
-        TempPet selectedTemp = abandonedAnimalService.getTempByPk(abNumber);
+        Adopt selectedAdopt = abandonedAnimalService.getAdoptCompleteByPk(abNumber);
+        TempPet selectedTemp = abandonedAnimalService.getTempCompleteByPk(abNumber);
         List<String> residences = abandonedAnimalService.getResidenceList();
 
         model.addAttribute("updateForm", updateForm);

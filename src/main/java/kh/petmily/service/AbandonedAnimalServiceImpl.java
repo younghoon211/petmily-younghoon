@@ -111,6 +111,18 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return toDetailForm(abandonedAnimal);
     }
 
+    // pk로 입양 조회
+    @Override
+    public Adopt getAdoptByPk(int pk) {
+        return abandonedAnimalDao.selectAdoptByAbNumber(pk);
+    }
+
+    // pk로 임보 조회
+    @Override
+    public TempPet getTempByPk(int pk) {
+        return abandonedAnimalDao.selectTempByAbNumber(pk);
+    }
+
     // pk로 유기동물 조회
     @Override
     public AbandonedAnimal getAbAnimal(int pk) {
@@ -134,14 +146,14 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
 
     // pk로 입양 조회
     @Override
-    public Adopt getAdoptByPk(int pk) {
-        return abandonedAnimalDao.selectAdoptByPk(pk);
+    public Adopt getAdoptCompleteByPk(int pk) {
+        return abandonedAnimalDao.selectAdoptCompleteByPk(pk);
     }
 
     // pk로 임보 조회
     @Override
-    public TempPet getTempByPk(int pk) {
-        return abandonedAnimalDao.selectTempByPk(pk);
+    public TempPet getTempCompleteByPk(int pk) {
+        return abandonedAnimalDao.selectTempCompleteByPk(pk);
     }
 
     // 거주지 리스트

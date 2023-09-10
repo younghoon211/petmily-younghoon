@@ -270,6 +270,8 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return new TempPet(
                 form.getAbNumber(),
                 form.getMNumber(),
+                form.getTempDate(),
+                form.getTempPeriod(),
                 form.getResidence(),
                 form.getMaritalStatus(),
                 form.getJob()

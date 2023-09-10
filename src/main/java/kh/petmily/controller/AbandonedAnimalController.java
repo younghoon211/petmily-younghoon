@@ -1,7 +1,9 @@
 package kh.petmily.controller;
 
 import kh.petmily.domain.abandoned_animal.form.*;
+import kh.petmily.domain.adopt.Adopt;
 import kh.petmily.domain.member.Member;
+import kh.petmily.domain.temp.TempPet;
 import kh.petmily.service.AbandonedAnimalService;
 import kh.petmily.service.AdoptTempService;
 import kh.petmily.service.DonateService;
@@ -25,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Controller
 @RequestMapping("/abandonedAnimal")
@@ -51,7 +52,10 @@ public class AbandonedAnimalController {
     @GetMapping("/detail")
     public String detail(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailPage(abNumber);
+        Adopt adopt = abandonedAnimalService.getAdoptByPk(abNumber);
+
         model.addAttribute("detailForm", detailForm);
+        model.addAttribute("adopt", adopt);
 
         return "/abandoned.animal/abandoned_animal_detail";
     }
@@ -64,7 +68,7 @@ public class AbandonedAnimalController {
 
         model.addAttribute("pageForm", pageForm);
 
-        return "/abandoned.animal/adopted_animal_list";
+        return "/abandoned.animal/adopted_animal_board";
     }
 
     // 후원 신청
@@ -72,57 +76,53 @@ public class AbandonedAnimalController {
     public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
-        model.addAttribute("animalName", abandonedAnimalService.getAbAnimal(abNumber).getName());
+        model.addAttribute("abAnimal", abandonedAnimalService.getAbAnimal(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
+        model.addAttribute("mNumber", mNumber);
 
-        return "/abandoned.animal/donate_submit";
+        return "/abandoned.animal/submit_donate";
     }
 
     @PostMapping("/auth/donate")
-    public String donate(@ModelAttribute DonateSubmitForm donateSubmitForm, HttpServletRequest request) {
-        int mNumber = getAuthMNumber(request);
-
-        donateSubmitForm.setMNumber(mNumber);
-        log.info("donateSubmitForm = {}", donateSubmitForm);
+    public String donate(@ModelAttribute DonateSubmitForm donateSubmitForm) {
+        log.info("제출한 donateSubmitForm = {}", donateSubmitForm);
 
         donateService.donate(donateSubmitForm);
 
-        return "/abandoned.animal/alert_submit";
+        return "/abandoned.animal/alert_donate_submit";
     }
 
-    // 입양/임보
+    // 입양/임보 신청
     @GetMapping("/auth/adoptTemp")
     public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
-        List<String> residences = adoptTempService.getResidenceList();
+        TempPet temp = abandonedAnimalService.getTempByPk(abNumber);
 
-        model.addAttribute("animal", abandonedAnimalService.getAbAnimal(abNumber));
+        model.addAttribute("mNumber", mNumber);
+        model.addAttribute("temp", temp);
+
+        model.addAttribute("abAnimal", abandonedAnimalService.getAbAnimal(abNumber));
         model.addAttribute("memberName", memberService.getMemberName(mNumber));
-        model.addAttribute("residences", residences);
+        model.addAttribute("residences", adoptTempService.getResidenceList());
 
-        return "/abandoned.animal/adopt_temp_submit";
+        return "/abandoned.animal/submit_adopt_temp";
     }
 
     @PostMapping("/auth/adoptTemp")
-    public String adoptTemp(@ModelAttribute AdoptTempSubmitForm submitForm,
-                            @RequestParam String adoptOrTemp,
-                            HttpServletRequest request) {
-        log.info("adoptTempSubmitForm = {}", submitForm);
+    public String adoptTemp(@ModelAttribute AdoptTempSubmitForm submitForm) {
+        log.info("제출한 adoptTempSubmitForm = {}", submitForm);
 
-        int mNumber = getAuthMNumber(request);
-        submitForm.setMNumber(mNumber);
-
-        if (adoptOrTemp.equals("adopt")) {
+        if (submitForm.getAdoptOrTemp().equals("adopt")) {
             adoptTempService.adopt(submitForm);
+            return "/abandoned.animal/alert_adopt_submit";
         }
 
-        if (adoptOrTemp.equals("temp")) {
+        if (submitForm.getAdoptOrTemp().equals("temp")) {
             adoptTempService.temp(submitForm);
+            return "/abandoned.animal/alert_temp_submit";
         }
 
-//        redirectAttributes.addAttribute("abNumber", submitForm.getAbNumber());
-
-        return "/abandoned.animal/alert_submit";
+        return null;
     }
 
     // 봉사 신청
@@ -131,7 +131,7 @@ public class AbandonedAnimalController {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailPage(abNumber);
         model.addAttribute("detailForm", detailForm);
 
-        return "/abandoned.animal/volunteer_submit";
+        return "/abandoned.animal/submit_volunteer";
     }
 
     // 이미지파일 불러오기

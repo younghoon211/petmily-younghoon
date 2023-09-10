@@ -153,13 +153,13 @@
 
         <div class="form-group">
             <label>시작 날짜</label>
-            <input type="date" name="tempDate" class="form-control" placeholder="일수를 입력해주세요." value="${selectedTemp.tempDate}"
+            <input type="date" name="tempDate" class="form-control" min="1900-01-01" max="2099-12-31" value="${selectedTemp.tempDate}"
                    required>
         </div>
 
         <div class="form-group">
-            <label>임시보호 기간 (일수)</label>
-            <input type="text" name="tempPeriod" class="form-control" placeholder="일수를 입력해주세요."
+            <label>임시보호 기간 <small style="color: red">&nbsp;※ 회원들에게는 최소 기간 1개월로 명시</small></label>
+            <input type="text" name="tempPeriod" class="form-control" placeholder="임시보호 개월수를 입력해주세요."
                    value="${selectedTemp.tempPeriod}"
                    required>
         </div>
