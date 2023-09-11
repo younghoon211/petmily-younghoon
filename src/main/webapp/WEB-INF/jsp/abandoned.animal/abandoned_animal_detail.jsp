@@ -160,7 +160,7 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">후원하기</h3>
-                        <p>이 동물에게 후원해주세요!</p>
+                        <p><small>작은 나눔은 ${detailForm.name}에게 큰 힘이 됩니다.</small></p>
                         <a href="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
@@ -173,8 +173,8 @@
                         <span class="flaticon-dog-eating"></span>
                     </div>
                     <div class="media-body p-4">
-                        <h3 class="heading">입양 / 임시보호하기</h3>
-                        <p>이 동물을 입양 / 임시보호 해주세요!</p>
+                        <h3 class="heading">입양/임시보호하기</h3>
+                        <p><small>${detailForm.name}에게 손길을 내밀어주세요.</small></p>
                         <a
                                 <c:if test="${adopt.status ne '처리중'}">
                                     href="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}"
@@ -195,7 +195,7 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">봉사하기</h3>
-                        <p>이 동물에게 봉사해주세요!<br><small>(보호중인 동물만 가능)</small></p>
+                        <p><small>${detailForm.name}(이)가 여러분을 기다리고 있어요!</small></p>
                         <a
                                 <c:if test="${detailForm.animalState eq '보호'}">
                                     href="/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}"

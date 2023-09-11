@@ -14,7 +14,6 @@ public class Donation implements DomainObj {
     private int abNumber;
     private int mNumber;
     private int donaSum;
-    private int donaPeriod;
     private String bank;
     private String accountHolder;
     private String accountNumber;

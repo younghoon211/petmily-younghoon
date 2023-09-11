@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!--
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
--->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +83,7 @@
                                 <td>${donation.animalName} (${donation.abNumber})</td>
                                 <td>${donation.memberId} (${donation.getMNumber()})</td>
                                 <td>${donation.memberName}</td>
-                                <td>${donation.donaSum}</td>
+                                <td><fmt:formatNumber value="${donation.donaSum}" pattern="#,##0" /></td>
                                 <td>${donation.bank}</td>
                                 <td>${donation.accountHolder}</td>
                                 <td>${donation.accountNumber}</td>

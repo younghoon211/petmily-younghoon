@@ -13,13 +13,13 @@
     </select>
 
     <insert id="insert">
-        insert into DONATION(ABNUMBER, MNUMBER, DONASUM, DONAPERIOD, BANK, ACCOUNTHOLDER, ACCOUNTNUMBER)
-        values (#{abNumber}, #{mNumber}, #{donaSum}, #{donaPeriod}, #{bank}, #{accountHolder}, #{accountNumber})
+        insert into DONATION(ABNUMBER, MNUMBER, DONASUM, BANK, ACCOUNTHOLDER, ACCOUNTNUMBER)
+        values (#{abNumber}, #{mNumber}, #{donaSum}, #{bank}, #{accountHolder}, #{accountNumber})
     </insert>
 
     <update id="update">
         update DONATION
-        set ABNUMBER = #{abNumber}, MNUMBER = #{mNumber}, DONASUM = #{donaSum}, DONAPERIOD = #{donaPeriod},
+        set ABNUMBER = #{abNumber}, MNUMBER = #{mNumber}, DONASUM = #{donaSum},
         BANK = #{bank}, ACCOUNTHOLDER = #{accountHolder}, ACCOUNTNUMBER = #{accountNumber}
         where DNUMBER = #{dNumber}
     </update>
