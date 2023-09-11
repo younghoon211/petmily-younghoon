@@ -47,11 +47,25 @@
 <%@ include file="../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
+         data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end">
+            <div class="col-md-9 ftco-animate pb-5">
+                <h1 class="mb-0 bread">회원정보 변경</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <h2>회원정보 변경</h2>
-        </div><br>
+        </div>
+        <br>
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
@@ -141,14 +155,14 @@
                     </div>
                     <br>
                     <div class="row justify-content-center">
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
                         <button type="submit" class="btn btn-primary">변경하기</button>
                     </div>
                 </form>
             </div>
         </div>
-
     </div>
-    <div class="info-wrap w-100 p-5 img"></div>
+    <br>
 </section>
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>

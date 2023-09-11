@@ -73,7 +73,7 @@ public class AbandonedAnimalController {
 
     // 후원 신청
     @GetMapping("/auth/donate")
-    public String donateForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
+    public String donatePage(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
         model.addAttribute("abAnimal", abandonedAnimalService.getAbAnimal(abNumber));
@@ -94,7 +94,7 @@ public class AbandonedAnimalController {
 
     // 입양/임보 신청
     @GetMapping("/auth/adoptTemp")
-    public String adoptTempForm(@RequestParam int abNumber, HttpServletRequest request, Model model) {
+    public String adoptTempPage(@RequestParam int abNumber, HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
         TempPet temp = abandonedAnimalService.getTempByPk(abNumber);
 
@@ -127,7 +127,7 @@ public class AbandonedAnimalController {
 
     // 봉사 신청
     @GetMapping("/auth/volunteer")
-    public String volunteerForm(@RequestParam int abNumber, Model model) {
+    public String volunteerPage(@RequestParam int abNumber, Model model) {
         AbandonedAnimalDetailForm detailForm = abandonedAnimalService.getDetailPage(abNumber);
         model.addAttribute("detailForm", detailForm);
 

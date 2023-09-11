@@ -58,7 +58,7 @@ public class LookBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writeForm(Model model, HttpServletRequest request) {
+    public String writePage(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
 
@@ -90,7 +90,7 @@ public class LookBoardController {
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int laNumber, Model model) {
+    public String modifyPage(@RequestParam int laNumber, Model model) {
         LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(laNumber);
         log.info("수정 전 LookBoardModifyForm = {}", modifyForm);
 

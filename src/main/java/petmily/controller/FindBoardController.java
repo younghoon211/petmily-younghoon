@@ -58,7 +58,7 @@ public class FindBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writeForm(Model model, HttpServletRequest request) {
+    public String writePage(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
 
@@ -89,7 +89,7 @@ public class FindBoardController {
 
     //=======수정=======
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int faNumber, Model model) {
+    public String modifyPage(@RequestParam int faNumber, Model model) {
         FindBoardModifyForm modifyForm = findBoardService.getModifyForm(faNumber);
         log.info("수정 전 FindBoardModifyForm = {}", modifyForm);
 

@@ -63,7 +63,7 @@ public class AdminController {
 
     // 회원 추가 (insert)
     @GetMapping("/member/insert")
-    public String memberInsertForm() {
+    public String memberInsertPage() {
         return "admin/member/member_insert";
     }
 
@@ -78,7 +78,7 @@ public class AdminController {
 
     // 회원정보 수정 (update)
     @GetMapping("/member/update")
-    public String memberUpdateForm(@RequestParam int mNumber, Model model) {
+    public String memberUpdatePage(@RequestParam int mNumber, Model model) {
         MemberUpdateForm updateForm = memberService.getUpdateForm(mNumber);
         log.info("수정 전 MemberUpdateForm = {}", updateForm);
 
@@ -144,7 +144,7 @@ public class AdminController {
 
     // 유기동물 추가 (insert)
     @GetMapping("/abandonedAnimal/insert")
-    public String abandonedAnimalInsertForm(Model model) {
+    public String abandonedAnimalInsertPage(Model model) {
         List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
         List<Member> members = memberService.getMemberList();
         List<String> residences = abandonedAnimalService.getResidenceList();
@@ -184,7 +184,7 @@ public class AdminController {
 
     // 유기동물 수정 (update)
     @GetMapping("/abandonedAnimal/update")
-    public String abandonedAnimalUpdateForm(@RequestParam int abNumber, Model model) {
+    public String abandonedAnimalUpdatePage(@RequestParam int abNumber, Model model) {
         AbandonedAnimalUpdateForm updateForm = abandonedAnimalService.getUpdateForm(abNumber);
         log.info("수정 전 AbandonedAnimalUpdateForm = {}", updateForm);
 
@@ -291,7 +291,7 @@ public class AdminController {
 
     // 입양 추가 (insert)
     @GetMapping("/adopt/insert")
-    public String adoptInsertForm(Model model) {
+    public String adoptInsertPage(Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
         List<String> residences = adoptTempService.getResidenceList();
@@ -313,7 +313,7 @@ public class AdminController {
 
     // 입양 수정 (update)
     @GetMapping("/adopt/update")
-    public String adoptUpdateForm(@RequestParam int adNumber, Model model) {
+    public String adoptUpdatePage(@RequestParam int adNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         Adopt selectedAdopt = adoptTempService.getAdoptByPk(adNumber);
 
@@ -416,7 +416,7 @@ public class AdminController {
 
     // 임시보호 추가 (insert)
     @GetMapping("/temp/insert")
-    public String tempInsertForm(Model model) {
+    public String tempInsertPage(Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
         List<String> residences = adoptTempService.getResidenceList();
@@ -438,7 +438,7 @@ public class AdminController {
 
     // 임시보호 수정 (update)
     @GetMapping("/temp/update")
-    public String tempUpdateForm(@RequestParam int tNumber, Model model) {
+    public String tempUpdatePage(@RequestParam int tNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         TempPet selectedTemp = adoptTempService.getTempByPk(tNumber);
 
@@ -543,7 +543,7 @@ public class AdminController {
 
     // 후원 추가
     @GetMapping("donation/insert")
-    public String donationInsertForm(Model model) {
+    public String donationInsertPage(Model model) {
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
         List<Member> members = memberService.getMemberList();
 
@@ -563,7 +563,7 @@ public class AdminController {
 
     // 후원 수정
     @GetMapping("donation/update")
-    public String donationUpdateForm(@RequestParam int dNumber, Model model) {
+    public String donationUpdatePage(@RequestParam int dNumber, Model model) {
         List<Member> members = memberService.getMemberList();
         List<AbandonedAnimal> abandonedAnimals = abandonedAnimalService.getAbAnimalList();
         DonationUpdateForm updateForm = donateService.getUpdateForm(dNumber);
@@ -605,7 +605,7 @@ public class AdminController {
 
     // 보호소 추가
     @GetMapping("/shelter/insert")
-    public String shelterInsertForm() {
+    public String shelterInsertPage() {
         return "/admin/shelter/shelter_insert";
     }
 
@@ -619,7 +619,7 @@ public class AdminController {
 
     // 보호소 수정
     @GetMapping("/shelter/update")
-    public String shelterUpdateForm(@RequestParam int sNumber, Model model) {
+    public String shelterUpdatePage(@RequestParam int sNumber, Model model) {
         ShelterUpdateForm updateForm = shelterService.getUpdateForm(sNumber);
         log.info("보호소 수정 전 ShelterUpdateForm = {}", updateForm);
         model.addAttribute("updateForm", updateForm);

@@ -47,7 +47,7 @@ public class BoardController {
     }
 
     @GetMapping("/auth/write")
-    public String writeForm(Model model, HttpServletRequest request) {
+    public String writePage(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
 
@@ -66,7 +66,7 @@ public class BoardController {
     }
 
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int bNumber, Model model) {
+    public String modifyPage(@RequestParam int bNumber, Model model) {
         BoardModifyForm modifyForm = boardService.getModifyForm(bNumber);
         log.info("수정 전 boardModifyForm = {}", modifyForm);
 

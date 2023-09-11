@@ -53,7 +53,7 @@ public class MemberController {
 
     // 회원 가입
     @GetMapping("/join")
-    public String joinForm() {
+    public String joinPage() {
         return "/login/join";
     }
 
@@ -74,7 +74,7 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginPage() {
         return "/login/login";
     }
 
@@ -135,7 +135,7 @@ public class MemberController {
 
     // 회원정보 수정
     @GetMapping("/member/auth/changeInfo")
-    public String changeInfoForm(HttpServletRequest request, Model model) {
+    public String changeInfoPage(HttpServletRequest request, Model model) {
         Member member = getAuthUser(request);
         model.addAttribute("member", member);
 
@@ -160,7 +160,7 @@ public class MemberController {
 
     // 회원탈퇴
     @GetMapping("/member/auth/withdraw")
-    public String withdrawForm(HttpServletRequest request, Model model) {
+    public String withdrawPage(HttpServletRequest request, Model model) {
         Member member = getAuthUser(request);
         model.addAttribute("member", member);
 

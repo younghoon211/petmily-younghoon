@@ -58,7 +58,7 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/auth/write")
-    public String writeForm(Model model, HttpServletRequest request) {
+    public String writePage(Model model, HttpServletRequest request) {
         int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
 
@@ -88,7 +88,7 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/auth/modify")
-    public String modifyForm(@RequestParam int bNumber, Model model) {
+    public String modifyPage(@RequestParam int bNumber, Model model) {
         AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(bNumber);
         log.info("수정 전 adoptReviewModifyForm={}", modifyForm);
 

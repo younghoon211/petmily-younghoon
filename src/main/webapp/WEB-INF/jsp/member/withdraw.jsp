@@ -42,20 +42,30 @@
 <%@ include file="../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
+         data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end">
+            <div class="col-md-9 ftco-animate pb-5">
+                <h1 class="mb-0 bread">회원 탈퇴</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center mb-5">
-                <h2 class="heading-section">회원 탈퇴</h2>
-            </div>
+            <h2>회원 탈퇴</h2>
         </div>
-
+        <br>
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
                 <form action="/member/auth/withdraw" method="POST" class="contactForm">
                     <div class="row">
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="label">아이디</label>
@@ -65,23 +75,20 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label">비밀번호를 입력해주세요.</label>
+                                <label class="label">비밀번호</label>
                                 <input type="password" class="form-control" name="pw"
-                                       placeholder="비밀번호" required>
+                                       placeholder="비밀번호를 입력해주세요." required>
                             </div>
                         </div>
-
-                        <br><br>
-                        <div class="col-md-12">
-                            <div class="form-group" style="text-align: center">
-                                <button type="submit" class="btn btn-primary"
-                                <c:if test="${!errors.notCorrect && !errors.notMatch}">
-                                        onclick="confirm('정말로 탈퇴하시겠습니까?')"
-                                </c:if>
-                                >탈퇴하기</button>
-                                <div class="submitting"></div>
-                            </div>
-                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-center">
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-danger"
+                                onclick="if(confirm('탈퇴 시 ${member.name}님과 관련된 모든 정보가 삭제됩니다.'))
+                                        { if(confirm('정말로 탈퇴하시겠습니까?')) return location.href='/';}"
+                        >탈퇴하기
+                        </button>
                     </div>
                 </form>
             </div>
