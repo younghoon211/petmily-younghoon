@@ -51,11 +51,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <h2>회원정보 변경</h2>
-        </div>
+        </div><br>
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/change_info" method="POST"
+                <form action="/member/auth/changeInfo" method="POST"
                       class="contactForm">
                     <div class="row">
                         <div class="col-md-12">
@@ -139,13 +139,14 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">변경하기</button>
+                    </div>
                 </form>
             </div>
         </div>
-        <br>
-        <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary">변경하기</button>
-        </div>
+
     </div>
     <div class="info-wrap w-100 p-5 img"></div>
 </section>

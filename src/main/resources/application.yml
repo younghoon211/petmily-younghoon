@@ -1,6 +1,6 @@
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: kh.petmily.domain
+  type-aliases-package: petmily.domain
 
 spring:
   datasource:
@@ -13,4 +13,4 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
   messages:
-    basename: messages, errors
+    basename: errors

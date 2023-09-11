@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petmily.mapper.AdoptReviewMapper">
+
+    <!--=======BasicMapper 메소드=======-->
+    <select id="selectByPk" resultType="petmily.domain.adopt_review.AdoptReview">
+        select *
+        from BOARD
+        where BNUMBER = #{pk}
+    </select>
+
+    <insert id="insert">
+        insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT
+        , IMGPATH
+        , CHECKPUBLIC)
+        values (#{mNumber}, '입양후기', #{title}, #{content}
+        <if test='imgPath != null'>
+        , #{imgPath}
+        </if>
+        <if test='imgPath == null'>
+        , 'no_image.png'
+        </if>
+        , 'Y')
+    </insert>
+
+    <update id="update">
+        update BOARD
+        set MNUMBER = #{mNumber},
+            TITLE = #{title},
+            CONTENT = #{content},
+            WRTIME = #{wrTime}
+        <if test='imgPath != ""'> <!-- x->o 또는 사진변경 -->
+            ,IMGPATH = #{imgPath}
+        </if>
+        where BNUMBER = #{bNumber}
+    </update>
+
+    <delete id="delete">
+        delete from BOARD
+        where BNUMBER = #{pk}
+    </delete>
+
+    <select id="selectCountBymNumber" resultType="int">
+        select count(*)
+        from BOARD
+        where MNUMBER = #{mNumber} and KINDOFBOARD = '입양후기'
+    </select>
+
+    <select id="selectIndexBymNumber" resultType="petmily.domain.adopt_review.AdoptReview">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from BOARD where MNUMBER = #{mNumber} and KINDOFBOARD = '입양후기' order by BNUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+    <!--======= 조건부 검색 게시글 개수 =======-->
+    <select id="selectCountWithCondition" resultType="int">
+        select count(*)
+        from BOARD
+        <where>
+            KINDOFBOARD = '입양후기'
+
+            <if test="condition == 'title' and keyword != null and keyword != 'allKeyword'">
+                and TITLE like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'content' and keyword != null and keyword != 'allKeyword'">
+                and CONTENT like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'titleAndContent' and keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%' )
+            </if>
+
+            <if test="condition == 'writer' and keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+    </select>
+
+    <!--======= 조건부 검색 =======-->
+    <select id="selectIndexWithCondition" resultType="petmily.domain.adopt_review.AdoptReview">
+        select *
+        from (select ROWNUM as NUM, A.*
+        from (select *
+        from BOARD
+        <where>
+            KINDOFBOARD = '입양후기'
+
+            <if test="condition == 'title' and keyword != null and keyword != 'allKeyword'">
+                and TITLE like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'content' and keyword != null and keyword != 'allKeyword'">
+                and CONTENT like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'titleAndContent' and keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%' )
+            </if>
+
+            <if test="condition == 'writer' and keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        <include refid="sort"/>
+        ) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+    <sql id="sort">
+        <if test="sort == 'adoptReviewNo'">
+            order by BNUMBER desc
+        </if>
+        <if test="sort == 'adoptReviewNoAsc'">
+            order by BNUMBER asc
+        </if>
+        <if test="sort == 'viewCount'">
+            order by VIEWCOUNT desc
+        </if>
+    </sql>
+
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from BOARD B inner join MEMBER M
+        on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
+    </select>
+
+    <select id="selectName" resultType="java.lang.String">
+        select M.NAME
+        from BOARD B inner join MEMBER M
+        on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
+    </select>
+
+    <update id="updateViewCount">
+        update BOARD
+        set VIEWCOUNT = VIEWCOUNT + 1
+        where BNUMBER = #{pk}
+    </update>
+
+    <!--관리자-->
+    <select id="selectIndexByPkDesc" resultType="petmily.domain.adopt_review.AdoptReview">
+        select *
+        from (select ROWNUM as NUM, A.*
+        from (select *
+        from BOARD
+        <where>
+            KINDOFBOARD = '입양후기'
+
+            <if test="condition == 'title' and keyword != null and keyword != 'allKeyword'">
+                and TITLE like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'content' and keyword != null and keyword != 'allKeyword'">
+                and CONTENT like '%' || #{keyword} || '%'
+            </if>
+
+            <if test="condition == 'titleAndContent' and keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or CONTENT like '%' || #{keyword} || '%' )
+            </if>
+
+            <if test="condition == 'writer' and keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by BNUMBER desc
+        ) A)
+        where NUM between #{start} and #{end}
+    </select>
+</mapper>

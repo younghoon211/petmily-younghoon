@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petmily.mapper.LookBoardMapper">
+
+    <select id="selectByPk" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from LOOKANIMALBOARD
+        where LANUMBER = #{pk}
+    </select>
+
+    <insert id="insert">
+        insert into LOOKANIMALBOARD(MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
+        ,IMGPATH
+        )
+        values (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
+
+        <if test='imgPath != null'>
+            , #{imgPath}
+        </if>
+        <if test='imgPath == null'>
+            , 'no_image.png'
+        </if>
+        )
+    </insert>
+
+    <update id="update">
+        update LOOKANIMALBOARD
+        set MNUMBER = #{mNumber},
+            SPECIES  = #{species},
+            KIND     = #{kind},
+            LOCATION = #{location},
+            TITLE    = #{title},
+            CONTENT  = #{content},
+            WRTIME = #{wrTime}
+        <if test='imgPath != ""'>
+            , IMGPATH = #{imgPath}
+        </if>
+        where LANUMBER = #{laNumber}
+    </update>
+
+    <delete id="delete">
+        delete
+        from LOOKANIMALBOARD
+        where LANUMBER = #{pk}
+    </delete>
+
+
+    <!--================== 일반 회원 페이지 ==================-->
+
+    <select id="selectName" resultType="java.lang.String">
+        select M.NAME
+        from LOOKANIMALBOARD L
+                 inner join MEMBER M on L.MNUMBER = M.MNUMBER
+        where L.LANUMBER = #{pk}
+    </select>
+
+    <update id="updateViewCount">
+        update LOOKANIMALBOARD
+        set VIEWCOUNT = VIEWCOUNT + 1
+        where LANUMBER = #{pk}
+    </update>
+
+    <select id="selectCountWithCondition" resultType="int">
+        select count(*)
+        from LOOKANIMALBOARD
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%' )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIndexWithCondition" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from (select ROWNUM as NUM, A.*
+        FROM (select *
+        from LOOKANIMALBOARD
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and ( TITLE like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%' )
+            </if>
+        </where>
+        <include refid="sort"/>
+        ) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+    <sql id="sort">
+        <if test="sort == 'lno'">
+            order by LANUMBER desc
+        </if>
+        <if test="sort == 'lnoAsc'">
+            order by LANUMBER asc
+        </if>
+        <if test="sort == 'viewCount'">
+            order by VIEWCOUNT desc
+        </if>
+    </sql>
+
+
+    <!--================== 마이페이지 - 내가 쓴 게시글 ==================-->
+
+    <select id="selectCountBymNumber" resultType="int">
+        select count(*)
+        from LOOKANIMALBOARD
+        where MNUMBER = #{mNumber}
+    </select>
+
+    <select id="selectIndexBymNumber" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from (select ROWNUM as NUM, A.*
+              from (select * from LOOKANIMALBOARD where MNUMBER = #{mNumber} order by LANUMBER DESC) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+
+    <!--================== 찾-봤 매칭 시스템 ==================-->
+
+    <select id="selectMatchedFa" resultType="int">
+        select FANUMBER
+        from FINDANIMALBOARD
+        <where>
+            SPECIES = #{species}
+            <if test="kind != '모름' and location != '모름'">
+                and KIND = #{kind} and LOCATION = #{location}
+            </if>
+            <if test="kind == '모름' or location == '모름'">
+                and 1 = 0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCountLookMatching" resultType="int">
+        select count(*)
+        from LOOKANIMALBOARD
+        <where>
+            MNUMBER = #{mNumber}
+            and ANIMALSTATE = '매칭됨'
+        </where>
+    </select>
+
+    <select id="selectIndexLookMatching" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from (select ROWNUM as NUM, A.*
+        from (select * from LOOKANIMALBOARD
+        <where>
+            MNUMBER = #{mNumber}
+            and ANIMALSTATE = '매칭됨'
+            order by LANUMBER DESC) A)
+        </where>
+        where NUM between #{start} and #{end}
+    </select>
+
+    <select id="selectCountFindMatchedLook" resultType="int">
+        select count(*)
+        from FINDANIMALBOARD
+        <where>
+            ANIMALSTATE = '매칭됨'
+            and SPECIES = #{species}
+            <if test="kind != '모름' and location != '모름'">
+                and KIND = #{kind} and LOCATION = #{location}
+            </if>
+            <if test="kind == '모름' or location == '모름'">
+                and 1 = 0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIndexFindMatchedLook" resultType="petmily.domain.find_board.FindBoard">
+        select *
+        from (select ROWNUM as NUM, A.*
+        from (select * from FINDANIMALBOARD
+        <where>
+            ANIMALSTATE = '매칭됨'
+            and SPECIES = #{species}
+            <if test="kind != '모름' and location != '모름'">
+                and KIND = #{kind} and LOCATION = #{location}
+            </if>
+            <if test="kind == '모름' or location == '모름'">
+                and 1 = 0
+            </if>
+            ) A)
+        </where>
+        where NUM between #{start} and #{end}
+    </select>
+
+    <select id="selectAll" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from LOOKANIMALBOARD
+    </select>
+
+    <select id="selectByPkMax" resultType="int">
+        select MAX(LANUMBER)
+        from LOOKANIMALBOARD
+    </select>
+
+    <update id="changeState">
+        update LOOKANIMALBOARD
+        set ANIMALSTATE = '매칭됨'
+        where LANUMBER = #{pk}
+    </update>
+
+    <update id="backState">
+        update LOOKANIMALBOARD
+        set ANIMALSTATE = '보호'
+        where LANUMBER = #{pk}
+    </update>
+
+    <update id="changeStateFind">
+        update FINDANIMALBOARD
+        set ANIMALSTATE = '매칭됨'
+        where FANUMBER = #{faNumber}
+    </update>
+
+    <update id="backStateFind">
+        update FINDANIMALBOARD
+        set ANIMALSTATE = '실종'
+        where FANUMBER = #{faNumber}
+    </update>
+
+
+    <!--================== 관리자 ==================-->
+
+    <select id="selectIndexByPkDesc" resultType="petmily.domain.look_board.LookBoard">
+        select *
+        from (select ROWNUM as NUM, A.* from
+        (select * from LOOKANIMALBOARD
+        <where>
+            <if test="species != null and species != 'allSpecies'">
+                and SPECIES = #{species}
+            </if>
+
+            <if test="animalState != null and animalState != 'allAnimalState'">
+                and ANIMALSTATE = #{animalState}
+            </if>
+
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                TITLE like '%' || #{keyword} || '%'
+                or KIND like '%' || #{keyword} || '%'
+                or LOCATION like '%' || #{keyword} || '%'
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where ID like '%' || #{keyword} || '%')
+                or
+                MNUMBER in (
+                select MNUMBER
+                from MEMBER
+                where NAME like '%' || #{keyword} || '%')
+                )
+            </if>
+        </where>
+        order by LANUMBER desc
+        ) A)
+        where NUM between #{start} and #{end}
+    </select>
+
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from LOOKANIMALBOARD L
+                 inner join MEMBER M on L.MNUMBER = M.MNUMBER
+        where L.LANUMBER = #{pk}
+    </select>
+</mapper>

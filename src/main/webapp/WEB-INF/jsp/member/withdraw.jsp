@@ -55,30 +55,22 @@
 
                 <form action="/member/auth/withdraw" method="POST" class="contactForm">
                     <div class="row">
+
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label">비밀번호를 입력해주세요.</label>
-                                <input type="password" class="form-control" name="pw"
-                                       placeholder="비밀번호" minlength="8" maxlength="16" required>
-                                <span style="color: red">
-                                    <c:if test="${errors.pw}">비밀번호를 입력해주세요</c:if>
-                                </span>
+                                <label class="label">아이디</label>
+                                <input type="text" class="form-control" value="${member.id}" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label">비밀번호를 확인해주세요.</label>
-                                <input type="password" class="form-control" name="confirmPw"
-                                       placeholder="비밀번호 확인" minlength="8" maxlength="16" required>
-                                <span style="color: red"> <c:if
-                                        test="${errors.confirmPw}">비밀번호 확인을 입력해주세요</c:if></span>
+                                <label class="label">비밀번호를 입력해주세요.</label>
+                                <input type="password" class="form-control" name="pw"
+                                       placeholder="비밀번호" required>
                             </div>
                         </div>
-                        <span class="col-md-12 error">
-                            <c:if test="${errors.notMatch}">비밀번호와 확인이 일치하지 않습니다.</c:if>
-                            <c:if test="${errors.notCorrect}">비밀번호가 틀렸습니다.</c:if>
-                        </span>
+
                         <br><br>
                         <div class="col-md-12">
                             <div class="form-group" style="text-align: center">
@@ -95,6 +87,7 @@
             </div>
         </div>
     </div>
+    <br>
 </section>
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>

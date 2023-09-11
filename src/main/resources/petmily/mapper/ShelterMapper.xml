@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petmily.mapper.ShelterMapper">
+
+    <!--=======BasicMapper 메소드=======-->
+    <select id="selectByPk" resultType="petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER
+        where SNUMBER = #{pk}
+    </select>
+
+    <insert id="insert">
+        insert into SHELTER(GROUPNAME, LOCATION, PHONE)
+        values (#{groupName}, #{location}, #{phone})
+    </insert>
+
+    <update id="update">
+        update SHELTER
+        set GROUPNAME = #{groupName}, LOCATION = #{location}, PHONE = #{phone}
+        where SNUMBER = #{sNumber}
+    </update>
+
+    <delete id="delete">
+        delete from SHELTER
+        where SNUMBER = #{pk}
+    </delete>
+    <!--=======BasicMapper 메소드=======-->
+
+    <select id="selectAll" resultType="petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER
+        order by SNUMBER
+    </select>
+
+    <select id="selectAllNot0" resultType="petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER where not SNUMBER = 0
+        order by SNUMBER
+    </select>
+
+    <select id="selectAllByAbNumber" resultType="petmily.domain.shelter.Shelter">
+        select *
+        from SHELTER S inner join ABANDONEDANIMAL AB
+        on S.SNUMBER = AB.SNUMBER where AB.ABNUMBER = #{abNumber}
+    </select>
+
+
+
+    <!--================= 관리자 페이지 =================-->
+    <select id="selectCount" resultType="int">
+        select count(*)
+        from SHELTER
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                GROUPNAME like '%' || #{keyword} || '%'
+                or
+                LOCATION like '%' || #{keyword} || '%'
+                or
+                PHONE like '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIndex" resultType="petmily.domain.shelter.Shelter">
+        select *
+        from (select ROWNUM as NUM, S.*
+        from (select *
+        from SHELTER
+        <where>
+            <if test="keyword != null and keyword != 'allKeyword'">
+                and
+                (
+                GROUPNAME like '%' || #{keyword} || '%'
+                or
+                LOCATION like '%' || #{keyword} || '%'
+                or
+                PHONE like '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+        order by SNUMBER desc
+        ) S)
+        where NUM between #{start} and #{end}
+    </select>
+</mapper>
