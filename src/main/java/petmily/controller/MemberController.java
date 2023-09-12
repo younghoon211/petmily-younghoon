@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt.form.MypageAdoptPageForm;
 import petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import petmily.domain.board.form.BoardPageForm;
@@ -60,7 +61,7 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Validated @ModelAttribute MemberJoinForm memberJoinForm,
                        BindingResult bindingResult) {
-        log.info("memberJoinForm = {}", memberJoinForm);
+        log.info("POST memberJoinForm = {}", memberJoinForm);
 
         if (bindingResult.hasErrors()) {
             log.info("join bindingResult= {}", bindingResult);
@@ -74,7 +75,10 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+
         return "/login/login";
     }
 
@@ -83,6 +87,7 @@ public class MemberController {
                         @RequestParam String pw,
                         HttpServletRequest request, RedirectAttributes redirectAttributes) {
         log.info("id= {}, pw= {}", id, pw);
+
         Member authUser;
 
         try {
@@ -101,7 +106,29 @@ public class MemberController {
             return "redirect:/login";
         }
 
-        request.getSession().setAttribute("authUser", authUser);
+        HttpSession session = request.getSession();
+        session.setAttribute("authUser", authUser);
+
+        String originalRequest = (String) session.getAttribute("originalRequest");
+        String prevPage = (String) session.getAttribute("prevPage");
+
+        session.removeAttribute("originalRequest");
+        session.removeAttribute("prevPage");
+
+        Adopt adopt = adoptTempService.getAdoptBymNumber(authUser.getMNumber());
+
+        if (originalRequest != null) {
+            if (adopt == null && authUser.getGrade().equals("일반") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
+                return "/alert/member/adopt_review_notAdopted";
+            } else if (adopt != null){
+                if (authUser.getGrade().equals("일반") && !adopt.getStatus().equals("완료") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
+                    return "/alert/member/adopt_review_notAdopted";
+                }
+            }
+            return "redirect:" + originalRequest;
+        } else if (prevPage != null && !prevPage.equals("http://localhost:8080/")) {
+            return "redirect:" + prevPage;
+        }
 
         if (authUser.getGrade().equals("관리자")) {
             return "redirect:/admin";
@@ -144,8 +171,8 @@ public class MemberController {
 
     @PostMapping("/member/auth/changeInfo")
     public String changeInfo(@Validated @ModelAttribute MemberChangeForm memberChangeForm,
-                                 BindingResult bindingResult, HttpServletRequest request) {
-        log.info("memberChangeForm= {}", memberChangeForm);
+                             BindingResult bindingResult, HttpServletRequest request) {
+        log.info("POST memberChangeForm= {}", memberChangeForm);
         Member member = getAuthUser(request);
 
         if (bindingResult.hasErrors()) {
@@ -167,34 +194,26 @@ public class MemberController {
         return "/member/withdraw";
     }
 
-//    @PostMapping("/member/auth/withdraw")
-//    public String withdraw(@RequestParam String pw, HttpServletRequest request) {
-//        log.info("pw = {}, confirmPw = {}", pw, confirmPw);
-//
-//        Map<String, Boolean> errors = new HashMap<>();
-//        request.setAttribute("errors", errors);
-//
-//        int mNumber = getAuthMNumber(request);
-//
-//        if (!memberService.isPwEqualToConfirm(pw, confirmPw)) {
-//            errors.put("notMatch", Boolean.TRUE);
-//            return "/member/withdraw";
-//        }
-//        else if (!memberService.checkPwCorrect(mNumber, pw)) {
-//            errors.put("notCorrect", Boolean.TRUE);
-//            return "/member/withdraw";
-//        }
-//
-//        memberService.withdraw(mNumber);
-//        request.getSession().invalidate();
-//
-//        return "/alert/member/withdraw";
-//    }
+    @PostMapping("/member/auth/withdraw")
+    public String withdraw(@RequestParam String pw, HttpServletRequest request) {
+        log.info("pw = {}", pw);
+
+        int mNumber = getAuthMNumber(request);
+
+        if (!memberService.checkPwCorrect(mNumber, pw)) {
+            return "PASSWORD_MISMATCH";
+        }
+
+        memberService.withdraw(mNumber);
+        request.getSession().invalidate();
+
+        return "SUCCESS";
+    }
 
     // 찾아요 매칭된 페이지
     @GetMapping("/member/auth/findMatching")
     public String findMatching(@RequestParam(defaultValue = "1") int pageNo,
-                                HttpServletRequest request, Model model) {
+                               HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
         FindBoardPageForm pageForm = findBoardService.getMatchingFindPage(pageNo, mNumber);
 
@@ -279,26 +298,22 @@ public class MemberController {
             model.addAttribute("myPost", findMyPost);
 
             return "/member/mypost_find_list";
-        }
-        else if (type.equals("look")) {
+        } else if (type.equals("look")) {
             LookBoardPageForm lookMyPost = lookBoardService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", lookMyPost);
 
             return "/member/mypost_look_list";
-        }
-        else if (type.equals("board")) {
+        } else if (type.equals("board")) {
             BoardPageForm boardMyPost = boardService.getMyPost(pageNo, mNumber, type, kindOfBoard);
             model.addAttribute("myPost", boardMyPost);
 
             return "/member/mypost_board_list";
-        }
-        else if (type.equals("adoptReview")) {
+        } else if (type.equals("adoptReview")) {
             AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", adoptReviewMyPost);
 
             return "/member/mypost_adopt_review_list";
-        }
-        else {
+        } else {
             return null;
         }
     }

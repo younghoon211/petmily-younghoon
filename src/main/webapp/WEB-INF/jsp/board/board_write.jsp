@@ -78,14 +78,15 @@
                                     </label>
                                     <select name="mNumber" id="mNumber" class="form-control">
                                         <c:forEach var="m" items="${memberList}">
-                                            <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                            <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id}
+                                                / ${m.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <hr width="100%" style="color: #9e9e9e">
                             </c:if>
                             <c:if test="${authUser.grade eq '일반'}">
-                                <input type="hidden" name="mNumber" value="${mNumber}">
+                                <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
                             </c:if>
 
                             <!-- 글 title, content, kindOfBoard, wrTime -->
@@ -113,7 +114,8 @@
                             </c:if>
                             <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                 <div>
-                                    <input type="radio" name="checkPublic" value="Y" id="Y" checked> <label for="Y">공개</label>
+                                    <input type="radio" name="checkPublic" value="Y" id="Y" checked> <label
+                                        for="Y">공개</label>
                                 </div>
                                 &ensp;
                                 <div>
@@ -121,8 +123,18 @@
                                 </div>
                                 &ensp;&ensp;
                             </c:if>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                    onclick="history.back()">취소</button>
+                            <button type="button" class="btn btn-secondary"
+                                    <c:if test="${authUser.grade eq '일반' && param.kindOfBoard eq 'free'}">
+                                        onclick="location.href='/board/list?kindOfBoard=free&sort=bno'"
+                                    </c:if>
+                                    <c:if test="${authUser.grade eq '일반' && param.kindOfBoard eq 'inquiry'}">
+                                        onclick="location.href='/board/list?kindOfBoard=inquiry&sort=bno'"
+                                    </c:if>
+                                    <c:if test="${authUser.grade eq '관리자'}">
+                                        onclick="history.back()"
+                                    </c:if>
+                            >취소
+                            </button>
                             <button type="submit" class="btn btn-primary">글 등록</button>
                         </div>
                     </form>

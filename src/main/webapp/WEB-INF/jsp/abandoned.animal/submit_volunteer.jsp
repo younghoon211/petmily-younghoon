@@ -140,7 +140,7 @@
         </div>
     </div><br>
     <div class="modal-footer">
-        ₩
+        <button type="button" class="btn btn-secondary" onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">돌아가기</button>
     </div>
 </div>
 

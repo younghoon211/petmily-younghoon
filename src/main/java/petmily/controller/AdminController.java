@@ -69,7 +69,7 @@ public class AdminController {
 
     @PostMapping("/member/insert")
     public String memberInsert(@ModelAttribute MemberInsertForm memberInsertForm) {
-        log.info("MemberInsertForm = {}", memberInsertForm);
+        log.info("POST MemberInsertForm = {}", memberInsertForm);
 
         memberService.insert(memberInsertForm);
 
@@ -80,7 +80,7 @@ public class AdminController {
     @GetMapping("/member/update")
     public String memberUpdatePage(@RequestParam int mNumber, Model model) {
         MemberUpdateForm updateForm = memberService.getUpdateForm(mNumber);
-        log.info("수정 전 MemberUpdateForm = {}", updateForm);
+        log.info("GET MemberUpdateForm = {}", updateForm);
 
         model.addAttribute("updateForm", updateForm);
 
@@ -90,7 +90,7 @@ public class AdminController {
     @PostMapping("/member/update")
     public String memberUpdate(@ModelAttribute MemberUpdateForm updateForm) {
         memberService.update(updateForm);
-        log.info("수정 후 MemberUpdateForm = {}", updateForm);
+        log.info("POST MemberUpdateForm = {}", updateForm);
 
         return "/alert/admin/member_update";
     }
@@ -169,7 +169,7 @@ public class AdminController {
         }
 
         insertForm.setImgPath(newFile);
-        log.info("AbandonedAnimalInsertForm = {}", insertForm);
+        log.info("POST AbandonedAnimalInsertForm = {}", insertForm);
 
         abandonedAnimalService.insert(insertForm);
 
@@ -186,7 +186,7 @@ public class AdminController {
     @GetMapping("/abandonedAnimal/update")
     public String abandonedAnimalUpdatePage(@RequestParam int abNumber, Model model) {
         AbandonedAnimalUpdateForm updateForm = abandonedAnimalService.getUpdateForm(abNumber);
-        log.info("수정 전 AbandonedAnimalUpdateForm = {}", updateForm);
+        log.info("GET AbandonedAnimalUpdateForm = {}", updateForm);
 
         List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
         List<Member> members = memberService.getMemberList();
@@ -207,7 +207,7 @@ public class AdminController {
     @PostMapping("/abandonedAnimal/update")
     public String abandonedAnimalUpdate(@Validated @ModelAttribute AbandonedAnimalUpdateForm updateForm,
                                         HttpServletRequest request) throws IOException {
-        log.info("수정 후 AbandonedAnimalUpdateForm = {}", updateForm);
+        log.info("POST AbandonedAnimalUpdateForm = {}", updateForm);
 
         String fullPath = getFullPath(request);
 
@@ -305,7 +305,7 @@ public class AdminController {
 
     @PostMapping("/adopt/insert")
     public String adoptInsert(@ModelAttribute AdoptForm adoptForm) {
-        log.info("AdoptForm = {}", adoptForm);
+        log.info("POST insert AdoptForm = {}", adoptForm);
         adoptTempService.adoptInsert(adoptForm);
 
         return "/alert/admin/adopt_insert";
@@ -336,7 +336,7 @@ public class AdminController {
     @PostMapping("/adopt/update")
     public String adoptUpdate(@ModelAttribute AdoptForm adoptForm) {
         adoptTempService.adminAdoptUpdate(adoptForm);
-        log.info("수정 후 AdoptForm = {}", adoptForm);
+        log.info("POST update AdoptForm = {}", adoptForm);
 
         return "/alert/admin/adopt_insert";
     }
@@ -430,7 +430,7 @@ public class AdminController {
 
     @PostMapping("/temp/insert")
     public String tempInsert(@ModelAttribute TempForm tempForm) {
-        log.info("TempForm={}", tempForm);
+        log.info("POST insert TempForm={}", tempForm);
         adoptTempService.tempInsert(tempForm);
 
         return "/alert/admin/temp_insert";
@@ -461,7 +461,7 @@ public class AdminController {
     @PostMapping("/temp/update")
     public String tempUpdate(@ModelAttribute TempForm tempForm) {
         adoptTempService.adminTempUpdate(tempForm);
-        log.info("수정 후 TempForm={}", tempForm);
+        log.info("POST update TempForm={}", tempForm);
 
         return "/alert/admin/temp_update";
     }
@@ -555,7 +555,7 @@ public class AdminController {
 
     @PostMapping("donation/insert")
     public String donationInsert(@ModelAttribute DonationInsertForm insertForm) {
-        log.info("DonationInsertForm = {}", insertForm);
+        log.info("POST DonationInsertForm = {}", insertForm);
         donateService.insert(insertForm);
 
         return "/alert/admin/donation_insert";
@@ -577,7 +577,7 @@ public class AdminController {
 
     @PostMapping("donation/update")
     public String donationUpdate(@ModelAttribute DonationUpdateForm updateForm) {
-        log.info("DonationUpdateForm = {}", updateForm);
+        log.info("POST DonationUpdateForm = {}", updateForm);
         donateService.update(updateForm);
 
         return "/alert/admin/donation_update";
@@ -611,7 +611,7 @@ public class AdminController {
 
     @PostMapping("/shelter/insert")
     public String shelterInsert(@ModelAttribute ShelterInsertForm insertForm) {
-        log.info("ShelterInsertForm = {}", insertForm);
+        log.info("POST ShelterInsertForm = {}", insertForm);
         shelterService.insert(insertForm);
 
         return "/alert/admin/shelter_insert";
@@ -621,7 +621,7 @@ public class AdminController {
     @GetMapping("/shelter/update")
     public String shelterUpdatePage(@RequestParam int sNumber, Model model) {
         ShelterUpdateForm updateForm = shelterService.getUpdateForm(sNumber);
-        log.info("보호소 수정 전 ShelterUpdateForm = {}", updateForm);
+        log.info("GET ShelterUpdateForm = {}", updateForm);
         model.addAttribute("updateForm", updateForm);
 
         return "/admin/shelter/shelter_update";
@@ -630,7 +630,7 @@ public class AdminController {
     @PostMapping("/shelter/update")
     public String shelterUpdate(@ModelAttribute ShelterUpdateForm updateForm) {
         shelterService.update(updateForm);
-        log.info("보호소 수정 후 ShelterUpdateForm = {}", updateForm);
+        log.info("POST ShelterUpdateForm = {}", updateForm);
 
         return "/alert/admin/shelter_update";
     }

@@ -28,7 +28,7 @@ public class BoardController {
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute BoardConditionForm conditionForm, Model model) {
-        log.info("BoardConditionForm = {}", conditionForm);
+        log.info("GET BoardConditionForm = {}", conditionForm);
         BoardPageForm pageForm = boardService.getListPage(conditionForm);
 
         model.addAttribute("pageForm", pageForm);
@@ -48,10 +48,7 @@ public class BoardController {
 
     @GetMapping("/auth/write")
     public String writePage(Model model, HttpServletRequest request) {
-        int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
-
-        model.addAttribute("mNumber", mNumber);
         model.addAttribute("memberList", memberList);
 
         return "/board/board_write";
@@ -59,7 +56,7 @@ public class BoardController {
 
     @PostMapping("/auth/write")
     public String write(@ModelAttribute BoardWriteForm writeForm) {
-        log.info("BoardWriteForm = {}", writeForm);
+        log.info("POST BoardWriteForm = {}", writeForm);
         boardService.write(writeForm);
 
         return "/alert/common/board_write";
@@ -68,7 +65,7 @@ public class BoardController {
     @GetMapping("/auth/modify")
     public String modifyPage(@RequestParam int bNumber, Model model) {
         BoardModifyForm modifyForm = boardService.getModifyForm(bNumber);
-        log.info("수정 전 boardModifyForm = {}", modifyForm);
+        log.info("GET boardModifyForm = {}", modifyForm);
 
         List<Member> memberList = memberService.getMemberList();
 
@@ -80,7 +77,7 @@ public class BoardController {
 
     @PostMapping("/auth/modify")
     public String modify(@Validated @ModelAttribute BoardModifyForm modifyForm) {
-        log.info("수정 후 boardModifyForm = {}", modifyForm);
+        log.info("POST boardModifyForm = {}", modifyForm);
         boardService.modify(modifyForm);
 
         return "/alert/common/board_modify";
@@ -106,9 +103,5 @@ public class BoardController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
-    }
-
-    private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthUser(request).getMNumber();
     }
 }

@@ -20,6 +20,8 @@ public interface AdoptTempService {
 
     MypageAdoptPageForm getMypageAdopt(int pageNo, int mNumber, String type);
 
+    Adopt getAdoptBymNumber(int mNumber);
+
     // 임보
     void temp(AdoptTempSubmitForm form);
 

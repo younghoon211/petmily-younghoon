@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import petmily.domain.abandoned_animal.form.*;
 import petmily.domain.adopt.Adopt;
-import petmily.domain.member.Member;
 import petmily.domain.temp.TempPet;
 import petmily.service.AbandonedAnimalService;
 import petmily.service.AdoptTempService;
@@ -22,7 +21,6 @@ import petmily.service.DonateService;
 import petmily.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -63,7 +61,7 @@ public class AbandonedAnimalController {
     // 입양완료 리스트
     @GetMapping("/adoptedList")
     public String adoptedList(@ModelAttribute AbandonedAnimalConditionForm conditionForm, Model model) {
-        log.info("AbandonedAnimalConditionForm = {}", conditionForm);
+        log.info("GET AbandonedAnimalConditionForm = {}", conditionForm);
         AbandonedAnimalPageForm pageForm = abandonedAnimalService.getAdoptedListPage(conditionForm);
 
         model.addAttribute("pageForm", pageForm);
@@ -73,19 +71,15 @@ public class AbandonedAnimalController {
 
     // 후원 신청
     @GetMapping("/auth/donate")
-    public String donatePage(@RequestParam int abNumber, HttpServletRequest request, Model model) {
-        int mNumber = getAuthMNumber(request);
-
+    public String donatePage(@RequestParam int abNumber, Model model) {
         model.addAttribute("abAnimal", abandonedAnimalService.getAbAnimal(abNumber));
-        model.addAttribute("memberName", memberService.getMemberName(mNumber));
-        model.addAttribute("mNumber", mNumber);
 
         return "/abandoned.animal/submit_donate";
     }
 
     @PostMapping("/auth/donate")
     public String donate(@ModelAttribute DonateSubmitForm donateSubmitForm) {
-        log.info("제출한 donateSubmitForm = {}", donateSubmitForm);
+        log.info("POST donateSubmitForm = {}", donateSubmitForm);
 
         donateService.donate(donateSubmitForm);
 
@@ -94,15 +88,11 @@ public class AbandonedAnimalController {
 
     // 입양/임보 신청
     @GetMapping("/auth/adoptTemp")
-    public String adoptTempPage(@RequestParam int abNumber, HttpServletRequest request, Model model) {
-        int mNumber = getAuthMNumber(request);
+    public String adoptTempPage(@RequestParam int abNumber, Model model) {
         TempPet temp = abandonedAnimalService.getTempByPk(abNumber);
 
-        model.addAttribute("mNumber", mNumber);
         model.addAttribute("temp", temp);
-
         model.addAttribute("abAnimal", abandonedAnimalService.getAbAnimal(abNumber));
-        model.addAttribute("memberName", memberService.getMemberName(mNumber));
         model.addAttribute("residences", adoptTempService.getResidenceList());
 
         return "/abandoned.animal/submit_adopt_temp";
@@ -110,7 +100,7 @@ public class AbandonedAnimalController {
 
     @PostMapping("/auth/adoptTemp")
     public String adoptTemp(@ModelAttribute AdoptTempSubmitForm submitForm) {
-        log.info("제출한 adoptTempSubmitForm = {}", submitForm);
+        log.info("POST adoptTempSubmitForm = {}", submitForm);
 
         if (submitForm.getAdoptOrTemp().equals("adopt")) {
             adoptTempService.adopt(submitForm);
@@ -140,7 +130,7 @@ public class AbandonedAnimalController {
     public ResponseEntity<Resource> getImage(@RequestParam String filename, HttpServletRequest request) {
         try {
             Path imagePath = Paths.get(getFullPath(request) + filename);
-            log.info("imagePath = {} ", imagePath);
+            log.info("GET imagePath = {} ", imagePath);
 
             Resource resource = new UrlResource(imagePath.toUri());
             MediaType mediaType = MediaTypeFactory.getMediaType(resource).orElse(MediaType.IMAGE_PNG);
@@ -166,17 +156,5 @@ public class AbandonedAnimalController {
         fullPath = fullPath + "resources/upload/";
 
         return fullPath;
-    }
-
-    private Member getAuthUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
-        }
-        return null;
-    }
-
-    private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthUser(request).getMNumber();
     }
 }

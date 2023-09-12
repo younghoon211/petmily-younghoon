@@ -81,7 +81,7 @@
                             <hr width="100%" style="color: #9e9e9e">
                         </c:if>
                         <c:if test="${authUser.grade eq '일반'}">
-                            <input type="hidden" name="mNumber" value="${mNumber}">
+                            <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
                         </c:if>
 
                         <!-- 글 title, content, kindOfBoard, wrTime -->
@@ -115,7 +115,15 @@
                     </div>
                     <!-- 취소, 등록 버튼  -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+                        <button type="button" class="btn btn-secondary"
+                                <c:if test="${authUser.grade eq '일반'}">
+                                    onclick="hrefAdoptReview()"
+                                </c:if>
+                                <c:if test="${authUser.grade eq '관리자'}">
+                                    onclick="history.back()"
+                                </c:if>
+                        >취소
+                        </button>
                         <button type="submit" class="btn btn-primary">글 등록</button>
                     </div>
                 </form>
@@ -168,6 +176,10 @@
         });
 
     });
+
+    function hrefAdoptReview() {
+        window.location.href = '/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo';
+    }
 </script>
 
 <%-- footer --%>

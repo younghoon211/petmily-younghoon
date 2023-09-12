@@ -43,7 +43,7 @@ public class ReplyController {
     // 작성
     @PostMapping("/{bNumber}")
     public String write(@RequestBody ReplyWriteForm writeForm) {
-        log.info("replyWriteForm = {}", writeForm);
+        log.info("POST replyWriteForm = {}", writeForm);
         replyService.write(writeForm);
 
         return "SUCCESS";
@@ -52,7 +52,7 @@ public class ReplyController {
     // 수정
     @PatchMapping("/{bNumber}")
     public String modify(@RequestBody ReplyModifyForm modifyForm) {
-        log.info("replyModifyForm = {}", modifyForm);
+        log.info("Patch replyModifyForm = {}", modifyForm);
         replyService.modify(modifyForm);
 
         return "SUCCESS";

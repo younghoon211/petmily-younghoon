@@ -38,7 +38,7 @@ public class LookBoardController {
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute LookBoardConditionForm conditionForm, Model model) {
-        log.info("LookBoardConditionForm = {}", conditionForm);
+        log.info("GET LookBoardConditionForm = {}", conditionForm);
         LookBoardPageForm pageForm = lookBoardService.getListPage(conditionForm);
 
         model.addAttribute("pageForm", pageForm);
@@ -59,11 +59,8 @@ public class LookBoardController {
     //=======작성=======
     @GetMapping("/auth/write")
     public String writePage(Model model, HttpServletRequest request) {
-        int mNumber = getAuthMNumber(request);
         List<Member> memberList = memberService.getMemberList();
-
         model.addAttribute("memberList", memberList);
-        model.addAttribute("mNumber", mNumber);
 
         return "/look.board/look_write";
     }
@@ -81,7 +78,7 @@ public class LookBoardController {
         }
 
         writeForm.setImgPath(newFile);
-        log.info("lookBoardWriteForm = {}", writeForm);
+        log.info("POST lookBoardWriteForm = {}", writeForm);
 
         lookBoardService.write(writeForm);
 
@@ -92,7 +89,7 @@ public class LookBoardController {
     @GetMapping("/auth/modify")
     public String modifyPage(@RequestParam int laNumber, Model model) {
         LookBoardModifyForm modifyForm = lookBoardService.getModifyForm(laNumber);
-        log.info("수정 전 LookBoardModifyForm = {}", modifyForm);
+        log.info("GET LookBoardModifyForm = {}", modifyForm);
 
         List<Member> memberList = memberService.getMemberList();
 
@@ -125,7 +122,7 @@ public class LookBoardController {
             modifyForm.setImgPath(newFile);
         }
 
-        log.info("수정 후 LookBoardModifyForm = {}", modifyForm);
+        log.info("POST LookBoardModifyForm = {}", modifyForm);
         lookBoardService.modify(modifyForm);
 
         return "/alert/member/look_modify";
@@ -202,10 +199,6 @@ public class LookBoardController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
-    }
-
-    private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthUser(request).getMNumber();
     }
 
     private String getFullPath(HttpServletRequest request) {

@@ -66,12 +66,6 @@ public class MemberServiceImpl implements MemberService {
         return pw != null && pw.equals(confirmPw);
     }
 
-    // 회원 이름
-    @Override
-    public String getMemberName(int pk) {
-        return memberDao.selectName(pk);
-    }
-
     // 모든 회원정보 조회 (관리자)
     @Override
     public List<Member> getMemberList() {

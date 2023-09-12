@@ -13,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt_review.form.*;
 import petmily.domain.member.Member;
 import petmily.service.AdoptReviewService;
+import petmily.service.AdoptTempService;
 import petmily.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,12 +37,18 @@ import java.util.List;
 public class AdoptReviewController {
 
     private final AdoptReviewService adoptReviewService;
+    private final AdoptTempService adoptTempService;
     private final MemberService memberService;
 
     @GetMapping("/list")
-    public String list(@Validated @ModelAttribute AdoptReviewConditionForm conditionForm, Model model) {
-        log.info("AdoptReviewConditionForm = {}", conditionForm);
+    public String list(@Validated @ModelAttribute AdoptReviewConditionForm conditionForm, Model model, HttpServletRequest request) {
+        log.info("GET AdoptReviewConditionForm = {}", conditionForm);
         AdoptReviewPageForm pageForm = adoptReviewService.getListPage(conditionForm);
+
+        if (getAuthUser(request) != null) {
+            Adopt adopt = adoptTempService.getAdoptBymNumber(getAuthUser(request).getMNumber());
+            model.addAttribute("adopt", adopt);
+        }
 
         model.addAttribute("pageForm", pageForm);
 
@@ -58,11 +66,8 @@ public class AdoptReviewController {
     }
 
     @GetMapping("/auth/write")
-    public String writePage(Model model, HttpServletRequest request) {
-        int mNumber = getAuthMNumber(request);
+    public String writePage(Model model) {
         List<Member> memberList = memberService.getMemberList();
-
-        model.addAttribute("mNumber", mNumber);
         model.addAttribute("memberList", memberList);
 
         return "/adopt.review/adopt_review_write";
@@ -80,7 +85,7 @@ public class AdoptReviewController {
         }
 
         writeForm.setImgPath(newFile);
-        log.info("adoptReviewWriteForm = {}", writeForm);
+        log.info("POST adoptReviewWriteForm = {}", writeForm);
 
         adoptReviewService.write(writeForm);
 
@@ -90,7 +95,7 @@ public class AdoptReviewController {
     @GetMapping("/auth/modify")
     public String modifyPage(@RequestParam int bNumber, Model model) {
         AdoptReviewModifyForm modifyForm = adoptReviewService.getModifyForm(bNumber);
-        log.info("수정 전 adoptReviewModifyForm={}", modifyForm);
+        log.info("GET adoptReviewModifyForm={}", modifyForm);
 
         List<Member> memberList = memberService.getMemberList();
 
@@ -123,7 +128,7 @@ public class AdoptReviewController {
             modifyForm.setImgPath(newFile);
         }
 
-        log.info("수정 후 adoptReviewModifyForm = {}", modifyForm);
+        log.info("POST adoptReviewModifyForm = {}", modifyForm);
         adoptReviewService.modify(modifyForm);
 
         return "/alert/member/adopt_review_modify";
@@ -203,10 +208,6 @@ public class AdoptReviewController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
-    }
-
-    private int getAuthMNumber(HttpServletRequest request) {
-        return getAuthUser(request).getMNumber();
     }
 
     private String getFullPath(HttpServletRequest request) {

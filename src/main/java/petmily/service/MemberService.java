@@ -21,8 +21,6 @@ public interface MemberService {
 
     boolean isPwEqualToConfirm(String pw, String confirmPw);
 
-    String getMemberName(int mNumber);
-
     List<Member> getMemberList();
 
     MemberPageForm getAdminListPage(int pageNo, String keyword);

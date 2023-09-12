@@ -236,6 +236,12 @@
         where ABNUMBER = #{abNumber} and STATUS = '완료'
     </select>
 
+    <select id="selectAllBymNumber" resultType="petmily.domain.adopt.Adopt">
+        select *
+        from ADOPT
+        where MNUMBER = #{mNumber}
+    </select>
+
 
     <!--========== 유기동물 수정 시 기존 입양 정보 삭제 ==========-->
 

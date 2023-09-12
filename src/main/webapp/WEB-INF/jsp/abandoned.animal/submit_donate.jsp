@@ -92,7 +92,7 @@
     </div>
     <div class="form-group">
         <label>닉네임</label>
-        <input type="text" class="form-control" value="${memberName}" readonly>
+        <input type="text" class="form-control" value="${authUser.name}" readonly>
     </div>
 
     <form id="survey-form" method="post"
@@ -172,11 +172,11 @@
         <br><br>
 
         <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소</button>
             <button type="submit" class="btn btn-primary">후원하기</button>
         </div>
 
-        <input name="mNumber" value="${mNumber}" hidden>
+        <input name="mNumber" value="${authUser.getMNumber()}" hidden>
         <input name="abNumber" value="${abAnimal.abNumber}" hidden>
     </form>
     </div>

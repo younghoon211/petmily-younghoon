@@ -1,11 +1,11 @@
 package petmily.dao;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import petmily.domain.DomainObj;
 import petmily.domain.adopt_review.AdoptReview;
 import petmily.domain.adopt_review.form.AdoptReviewListForm;
 import petmily.mapper.AdoptReviewMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -95,7 +95,6 @@ public class AdoptReviewDao implements BasicDao {
     public int updateViewCount(int pk) {
         return mapper.updateViewCount(pk);
     }
-
 
     // =============== private 메소드 ===============
 

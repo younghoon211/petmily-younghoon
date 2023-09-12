@@ -263,7 +263,7 @@
                 url: '/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}',
                 type: 'GET',
                 success: function () {
-                    alert('보호중인 동물만 봉사 가능합니다.');
+                    alert('보호중인 동물에게만 봉사 가능합니다.');
                 },
             });
         });

@@ -70,7 +70,7 @@
                     </div>
                 </c:if>
                 <c:if test="${authUser.grade eq '일반'}">
-                    <input type="hidden" name="mNumber" value="${mNumber}">
+                    <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
                 </c:if>
 
                 <div class="form-group col-md-auto col-lg-auto">
@@ -142,7 +142,15 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+                    <button type="button" class="btn btn-secondary"
+                            <c:if test="${authUser.grade eq '일반'}">
+                                onclick="hrefLook()"
+                            </c:if>
+                            <c:if test="${authUser.grade eq '관리자'}">
+                                onclick="history.back()"
+                            </c:if>
+                    >취소
+                    </button>
                 <button type="submit" class="btn btn-primary">글 등록</button>
             </div>
         </form>
@@ -192,6 +200,10 @@
         });
 
     });
+
+    function hrefLook() {
+        window.location.href = '/lookBoard/list?sort=lno';
+    }
 </script>
 
 <%-- footer --%>

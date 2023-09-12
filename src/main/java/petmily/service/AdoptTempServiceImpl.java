@@ -48,6 +48,12 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return new MypageAdoptPageForm(total, pageNo, size, content);
     }
 
+    // mNumber로 입양 조회
+    @Override
+    public Adopt getAdoptBymNumber(int mNumber) {
+        return adoptDao.selectAllBymNumber(mNumber);
+    }
+
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 회원 페이지(임시보호) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     // 임시보호 신청
     @Override

@@ -58,6 +58,8 @@ public interface AdoptMapper {
 
     Adopt selectAllCompleteByAbNumber(int abNumber);
 
+    Adopt selectAllBymNumber(int mNumber);
+
     void deleteCompleteWhenUpdateAB(int abNumber);
 
     void deleteWaitingWhenUpdateAB(int abNumber);
