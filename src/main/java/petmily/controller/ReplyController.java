@@ -1,17 +1,18 @@
 package petmily.controller;
 
-import petmily.domain.member.Member;
-import petmily.domain.reply.form.ReplyListForm;
-import petmily.domain.reply.form.ReplyModifyForm;
-import petmily.domain.reply.form.ReplyWriteForm;
-import petmily.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import petmily.domain.member.Member;
+import petmily.domain.reply.form.ReplyListForm;
+import petmily.domain.reply.form.ReplyModifyForm;
+import petmily.domain.reply.form.ReplyWriteForm;
+import petmily.service.ReplyService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class ReplyController {
     // 댓글 리스트
     @GetMapping("/{bNumber}")
     public ResponseEntity<List<ReplyListForm>> list(@PathVariable int bNumber, HttpServletRequest request) {
-        Member authUser = (Member) request.getSession(false).getAttribute("authUser");
+        Member authUser = getAuthUser(request);
 
         List<ReplyListForm> list = replyService.getListPage(bNumber);
 
@@ -64,5 +65,13 @@ public class ReplyController {
         replyService.delete(brNumber);
 
         return "SUCCESS";
+    }
+
+    private Member getAuthUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            return (Member) session.getAttribute("authUser");
+        }
+        return null;
     }
 }

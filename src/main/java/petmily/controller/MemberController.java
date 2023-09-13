@@ -27,6 +27,7 @@ import petmily.validation.MemberChangeValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -120,12 +121,14 @@ public class MemberController {
         if (originalRequest != null) {
             if (adopt == null && authUser.getGrade().equals("일반") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
                 return "/alert/member/adopt_review_notAdopted";
-            } else if (adopt != null){
+            } else if (adopt != null) {
                 if (authUser.getGrade().equals("일반") && !adopt.getStatus().equals("완료") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
                     return "/alert/member/adopt_review_notAdopted";
                 }
             }
             return "redirect:" + originalRequest;
+        } else if (prevPage != null && prevPage.equals("http://localhost:8080/join")) {
+            return "redirect:/";
         } else if (prevPage != null && !prevPage.equals("http://localhost:8080/")) {
             return "redirect:" + prevPage;
         }
@@ -153,19 +156,13 @@ public class MemberController {
     // =================== 마이페이지 ===================
     // 마이페이지 홈
     @GetMapping("/member/auth/mypage")
-    public String mypage(HttpServletRequest request, Model model) {
-        Member member = getAuthUser(request);
-        model.addAttribute("member", member);
-
+    public String mypage() {
         return "/member/mypage";
     }
 
     // 회원정보 수정
     @GetMapping("/member/auth/changeInfo")
-    public String changeInfoPage(HttpServletRequest request, Model model) {
-        Member member = getAuthUser(request);
-        model.addAttribute("member", member);
-
+    public String changeInfoPage() {
         return "/member/member_info_change";
     }
 
@@ -173,41 +170,15 @@ public class MemberController {
     public String changeInfo(@Validated @ModelAttribute MemberChangeForm memberChangeForm,
                              BindingResult bindingResult, HttpServletRequest request) {
         log.info("POST memberChangeForm= {}", memberChangeForm);
-        Member member = getAuthUser(request);
 
         if (bindingResult.hasErrors()) {
             log.info("changeInfo bindingResult= {}", bindingResult);
             return "/member/member_info_change";
         }
 
-        memberService.change(member, memberChangeForm);
+        memberService.change(getAuthUser(request), memberChangeForm);
 
         return "/alert/member/member_info_change";
-    }
-
-    // 회원탈퇴
-    @GetMapping("/member/auth/withdraw")
-    public String withdrawPage(HttpServletRequest request, Model model) {
-        Member member = getAuthUser(request);
-        model.addAttribute("member", member);
-
-        return "/member/withdraw";
-    }
-
-    @PostMapping("/member/auth/withdraw")
-    public String withdraw(@RequestParam String pw, HttpServletRequest request) {
-        log.info("pw = {}", pw);
-
-        int mNumber = getAuthMNumber(request);
-
-        if (!memberService.checkPwCorrect(mNumber, pw)) {
-            return "PASSWORD_MISMATCH";
-        }
-
-        memberService.withdraw(mNumber);
-        request.getSession().invalidate();
-
-        return "SUCCESS";
     }
 
     // 찾아요 매칭된 페이지
@@ -265,8 +236,7 @@ public class MemberController {
     public String getMyApply(@PathVariable String type,
                              @RequestParam(defaultValue = "1") int pageNo,
                              HttpServletRequest request, Model model) {
-        Member member = getAuthUser(request);
-        int mNumber = member.getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         if (type.equals("adopt")) {
             MypageAdoptPageForm pageForm = adoptTempService.getMypageAdopt(pageNo, mNumber, type);
@@ -287,8 +257,7 @@ public class MemberController {
                             @RequestParam(defaultValue = "1") int pageNo,
                             @RequestParam(required = false) String kindOfBoard,
                             HttpServletRequest request, Model model) {
-        Member member = getAuthUser(request);
-        int mNumber = member.getMNumber();
+        int mNumber = getAuthMNumber(request);
 
         model.addAttribute("type", type);
 
@@ -316,6 +285,32 @@ public class MemberController {
         } else {
             return null;
         }
+    }
+
+    // 회원탈퇴
+    @GetMapping("/member/auth/withdraw")
+    public String withdrawPage() {
+        return "/member/withdraw";
+    }
+
+    @PostMapping("/member/auth/withdraw")
+    @ResponseBody
+    public String withdraw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String pw = requestBody.get("pw");
+        log.info("pw = {}", pw);
+
+        int mNumber = getAuthMNumber(request);
+
+        if (pw != null && !pw.isEmpty()) {
+            if (!memberService.checkPwCorrect(mNumber, pw)) {
+                return "NOT_CORRECT";
+            }
+        }
+
+        memberService.withdraw(mNumber);
+        request.getSession().invalidate();
+
+        return "SUCCESS";
     }
 
     private Member getAuthUser(HttpServletRequest request) {

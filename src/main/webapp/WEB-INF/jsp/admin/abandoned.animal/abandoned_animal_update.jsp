@@ -588,7 +588,7 @@
             data: {imgPath: imgPath},
             dataType: 'text',
             success: function (result) {
-                if (result == 'SUCCESS') {
+                if (result === 'SUCCESS') {
                     console.log("이미지 삭제 요청 성공 = " + result);
                 }
             }

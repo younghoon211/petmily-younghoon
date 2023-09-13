@@ -77,7 +77,7 @@
                                 <label class="label" for="id">아이디</label>
                                 <input type="text"
                                        class="form-control" name="id" id="id"
-                                       value="${empty param.id ? member.id : param.id}"
+                                       value="${empty param.id ? authUser.id : param.id}"
                                        minlength="3" maxlength="15"
                                        readonly>
                             </div>
@@ -88,7 +88,7 @@
                                 <input type="text" placeholder="닉네임"
                                        class="form-control" name="name" id="name"
                                        minlength="3" maxlength="15"
-                                       value="${empty param.name ? member.name : param.name}"
+                                       value="${empty param.name ? authUser.name : param.name}"
                                        required>
                                 <spring:hasBindErrors name="memberChangeForm">
                                     <c:if test="${errors.hasFieldErrors('name')}">
@@ -103,7 +103,7 @@
                                 <input type="password" placeholder="비밀번호 (8-16자, 영문+숫자+특수문자)"
                                        class="form-control" name="pw" id="pw"
                                        minlength="8" maxlength="16" required
-                                       value="${empty param.pw ? member.pw : param.pw}">
+                                       value="${empty param.pw ? authUser.pw : param.pw}">
                                 <spring:hasBindErrors name="memberChangeForm">
                                     <c:if test="${errors.hasFieldErrors('pw')}">
                                         <span class="field-error"><form:errors path="memberChangeForm.pw"/></span>
@@ -120,7 +120,7 @@
                                        class="form-control" name="email" id="email"
                                        placeholder="이메일 주소 (예: petmily@naver.com)" minlength="5" maxlength="30"
                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$"
-                                       value="${empty param.email ? member.email : param.email}"
+                                       value="${empty param.email ? authUser.email : param.email}"
                                        required
                                 <spring:hasBindErrors name="memberChangeForm">
                                        <c:if test="${errors.hasFieldErrors('email')}">style="border-color: #dc3545"</c:if>
@@ -138,7 +138,7 @@
                                 <label class="label" for="phone">연락처</label>
                                 <input type="tel" class="form-control" name="phone" id="phone"
                                        maxlength="11" placeholder="연락처 (예: 01012345678)"
-                                       value="${empty param.phone ? member.phone : param.phone}"
+                                       value="${empty param.phone ? authUser.phone : param.phone}"
                                        pattern="^010\d{8}$" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                        required
                                 <spring:hasBindErrors name="memberChangeForm">

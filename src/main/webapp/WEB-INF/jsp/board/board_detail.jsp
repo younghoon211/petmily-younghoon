@@ -237,14 +237,14 @@
             type: 'post',
             url: '/replies/' + bNumber,
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             },
             data: JSON.stringify({bNumber: bNumber, mNumber: mNumber, reply: reply}),
             dataType: 'text',
             success: function (result) {
                 console.log("result: " + result);
 
-                if (result == 'SUCCESS') {
+                if (result === 'SUCCESS') {
                     getPage("/replies/" + bNumber);
                     replytextObj.val("");
                 }
@@ -291,12 +291,12 @@
                 type: 'patch',
                 url: '/replies/' + bNumber,
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 data: JSON.stringify({brNumber: brNumber, reply: editedReply}),
                 dataType: 'text',
                 success: function (result) {
-                    if (result == 'SUCCESS') {
+                    if (result === 'SUCCESS') {
                         console.log("수정 result = " + result);
                         getPage("/replies/" + bNumber);
                     }
@@ -327,12 +327,12 @@
                 type: 'delete',
                 url: '/replies/' + brNumber,
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 dataType: 'text',
                 success: function (result) {
                     console.log("삭제 result = " + result);
-                    if (result == 'SUCCESS') {
+                    if (result === 'SUCCESS') {
                         getPage("/replies/" + bNumber);
                     }
                 },

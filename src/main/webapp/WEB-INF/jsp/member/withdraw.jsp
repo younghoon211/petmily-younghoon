@@ -19,13 +19,8 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
 
-    <style>
-        .error {
-            color: red;
-            font-size: 11.5px;
-            position: fixed;
-        }
-    </style>
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -69,26 +64,25 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="label">아이디</label>
-                                <input type="text" class="form-control" value="${member.id}" readonly>
+                                <input type="text" class="form-control" value="${authUser.id}" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="label">비밀번호</label>
-                                <input type="password" class="form-control" name="pw"
-                                       placeholder="비밀번호를 입력해주세요." required>
+                                <input type="password" class="form-control" name="pw" id="pw"
+                                       placeholder="비밀번호를 입력해주세요." autofocus>
+                                <span id="message" style="color: red; display: none; font-size: xx-small"></span>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-                        <button type="submit" class="btn btn-danger"
-                                onclick="if(confirm('탈퇴 시 ${member.name}님과 관련된 모든 정보가 삭제됩니다.'))
-                                        { if(confirm('정말로 탈퇴하시겠습니까?')) return location.href='/';}"
-                        >탈퇴하기
-                        </button>
+
+                        <button type="button" id="withdrawButton" class="btn btn-danger">탈퇴하기</button>
+
                     </div>
                 </form>
             </div>
@@ -114,7 +108,42 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<script>
+    $("#withdrawButton").on("click", function () {
+        const pw = $("#pw").val();
+        const message = $("#message");
+
+        if (!pw) {
+            message.text("비밀번호를 입력하세요.").show();
+            return;
+        }
+
+        if (confirm('회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?')) {
+            $.ajax({
+                type: 'POST',
+                url: '/member/auth/withdraw',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify({pw: pw}),
+                dataType: 'text',
+                success: function (result) {
+                    if (result === 'SUCCESS') {
+                        console.log("SUCCESS")
+                        alert("탈퇴가 완료되었습니다.")
+                        location.href = "/";
+                    } else if (result === 'NOT_CORRECT') {
+                        console.log("NOT_CORRECT");
+                        alert("비밀번호가 일치하지 않습니다.")
+                    }
+                }
+            });
+        }
+    });
+</script>
+
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

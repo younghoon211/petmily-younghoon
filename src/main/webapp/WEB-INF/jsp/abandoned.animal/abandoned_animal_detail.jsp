@@ -243,12 +243,11 @@
 <script>
     $(document).ready(function () {
         $('#adoptWait').click(function (event) {
-
             event.preventDefault();
 
             $.ajax({
-                url: '/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}',
                 type: 'GET',
+                url: '/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}',
                 success: function () {
                     alert('해당 동물은 현재 입양 신청 처리중입니다.');
                 },
@@ -256,12 +255,11 @@
         });
 
         $('#notProtected').click(function (event) {
-
             event.preventDefault();
 
             $.ajax({
-                url: '/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}',
                 type: 'GET',
+                url: '/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}',
                 success: function () {
                     alert('보호중인 동물에게만 봉사 가능합니다.');
                 },
