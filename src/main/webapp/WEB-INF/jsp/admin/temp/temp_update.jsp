@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-    <title>Petmily - Don't buy, Do temp</title>
+    <title>PETMILY</title>
 
     <meta charset="utf-8">
     <meta name="viewport"

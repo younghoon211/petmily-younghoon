@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-	<title>Petmily - Don't buy, Do Adopt</title>
+	<title>PETMILY</title>
 </head>
 <body>
 <div class="wrap">
