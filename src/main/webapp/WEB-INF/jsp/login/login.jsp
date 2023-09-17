@@ -45,27 +45,33 @@
                         </a>
                     </div>
                     <div class="form-inputs">
-                        <input type="text" name="id" placeholder="아이디" required
+                        <input type="text" name="id" id="id" placeholder="아이디"
                                style="padding-left: 10px" maxlength="15"
-                               value="${param.id}"
-                        <c:if test="${param.error ne 'true'}">
+                               value="${rejectedId}"
+                        <c:if test="${empty rejectedId}">
                                autofocus
                         </c:if>
                         >
                         <div class="password">
-                            <input type="password" name="pw" placeholder="비밀번호" required
+                            <input type="password" name="pw" id="pw" placeholder="비밀번호"
                                    style="padding-left: 10px" maxlength="16"
-                            <c:if test="${param.error eq 'true'}">
-                                   id="pwError"
+                            <c:if test="${not empty rejectedId}">
+                                   autofocus
                             </c:if>
                             >
                         </div>
                         <span class="error">
-                            <c:if test="${param.error eq 'true'}"><strong>아이디 또는 비밀번호가 일치하지 않습니다.</strong><br></c:if></span>
+                                <strong id="requiredMsg" style="display: none"></strong>
+                            <c:if test="${not empty rejectedId}">
+                                <strong id="notCorrectMsg">아이디 또는 비밀번호가 일치하지 않습니다.</strong>
+                            </c:if>
+                            <br>
+                        </span>
                         <br>
                         <div class="login">
                             <div>
-                                <button type="submit" class="btn btn-lg btn-block btn-success">로그인</button>
+                                <button type="submit" id="loginBtn" class="btn btn-lg btn-block btn-success">로그인
+                                </button>
                                 <br>
                             </div>
                             <p class="login-text">계정이 없으신가요? <a href="/join">회원가입</a></p>
@@ -77,15 +83,50 @@
     </div>
 </div>
 
-<script>
-    window.onload = function () {
-        var input = document.getElementById('pwError');
-        input.focus();
+<script src="/resources/petsitting-master/js/jquery.min.js"></script>
+<script src="/resources/petsitting-master/js/jquery-migrate-3.0.1.min.js"></script>
+<script src="/resources/petsitting-master/js/popper.min.js"></script>
+<script src="/resources/petsitting-master/js/bootstrap.min.js"></script>
+<script src="/resources/petsitting-master/js/jquery.easing.1.3.js"></script>
+<script src="/resources/petsitting-master/js/jquery.waypoints.min.js"></script>
+<script src="/resources/petsitting-master/js/jquery.stellar.min.js"></script>
+<script src="/resources/petsitting-master/js/jquery.animateNumber.min.js"></script>
+<script src="/resources/petsitting-master/js/bootstrap-datepicker.js"></script>
+<script src="/resources/petsitting-master/js/jquery.timepicker.min.js"></script>
+<script src="/resources/petsitting-master/js/owl.carousel.min.js"></script>
+<script src="/resources/petsitting-master/js/jquery.magnific-popup.min.js"></script>
+<script src="/resources/petsitting-master/js/scrollax.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="/resources/petsitting-master/js/google-map.js"></script>
+<script src="/resources/petsitting-master/js/main.js"></script>
 
-        setInterval(function () {
-            input.classList.toggle('blink');
-        }, 500);
-    };
+<script>
+    $("#loginBtn").on("click", function (event) {
+        const id = $("#id");
+        const pw = $("#pw");
+        const requiredMsg = $("#requiredMsg");
+        const notCorrectMsg = $("#notCorrectMsg");
+        let errorMsg = "";
+
+        if (!id.val() && !pw.val()) {
+            errorMsg = "아이디와 비밀번호를 입력하세요.";
+            id.focus();
+        } else if (!id.val()) {
+            errorMsg = "아이디를 입력하세요.";
+            id.focus();
+        } else if (!pw.val()) {
+            errorMsg = "비밀번호를 입력하세요.";
+            pw.focus();
+        }
+
+        if (errorMsg) {
+            event.preventDefault();
+            notCorrectMsg.hide();
+            requiredMsg.text(errorMsg).show();
+        } else {
+            $("form").submit();
+        }
+    });
 </script>
 
 <%-- footer --%>

@@ -58,7 +58,7 @@ public class LookBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writePage(Model model, HttpServletRequest request) {
+    public String writePage(Model model) {
         List<Member> memberList = memberService.getMemberList();
         model.addAttribute("memberList", memberList);
 
@@ -160,7 +160,7 @@ public class LookBoardController {
 
         lookBoardService.delete(laNumber);
 
-        if (getAuthUser(request).getGrade().equals("관리자")) {
+        if (isAdminUser(request)) {
             return "redirect:/admin/board?kindOfBoard=look";
         } else {
             return "redirect:/lookBoard/list?sort=lno";
@@ -199,6 +199,10 @@ public class LookBoardController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
+    }
+
+    private boolean isAdminUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("관리자");
     }
 
     private String getFullPath(HttpServletRequest request) {

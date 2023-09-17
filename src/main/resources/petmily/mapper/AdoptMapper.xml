@@ -233,7 +233,7 @@
     <select id="selectAllCompleteByAbNumber" resultType="petmily.domain.adopt.Adopt">
         select *
         from ADOPT
-        where ABNUMBER = #{abNumber} and STATUS = '완료'
+        where ABNUMBER = #{abNumber} and STATUS = '완료' and ADNUMBER = (select max(ADNUMBER) from ADOPT)
     </select>
 
     <select id="selectAllBymNumber" resultType="petmily.domain.adopt.Adopt">

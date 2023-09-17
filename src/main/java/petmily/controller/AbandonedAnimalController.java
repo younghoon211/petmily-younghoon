@@ -18,7 +18,6 @@ import petmily.domain.temp.TempPet;
 import petmily.service.AbandonedAnimalService;
 import petmily.service.AdoptTempService;
 import petmily.service.DonateService;
-import petmily.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
@@ -35,7 +34,6 @@ public class AbandonedAnimalController {
     private final AbandonedAnimalService abandonedAnimalService;
     private final AdoptTempService adoptTempService;
     private final DonateService donateService;
-    private final MemberService memberService;
 
     // 유기동물 리스트
     @GetMapping("/list")

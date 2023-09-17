@@ -73,16 +73,14 @@
                                 <label class="label">비밀번호</label>
                                 <input type="password" class="form-control" name="pw" id="pw"
                                        placeholder="비밀번호를 입력해주세요." autofocus>
-                                <span id="message" style="color: red; display: none; font-size: xx-small"></span>
+                                <span id="requiredMsg" style="color: red; display: none; font-size: xx-small"></span>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-
-                        <button type="button" id="withdrawButton" class="btn btn-danger">탈퇴하기</button>
-
+                        <button type="button" id="withdrawBtn" class="btn btn-danger">탈퇴하기</button>
                     </div>
                 </form>
             </div>
@@ -109,12 +107,12 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    $("#withdrawButton").on("click", function () {
+    $("#withdrawBtn").on("click", function () {
         const pw = $("#pw").val();
-        const message = $("#message");
+        const msg = $("#requiredMsg");
 
         if (!pw) {
-            message.text("비밀번호를 입력하세요.").show();
+            msg.text("비밀번호를 입력하세요.").show();
             return;
         }
 

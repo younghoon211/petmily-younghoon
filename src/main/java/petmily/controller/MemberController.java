@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt.form.MypageAdoptPageForm;
 import petmily.domain.adopt_review.form.AdoptReviewPageForm;
@@ -62,7 +61,7 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Validated @ModelAttribute MemberJoinForm memberJoinForm,
                        BindingResult bindingResult) {
-        log.info("POST memberJoinForm = {}", memberJoinForm);
+        log.info("POST memberJoinForm= {}", memberJoinForm);
 
         if (bindingResult.hasErrors()) {
             log.info("join bindingResult= {}", bindingResult);
@@ -84,56 +83,33 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String id,
-                        @RequestParam String pw,
-                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        log.info("id= {}, pw= {}", id, pw);
+    public String login(@RequestParam String id, @RequestParam String pw, Model model, HttpServletRequest request) {
+        Member authUser = memberService.login(id, pw);
+        log.info("authUser= {}", authUser);
 
-        Member authUser;
-
-        try {
-            authUser = memberService.login(id, pw);
-        } catch (Exception e) {
-            redirectAttributes.addAttribute("error", true);
-            redirectAttributes.addAttribute("id", id);
-
-            return "redirect:/login";
-        }
-
+        // 없는 계정 또는 틀린 비번 입력 시
         if (authUser == null) {
-            redirectAttributes.addAttribute("error", true);
-            redirectAttributes.addAttribute("id", id);
-
-            return "redirect:/login";
+            model.addAttribute("rejectedId", id);
+            return "/login/login";
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute("authUser", authUser);
+        setSessionAuthUser(authUser, request);
 
-        String originalRequest = (String) session.getAttribute("originalRequest");
-        String prevPage = (String) session.getAttribute("prevPage");
+        String originalRequest = (String) request.getAttribute("originalRequest");
+        String prevPage = (String) request.getAttribute("prevPage");
 
-        session.removeAttribute("originalRequest");
-        session.removeAttribute("prevPage");
-
-        Adopt adopt = adoptTempService.getAdoptBymNumber(authUser.getMNumber());
+        removeSessions(request);
 
         if (originalRequest != null) {
-            if (adopt == null && authUser.getGrade().equals("일반") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
-                return "/alert/member/adopt_review_notAdopted";
-            } else if (adopt != null) {
-                if (authUser.getGrade().equals("일반") && !adopt.getStatus().equals("완료") && originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview")) {
-                    return "/alert/member/adopt_review_notAdopted";
-                }
-            }
-            return "redirect:" + originalRequest;
-        } else if (prevPage != null && prevPage.equals("http://localhost:8080/join")) {
+            return canWriteAdoptReviewOnlyAuthUser(originalRequest, request);
+        } else if (prevPage != null && prevPage.equals("http://localhost:8080/join")) { //로그인 인터셉터 후 원래 가려던 페이지로
             return "redirect:/";
-        } else if (prevPage != null && !prevPage.equals("http://localhost:8080/")) {
+        } else if (prevPage != null && !prevPage.equals("http://localhost:8080/")) { // 로그인 후 원래 있던 페이지로
             return "redirect:" + prevPage;
         }
 
-        if (authUser.getGrade().equals("관리자")) {
+        // 관리자 등급 회원: 메인 화면에서 로그인 시 관리자 페이지로
+        if (isAdminUser(request)) {
             return "redirect:/admin";
         }
 
@@ -246,7 +222,7 @@ public class MemberController {
             model.addAttribute("pageForm", pageForm);
         }
 
-        request.getSession().setAttribute("type", type);
+        model.addAttribute("type", type);
 
         return "/member/adopt_temp_apply_list";
     }
@@ -323,5 +299,44 @@ public class MemberController {
 
     private int getAuthMNumber(HttpServletRequest request) {
         return getAuthUser(request).getMNumber();
+    }
+
+    private boolean isGeneralUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("일반");
+    }
+
+    private boolean isAdminUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("관리자");
+    }
+
+    // 로그인 된 회원정보 세션에 저장
+    private void setSessionAuthUser(Member authUser, HttpServletRequest request) {
+        request.setAttribute("authUser", authUser);
+    }
+
+    private void removeSessions(HttpServletRequest request) {
+        request.removeAttribute("rejectedPw"); // 로그인 시 잘못 입력한 비번
+        request.removeAttribute("originalRequest"); // 원래 요청했던 URL (로그인 인터셉터에 걸린 경우)
+        request.removeAttribute("prevPage"); // 로그인 전 있던 페이지
+    }
+
+    // 입양기록 없는 회원이 입양후기 글 못쓰게
+    private String canWriteAdoptReviewOnlyAuthUser(String originalRequest, HttpServletRequest request) {
+        Adopt adoptedLog = adoptTempService.getAdoptBymNumber(getAuthMNumber(request));
+        boolean isGeneralUser = isGeneralUser(request);
+
+        if (adoptedLog == null && isGeneralUser && containsAdoptReviewWriteURI(originalRequest)) {
+            return "/alert/member/adopt_review_notAdopted";
+        } else if (adoptedLog != null) {
+            if (isGeneralUser(request) && !adoptedLog.getStatus().equals("완료") && containsAdoptReviewWriteURI(originalRequest)) {
+                return "/alert/member/adopt_review_notAdopted";
+            }
+        }
+        return "redirect:" + originalRequest;
+    }
+
+    // 비로그인 유저가 입양후기에 글 쓰려다 로그인 인터셉터에 걸렸을 경우
+    private boolean containsAdoptReviewWriteURI(String originalRequest) {
+        return originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview");
     }
 }

@@ -63,7 +63,8 @@
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/abandonedAnimal/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
+                <img src="/abandonedAnimal/upload?filename=${detailForm.imgPath}"
+                     style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
@@ -212,14 +213,23 @@
         </div>
         <br><br><br><br>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-                    onclick="location.href='/abandonedAnimal/list?sort=abNo'">목록으로
-            </button>
             <c:if test="${authUser.grade eq '관리자'}">
+                <button type="button" class="btn btn-primary"
+                        onclick="location.href='/admin/abandonedAnimal/update?abNumber=${param.abNumber}'">
+                    수정
+                </button>
+                <button type="button" class="btn btn-danger"
+                        onclick="if(confirm('삭제 시 해당 동물과 관련된 모든 정보(입양/임보/후원)가 삭제됩니다.'))
+                                { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/abandonedAnimal/list?sort=abNo';}">
+                    삭제
+                </button>
                 <button type="button" class="btn btn-dark"
                         onclick="location.href='/admin/abandonedAnimal'">유기동물 관리로
                 </button>
             </c:if>
+            <button type="button" class="btn btn-secondary"
+                    onclick="location.href='/abandonedAnimal/list?sort=abNo'">목록으로
+            </button>
         </div>
     </div>
 </section>

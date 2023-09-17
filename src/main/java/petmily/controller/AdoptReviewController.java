@@ -169,7 +169,7 @@ public class AdoptReviewController {
 
         redirectAttributes.addAttribute("kindOfBoard", kindOfBoard);
 
-        if (getAuthUser(request).getGrade().equals("관리자")) {
+        if (isAdminUser(request)) {
             return "redirect:/admin/board";
         } else {
             return "redirect:/adoptReview/list?sort=adoptReviewNo";
@@ -208,6 +208,10 @@ public class AdoptReviewController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
+    }
+
+    private boolean isAdminUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("관리자");
     }
 
     private String getFullPath(HttpServletRequest request) {

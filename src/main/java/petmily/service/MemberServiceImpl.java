@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
     public Member login(String id, String pw) {
         Member member = memberDao.selectMemberById(id);
 
-        if (!pw.equals(member.getPw())) {
+        if (member == null || !pw.equals(member.getPw())) {
             return null;
         }
 

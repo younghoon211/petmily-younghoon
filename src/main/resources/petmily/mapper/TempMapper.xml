@@ -242,7 +242,7 @@
     <select id="selectAllCompleteByAbNumber" resultType="petmily.domain.temp.TempPet">
         select *
         from TEMPPET
-        where ABNUMBER = #{abNumber} and STATUS = '완료'
+        where ABNUMBER = #{abNumber} and STATUS = '완료' and TNUMBER = (select max(TNUMBER) from TEMPPET)
     </select>
 
 

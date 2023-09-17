@@ -32,7 +32,7 @@ public class ReplyController {
 
         if (authUser != null) {
             for (ReplyListForm r : list) {
-                if (r.getMNumber() == authUser.getMNumber() || authUser.getGrade().equals("관리자")) {
+                if (r.getMNumber() == getAuthMNumber(request) || isAdminUser(request)) {
                     r.setHasPermission(true);
                 }
             }
@@ -73,5 +73,13 @@ public class ReplyController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
+    }
+
+    private int getAuthMNumber(HttpServletRequest request) {
+        return getAuthUser(request).getMNumber();
+    }
+
+    private boolean isAdminUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("관리자");
     }
 }

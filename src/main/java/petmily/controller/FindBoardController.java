@@ -58,7 +58,7 @@ public class FindBoardController {
 
     //=======작성=======
     @GetMapping("/auth/write")
-    public String writePage(Model model, HttpServletRequest request) {
+    public String writePage(Model model) {
         List<Member> memberList = memberService.getMemberList();
         model.addAttribute("memberList", memberList);
 
@@ -158,9 +158,7 @@ public class FindBoardController {
 
         findBoardService.delete(faNumber);
 
-        String grade = getAuthUser(request).getGrade();
-
-        if (grade.equals("관리자")) {
+        if (isAdminUser(request)) {
             return "redirect:/admin/board?kindOfBoard=find";
         } else {
             return "redirect:/findBoard/list?sort=fno";
@@ -199,6 +197,10 @@ public class FindBoardController {
             return (Member) session.getAttribute("authUser");
         }
         return null;
+    }
+
+    private boolean isAdminUser(HttpServletRequest request) {
+        return getAuthUser(request).getGrade().equals("관리자");
     }
 
     private String getFullPath(HttpServletRequest request) {
