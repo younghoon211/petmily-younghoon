@@ -83,7 +83,7 @@
     <h1 id="title" class="text-center">후원 관리 추가</h1>
     <p id="description" class="text-center"></p> <br><br>
 
-    <form action="/admin/donation/insert" method="post" onsubmit="return validateForm();">
+    <form action="/admin/donation/insert" method="post">
 
         <label>후원받을 동물 (번호)</label>
         <select class="form-control" name="abNumber" required>
@@ -128,14 +128,14 @@
             </div>
             <div class="col">
                 <label>예금주</label>
-                <input name="accountHolder"
+                <input name="accountHolder" id="accountHolder"
                        type="text" class="form-control" placeholder="후원할 동물이름/닉네임"
                        required>
             </div>
 
             <div class="col">
                 <label>계좌번호</label>
-                <input name="accountNumber" type="text"
+                <input name="accountNumber" type="text" id="accountNumber"
                        class="form-control" placeholder="계좌번호" required>
             </div>
         </div>
@@ -173,7 +173,7 @@
                 </label>
             </div>
             <div class="col-md-auto">
-                <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력"> 원
+                <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력"> 원
                 <br><small style="color: red">회원들에겐 최소 10,000원이상으로 명시</small>
             </div>
         </div>
@@ -181,7 +181,7 @@
 
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-            <button type="submit" class="btn btn-primary">후원정보 추가</button>
+            <button type="submit" id="submit" class="btn btn-primary">후원정보 추가</button>
         </div>
         <br>
     </form>
@@ -206,49 +206,48 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    let customAmountInput = document.getElementById("customAmount");
-    let radioButtons = document.querySelectorAll('input[type="radio"].userRatings');
+    $(document).ready(function () {
+        let amountInput = $('#customAmount');
+        let radioButtons = $('input[type="radio"].userRatings');
 
-    // "직접 입력" 필드를 클릭하거나 값을 입력할 때 라디오 버튼 체크 해제
-    customAmountInput.addEventListener("click", function () {
-        radioButtons.forEach(radioButton => {
-            radioButton.checked = false;
+        // "직접 입력"에 값 입력 시 라디오 버튼 체크 해제
+        amountInput.on('input', function () {
+            radioButtons.prop('checked', false);
         });
-    });
 
-    customAmountInput.addEventListener("input", function () {
-        radioButtons.forEach(radioButton => {
-            radioButton.checked = false;
+        // 라디오 버튼 클릭시 "직접 입력" 값 초기화
+        radioButtons.each(function () {
+            $(this).on('click', function () {
+                amountInput.val('');
+            });
         });
-    });
 
-    // 라디오 버튼 클릭시 "직접 입력" 필드의 값 초기화
-    radioButtons.forEach(radioButton => {
-        radioButton.addEventListener("click", function () {
-            customAmountInput.value = "";
-        });
-    });
+        // 후원금액 입력 검증
+        $("#submit").on("click", function () {
+            let radioChecked = false;
+            let radioButtons = $("[name='donaSum']");
+            let amountInputVal = amountInput.val().trim();
+            let accountHolder = $('#accountHolder').val().trim();
+            let accountNumber = $('#accountNumber').val().trim();
 
-    function validateForm() {
-        // 라디오 버튼 체크 여부 확인
-        let radioButtons = document.getElementsByName("donaSum");
-        let radioChecked = false;
+            radioButtons.each(function () {
+                if ($(this).prop('checked')) {
+                    radioChecked = true;
+                    return false;
+                }
+            });
 
-        for (var i = 0; i < radioButtons.length; i++) {
-            if (radioButtons[i].checked) {
-                radioChecked = true;
-                break;
+            let notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+
+            if (notInjectedAmount) {
+                alert("후원 금액을 선택하거나 입력해주세요.");
+                amountInput.focus();
+                return false;
+            } else {
+                $("form").submit();
             }
-        }
-
-        // 텍스트 입력 필드 값 확인
-        let customAmountValue = customAmountInput.value.trim();
-
-        if (!radioChecked && customAmountValue === "") {
-            alert("후원 금액을 선택하거나 입력해주세요.");
-            return false;
-        }
-    }
+        });
+    });
 </script>
 
 <%-- footer --%>

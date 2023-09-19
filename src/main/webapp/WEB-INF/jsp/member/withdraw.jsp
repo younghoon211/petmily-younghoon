@@ -107,36 +107,38 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    $("#withdrawBtn").on("click", function () {
-        const pw = $("#pw").val();
-        const msg = $("#requiredMsg");
+    $(document).ready(function () {
+        $("#withdrawBtn").on("click", function () {
+            const pw = $("#pw").val();
+            const msg = $("#requiredMsg");
 
-        if (!pw) {
-            msg.text("비밀번호를 입력하세요.").show();
-            return;
-        }
+            if (!pw) {
+                msg.text("비밀번호를 입력하세요.").show();
+                return;
+            }
 
-        if (confirm('회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?')) {
-            $.ajax({
-                type: 'POST',
-                url: '/member/auth/withdraw',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({pw: pw}),
-                dataType: 'text',
-                success: function (result) {
-                    if (result === 'SUCCESS') {
-                        console.log("SUCCESS")
-                        alert("탈퇴가 완료되었습니다.")
-                        location.href = "/";
-                    } else if (result === 'NOT_CORRECT') {
-                        console.log("NOT_CORRECT");
-                        alert("비밀번호가 일치하지 않습니다.")
+            if (confirm('회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/member/auth/withdraw',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({pw: pw}),
+                    dataType: 'text',
+                    success: function (result) {
+                        if (result === 'SUCCESS') {
+                            console.log("SUCCESS")
+                            alert("탈퇴가 완료되었습니다.")
+                            location.href = "/";
+                        } else if (result === 'NOT_CORRECT') {
+                            console.log("NOT_CORRECT");
+                            alert("비밀번호가 일치하지 않습니다.")
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     });
 </script>
 

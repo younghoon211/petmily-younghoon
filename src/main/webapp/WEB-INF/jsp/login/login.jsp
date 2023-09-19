@@ -101,31 +101,33 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    $("#loginBtn").on("click", function (event) {
-        const id = $("#id");
-        const pw = $("#pw");
-        const requiredMsg = $("#requiredMsg");
-        const notCorrectMsg = $("#notCorrectMsg");
-        let errorMsg = "";
+    $(document).ready(function () {
+        $("#loginBtn").on("click", function (event) {
+            const id = $("#id");
+            const pw = $("#pw");
+            const requiredMsg = $("#requiredMsg");
+            const notCorrectMsg = $("#notCorrectMsg");
+            let errorMsg = "";
 
-        if (!id.val() && !pw.val()) {
-            errorMsg = "아이디와 비밀번호를 입력하세요.";
-            id.focus();
-        } else if (!id.val()) {
-            errorMsg = "아이디를 입력하세요.";
-            id.focus();
-        } else if (!pw.val()) {
-            errorMsg = "비밀번호를 입력하세요.";
-            pw.focus();
-        }
+            if (!id.val() && !pw.val()) {
+                errorMsg = "아이디와 비밀번호를 입력하세요.";
+                id.focus();
+            } else if (!id.val()) {
+                errorMsg = "아이디를 입력하세요.";
+                id.focus();
+            } else if (!pw.val()) {
+                errorMsg = "비밀번호를 입력하세요.";
+                pw.focus();
+            }
 
-        if (errorMsg) {
-            event.preventDefault();
-            notCorrectMsg.hide();
-            requiredMsg.text(errorMsg).show();
-        } else {
-            $("form").submit();
-        }
+            if (errorMsg) {
+                event.preventDefault();
+                notCorrectMsg.hide();
+                requiredMsg.text(errorMsg).show();
+            } else {
+                $("form").submit();
+            }
+        });
     });
 </script>
 

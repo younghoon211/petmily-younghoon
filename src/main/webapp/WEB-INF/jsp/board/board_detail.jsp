@@ -206,10 +206,125 @@
 </script>
 
 <script>
-    let bNumber = ${detailForm.getBNumber()};
-
     $(document).ready(function () {
+        const bNumber = "${detailForm.getBNumber()}";
         getPage("/replies/" + bNumber);
+
+        //작성
+        $("#replyAddBtn").on("click", function () {
+            let mNumber = "${authUser.getMNumber()}";
+            console.log(mNumber);
+            let replytextObj = $("#message1");
+            let reply = replytextObj.val();
+
+            $.ajax({
+                type: 'post',
+                url: '/replies/' + bNumber,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify({bNumber: bNumber, mNumber: mNumber, reply: reply}),
+                dataType: 'text',
+                success: function (result) {
+                    console.log("result: " + result);
+
+                    if (result === 'SUCCESS') {
+                        getPage("/replies/" + bNumber);
+                        replytextObj.val("");
+                    }
+                }
+            });
+        });
+
+        // 수정
+        $(document).on("click", "#editBtn", function () {
+            let replyObj = $(this).closest(".replyObj");
+            let replyText = replyObj.find(".timeline-body").text();
+            let brNumber = replyObj.attr("data-brNumber");
+
+            console.log("수정 brNumber= " + brNumber);
+
+            let editArea = $("<textarea>", {
+                "class": "form-control",
+                "style": "height: 100px; resize: none",
+                "text": replyText,
+                "maxLength": "300",
+                "placeholder": "댓글을 작성해주세요.",
+                "cols": "30", "rows": "3",
+            });
+
+            let saveBtn = $("<button>", {
+                "type": "button",
+                "class": "btn btn-outline-success saveEditBtn",
+                "text": "수정하기",
+            });
+
+            let cancelBtn = $("<button>", {
+                "type": "button",
+                "class": "btn btn-outline-danger cancelEditBtn",
+                "text": "취소",
+            });
+
+            replyObj.find(".timeline-body").empty().append(editArea).append('<br>');
+            replyObj.find(".timeline-footer").empty().append(saveBtn).append('&nbsp;').append(cancelBtn).append('<br>');
+
+            saveBtn.on("click", function () {
+                let editedReply = editArea.val();
+
+                $.ajax({
+                    type: 'patch',
+                    url: '/replies/' + bNumber,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({brNumber: brNumber, reply: editedReply}),
+                    dataType: 'text',
+                    success: function (result) {
+                        if (result === 'SUCCESS') {
+                            console.log("수정 result = " + result);
+                            getPage("/replies/" + bNumber);
+                        }
+                    }
+                });
+            });
+
+            cancelBtn.on("click", function () {
+                replyObj.find(".timeline-body").text(replyText);
+                replyObj.find(".timeline-footer").empty()
+                    .append('<br><div style="float: right">' +
+                        '<button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>&nbsp;' +
+                        '<button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>' +
+                        '</div><br><br>');
+            });
+        });
+
+        // 삭제
+        $(document).on("click", "#deleteBtn", function () {
+            let replyObj = $(this).closest(".replyObj");
+            let brNumber = replyObj.attr("data-brNumber");
+
+            console.log("삭제 brNumber=" + brNumber);
+
+            let isConfirmed = confirm("정말로 삭제하시겠습니까?");
+            if (isConfirmed) {
+                $.ajax({
+                    type: 'delete',
+                    url: '/replies/' + brNumber,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    dataType: 'text',
+                    success: function (result) {
+                        console.log("삭제 result = " + result);
+                        if (result === 'SUCCESS') {
+                            getPage("/replies/" + bNumber);
+                        }
+                    },
+                });
+
+                replyObj.remove();
+            }
+        });
     });
 
     function getPage(pageInfo) {
@@ -225,122 +340,6 @@
         $(".replyObj").remove();
         target.after(html);
     }
-
-    //작성
-    $("#replyAddBtn").on("click", function () {
-        let mNumber = "${authUser.getMNumber()}";
-        console.log(mNumber);
-        let replytextObj = $("#message1");
-        let reply = replytextObj.val();
-
-        $.ajax({
-            type: 'post',
-            url: '/replies/' + bNumber,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify({bNumber: bNumber, mNumber: mNumber, reply: reply}),
-            dataType: 'text',
-            success: function (result) {
-                console.log("result: " + result);
-
-                if (result === 'SUCCESS') {
-                    getPage("/replies/" + bNumber);
-                    replytextObj.val("");
-                }
-            }
-        });
-    });
-
-    // 수정
-    $(document).on("click", "#editBtn", function () {
-        let replyObj = $(this).closest(".replyObj");
-        let replyText = replyObj.find(".timeline-body").text();
-        let brNumber = replyObj.attr("data-brNumber");
-
-        console.log("수정 brNumber= " + brNumber);
-
-        let editArea = $("<textarea>", {
-            "class": "form-control",
-            "style": "height: 100px; resize: none",
-            "text": replyText,
-            "maxLength": "300",
-            "placeholder": "댓글을 작성해주세요.",
-            "cols": "30", "rows": "3",
-        });
-
-        let saveBtn = $("<button>", {
-            "type": "button",
-            "class": "btn btn-outline-success saveEditBtn",
-            "text": "수정하기",
-        });
-
-        let cancelBtn = $("<button>", {
-            "type": "button",
-            "class": "btn btn-outline-danger cancelEditBtn",
-            "text": "취소",
-        });
-
-        replyObj.find(".timeline-body").empty().append(editArea).append('<br>');
-        replyObj.find(".timeline-footer").empty().append(saveBtn).append('&nbsp;').append(cancelBtn).append('<br>');
-
-        saveBtn.on("click", function () {
-            let editedReply = editArea.val();
-
-            $.ajax({
-                type: 'patch',
-                url: '/replies/' + bNumber,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify({brNumber: brNumber, reply: editedReply}),
-                dataType: 'text',
-                success: function (result) {
-                    if (result === 'SUCCESS') {
-                        console.log("수정 result = " + result);
-                        getPage("/replies/" + bNumber);
-                    }
-                }
-            });
-        });
-
-        cancelBtn.on("click", function () {
-            replyObj.find(".timeline-body").text(replyText);
-            replyObj.find(".timeline-footer").empty()
-                .append('<br><div style="float: right">' +
-                    '<button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>&nbsp;' +
-                    '<button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>' +
-                    '</div><br><br>');
-        });
-    });
-
-    // 삭제
-    $(document).on("click", "#deleteBtn", function () {
-        let replyObj = $(this).closest(".replyObj");
-        let brNumber = replyObj.attr("data-brNumber");
-
-        console.log("삭제 brNumber=" + brNumber);
-
-        let isConfirmed = confirm("정말로 삭제하시겠습니까?");
-        if (isConfirmed) {
-            $.ajax({
-                type: 'delete',
-                url: '/replies/' + brNumber,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                dataType: 'text',
-                success: function (result) {
-                    console.log("삭제 result = " + result);
-                    if (result === 'SUCCESS') {
-                        getPage("/replies/" + bNumber);
-                    }
-                },
-            });
-
-            replyObj.remove();
-        }
-    });
 </script>
 
 <%-- footer --%>

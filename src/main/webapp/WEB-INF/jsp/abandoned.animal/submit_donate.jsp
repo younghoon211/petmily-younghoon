@@ -81,104 +81,107 @@
 <div class="container survey">
     <h1 id="title" class="text-center">후원하기</h1><br>
     <div class="container">
-    <span class="form-text text-muted text-center" style="font-family: -apple-system">1233-45-6787910 카카오뱅크(예금주: petmily)</span>
-    <small class="form-text text-muted text-center"><span
-            style="color: red">※ 예금주를 [동물이름/닉네임] (예: 초코/홍길동)으로 입금 후 후원 신청서를 제출하시면 후원이 완료됩니다.</span></small><br><br>
+        <span class="form-text text-muted text-center" style="font-family: -apple-system">1233-45-6787910 카카오뱅크(예금주: petmily)</span>
+        <small class="form-text text-muted text-center"><span
+                style="color: red">※ 예금주를 [동물이름/닉네임] (예: 초코/홍길동)으로 입금 후 후원 신청서를 제출하시면 후원이 완료됩니다.</span></small><br><br>
 
-    <div class="form-group">
-        <label>후원받을 동물</label>
-        <input type="text" class="form-control" value="${abAnimal.name}"
-               readonly>
-    </div>
-    <div class="form-group">
-        <label>닉네임</label>
-        <input type="text" class="form-control" value="${authUser.name}" readonly>
-    </div>
-
-    <form id="survey-form" method="post"
-          action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}" onsubmit="return validateForm();">
-        <div class="form-row">
-            <div class="col">
-                <label>은행명</label>
-                <select name="bank" class="form-control">
-                    <option>KEB하나은행</option>
-                    <option>SC제일은행</option>
-                    <option>국민은행</option>
-                    <option>신한은행</option>
-                    <option>외환은행</option>
-                    <option>우리은행</option>
-                    <option>한국씨티은행</option>
-                    <option>IBK기업은행</option>
-                    <option>농협</option>
-                    <option>수협</option>
-                    <option>한국산업은행</option>
-                    <option>한국수출입은행</option>
-                    <option>우체국</option>
-                    <option>토스</option>
-                    <option>카카오뱅크</option>
-                    <option>경남은행</option>
-                    <option>광주은행</option>
-                    <option>대구은행</option>
-                    <option>부산은행</option>
-                    <option>전북은행</option>
-                    <option>제주은행</option>
-                </select>
-            </div>
-            <div class="col">
-                <label>예금주</label>
-                <input name="accountHolder" type="text"
-                       class="form-control" placeholder="후원할 동물이름/닉네임" required>
-            </div>
-            <div class="col">
-                <label>계좌번호</label>
-                <input name="accountNumber" type="text"
-                       class="form-control" placeholder="계좌번호" required>
-            </div>
+        <div class="form-group">
+            <label>후원받을 동물</label>
+            <input type="text" class="form-control" value="${abAnimal.name}"
+                   readonly>
         </div>
-        <br><br>
-
-        <div class="form-row">
-            <div class="col">
-                <label>
-                    <input name="donaSum" value="30000"
-                           type="radio" class="userRatings" checked> 30,000원
-                </label>
-            </div>
-            <div class="col">
-                <label>
-                    <input name="donaSum" value="50000"
-                           type="radio" class="userRatings"> 50,000원
-                </label>
-            </div>
-            <div class="col">
-                <label>
-                    <input name="donaSum" value="70000"
-                           type="radio" class="userRatings"> 70,000원
-                </label>
-            </div>
-            <div class="col">
-                <label>
-                    <input name="donaSum" value="100000"
-                           type="radio" class="userRatings"> 100,000원
-                </label>
-            </div>
-            <div class="col">
-                <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력" min="10000"> 원
-                <br><small
-<%--                    style="color: red" 만약 validated걸리거나 ajax로 걸리면 이거 추가--%>
-            >최소 10,000원부터 가능합니다.</small>
-            </div>
-        </div>
-        <br><br>
-
-        <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-secondary" onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소</button>
-            <button type="submit" class="btn btn-primary">후원하기</button>
+        <div class="form-group">
+            <label>닉네임</label>
+            <input type="text" class="form-control" value="${authUser.name}" readonly>
         </div>
 
-        <input name="mNumber" value="${authUser.getMNumber()}" hidden>
-        <input name="abNumber" value="${abAnimal.abNumber}" hidden>
-    </form>
+        <form id="survey-form" method="post"
+              action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}">
+            <div class="form-row">
+                <div class="col">
+                    <label>은행명</label>
+                    <select name="bank" class="form-control">
+                        <option>KEB하나은행</option>
+                        <option>SC제일은행</option>
+                        <option>국민은행</option>
+                        <option>신한은행</option>
+                        <option>외환은행</option>
+                        <option>우리은행</option>
+                        <option>한국씨티은행</option>
+                        <option>IBK기업은행</option>
+                        <option>농협</option>
+                        <option>수협</option>
+                        <option>한국산업은행</option>
+                        <option>한국수출입은행</option>
+                        <option>우체국</option>
+                        <option>토스</option>
+                        <option>카카오뱅크</option>
+                        <option>경남은행</option>
+                        <option>광주은행</option>
+                        <option>대구은행</option>
+                        <option>부산은행</option>
+                        <option>전북은행</option>
+                        <option>제주은행</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>예금주</label>
+                    <input name="accountHolder" id="accountHolder" type="text"
+                           class="form-control" placeholder="후원할 동물이름/닉네임" required>
+                </div>
+                <div class="col">
+                    <label>계좌번호</label>
+                    <input name="accountNumber" id="accountNumber" type="text"
+                           class="form-control" placeholder="계좌번호" required>
+                </div>
+            </div>
+            <br><br>
+
+            <div class="form-row">
+                <div class="col">
+                    <label>
+                        <input name="donaSum" value="30000"
+                               type="radio" class="userRatings" checked> 30,000원
+                    </label>
+                </div>
+                <div class="col">
+                    <label>
+                        <input name="donaSum" value="50000"
+                               type="radio" class="userRatings"> 50,000원
+                    </label>
+                </div>
+                <div class="col">
+                    <label>
+                        <input name="donaSum" value="70000"
+                               type="radio" class="userRatings"> 70,000원
+                    </label>
+                </div>
+                <div class="col">
+                    <label>
+                        <input name="donaSum" value="100000"
+                               type="radio" class="userRatings"> 100,000원
+                    </label>
+                </div>
+                <div class="col">
+                    <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력" min="10000"> 원
+                    <br>
+                    <small id="defaultMsg">최소 10,000원이상 가능합니다.</small>
+                    <small id="errorMsg" style="display: none; color: red">최소 10,000원이상 가능합니다.</small>
+                    <small id="successMsg" style="display: none; color: #28a745">후원 가능한 금액입니다.</small>
+                </div>
+            </div>
+            <br><br>
+
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary"
+                        onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소
+                </button>
+                <button type="submit" id="submit" class="btn btn-primary">후원하기</button>
+            </div>
+
+            <input name="mNumber" value="${authUser.getMNumber()}" hidden>
+            <input name="abNumber" value="${abAnimal.abNumber}" hidden>
+        </form>
     </div>
 </div>
 <div class="info-wrap w-100 p-5 img"></div>
@@ -201,49 +204,62 @@
 <script src="/resources/petsitting-master/js/main.js"></script>
 
 <script>
-    const customAmountInput = document.getElementById("customAmount");
-    const radioButtons = document.querySelectorAll('input[type="radio"].userRatings');
+    $(document).ready(function () {
+        let amountInput = $('#customAmount');
+        let radioButtons = $('input[type="radio"].userRatings');
 
-    // "직접 입력" 필드를 클릭하거나 값을 입력할 때 라디오 버튼 체크 해제
-    customAmountInput.addEventListener("click", function () {
-        radioButtons.forEach(radioButton => {
-            radioButton.checked = false;
+        // "직접 입력"에 값 입력 시 라디오 버튼 체크 해제
+        amountInput.on('input', function () {
+            radioButtons.prop('checked', false);
         });
-    });
 
-    customAmountInput.addEventListener("input", function () {
-        radioButtons.forEach(radioButton => {
-            radioButton.checked = false;
+        // 라디오 버튼 클릭시 "직접 입력" 값 초기화
+        radioButtons.each(function () {
+            $(this).on('click', function () {
+                amountInput.val('');
+            });
         });
-    });
 
-    // 라디오 버튼 클릭시 "직접 입력" 필드의 값 초기화
-    radioButtons.forEach(radioButton => {
-        radioButton.addEventListener("click", function () {
-            customAmountInput.value = "";
-        });
-    });
+        // 후원금액 검증
+        $("#submit").on("click", function (event) {
+            let radioChecked = false;
+            let radioButtons = $("[name='donaSum']");
+            let defaultMsg = $('#defaultMsg');
+            let errorMsg = $('#errorMsg');
+            let successMsg = $('#successMsg');
+            let amountInputVal = amountInput.val().trim();
+            let accountHolder = $('#accountHolder').val().trim();
+            let accountNumber = $('#accountNumber').val().trim();
 
-    function validateForm() {
-        // 라디오 버튼 체크 여부 확인
-        let radioButtons = document.getElementsByName("donaSum");
-        let radioChecked = false;
+            radioButtons.each(function () {
+                if ($(this).prop('checked')) {
+                    radioChecked = true;
+                    return false;
+                }
+            });
 
-        for (var i = 0; i < radioButtons.length; i++) {
-            if (radioButtons[i].checked) {
-                radioChecked = true;
-                break;
+            let notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+
+            if (notInjectedAmount) {
+                alert("후원 금액을 선택하거나 입력해주세요.");
+                amountInput.focus();
+                return false;
+            } else if (amountInputVal !== "") {
+                if (amountInputVal < 10000) {
+                    event.preventDefault();
+                    defaultMsg.hide();
+                    successMsg.hide();
+                    errorMsg.show();
+                    amountInput.focus();
+                } else {
+                    defaultMsg.hide();
+                    errorMsg.hide();
+                    successMsg.show();
+                    $("form").submit();
+                }
             }
-        }
-
-        // 텍스트 입력 필드 값 확인
-        let customAmountValue = customAmountInput.value.trim();
-
-        if (!radioChecked && customAmountValue === "") {
-            alert("후원 금액을 선택하거나 입력해주세요.");
-            return false;
-        }
-    }
+        });
+    });
 </script>
 
 <%-- footer --%>
