@@ -40,7 +40,7 @@ public class JoinValidator implements Validator {
         }
 
         // 성별 미선택 시
-        if (!(memberJoinForm.getGender().equals("M") || memberJoinForm.getGender().equals("F"))) {
+        if (!("M".equals(memberJoinForm.getGender()) || "F".equals(memberJoinForm.getGender()))) {
             errors.rejectValue("gender", "unSelectedGender");
         }
 

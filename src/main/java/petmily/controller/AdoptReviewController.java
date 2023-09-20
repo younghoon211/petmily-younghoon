@@ -116,7 +116,7 @@ public class AdoptReviewController {
         String newFile = adoptReviewService.storeFile(modifyForm.getFile(), fullPath);
         log.info("newFile(새로 업로드한 파일명) = {}", newFile);
 
-        boolean hasExistingImage = !initFile.equals("no_image.png");
+        boolean hasExistingImage = !"no_image.png".equals(initFile);
 
         if (newFile != null && !hasExistingImage) {
             modifyForm.setImgPath(newFile);
@@ -158,7 +158,7 @@ public class AdoptReviewController {
                          @RequestParam String kindOfBoard,
                          RedirectAttributes redirectAttributes, HttpServletRequest request) {
         String filename = adoptReviewService.getAdoptReview(bNumber).getImgPath();
-        boolean ExistingInitFile = filename != null && !filename.equals("no_image.png");
+        boolean ExistingInitFile = filename != null && !"no_image.png".equals(filename);
 
         if (ExistingInitFile) {
             String fullPath = getFullPath(request) + filename;
@@ -204,14 +204,16 @@ public class AdoptReviewController {
 
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
+        Member authUser = (Member) session.getAttribute("authUser");
+        if (authUser == null) {
+            log.info("authUser is null");
         }
-        return null;
+
+        return authUser;
     }
 
     private boolean isAdminUser(HttpServletRequest request) {
-        return getAuthUser(request).getGrade().equals("관리자");
+        return "관리자".equals(getAuthUser(request).getGrade());
     }
 
     private String getFullPath(HttpServletRequest request) {

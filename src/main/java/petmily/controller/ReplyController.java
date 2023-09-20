@@ -69,10 +69,12 @@ public class ReplyController {
 
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
+        Member authUser = (Member) session.getAttribute("authUser");
+        if (authUser == null) {
+            log.info("authUser is null");
         }
-        return null;
+
+        return authUser;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
@@ -80,6 +82,6 @@ public class ReplyController {
     }
 
     private boolean isAdminUser(HttpServletRequest request) {
-        return getAuthUser(request).getGrade().equals("관리자");
+        return "관리자".equals(getAuthUser(request).getGrade());
     }
 }

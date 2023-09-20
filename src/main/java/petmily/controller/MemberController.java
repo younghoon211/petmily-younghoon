@@ -93,18 +93,19 @@ public class MemberController {
             return "/login/login";
         }
 
-        setSessionAuthUser(authUser, request);
+        HttpSession session = request.getSession();
+        setSessionAuthUser(authUser, session);
 
-        String originalRequest = (String) request.getAttribute("originalRequest");
-        String prevPage = (String) request.getAttribute("prevPage");
+        String originalRequest = (String) session.getAttribute("originalRequest");
+        String prevPage = (String) session.getAttribute("prevPage");
 
-        removeSessions(request);
-
-        if (originalRequest != null) {
+        removeSessions(session);
+//
+        if (originalRequest != null) { //로그인 인터셉터 후 원래 가려던 페이지로
             return canWriteAdoptReviewOnlyAuthUser(originalRequest, request);
-        } else if (prevPage != null && prevPage.equals("http://localhost:8080/join")) { //로그인 인터셉터 후 원래 가려던 페이지로
+        } else if ("http://localhost:8080/join".equals(prevPage)) { // 회원가입 후 로그인 시 메인페이지로
             return "redirect:/";
-        } else if (prevPage != null && !prevPage.equals("http://localhost:8080/")) { // 로그인 후 원래 있던 페이지로
+        } else if (prevPage != null && !"http://localhost:8080/".equals(prevPage)) { // 로그인 후 원래 있던 페이지로
             return "redirect:" + prevPage;
         }
 
@@ -214,7 +215,7 @@ public class MemberController {
                              HttpServletRequest request, Model model) {
         int mNumber = getAuthMNumber(request);
 
-        if (type.equals("adopt")) {
+        if ("adopt".equals(type)) {
             MypageAdoptPageForm pageForm = adoptTempService.getMypageAdopt(pageNo, mNumber, type);
             model.addAttribute("pageForm", pageForm);
         } else {
@@ -237,23 +238,23 @@ public class MemberController {
 
         model.addAttribute("type", type);
 
-        if (type.equals("find")) {
+        if ("find".equals(type)) {
             FindBoardPageForm findMyPost = findBoardService.getMyPost(pageNo, mNumber);
 
             model.addAttribute("myPost", findMyPost);
 
             return "/member/mypost_find_list";
-        } else if (type.equals("look")) {
+        } else if ("look".equals(type)) {
             LookBoardPageForm lookMyPost = lookBoardService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", lookMyPost);
 
             return "/member/mypost_look_list";
-        } else if (type.equals("board")) {
+        } else if ("board".equals(type)) {
             BoardPageForm boardMyPost = boardService.getMyPost(pageNo, mNumber, type, kindOfBoard);
             model.addAttribute("myPost", boardMyPost);
 
             return "/member/mypost_board_list";
-        } else if (type.equals("adoptReview")) {
+        } else if ("adoptReview".equals(type)) {
             AdoptReviewPageForm adoptReviewMyPost = adoptReviewService.getMyPost(pageNo, mNumber);
             model.addAttribute("myPost", adoptReviewMyPost);
 
@@ -291,10 +292,12 @@ public class MemberController {
 
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
+        Member authUser = (Member) session.getAttribute("authUser");
+        if (authUser == null) {
+            log.info("authUser is null");
         }
-        return null;
+
+        return authUser;
     }
 
     private int getAuthMNumber(HttpServletRequest request) {
@@ -302,22 +305,21 @@ public class MemberController {
     }
 
     private boolean isGeneralUser(HttpServletRequest request) {
-        return getAuthUser(request).getGrade().equals("일반");
+        return "일반".equals(getAuthUser(request).getGrade());
     }
 
     private boolean isAdminUser(HttpServletRequest request) {
-        return getAuthUser(request).getGrade().equals("관리자");
+        return "관리자".equals(getAuthUser(request).getGrade());
     }
 
     // 로그인 된 회원정보 세션에 저장
-    private void setSessionAuthUser(Member authUser, HttpServletRequest request) {
-        request.setAttribute("authUser", authUser);
+    private void setSessionAuthUser(Member authUser, HttpSession session) {
+        session.setAttribute("authUser", authUser);
     }
 
-    private void removeSessions(HttpServletRequest request) {
-        request.removeAttribute("rejectedPw"); // 로그인 시 잘못 입력한 비번
-        request.removeAttribute("originalRequest"); // 원래 요청했던 URL (로그인 인터셉터에 걸린 경우)
-        request.removeAttribute("prevPage"); // 로그인 전 있던 페이지
+    private void removeSessions(HttpSession session) {
+        session.removeAttribute("originalRequest"); // 원래 요청했던 URL (로그인 인터셉터에 걸린 경우)
+        session.removeAttribute("prevPage"); // 로그인 전 있던 페이지
     }
 
     // 입양기록 없는 회원이 입양후기 글 못쓰게
@@ -328,7 +330,7 @@ public class MemberController {
         if (adoptedLog == null && isGeneralUser && containsAdoptReviewWriteURI(originalRequest)) {
             return "/alert/member/adopt_review_notAdopted";
         } else if (adoptedLog != null) {
-            if (isGeneralUser(request) && !adoptedLog.getStatus().equals("완료") && containsAdoptReviewWriteURI(originalRequest)) {
+            if (isGeneralUser(request) && !"완료".equals(adoptedLog.getStatus()) && containsAdoptReviewWriteURI(originalRequest)) {
                 return "/alert/member/adopt_review_notAdopted";
             }
         }

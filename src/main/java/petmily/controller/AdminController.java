@@ -110,19 +110,19 @@ public class AdminController {
                             Model model) {
         String kindOfBoard = conditionForm.getKindOfBoard();
 
-        if (kindOfBoard.equals("free")) {
+        if ("free".equals(kindOfBoard)) {
             BoardPageForm freeBoardForm = boardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", freeBoardForm);
-        } else if (kindOfBoard.equals("inquiry")) {
+        } else if ("inquiry".equals(kindOfBoard)) {
             BoardPageForm inquiryBoardForm = boardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", inquiryBoardForm);
-        } else if (kindOfBoard.equals("adoptReview")) {
+        } else if ("adoptReview".equals(kindOfBoard)) {
             AdoptReviewPageForm adoptReviewBoardForm = adoptReviewService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", adoptReviewBoardForm);
-        } else if (kindOfBoard.equals("find")) {
+        } else if ("find".equals(kindOfBoard)) {
             FindBoardPageForm findBoardForm = findBoardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", findBoardForm);
-        } else if (kindOfBoard.equals("look")) {
+        } else if ("look".equals(kindOfBoard)) {
             LookBoardPageForm lookBoardForm = lookBoardService.getAdminListPage(conditionForm);
             model.addAttribute("boardForm", lookBoardForm);
         }
@@ -173,9 +173,9 @@ public class AdminController {
 
         abandonedAnimalService.insert(insertForm);
 
-        if (insertForm.getAnimalState().equals("입양")) {
+        if ("입양".equals(insertForm.getAnimalState())) {
             abandonedAnimalService.insertWithAdopt(insertForm);
-        } else if (insertForm.getAnimalState().equals("임보")) {
+        } else if ("임보".equals(insertForm.getAnimalState())) {
             abandonedAnimalService.insertWithTemp(insertForm);
         }
 
@@ -217,7 +217,7 @@ public class AdminController {
         String newFile = adoptReviewService.storeFile(updateForm.getFile(), fullPath);
         log.info("newFile(새로 업로드한 파일명) = {}", newFile);
 
-        boolean hasExistingImage = !initFile.equals("no_image.png");
+        boolean hasExistingImage = !"no_image.png".equals(initFile);
 
         if (newFile != null && !hasExistingImage) {
             updateForm.setImgPath(newFile);
@@ -231,9 +231,9 @@ public class AdminController {
 
         abandonedAnimalService.update(updateForm);
 
-        if (updateForm.getAnimalState().equals("입양")) {
+        if ("입양".equals(updateForm.getAnimalState())) {
             abandonedAnimalService.updateWithAdopt(updateForm);
-        } else if (updateForm.getAnimalState().equals("임보")) {
+        } else if ("임보".equals(updateForm.getAnimalState())) {
             abandonedAnimalService.updateWithTemp(updateForm);
         } else {
             abandonedAnimalService.deleteAdoptAndTemp(updateForm.getAbNumber());
@@ -265,7 +265,7 @@ public class AdminController {
     @GetMapping("/abandonedAnimal/delete")
     public String abandonedAnimalDelete(@RequestParam int abNumber, HttpServletRequest request) {
         String filename = abandonedAnimalService.getAbAnimal(abNumber).getImgPath();
-        boolean existInitFile = filename != null && !filename.equals("no_image.png");
+        boolean existInitFile = filename != null && !"no_image.png".equals(filename);
 
         if (existInitFile) {
             String fullPath = getFullPath(request) + filename;

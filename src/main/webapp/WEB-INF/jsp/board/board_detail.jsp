@@ -193,7 +193,7 @@
             <span id="reply" class="timeline-body">{{reply}}</span>
             <span class="timeline-footer" style="white-space: nowrap">
                 {{#if hasPermission}}
-                <br><div style="float: right">
+                <div style="float: right">
                     <button type="button" class="btn btn-outline-success" id="editBtn">댓글수정</button>
                     <button type="button" class="btn btn-outline-danger" id="deleteBtn">댓글삭제</button>
                 </div><br><br>

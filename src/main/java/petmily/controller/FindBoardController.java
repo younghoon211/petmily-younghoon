@@ -108,7 +108,7 @@ public class FindBoardController {
         String newFile = findBoardService.storeFile(modifyForm.getFile(), fullPath);
         log.info("newFile(새로 업로드한 파일명) = {}", newFile);
 
-        boolean hasExistingImage = !initFile.equals("no_image.png");
+        boolean hasExistingImage = !"no_image.png".equals(initFile);
 
         if (newFile != null && !hasExistingImage) {
             modifyForm.setImgPath(newFile);
@@ -149,7 +149,7 @@ public class FindBoardController {
     @GetMapping("/auth/delete")
     public String delete(@RequestParam int faNumber, HttpServletRequest request) {
         String filename = findBoardService.getFindBoard(faNumber).getImgPath();
-        boolean ExistingInitFile = filename != null && !filename.equals("no_image.png");
+        boolean ExistingInitFile = filename != null && !"no_image.png".equals(filename);
 
         if (ExistingInitFile) {
             String fullPath = getFullPath(request) + filename;
@@ -193,14 +193,16 @@ public class FindBoardController {
 
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (Member) session.getAttribute("authUser");
+        Member authUser = (Member) session.getAttribute("authUser");
+        if (authUser == null) {
+            log.info("authUser is null");
         }
-        return null;
+
+        return authUser;
     }
 
     private boolean isAdminUser(HttpServletRequest request) {
-        return getAuthUser(request).getGrade().equals("관리자");
+        return "관리자".equals(getAuthUser(request).getGrade());
     }
 
     private String getFullPath(HttpServletRequest request) {

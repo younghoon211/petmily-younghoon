@@ -100,12 +100,12 @@ public class AbandonedAnimalController {
     public String adoptTemp(@ModelAttribute AdoptTempSubmitForm submitForm) {
         log.info("POST adoptTempSubmitForm = {}", submitForm);
 
-        if (submitForm.getAdoptOrTemp().equals("adopt")) {
+        if ("adopt".equals(submitForm.getAdoptOrTemp())) {
             adoptTempService.adopt(submitForm);
             return "/alert/member/adopt_submit";
         }
 
-        if (submitForm.getAdoptOrTemp().equals("temp")) {
+        if ("temp".equals(submitForm.getAdoptOrTemp())) {
             adoptTempService.temp(submitForm);
             return "/alert/member/temp_submit";
         }
