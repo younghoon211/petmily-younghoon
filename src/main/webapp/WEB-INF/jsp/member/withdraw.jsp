@@ -21,6 +21,22 @@
 
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style>
+        .success {
+            font-size: xx-small;
+            color: #00bd56;
+        }
+
+        .error {
+            font-size: xx-small;
+            color: #dc3545;
+        }
+
+        .font {
+            font-size: x-small;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,28 +75,29 @@
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/withdraw" method="POST" class="contactForm">
+                <form action="/member/auth/withdraw" method="post" class="contactForm">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label">아이디</label>
+                                <label class="label"><span class="font">아이디</span></label>
                                 <input type="text" class="form-control" value="${authUser.id}" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label">비밀번호</label>
-                                <input type="password" class="form-control" id="pw"
+                                <label class="label"><span class="font">비밀번호</span></label>
+                                <input type="password" class="form-control" id="pw" name="pw"
                                        placeholder="비밀번호를 입력해주세요." autofocus>
-                                <span id="requiredMsg" style="color: red; display: none; font-size: xx-small"></span>
+                                <span class="pwMsg"></span>
+                                <input id="pwValid" hidden>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-                        <button type="button" id="withdrawBtn" class="btn btn-danger">탈퇴하기</button>
+                        <button type="submit" id="submit" class="btn btn-danger">탈퇴하기</button>
                     </div>
                 </form>
             </div>
@@ -108,38 +125,68 @@
 
 <script>
     $(document).ready(function () {
-        $("#withdrawBtn").on("click", function () {
-            const pw = $("#pw").val();
-            const msg = $("#requiredMsg");
+        $("#submit").on("click", function (event) {
+            let pw = $('#pw').val().trim();
+            let pwMsg = $('.pwMsg').addClass('error');
 
             if (!pw) {
-                msg.text("비밀번호를 입력하세요.").show();
-                return;
+                event.preventDefault();
+                $('#pw').focus();
+                $('#pwValid').val("error");
+                pwMsg.text("비밀번호를 입력하세요.");
+            } else if ($('#pwValid').val() === "error") {
+                event.preventDefault();
+                $('#pw').focus();
+            } else {
+                showConfirm(event);
             }
+        });
 
-            if (confirm('회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?')) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/member/auth/withdraw',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: JSON.stringify({pw: pw}),
-                    dataType: 'text',
-                    success: function (result) {
-                        if (result === "SUCCESS") {
-                            console.log("탈퇴 완료")
-                            alert("탈퇴가 완료되었습니다.")
-                            location.href = "/";
-                        } else if (result === "NOT_CORRECT") {
-                            console.log("비밀번호 일치 x");
-                            alert("비밀번호가 일치하지 않습니다.")
-                        }
-                    }
-                });
+        $('#pw').on('input', function () {
+            let pw = $('#pw').val().trim();
+            let pwMsg = $('.pwMsg').addClass('error');
+
+            if (!pw) {
+                pwMsg.text("비밀번호를 입력하세요.");
+                $('#pwValid').val("error");
+            } else {
+                pwAjax();
             }
         });
     });
+
+    function pwAjax() {
+        let pwMsg = $('.pwMsg').addClass('error');
+
+        $.ajax({
+            type: 'POST',
+            url: '/member/auth/withdraw/valid',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({pw: $('#pw').val().trim()}),
+            dataType: 'text',
+            success: function (result) {
+                console.log("회원 탈퇴 result=" + result);
+                if (result === "SUCCESS") {
+                    pwMsg.removeClass('error').addClass('success').text("올바른 비밀번호입니다.")
+                    $('#pwValid').val("");
+                } else {
+                    pwMsg.text("비밀번호가 틀렸습니다.")
+                    $('#pwValid').val("error");
+                }
+            }
+        });
+    }
+
+    function showConfirm(event) {
+        if (confirm("회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?")) {
+            $("form").submit();
+        } else {
+            event.preventDefault();
+            $('.pwMsg').removeClass('error').addClass('success').text("올바른 비밀번호입니다.")
+        }
+    }
 </script>
 
 <%-- footer --%>

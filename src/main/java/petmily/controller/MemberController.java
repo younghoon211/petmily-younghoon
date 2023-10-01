@@ -204,9 +204,9 @@ public class MemberController {
     }
 
     // 기존 비번 입력값 틀릴 시
-    @PostMapping("/member/auth/changePw/oldPwNotCorrect")
+    @PostMapping("/member/auth/changePw/valid1")
     @ResponseBody
-    public String oldPwNotCorrect(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String changePwValid1(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String oldPw = requestBody.get("oldPw");
         log.info("oldPw= {}", oldPw);
 
@@ -220,9 +220,9 @@ public class MemberController {
     }
 
     // 새 비번에 기존 비번값 입력 시
-    @PostMapping("/member/auth/changePw/newEqualsOld")
+    @PostMapping("/member/auth/changePw/valid2")
     @ResponseBody
-    public String newEqualsOld(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String changePwValid2(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String newPw = requestBody.get("newPw");
         log.info("newPw= {}", newPw);
 
@@ -349,10 +349,21 @@ public class MemberController {
     }
 
     @PostMapping("/member/auth/withdraw")
+    public String withdraw(@RequestParam String pw, HttpServletRequest request) {
+        log.info("POST pw = {}", pw);
+
+        memberService.withdraw(getAuthMNumber(request));
+        request.getSession().invalidate();
+
+        return "/alert/member/withdraw";
+    }
+
+    // 비밀번호 검증
+    @PostMapping("/member/auth/withdraw/valid")
     @ResponseBody
-    public String withdraw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String withdrawValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String pw = requestBody.get("pw");
-        log.info("pw = {}", pw);
+        log.info("검증 pw = {}", pw);
 
         int mNumber = getAuthMNumber(request);
 
@@ -361,9 +372,6 @@ public class MemberController {
                 return "NOT_CORRECT";
             }
         }
-
-        memberService.withdraw(mNumber);
-        request.getSession().invalidate();
 
         return "SUCCESS";
     }

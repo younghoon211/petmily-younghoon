@@ -180,12 +180,21 @@
 <script>
     $(document).ready(function () {
         $('#submit').on('click', function (event) {
-            let notError = $('#nameValid').val() !== "error" && $('#emailValid').val() !== "error" && $('#phoneValid').val() !== "error";
+            let nameError = $('#nameValid').val() === "error";
+            let emailError = $('#emailValid').val() === "error";
+            let phoneError = $('#phoneValid').val() === "error";
 
-            if (notError) {
-                $("form").submit();
-            } else {
+            if (nameError) {
                 event.preventDefault();
+                $('#name').focus();
+            } else if (emailError) {
+                event.preventDefault();
+                $('#email').focus();
+            } else if (phoneError) {
+                event.preventDefault();
+                $('#phone').focus();
+            } else {
+                $("form").submit();
             }
         });
 
@@ -197,6 +206,7 @@
 
             if (initName === name) {
                 nameMsg.text("");
+                $('#nameValid').val("");
             } else if (!name) {
                 nameMsg.text("닉네임을 입력하세요.");
                 $('#nameValid').val("error");
@@ -220,6 +230,7 @@
 
             if (initEmail === email) {
                 emailMsg.text("");
+                $('#emailValid').val("");
             } else if (!email) {
                 emailMsg.text("이메일을 입력하세요.");
                 $('#emailValid').val("error");
@@ -242,6 +253,7 @@
 
             if (initPhone === phone) {
                 phoneMsg.text("");
+                $('#phoneValid').val("");
             } else if (!phone) {
                 phoneMsg.text("번호를 입력하세요.");
                 $('#phoneValid').val("error");

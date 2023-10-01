@@ -156,35 +156,30 @@
 <script>
     $(document).ready(function () {
         $('#submit').on('click', function (event) {
-            let notError = $('#oldPwValid').val() !== "error" && $('#newPwValid').val() !== "error" && $('#newPw2Valid').val() !== "error";
             let oldPw = $('#oldPw').val().trim();
             let newPw = $('#newPw').val().trim();
             let newPw2 = $('#newPw2').val().trim();
-            let empty = !oldPw || !newPw || !newPw2;
+            let oldPwError = $('#oldPwValid').val() === "error";
+            let newPwError = $('#newPwValid').val() === "error";
+            let newPw2Error = $('#newPw2Valid').val() === "error";
 
-            if (empty) {
+            let isEmpty = !oldPw || !newPw || !newPw2;
+
+            if (isEmpty) {
                 alert("모든 양식을 채워주세요.");
                 event.preventDefault();
 
-                if (!oldPw && !newPw && !newPw2) {
-                    $('#oldPw').focus();
-                } else if (!oldPw && !newPw) {
-                    $('#oldPw').focus();
-                } else if (!oldPw && !newPw2) {
-                    $('#oldPw').focus();
-                } else if (!newPw && !newPw2) {
-                    $('#newPw').focus();
-                } else if (!oldPw) {
+                if (!oldPw) {
                     $('#oldPw').focus();
                 } else if (!newPw) {
                     $('#newPw').focus();
                 } else if (!newPw2) {
                     $('#newPw2').focus();
                 }
-            } else if (notError) {
-                $("form").submit();
-            } else {
+            } else if (oldPwError || newPwError || newPw2Error) {
                 event.preventDefault();
+            } else {
+                $("form").submit();
             }
         });
 
@@ -231,7 +226,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changePw/oldPwNotCorrect',
+            url: '/member/auth/changePw/valid1',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -258,7 +253,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changePw/newEqualsOld',
+            url: '/member/auth/changePw/valid2',
             headers: {
                 'Content-Type': 'application/json'
             },
