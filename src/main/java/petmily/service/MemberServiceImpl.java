@@ -66,7 +66,13 @@ public class MemberServiceImpl implements MemberService {
         return pw != null && pw.equals(confirmPw);
     }
 
-    // 모든 회원정보 조회 (관리자)
+    // pk로 회원정보 조회
+    @Override
+    public Member getMemberByPk(int pk) {
+        return memberDao.findByPk(pk);
+    }
+
+    // 회원 리스트 조회 (관리자)
     @Override
     public List<Member> getMemberList() {
         return memberDao.selectAll();
@@ -84,8 +90,8 @@ public class MemberServiceImpl implements MemberService {
     // ===================== Update =====================
     // 수정
     @Override
-    public Member change(Member member, MemberChangeForm form) {
-        Member updateMember = toChange(member, form);
+    public Member change(MemberChangeForm form) {
+        Member updateMember = toChange(form);
         memberDao.update(updateMember);
 
         return updateMember;
@@ -101,9 +107,9 @@ public class MemberServiceImpl implements MemberService {
 
     // 수정 (관리자)
     @Override
-    public void update(MemberUpdateForm form) {
+    public void updateAdmin(MemberUpdateForm form) {
         Member member = toUpdate(form);
-        memberDao.update(member);
+        memberDao.updateAdmin(member);
     }
 
     // ===================== Delete =====================
@@ -124,7 +130,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkDuplicatedId(String id) {
         int idCount = memberDao.selectIdCheck(id);
-        
+
         return idCount == 1;
     }
 
@@ -132,7 +138,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkDuplicatedEmail(String email) {
         int emailCount = memberDao.selectEmailCheck(email);
-        
+
         return emailCount == 1;
     }
 
@@ -140,24 +146,20 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkDuplicatedPhone(String phone) {
         int phoneCount = memberDao.selectPhoneCheck(phone);
-        
+
         return phoneCount == 1;
     }
 
     // 회원정보 변경 검증 (이메일)
     @Override
-    public boolean checkDuplicatedEmailChangeInfo(String email, String id) {
-        int emailCount = memberDao.selectEmailCheckChangeInfo(email, id);
-
-        return emailCount == 0;
+    public int checkDuplicatedEmailChangeInfo(int mNumber, String email) {
+        return memberDao.selectEmailCheckChangeInfo(mNumber, email);
     }
 
     // 회원정보 변경 검증 (연락처)
     @Override
-    public boolean checkDuplicatedPhoneChangeInfo(MemberChangeForm form) {
-        int phoneCount = memberDao.selectPhoneCheckChangeInfo(form.getPhone(), form.getId());
-        
-        return phoneCount == 1;
+    public int checkDuplicatedPhoneChangeInfo(int mNumber, String phone) {
+        return memberDao.selectPhoneCheckChangeInfo(mNumber, phone);
     }
 
 
@@ -188,13 +190,10 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private Member toChange(Member member, MemberChangeForm form) {
+    private Member toChange(MemberChangeForm form) {
         return new Member(
-                member.getMNumber(),
-                form.getPw(),
+                form.getMNumber(),
                 form.getName(),
-                member.getBirth(),
-                member.getGender(),
                 form.getEmail(),
                 form.getPhone()
         );

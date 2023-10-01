@@ -39,4 +39,11 @@ public class Member implements DomainObj {
         this.email = email;
         this.phone = phone;
     }
+
+    public Member(int mNumber, String name, String email, String phone) {
+        this.mNumber = mNumber;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }

@@ -60,12 +60,12 @@ public class MemberDao implements BasicDao {
         return mapper.selectPhoneCheck(phone);
     }
 
-    public int selectEmailCheckChangeInfo(String email, String id) {
-        return mapper.selectEmailCheckChangeInfo(email, id);
+    public int selectEmailCheckChangeInfo(int mNumber, String email) {
+        return mapper.selectEmailCheckChangeInfo(mNumber, email);
     }
 
-    public int selectPhoneCheckChangeInfo(String email, String id) {
-        return mapper.selectPhoneCheckChangeInfo(email, id);
+    public int selectPhoneCheckChangeInfo(int mNumber, String email) {
+        return mapper.selectPhoneCheckChangeInfo(mNumber, email);
     }
 
     // 관리자 페이지 조건부검색 회원 총 개수
@@ -95,5 +95,9 @@ public class MemberDao implements BasicDao {
         }
 
         return memberDetailForms;
+    }
+
+    public void updateAdmin(DomainObj obj) {
+        mapper.updateAdmin((Member) obj);
     }
 }

@@ -22,7 +22,6 @@ import petmily.domain.member.form.MemberJoinForm;
 import petmily.domain.temp.form.MypageTempPageForm;
 import petmily.service.*;
 import petmily.validation.JoinValidator;
-import petmily.validation.MemberChangeValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,16 +39,10 @@ public class MemberController {
     private final BoardService boardService;
     private final AdoptReviewService adoptReviewService;
     private final JoinValidator joinValidator;
-    private final MemberChangeValidator memberChangeValidator;
 
     @InitBinder("memberJoinForm")
     public void joinInit(WebDataBinder dataBinder) {
         dataBinder.addValidators(joinValidator);
-    }
-
-    @InitBinder("memberChangeForm")
-    public void memberChangeInit(WebDataBinder dataBinder) {
-        dataBinder.addValidators(memberChangeValidator);
     }
 
     // 회원 가입
@@ -100,7 +93,7 @@ public class MemberController {
         String prevPage = (String) session.getAttribute("prevPage");
 
         removeSessions(session);
-//
+
         if (originalRequest != null) { //로그인 인터셉터 후 원래 가려던 페이지로
             return canWriteAdoptReviewOnlyAuthUser(originalRequest, request);
         } else if ("http://localhost:8080/join".equals(prevPage)) { // 회원가입 후 로그인 시 메인페이지로
@@ -137,25 +130,57 @@ public class MemberController {
         return "/member/mypage";
     }
 
-    // 회원정보 수정
+    // 회원정보 변경
     @GetMapping("/member/auth/changeInfo")
-    public String changeInfoPage() {
+    public String changeInfoPage(Model model, HttpServletRequest request) {
+        Member member = memberService.getMemberByPk(getAuthMNumber(request));
+        model.addAttribute("member", member);
+
         return "/member/member_info_change";
     }
 
     @PostMapping("/member/auth/changeInfo")
-    public String changeInfo(@Validated @ModelAttribute MemberChangeForm memberChangeForm,
-                             BindingResult bindingResult, HttpServletRequest request) {
+    public String changeInfo(@Validated @ModelAttribute MemberChangeForm memberChangeForm, BindingResult bindingResult) {
         log.info("POST memberChangeForm= {}", memberChangeForm);
 
         if (bindingResult.hasErrors()) {
             log.info("changeInfo bindingResult= {}", bindingResult);
-            return "/member/member_info_change";
+            return "redirect:/member/auth/changeInfo";
         }
 
-        memberService.change(getAuthUser(request), memberChangeForm);
+        memberService.change(memberChangeForm);
 
         return "/alert/member/member_info_change";
+    }
+
+    // 회원정보 변경 이메일 중복체크
+    @PostMapping("/member/auth/changeInfo/emailCheck")
+    @ResponseBody
+    public String changeInfoEmailCheck(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String email = requestBody.get("email");
+        log.info("email={}", email);
+
+        int dupEmail = memberService.checkDuplicatedEmailChangeInfo(getAuthMNumber(request), email);
+        if (dupEmail == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 회원정보 변경 연락처 중복체크
+    @PostMapping("/member/auth/changeInfo/phoneCheck")
+    @ResponseBody
+    public String changeInfoPhoneCheck(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String phone = requestBody.get("phone");
+        log.info("phone={}", phone);
+
+        int dupPhone = memberService.checkDuplicatedPhoneChangeInfo(getAuthMNumber(request), phone);
+        if (dupPhone == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
     }
 
     // 찾아요 매칭된 페이지

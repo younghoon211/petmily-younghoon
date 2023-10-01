@@ -89,7 +89,7 @@ public class AdminController {
 
     @PostMapping("/member/update")
     public String memberUpdate(@ModelAttribute MemberUpdateForm updateForm) {
-        memberService.update(updateForm);
+        memberService.updateAdmin(updateForm);
         log.info("POST MemberUpdateForm = {}", updateForm);
 
         return "/alert/admin/member_update";

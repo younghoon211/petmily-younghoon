@@ -41,13 +41,13 @@ public interface MemberMapper {
     int selectPhoneCheck(String phone);
 
     int selectEmailCheckChangeInfo(
-            @Param("email") String email,
-            @Param("id") String id
+            @Param("mNumber") int mNumber,
+            @Param("email") String email
     );
 
     int selectPhoneCheckChangeInfo(
-            @Param("phone") String phone,
-            @Param("id") String id
+            @Param("mNumber") int mNumber,
+            @Param("phone") String phone
     );
 
     int selectCount(String keyword);
@@ -57,4 +57,6 @@ public interface MemberMapper {
             @Param("end") int end,
             @Param("keyword") String keyword
     );
+
+    void updateAdmin(Member obj);
 }

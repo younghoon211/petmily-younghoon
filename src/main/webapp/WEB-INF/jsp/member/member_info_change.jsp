@@ -23,12 +23,22 @@
     <link rel="stylesheet" href="/resources/petsitting-master/css/flaticon.css">
     <link rel="stylesheet" href="/resources/petsitting-master/css/style.css">
 
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
     <style>
-        .field-error {
+        .success {
+            font-size: xx-small;
+            color: #00bd56;
+        }
+
+        .error {
+            font-size: xx-small;
             color: #dc3545;
-            border-color: #dc3545;
-            font-size: 13px;
-            vertical-align: top;
+        }
+
+        .font {
+            font-size: x-small;
         }
     </style>
 </head>
@@ -69,95 +79,80 @@
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/changeInfo" method="POST"
-                      class="contactForm">
+                <form action="/member/auth/changeInfo" method="post" class="contactForm">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="id">아이디</label>
+                                <label class="label" for="id"><span class="font">아이디</span></label>
                                 <input type="text"
-                                       class="form-control" name="id" id="id"
-                                       value="${empty param.id ? authUser.id : param.id}"
-                                       minlength="3" maxlength="15"
+                                       class="form-control" id="id"
+                                       value="${authUser.id}"
                                        readonly>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="name">닉네임</label>
-                                <input type="text" placeholder="닉네임"
-                                       class="form-control" name="name" id="name"
-                                       minlength="3" maxlength="15"
-                                       value="${empty param.name ? authUser.name : param.name}"
-                                       required>
-                                <spring:hasBindErrors name="memberChangeForm">
-                                    <c:if test="${errors.hasFieldErrors('name')}">
-                                        <span class="field-error"><form:errors path="memberChangeForm.name"/></span>
-                                    </c:if>
-                                </spring:hasBindErrors>
+                                <label class="label" for="gender"><span class="font">성별</span></label>
+                                <input type="text"
+                                       class="form-control" id="gender"
+                                <c:if test="${authUser.gender eq 'M'}">
+                                       value="남자"
+                                </c:if>
+                                <c:if test="${authUser.gender eq 'F'}">
+                                       value="여자"
+                                </c:if>
+                                       readonly>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="pw">비밀번호</label>
-                                <input type="password" placeholder="비밀번호 (8-16자, 영문+숫자+특수문자)"
-                                       class="form-control" name="pw" id="pw"
-                                       minlength="8" maxlength="16" required
-                                       value="${empty param.pw ? authUser.pw : param.pw}">
-                                <spring:hasBindErrors name="memberChangeForm">
-                                    <c:if test="${errors.hasFieldErrors('pw')}">
-                                        <span class="field-error"><form:errors path="memberChangeForm.pw"/></span>
-                                    </c:if>
-                                </spring:hasBindErrors>
+                                <label class="label" for="birth"><span class="font">생년월일</span></label>
+                                <input type="date"
+                                       class="form-control" id="birth"
+                                       value="${authUser.birth}"
+                                       readonly>
                             </div>
                         </div>
-
-
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="email">이메일</label>
+                                <label class="label" for="name"><span class="font">닉네임</span></label>
+                                <input type="text"
+                                       class="form-control" id="name" name="name"
+                                       placeholder="한글, 영문, 숫자만 입력 가능합니다." maxlength="15"
+                                       value="${member.name}">
+                                <span class="nameMsg"></span>
+                                <input id="nameValid" hidden>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label" for="email"><span class="font">이메일</span></label>
                                 <input type="email"
-                                       class="form-control" name="email" id="email"
-                                       placeholder="이메일 주소 (예: petmily@naver.com)" minlength="5" maxlength="30"
-                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$"
-                                       value="${empty param.email ? authUser.email : param.email}"
-                                       required
-                                <spring:hasBindErrors name="memberChangeForm">
-                                       <c:if test="${errors.hasFieldErrors('email')}">style="border-color: #dc3545"</c:if>
-                                </spring:hasBindErrors>
-                                >
-                                <spring:hasBindErrors name="memberChangeForm">
-                                    <c:if test="${errors.hasFieldErrors('email')}">
-                                        <span class="field-error"><form:errors path="memberChangeForm.email"/></span>
-                                    </c:if>
-                                </spring:hasBindErrors>
+                                       class="form-control " id="email" name="email"
+                                       placeholder="ex) pet@petmily.com" maxlength="30"
+                                       value="${member.email}">
+                                <span class="emailMsg"></span>
+                                <input id="emailValid" hidden>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="phone">연락처</label>
-                                <input type="tel" class="form-control" name="phone" id="phone"
-                                       maxlength="11" placeholder="연락처 (예: 01012345678)"
-                                       value="${empty param.phone ? authUser.phone : param.phone}"
-                                       pattern="^010\d{8}$" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                       required
-                                <spring:hasBindErrors name="memberChangeForm">
-                                       <c:if test="${errors.hasFieldErrors('phone')}">style="border-color: #dc3545"</c:if>
-                                </spring:hasBindErrors>
-                                >
-                                <spring:hasBindErrors name="memberChangeForm">
-                                    <c:if test="${errors.hasFieldErrors('phone')}">
-                                        <span class="field-error"><form:errors path="memberChangeForm.phone"/></span>
-                                    </c:if>
-                                </spring:hasBindErrors>
+                                <label class="label" for="phone"><span class="font">연락처</span></label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                       maxlength="11" placeholder="ex) 01012345678"
+                                       value="${member.phone}">
+                                <span class="phoneMsg"></span>
+                                <input id="phoneValid" hidden>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-                        <button type="submit" class="btn btn-primary">변경하기</button>
+                        <button type="submit" id="submit" class="btn btn-primary">변경하기</button>
                     </div>
+
+                    <input name="mNumber" value="${authUser.getMNumber()}" hidden>
                 </form>
             </div>
         </div>
@@ -182,7 +177,141 @@
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
 
+<script>
+    $(document).ready(function () {
+        $('#submit').on('click', function (event) {
+            let notError = $('#nameValid').val() !== "error" && $('#emailValid').val() !== "error" && $('#phoneValid').val() !== "error";
+
+            if (notError) {
+                $("form").submit();
+            } else {
+                event.preventDefault();
+            }
+        });
+
+        $('#name').on('input', function () {
+            const initName = "${member.name}";
+            let name = $('#name').val().trim();
+            let nameMsg = $('.nameMsg').addClass('error');
+            const nameRegex = /^[0-9a-zA-Z가-힣]+$/g;
+
+            if (initName === name) {
+                nameMsg.text("");
+            } else if (!name) {
+                nameMsg.text("닉네임을 입력하세요.");
+                $('#nameValid').val("error");
+            } else if (name.length < 3 || name.length > 15) {
+                nameMsg.text("3-15자 이내로 입력해주세요.");
+                $('#nameValid').val("error");
+            } else if (!nameRegex.test(name)) {
+                nameMsg.text("닉네임 형식을 지켜주세요.");
+                $('#nameValid').val("error");
+            }else {
+                nameMsg.removeClass('error').addClass('success').text("멋진 닉네임이네요!");
+                $('#nameValid').val("");
+            }
+        });
+
+        $('#email').on('input', function () {
+            const initEmail = "${member.email}";
+            let email = $('#email').val().trim();
+            let emailMsg = $('.emailMsg').addClass('error');
+            const emailRegex = /^[0-9a-zA-Z]+([-_.]*[0-9a-zA-Z])*@[0-9a-zA-Z]+([.]*[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/g;
+
+            if (initEmail === email) {
+                emailMsg.text("");
+            } else if (!email) {
+                emailMsg.text("이메일을 입력하세요.");
+                $('#emailValid').val("error");
+            } else if (email.length < 5 || email.length > 30) {
+                emailMsg.text("5-30자 이내로 입력해주세요.");
+                $('#emailValid').val("error");
+            } else if (!emailRegex.test(email)) {
+                emailMsg.text("이메일 형식을 지켜주세요.");
+                $('#emailValid').val("error");
+            } else {
+                emailAjax();
+            }
+        });
+
+        $('#phone').on('input', function () {
+            const initPhone = "${member.phone}";
+            let phone = $('#phone').val().trim();
+            let phoneMsg = $('.phoneMsg').addClass('error');
+            const phoneRegex = /^(010)(\d{8})$/g;
+
+            if (initPhone === phone) {
+                phoneMsg.text("");
+            } else if (!phone) {
+                phoneMsg.text("번호를 입력하세요.");
+                $('#phoneValid').val("error");
+            } else if (phone.length !== 11 || !phoneRegex.test(phone)) {
+                phoneMsg.text("올바른 형식(예: 01012345678)으로 입력해주세요.");
+                $('#phoneValid').val("error");
+            } else {
+                phoneAjax();
+            }
+        });
+    });
+
+    function emailAjax() {
+        let emailMsg = $('.emailMsg').addClass('error');
+
+        $.ajax({
+            type: 'POST',
+            url: '/member/auth/changeInfo/emailCheck',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({email: $('#email').val().trim()}),
+            success: function (result) {
+                console.log("email result=" + result);
+
+                if (result === "SUCCESS") {
+                    emailMsg.removeClass('error').addClass('success').text("사용 가능한 이메일입니다.");
+                    $('#emailValid').val("");
+                } else {
+                    emailMsg.text("이미 사용중인 이메일입니다.");
+                    $('#emailValid').val("error");
+                }
+            }
+            , error: function () {
+                console.log("email error");
+            }
+        });
+    }
+
+    function phoneAjax() {
+        let phoneMsg = $('.phoneMsg').addClass('error');
+
+        $.ajax({
+            type: 'POST',
+            url: '/member/auth/changeInfo/phoneCheck',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({phone: $('#phone').val()}),
+            dataType: 'text',
+            success: function (result) {
+                console.log("phone result=" + result);
+
+                if (result === "SUCCESS") {
+                    phoneMsg.removeClass('error').addClass('success').text("사용 가능한 번호입니다.");
+                    $('#phoneValid').val("");
+                } else {
+                    phoneMsg.text("이미 사용중인 번호입니다.");
+                    $('#phoneValid').val("error");
+                }
+            }
+            , error: function () {
+                console.log("phone error");
+            }
+        });
+    }
+</script>
+
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

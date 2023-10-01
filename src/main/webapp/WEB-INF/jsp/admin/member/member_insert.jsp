@@ -93,7 +93,7 @@
                         <div class="col-md-12 form-group">
                             <label class="label">이메일</label>
                             <input class="form-control" type="text" name="email"
-                                   placeholder="회원 기준: ex) petmily@naver.com"
+                                   placeholder="회원 기준: ex) pet@petmily.com"
                                    maxlength="30" value="${param.email}"
                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$" required>
                         </div>

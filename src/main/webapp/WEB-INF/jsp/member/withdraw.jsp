@@ -71,7 +71,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="label">비밀번호</label>
-                                <input type="password" class="form-control" name="pw" id="pw"
+                                <input type="password" class="form-control" id="pw"
                                        placeholder="비밀번호를 입력해주세요." autofocus>
                                 <span id="requiredMsg" style="color: red; display: none; font-size: xx-small"></span>
                             </div>
@@ -122,17 +122,17 @@
                     type: 'POST',
                     url: '/member/auth/withdraw',
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
                     data: JSON.stringify({pw: pw}),
                     dataType: 'text',
                     success: function (result) {
-                        if (result === 'SUCCESS') {
-                            console.log("SUCCESS")
+                        if (result === "SUCCESS") {
+                            console.log("탈퇴 완료")
                             alert("탈퇴가 완료되었습니다.")
                             location.href = "/";
-                        } else if (result === 'NOT_CORRECT') {
-                            console.log("NOT_CORRECT");
+                        } else if (result === "NOT_CORRECT") {
+                            console.log("비밀번호 일치 x");
                             alert("비밀번호가 일치하지 않습니다.")
                         }
                     }

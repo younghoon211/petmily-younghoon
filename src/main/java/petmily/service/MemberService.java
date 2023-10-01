@@ -21,15 +21,17 @@ public interface MemberService {
 
     boolean isPwEqualToConfirm(String pw, String confirmPw);
 
+    Member getMemberByPk(int pk);
+
     List<Member> getMemberList();
 
     MemberPageForm getAdminListPage(int pageNo, String keyword);
 
-    Member change(Member member, MemberChangeForm form);
+    Member change(MemberChangeForm form);
 
     MemberUpdateForm getUpdateForm(int mNumber);
 
-    void update(MemberUpdateForm form);
+    void updateAdmin(MemberUpdateForm form);
 
     void withdraw(int mNumber);
 
@@ -41,7 +43,7 @@ public interface MemberService {
 
     boolean checkDuplicatedPhone(String phone);
 
-    boolean checkDuplicatedEmailChangeInfo(String email, String id);
+    int checkDuplicatedEmailChangeInfo(int mNumber, String email);
 
-    boolean checkDuplicatedPhoneChangeInfo(MemberChangeForm form);
+    int checkDuplicatedPhoneChangeInfo(int mNumber, String phone);
 }

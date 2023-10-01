@@ -213,22 +213,23 @@
         //작성
         $("#replyAddBtn").on("click", function () {
             let mNumber = "${authUser.getMNumber()}";
-            console.log(mNumber);
+            console.log("댓글작성 mNumber = " + mNumber);
+
             let replytextObj = $("#message1");
             let reply = replytextObj.val();
 
             $.ajax({
-                type: 'post',
+                type: 'POST',
                 url: '/replies/' + bNumber,
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
                 data: JSON.stringify({bNumber: bNumber, mNumber: mNumber, reply: reply}),
                 dataType: 'text',
                 success: function (result) {
-                    console.log("result: " + result);
+                    console.log("작성 result=" + result);
 
-                    if (result === 'SUCCESS') {
+                    if (result === "SUCCESS") {
                         getPage("/replies/" + bNumber);
                         replytextObj.val("");
                     }
@@ -242,7 +243,7 @@
             let replyText = replyObj.find(".timeline-body").text();
             let brNumber = replyObj.attr("data-brNumber");
 
-            console.log("수정 brNumber= " + brNumber);
+            console.log("수정 brNumber=" + brNumber);
 
             let editArea = $("<textarea>", {
                 "class": "form-control",
@@ -272,16 +273,17 @@
                 let editedReply = editArea.val();
 
                 $.ajax({
-                    type: 'patch',
+                    type: 'PATCH',
                     url: '/replies/' + bNumber,
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
                     data: JSON.stringify({brNumber: brNumber, reply: editedReply}),
                     dataType: 'text',
                     success: function (result) {
-                        if (result === 'SUCCESS') {
-                            console.log("수정 result = " + result);
+                        console.log("수정 result=" + result);
+
+                        if (result === "SUCCESS") {
                             getPage("/replies/" + bNumber);
                         }
                     }
@@ -308,15 +310,16 @@
             let isConfirmed = confirm("정말로 삭제하시겠습니까?");
             if (isConfirmed) {
                 $.ajax({
-                    type: 'delete',
+                    type: 'DELETE',
                     url: '/replies/' + brNumber,
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
                     dataType: 'text',
                     success: function (result) {
-                        console.log("삭제 result = " + result);
-                        if (result === 'SUCCESS') {
+                        console.log("삭제 result=" + result);
+
+                        if (result === "SUCCESS") {
                             getPage("/replies/" + bNumber);
                         }
                     },

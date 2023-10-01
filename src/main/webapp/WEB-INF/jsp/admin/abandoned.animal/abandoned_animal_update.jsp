@@ -583,13 +583,13 @@
         console.log("imgPath=" + imgPath);
 
         $.ajax({
-            type: 'delete',
+            type: 'DELETE',
             url: '/admin/' + imgPath,
             data: {imgPath: imgPath},
             dataType: 'text',
             success: function (result) {
-                if (result === 'SUCCESS') {
-                    console.log("이미지 삭제 요청 성공 = " + result);
+                if (result === "SUCCESS") {
+                    console.log("이미지 삭제 요청 성공");
                 }
             }
         });
