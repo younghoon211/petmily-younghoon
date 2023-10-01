@@ -20,6 +20,18 @@ public class Member implements DomainObj {
     private String phone;
     private String grade;
 
+    public Member(int mNumber, String pw) {
+        this.mNumber = mNumber;
+        this.pw = pw;
+    }
+
+    public Member(int mNumber, String name, String email, String phone) {
+        this.mNumber = mNumber;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public Member(int mNumber, String pw, String name, String birth, String gender, String email, String phone) {
         this.mNumber = mNumber;
         this.pw = pw;
@@ -36,13 +48,6 @@ public class Member implements DomainObj {
         this.name = name;
         this.birth = birth;
         this.gender = gender;
-        this.email = email;
-        this.phone = phone;
-    }
-
-    public Member(int mNumber, String name, String email, String phone) {
-        this.mNumber = mNumber;
-        this.name = name;
         this.email = email;
         this.phone = phone;
     }

@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class MemberChangeForm {
+public class MemberInfoChangeForm {
 
     private int mNumber;
 

@@ -2,7 +2,7 @@ package petmily.dao;
 
 import petmily.domain.DomainObj;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.MemberDetailForm;
+import petmily.domain.admin_form.MemberDetailForm;
 import petmily.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -42,6 +42,10 @@ public class MemberDao implements BasicDao {
 
     public String selectName(int pk) {
         return mapper.selectName(pk);
+    }
+
+    public void updatePw(DomainObj obj) {
+        mapper.updatePw((Member) obj);
     }
 
     public List<Member> selectAll() {

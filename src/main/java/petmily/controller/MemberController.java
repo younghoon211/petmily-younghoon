@@ -17,8 +17,9 @@ import petmily.domain.find_board.form.FindBoardPageForm;
 import petmily.domain.look_board.LookBoard;
 import petmily.domain.look_board.form.LookBoardPageForm;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.MemberChangeForm;
-import petmily.domain.member.form.MemberJoinForm;
+import petmily.domain.member.form.JoinForm;
+import petmily.domain.member.form.MemberInfoChangeForm;
+import petmily.domain.member.form.MemberPwChangeForm;
 import petmily.domain.temp.form.MypageTempPageForm;
 import petmily.service.*;
 import petmily.validation.JoinValidator;
@@ -52,16 +53,16 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@Validated @ModelAttribute MemberJoinForm memberJoinForm,
+    public String join(@Validated @ModelAttribute JoinForm joinForm,
                        BindingResult bindingResult) {
-        log.info("POST memberJoinForm= {}", memberJoinForm);
+        log.info("POST memberJoinForm= {}", joinForm);
 
         if (bindingResult.hasErrors()) {
             log.info("join bindingResult= {}", bindingResult);
             return "/login/join";
         }
 
-        memberService.join(memberJoinForm);
+        memberService.join(joinForm);
 
         return "/alert/member/join";
     }
@@ -123,14 +124,13 @@ public class MemberController {
         return "/main/index";
     }
 
-    // =================== 마이페이지 ===================
     // 마이페이지 홈
     @GetMapping("/member/auth/mypage")
     public String mypage() {
         return "/member/mypage";
     }
 
-    // 회원정보 변경
+    // ======================= 회원정보 변경 =======================
     @GetMapping("/member/auth/changeInfo")
     public String changeInfoPage(Model model, HttpServletRequest request) {
         Member member = memberService.getMemberByPk(getAuthMNumber(request));
@@ -140,15 +140,15 @@ public class MemberController {
     }
 
     @PostMapping("/member/auth/changeInfo")
-    public String changeInfo(@Validated @ModelAttribute MemberChangeForm memberChangeForm, BindingResult bindingResult) {
-        log.info("POST memberChangeForm= {}", memberChangeForm);
+    public String changeInfo(@Validated @ModelAttribute MemberInfoChangeForm memberInfoChangeForm, BindingResult bindingResult) {
+        log.info("POST memberChangeForm= {}", memberInfoChangeForm);
 
         if (bindingResult.hasErrors()) {
             log.info("changeInfo bindingResult= {}", bindingResult);
             return "redirect:/member/auth/changeInfo";
         }
 
-        memberService.change(memberChangeForm);
+        memberService.changeInfo(memberInfoChangeForm);
 
         return "/alert/member/member_info_change";
     }
@@ -183,6 +183,59 @@ public class MemberController {
         return "ALREADY";
     }
 
+    // ======================== 비밀번호 변경 ========================
+    @GetMapping("/member/auth/changePw")
+    public String changePwPage() {
+        return "/member/member_pw_change";
+    }
+
+    @PostMapping("/member/auth/changePw")
+    public String changePw(@Validated @ModelAttribute MemberPwChangeForm memberPwChangeForm, BindingResult bindingResult, HttpServletRequest request) {
+        log.info("POST memberChangePwForm= {}", memberPwChangeForm);
+
+        if (bindingResult.hasErrors()) {
+            log.info("changePw bindingResult= {}", bindingResult);
+            return "/member/member_pw_change";
+        }
+
+        memberService.changePw(memberPwChangeForm);
+
+        return "/alert/member/member_pw_change";
+    }
+
+    // 기존 비번 입력값 틀릴 시
+    @PostMapping("/member/auth/changePw/oldPwNotCorrect")
+    @ResponseBody
+    public String oldPwNotCorrect(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String oldPw = requestBody.get("oldPw");
+        log.info("oldPw= {}", oldPw);
+
+        String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
+
+        if (!pw.equals(oldPw)) {
+            return "FAIL";
+        }
+
+        return "SUCCESS";
+    }
+
+    // 새 비번에 기존 비번값 입력 시
+    @PostMapping("/member/auth/changePw/newEqualsOld")
+    @ResponseBody
+    public String newEqualsOld(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String newPw = requestBody.get("newPw");
+        log.info("newPw= {}", newPw);
+
+        String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
+
+        if (pw.equals(newPw)) {
+            return "FAIL";
+        }
+
+        return "SUCCESS";
+    }
+
+    // ======================== 매칭 시스템 ========================
     // 찾아요 매칭된 페이지
     @GetMapping("/member/auth/findMatching")
     public String findMatching(@RequestParam(defaultValue = "1") int pageNo,
@@ -233,7 +286,7 @@ public class MemberController {
         return "/member/matched_look_findlist";
     }
 
-    // 입양, 임보 신청 현황
+    // ======================== 입양, 임보 신청 현황 ========================
     @GetMapping("/member/auth/myApply/{type}")
     public String getMyApply(@PathVariable String type,
                              @RequestParam(defaultValue = "1") int pageNo,
@@ -253,7 +306,7 @@ public class MemberController {
         return "/member/adopt_temp_apply_list";
     }
 
-    // 내가 쓴 게시글
+    // ======================== 내가 쓴 게시글 ========================
     @GetMapping("/member/auth/myPost/{type}")
     public String getMyPost(@PathVariable String type,
                             @RequestParam(defaultValue = "1") int pageNo,
@@ -289,7 +342,7 @@ public class MemberController {
         }
     }
 
-    // 회원탈퇴
+    // ======================== 회원 탈퇴 ========================
     @GetMapping("/member/auth/withdraw")
     public String withdrawPage() {
         return "/member/withdraw";
@@ -315,6 +368,7 @@ public class MemberController {
         return "SUCCESS";
     }
 
+    // ======================== 기타 메소드들 ========================
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Member authUser = (Member) session.getAttribute("authUser");

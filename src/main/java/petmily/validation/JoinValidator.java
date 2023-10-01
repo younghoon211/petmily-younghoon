@@ -1,6 +1,6 @@
 package petmily.validation;
 
-import petmily.domain.member.form.MemberJoinForm;
+import petmily.domain.member.form.JoinForm;
 import petmily.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,40 +17,40 @@ public class JoinValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return MemberJoinForm.class.isAssignableFrom(clazz);
+        return JoinForm.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        MemberJoinForm memberJoinForm = (MemberJoinForm) target;
+        JoinForm joinForm = (JoinForm) target;
 
         String pwPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,16}$";
-        Boolean securePw = Pattern.matches(pwPattern, memberJoinForm.getPw());
+        Boolean securePw = Pattern.matches(pwPattern, joinForm.getPw());
 
         // ID 중복체크
-        if (memberService.checkDuplicatedId(memberJoinForm.getId())) {
+        if (memberService.checkDuplicatedId(joinForm.getId())) {
             errors.rejectValue("id", "duplicatedId");
         }
 
         // 안전하지 않은 비번 & 비번!=비번 확인
         if (!securePw) {
             errors.rejectValue("pw", "securePw");
-        } else if (memberJoinForm.getPw() != null && !memberJoinForm.getPw().equals(memberJoinForm.getConfirmPw())) {
+        } else if (joinForm.getPw() != null && !joinForm.getPw().equals(joinForm.getConfirmPw())) {
             errors.rejectValue("confirmPw", "pwIsNotEqualConfirmPw");
         }
 
         // 성별 미선택 시
-        if (!("M".equals(memberJoinForm.getGender()) || "F".equals(memberJoinForm.getGender()))) {
+        if (!("M".equals(joinForm.getGender()) || "F".equals(joinForm.getGender()))) {
             errors.rejectValue("gender", "unSelectedGender");
         }
 
         // 이메일 중복체크
-        if (memberService.checkDuplicatedEmail(memberJoinForm.getEmail())) {
+        if (memberService.checkDuplicatedEmail(joinForm.getEmail())) {
             errors.rejectValue("email", "duplicatedEmail");
         }
 
         // 전화번호 중복체크
-        if (memberService.checkDuplicatedPhone(memberJoinForm.getPhone())) {
+        if (memberService.checkDuplicatedPhone(joinForm.getPhone())) {
             errors.rejectValue("phone", "duplicatedPhone");
         }
     }

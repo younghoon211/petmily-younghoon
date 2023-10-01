@@ -25,6 +25,8 @@ public interface MemberMapper {
 
     String selectName(int pk);
 
+    void updatePw(Member obj);
+
     int selectCount();
 
     List<Member> selectIndex(

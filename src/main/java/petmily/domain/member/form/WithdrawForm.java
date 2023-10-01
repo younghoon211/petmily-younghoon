@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class MemberWithdrawForm {
+public class WithdrawForm {
 
     @NotBlank
     @Size(min = 8, max = 16)

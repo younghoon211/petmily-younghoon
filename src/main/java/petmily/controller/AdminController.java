@@ -16,7 +16,7 @@ import petmily.domain.board.form.BoardPageForm;
 import petmily.domain.find_board.form.FindBoardPageForm;
 import petmily.domain.look_board.form.LookBoardPageForm;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.MemberPageForm;
+import petmily.domain.admin_form.MemberPageForm;
 import petmily.domain.shelter.Shelter;
 import petmily.domain.temp.TempPet;
 import petmily.service.*;

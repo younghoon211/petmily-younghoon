@@ -73,13 +73,13 @@
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-center">
-            <h2>회원정보 변경</h2>
+            <h2>비밀번호 변경</h2>
         </div>
         <br>
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/changeInfo" method="post" class="contactForm">
+                <form action="/member/auth/changePw" method="post" class="contactForm">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -92,57 +92,33 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="gender"><span class="font">성별</span></label>
-                                <input type="text"
-                                       class="form-control" id="gender"
-                                <c:if test="${authUser.gender eq 'M'}">
-                                       value="남자"
-                                </c:if>
-                                <c:if test="${authUser.gender eq 'F'}">
-                                       value="여자"
-                                </c:if>
-                                       readonly>
+                                <label class="label" for="oldPw"><span class="font">기존 비밀번호</span></label>
+                                <input type="password"
+                                       class="form-control" id="oldPw" name="oldPw"
+                                       placeholder="기존 비밀번호를 입력해주세요." maxlength="16" autofocus>
+                                <span class="oldPwMsg"></span>
+                                <input id="oldPwValid" hidden>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label" for="newPw"><span class="font">새 비밀번호</span></label>
+                                <input type="password"
+                                       class="form-control" id="newPw" name="newPw"
+                                       placeholder="8-16자, 영문+숫자+특수문자" maxlength="16">
+                                <span class="newPwMsg"></span>
+                                <input id="newPwValid" hidden>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="birth"><span class="font">생년월일</span></label>
-                                <input type="date"
-                                       class="form-control" id="birth"
-                                       value="${authUser.birth}"
-                                       readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="label" for="name"><span class="font">닉네임</span></label>
-                                <input type="text"
-                                       class="form-control" id="name" name="name"
-                                       placeholder="한글, 영문, 숫자만 입력 가능합니다." maxlength="15"
-                                       value="${member.name}">
-                                <span class="nameMsg"></span>
-                                <input id="nameValid" hidden>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="label" for="email"><span class="font">이메일</span></label>
-                                <input type="email"
-                                       class="form-control " id="email" name="email"
-                                       placeholder="ex) pet@petmily.com" maxlength="30"
-                                       value="${member.email}">
-                                <span class="emailMsg"></span>
-                                <input id="emailValid" hidden>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="label" for="phone"><span class="font">연락처</span></label>
-                                <input type="tel" class="form-control" id="phone" name="phone"
-                                       maxlength="11" placeholder="ex) 01012345678"
-                                       value="${member.phone}">
-                                <span class="phoneMsg"></span>
-                                <input id="phoneValid" hidden>
+                                <label class="label" for="newPw2"><span class="font">새 비밀번호 확인</span></label>
+                                <input type="password"
+                                       class="form-control" id="newPw2" name="newPw2"
+                                       placeholder="8-16자, 영문+숫자+특수문자" maxlength="16">
+                                <span class="newPw2Msg"></span>
+                                <input id="newPw2Valid" hidden>
                             </div>
                         </div>
                     </div>
@@ -180,131 +156,126 @@
 <script>
     $(document).ready(function () {
         $('#submit').on('click', function (event) {
-            let notError = $('#nameValid').val() !== "error" && $('#emailValid').val() !== "error" && $('#phoneValid').val() !== "error";
+            let notError = $('#oldPwValid').val() !== "error" && $('#newPwValid').val() !== "error" && $('#newPw2Valid').val() !== "error";
+            let oldPw = $('#oldPw').val().trim();
+            let newPw = $('#newPw').val().trim();
+            let newPw2 = $('#newPw2').val().trim();
+            let empty = !oldPw || !newPw || !newPw2;
 
-            if (notError) {
+            if (empty) {
+                alert("모든 양식을 채워주세요.");
+                event.preventDefault();
+
+                if (!oldPw && !newPw && !newPw2) {
+                    $('#oldPw').focus();
+                } else if (!oldPw && !newPw) {
+                    $('#oldPw').focus();
+                } else if (!oldPw && !newPw2) {
+                    $('#oldPw').focus();
+                } else if (!newPw && !newPw2) {
+                    $('#newPw').focus();
+                } else if (!oldPw) {
+                    $('#oldPw').focus();
+                } else if (!newPw) {
+                    $('#newPw').focus();
+                } else if (!newPw2) {
+                    $('#newPw2').focus();
+                }
+            } else if (notError) {
                 $("form").submit();
             } else {
                 event.preventDefault();
             }
         });
 
-        $('#name').on('input', function () {
-            const initName = "${member.name}";
-            let name = $('#name').val().trim();
-            let nameMsg = $('.nameMsg').addClass('error');
-            const nameRegex = /^[0-9a-zA-Z가-힣]+$/g;
+        $('#oldPw').on('input', function () {
+            oldPwAjax();
+        });
 
-            if (initName === name) {
-                nameMsg.text("");
-            } else if (!name) {
-                nameMsg.text("닉네임을 입력하세요.");
-                $('#nameValid').val("error");
-            } else if (name.length < 3 || name.length > 15) {
-                nameMsg.text("3-15자 이내로 입력해주세요.");
-                $('#nameValid').val("error");
-            } else if (!nameRegex.test(name)) {
-                nameMsg.text("닉네임 형식을 지켜주세요.");
-                $('#nameValid').val("error");
+        $('#newPw').on('input', function () {
+            let newPw = $('#newPw').val().trim();
+            let newPwMsg = $('.newPwMsg').addClass('error');
+            const pwRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]+$/;
+
+            if (!newPw) {
+                newPwMsg.text("비밀번호를 입력하세요.");
+                $('#newPwValid').val("error");
+            } else if (newPw.length < 8 || newPw.length > 16) {
+                newPwMsg.text("8-16자 이내로 입력해주세요.");
+                $('#newPwValid').val("error");
+            } else if (!pwRegex.test(newPw)) {
+                newPwMsg.text("비밀번호 형식을 지켜주세요.");
+                $('#newPwValid').val("error");
             } else {
-                nameMsg.removeClass('error').addClass('success').text("멋진 닉네임이네요!");
-                $('#nameValid').val("");
+                newPwAjax();
             }
         });
 
-        $('#email').on('input', function () {
-            const initEmail = "${member.email}";
-            let email = $('#email').val().trim();
-            let emailMsg = $('.emailMsg').addClass('error');
-            const emailRegex = /^[0-9a-zA-Z]+([-_.]*[0-9a-zA-Z])*@[0-9a-zA-Z]+([.]*[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/g;
+        $('#newPw2').on('input', function () {
+            let newPw = $('#newPw').val().trim();
+            let newPw2 = $('#newPw2').val().trim();
+            let newPw2Msg = $('.newPw2Msg').addClass('error');
 
-            if (initEmail === email) {
-                emailMsg.text("");
-            } else if (!email) {
-                emailMsg.text("이메일을 입력하세요.");
-                $('#emailValid').val("error");
-            } else if (email.length < 5 || email.length > 30) {
-                emailMsg.text("5-30자 이내로 입력해주세요.");
-                $('#emailValid').val("error");
-            } else if (!emailRegex.test(email)) {
-                emailMsg.text("이메일 형식을 지켜주세요.");
-                $('#emailValid').val("error");
+            if (newPw !== newPw2) {
+                newPw2Msg.text("비밀번호 확인이 일치하지 않습니다.");
+                $('#newPw2Valid').val("error");
             } else {
-                emailAjax();
-            }
-        });
-
-        $('#phone').on('input', function () {
-            const initPhone = "${member.phone}";
-            let phone = $('#phone').val().trim();
-            let phoneMsg = $('.phoneMsg').addClass('error');
-            const phoneRegex = /^(010)(\d{8})$/g;
-
-            if (initPhone === phone) {
-                phoneMsg.text("");
-            } else if (!phone) {
-                phoneMsg.text("번호를 입력하세요.");
-                $('#phoneValid').val("error");
-            } else if (phone.length !== 11 || !phoneRegex.test(phone)) {
-                phoneMsg.text("올바른 형식(예: 01012345678)으로 입력해주세요.");
-                $('#phoneValid').val("error");
-            } else {
-                phoneAjax();
+                newPw2Msg.text("");
+                $('#newPw2Valid').val("");
             }
         });
     });
 
-    function emailAjax() {
-        let emailMsg = $('.emailMsg').addClass('error');
+    function oldPwAjax() {
+        let oldPwMsg = $('.oldPwMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changeInfo/emailCheck',
+            url: '/member/auth/changePw/oldPwNotCorrect',
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({email: $('#email').val().trim()}),
+            data: JSON.stringify({oldPw: $('#oldPw').val().trim()}),
             success: function (result) {
-                console.log("email result=" + result);
+                console.log("oldPw result=" + result);
 
                 if (result === "SUCCESS") {
-                    emailMsg.removeClass('error').addClass('success').text("사용 가능한 이메일입니다.");
-                    $('#emailValid').val("");
+                    oldPwMsg.removeClass('error').addClass('success').text("올바른 비밀번호입니다.");
+                    $('#oldPwValid').val("");
                 } else {
-                    emailMsg.text("이미 사용중인 이메일입니다.");
-                    $('#emailValid').val("error");
+                    oldPwMsg.text("비밀번호가 틀렸습니다.");
+                    $('#oldPwValid').val("error");
                 }
             }
             , error: function () {
-                console.log("email error");
+                console.log("oldPw error");
             }
         });
     }
 
-    function phoneAjax() {
-        let phoneMsg = $('.phoneMsg').addClass('error');
+    function newPwAjax() {
+        let newPwMsg = $('.newPwMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changeInfo/phoneCheck',
+            url: '/member/auth/changePw/newEqualsOld',
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({phone: $('#phone').val()}),
-            dataType: 'text',
+            data: JSON.stringify({newPw: $('#newPw').val().trim()}),
             success: function (result) {
-                console.log("phone result=" + result);
+                console.log("newPw result=" + result);
 
                 if (result === "SUCCESS") {
-                    phoneMsg.removeClass('error').addClass('success').text("사용 가능한 번호입니다.");
-                    $('#phoneValid').val("");
+                    newPwMsg.removeClass('error').addClass('success').text("사용 가능한 비밀번호입니다.");
+                    $('#newPwValid').val("");
                 } else {
-                    phoneMsg.text("이미 사용중인 번호입니다.");
-                    $('#phoneValid').val("error");
+                    newPwMsg.text("기존에 사용하던 비밀번호입니다.");
+                    $('#newPwValid').val("error");
                 }
             }
             , error: function () {
-                console.log("phone error");
+                console.log("newPw error");
             }
         });
     }

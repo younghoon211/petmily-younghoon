@@ -1,4 +1,4 @@
-package petmily.domain.member.form;
+package petmily.domain.admin_form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

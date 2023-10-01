@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class MemberJoinForm {
+public class JoinForm {
 
     @NotBlank
     @Size(min = 3, max = 15)

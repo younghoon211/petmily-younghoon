@@ -5,13 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import petmily.dao.MemberDao;
+import petmily.domain.admin_form.MemberDetailForm;
 import petmily.domain.admin_form.MemberInsertForm;
+import petmily.domain.admin_form.MemberPageForm;
 import petmily.domain.admin_form.MemberUpdateForm;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.MemberChangeForm;
-import petmily.domain.member.form.MemberDetailForm;
-import petmily.domain.member.form.MemberJoinForm;
-import petmily.domain.member.form.MemberPageForm;
+import petmily.domain.member.form.*;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
     // ===================== Create =====================
     // 회원가입
     @Override
-    public void join(MemberJoinForm form) {
+    public void join(JoinForm form) {
         Member member = toJoin(form);
         memberDao.insert(member);
     }
@@ -60,12 +59,6 @@ public class MemberServiceImpl implements MemberService {
         return member.getPw().equals(pw);
     }
 
-    // 비밀번호, 확인 체크
-    @Override
-    public boolean isPwEqualToConfirm(String pw, String confirmPw) {
-        return pw != null && pw.equals(confirmPw);
-    }
-
     // pk로 회원정보 조회
     @Override
     public Member getMemberByPk(int pk) {
@@ -88,13 +81,22 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // ===================== Update =====================
-    // 수정
+    // 회원정보 변경
     @Override
-    public Member change(MemberChangeForm form) {
-        Member updateMember = toChange(form);
+    public Member changeInfo(MemberInfoChangeForm form) {
+        Member updateMember = toChangeInfo(form);
         memberDao.update(updateMember);
 
         return updateMember;
+    }
+
+    // 비밀번호 변경
+    @Override
+    public Member changePw(MemberPwChangeForm form) {
+        Member updatePw = toChangePw(form);
+        memberDao.updatePw(updatePw);
+
+        return updatePw;
     }
 
     // 수정 폼 (관리자)
@@ -166,7 +168,7 @@ public class MemberServiceImpl implements MemberService {
     // ===================== CRUD / 검증 끝 =====================
 
 
-    private Member toJoin(MemberJoinForm form) {
+    private Member toJoin(JoinForm form) {
         return new Member(
                 form.getId(),
                 form.getPw(),
@@ -190,12 +192,19 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    private Member toChange(MemberChangeForm form) {
+    private Member toChangeInfo(MemberInfoChangeForm form) {
         return new Member(
                 form.getMNumber(),
                 form.getName(),
                 form.getEmail(),
                 form.getPhone()
+        );
+    }
+
+    private Member toChangePw(MemberPwChangeForm form) {
+        return new Member(
+                form.getMNumber(),
+                form.getNewPw()
         );
     }
 

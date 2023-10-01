@@ -3,15 +3,16 @@ package petmily.service;
 import petmily.domain.admin_form.MemberInsertForm;
 import petmily.domain.admin_form.MemberUpdateForm;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.MemberChangeForm;
-import petmily.domain.member.form.MemberJoinForm;
-import petmily.domain.member.form.MemberPageForm;
+import petmily.domain.member.form.JoinForm;
+import petmily.domain.member.form.MemberInfoChangeForm;
+import petmily.domain.member.form.MemberPwChangeForm;
+import petmily.domain.admin_form.MemberPageForm;
 
 import java.util.List;
 
 public interface MemberService {
 
-    void join(MemberJoinForm form);
+    void join(JoinForm form);
 
     void insert(MemberInsertForm form);
 
@@ -19,15 +20,15 @@ public interface MemberService {
 
     boolean checkPwCorrect(int mNumber, String pw);
 
-    boolean isPwEqualToConfirm(String pw, String confirmPw);
-
     Member getMemberByPk(int pk);
 
     List<Member> getMemberList();
 
     MemberPageForm getAdminListPage(int pageNo, String keyword);
 
-    Member change(MemberChangeForm form);
+    Member changeInfo(MemberInfoChangeForm form);
+
+    Member changePw(MemberPwChangeForm form);
 
     MemberUpdateForm getUpdateForm(int mNumber);
 
