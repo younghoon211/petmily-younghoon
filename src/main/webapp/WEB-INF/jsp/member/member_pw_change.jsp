@@ -29,7 +29,7 @@
     <style>
         .success {
             font-size: xx-small;
-            color: #00bd56;
+            color: #008000;
         }
 
         .error {
@@ -97,7 +97,6 @@
                                        class="form-control" id="oldPw" name="oldPw"
                                        placeholder="기존 비밀번호를 입력해주세요." maxlength="16" autofocus>
                                 <span class="oldPwMsg"></span>
-                                <input id="oldPwValid" hidden>
                             </div>
                         </div>
                         <br>
@@ -108,17 +107,15 @@
                                        class="form-control" id="newPw" name="newPw"
                                        placeholder="8-16자, 영문+숫자+특수문자" maxlength="16">
                                 <span class="newPwMsg"></span>
-                                <input id="newPwValid" hidden>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="newPw2"><span class="font">새 비밀번호 확인</span></label>
+                                <label class="label" for="newPwCheck"><span class="font">새 비밀번호 확인</span></label>
                                 <input type="password"
-                                       class="form-control" id="newPw2" name="newPw2"
-                                       placeholder="8-16자, 영문+숫자+특수문자" maxlength="16">
-                                <span class="newPw2Msg"></span>
-                                <input id="newPw2Valid" hidden>
+                                       class="form-control" id="newPwCheck" name="newPwCheck"
+                                       placeholder="새 비밀번호를 한번 더 입력해주세요." maxlength="16">
+                                <span class="newPwCheckMsg"></span>
                             </div>
                         </div>
                     </div>
@@ -129,6 +126,11 @@
                     </div>
 
                     <input name="mNumber" value="${authUser.getMNumber()}" hidden>
+
+                    <%-- 유효성 검증 --%>
+                    <input id="oldPwValid" hidden>
+                    <input id="newPwValid" hidden>
+                    <input id="newPwCheckValid" hidden>
                 </form>
             </div>
         </div>
@@ -158,28 +160,33 @@
         $('#submit').on('click', function (event) {
             let oldPw = $('#oldPw').val().trim();
             let newPw = $('#newPw').val().trim();
-            let newPw2 = $('#newPw2').val().trim();
+            let newPwCheck = $('#newPwCheck').val().trim();
             let oldPwError = $('#oldPwValid').val() === "error";
             let newPwError = $('#newPwValid').val() === "error";
-            let newPw2Error = $('#newPw2Valid').val() === "error";
+            let newPwCheckError = $('#newPwCheckValid').val() === "error";
 
-            let isEmpty = !oldPw || !newPw || !newPw2;
+            let isEmpty = !oldPw || !newPw || !newPwCheck;
 
             if (isEmpty) {
-                alert("모든 양식을 채워주세요.");
                 event.preventDefault();
 
                 if (!oldPw) {
                     $('#oldPw').focus();
+                    $('.oldPwMsg').addClass('error').text("비밀번호를 입력하세요.");
                 } else if (!newPw) {
                     $('#newPw').focus();
-                } else if (!newPw2) {
-                    $('#newPw2').focus();
+                    $('.newPwMsg').addClass('error').text("새 비밀번호를 입력하세요.");
+                } else if (!newPwCheck) {
+                    $('#newPwCheck').focus();
+                    $('.newPwCheckMsg').addClass('error').text("새 비밀번호 확인을 입력하세요.");
                 }
-            } else if (oldPwError || newPwError || newPw2Error) {
+            } else if (oldPwError || newPwError || newPwCheckError) {
                 event.preventDefault();
             } else {
-                $("form").submit();
+                if (confirm("비밀번호를 정말로 변경하시겠습니까?")) {
+                    $("form").submit();
+                }
+                event.preventDefault();
             }
         });
 
@@ -199,24 +206,24 @@
                 newPwMsg.text("8-16자 이내로 입력해주세요.");
                 $('#newPwValid').val("error");
             } else if (!pwRegex.test(newPw)) {
-                newPwMsg.text("비밀번호 형식을 지켜주세요.");
+                newPwMsg.text("영문+숫자+특수문자로 입력하세요.");
                 $('#newPwValid').val("error");
             } else {
                 newPwAjax();
             }
         });
 
-        $('#newPw2').on('input', function () {
+        $('#newPwCheck').on('input', function () {
             let newPw = $('#newPw').val().trim();
-            let newPw2 = $('#newPw2').val().trim();
-            let newPw2Msg = $('.newPw2Msg').addClass('error');
+            let newPwCheck = $('#newPwCheck').val().trim();
+            let newPwCheckMsg = $('.newPwCheckMsg').addClass('error');
 
-            if (newPw !== newPw2) {
-                newPw2Msg.text("비밀번호 확인이 일치하지 않습니다.");
-                $('#newPw2Valid').val("error");
+            if (newPw !== newPwCheck) {
+                newPwCheckMsg.addClass('error').text("비밀번호와 확인이 일치하지 않습니다.");
+                $('#newPwCheckValid').val("error");
             } else {
-                newPw2Msg.text("");
-                $('#newPw2Valid').val("");
+                newPwCheckMsg.removeClass('error').addClass('success').text("새 비밀번호 확인이 일치합니다.");
+                $('#newPwCheckValid').val("");
             }
         });
     });

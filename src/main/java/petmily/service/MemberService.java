@@ -38,11 +38,11 @@ public interface MemberService {
 
     void delete(int mNumber);
 
-    boolean checkDuplicatedId(String id);
+    int checkDuplicatedId(String id);
 
-    boolean checkDuplicatedEmail(String email);
+    int checkDuplicatedEmail(String email);
 
-    boolean checkDuplicatedPhone(String phone);
+    int checkDuplicatedPhone(String phone);
 
     int checkDuplicatedEmailChangeInfo(int mNumber, String email);
 

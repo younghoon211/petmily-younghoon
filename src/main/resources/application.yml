@@ -12,5 +12,17 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
-  messages:
-    basename: errors
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: 계정
+    password: 비밀번호
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+          ssl:
+            trust: smtp.naver.com
+            enable: true

@@ -130,26 +130,20 @@ public class MemberServiceImpl implements MemberService {
     // ===================== 검증 =====================
     // 회원가입 검증 (아이디)
     @Override
-    public boolean checkDuplicatedId(String id) {
-        int idCount = memberDao.selectIdCheck(id);
-
-        return idCount == 1;
+    public int checkDuplicatedId(String id) {
+        return memberDao.selectIdCheck(id);
     }
 
     // 회원가입 검증 (이메일)
     @Override
-    public boolean checkDuplicatedEmail(String email) {
-        int emailCount = memberDao.selectEmailCheck(email);
-
-        return emailCount == 1;
+    public int checkDuplicatedEmail(String email) {
+        return memberDao.selectEmailCheck(email);
     }
 
     // 회원가입 검증 (연락처)
     @Override
-    public boolean checkDuplicatedPhone(String phone) {
-        int phoneCount = memberDao.selectPhoneCheck(phone);
-
-        return phoneCount == 1;
+    public int checkDuplicatedPhone(String phone) {
+        return memberDao.selectPhoneCheck(phone);
     }
 
     // 회원정보 변경 검증 (이메일)

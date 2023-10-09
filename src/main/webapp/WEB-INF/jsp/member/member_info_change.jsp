@@ -29,16 +29,12 @@
     <style>
         .success {
             font-size: xx-small;
-            color: #00bd56;
+            color: #008000;
         }
 
         .error {
             font-size: xx-small;
             color: #dc3545;
-        }
-
-        .font {
-            font-size: x-small;
         }
     </style>
 </head>
@@ -83,7 +79,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="id"><span class="font">아이디</span></label>
+                                <span class="label">아이디</span>
                                 <input type="text"
                                        class="form-control" id="id"
                                        value="${authUser.id}"
@@ -92,7 +88,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="gender"><span class="font">성별</span></label>
+                                <span class="label">성별</span>
                                 <input type="text"
                                        class="form-control" id="gender"
                                 <c:if test="${authUser.gender eq 'M'}">
@@ -106,7 +102,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="birth"><span class="font">생년월일</span></label>
+                                <span class="label">생년월일</span>
                                 <input type="date"
                                        class="form-control" id="birth"
                                        value="${authUser.birth}"
@@ -115,34 +111,31 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="name"><span class="font">닉네임</span></label>
+                                <span class="label">닉네임</span>
                                 <input type="text"
                                        class="form-control" id="name" name="name"
                                        placeholder="한글, 영문, 숫자만 입력 가능합니다." maxlength="15"
                                        value="${member.name}">
                                 <span class="nameMsg"></span>
-                                <input id="nameValid" hidden>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="email"><span class="font">이메일</span></label>
+                                <span class="label">이메일</span>
                                 <input type="email"
                                        class="form-control " id="email" name="email"
                                        placeholder="ex) pet@petmily.com" maxlength="30"
                                        value="${member.email}">
                                 <span class="emailMsg"></span>
-                                <input id="emailValid" hidden>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="label" for="phone"><span class="font">연락처</span></label>
+                                <span class="label">연락처</span>
                                 <input type="tel" class="form-control" id="phone" name="phone"
                                        maxlength="11" placeholder="ex) 01012345678"
                                        value="${member.phone}">
                                 <span class="phoneMsg"></span>
-                                <input id="phoneValid" hidden>
                             </div>
                         </div>
                     </div>
@@ -153,6 +146,11 @@
                     </div>
 
                     <input name="mNumber" value="${authUser.getMNumber()}" hidden>
+
+                    <%-- 유효성 검증 --%>
+                    <input id="nameValid" hidden>
+                    <input id="emailValid" hidden>
+                    <input id="phoneValid" hidden>
                 </form>
             </div>
         </div>
@@ -258,7 +256,7 @@
                 phoneMsg.text("번호를 입력하세요.");
                 $('#phoneValid').val("error");
             } else if (phone.length !== 11 || !phoneRegex.test(phone)) {
-                phoneMsg.text("올바른 형식(예: 01012345678)으로 입력해주세요.");
+                phoneMsg.text("올바른 형식(예: 01012345678)으로 입력하세요.");
                 $('#phoneValid').val("error");
             } else {
                 phoneAjax();
@@ -271,7 +269,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changeInfo/emailCheck',
+            url: '/member/auth/changeInfo/emailValid',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -298,7 +296,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changeInfo/phoneCheck',
+            url: '/member/auth/changeInfo/phoneValid',
             headers: {
                 'Content-Type': 'application/json'
             },

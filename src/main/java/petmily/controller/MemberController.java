@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt.form.MypageAdoptPageForm;
@@ -22,10 +21,11 @@ import petmily.domain.member.form.MemberInfoChangeForm;
 import petmily.domain.member.form.MemberPwChangeForm;
 import petmily.domain.temp.form.MypageTempPageForm;
 import petmily.service.*;
-import petmily.validation.JoinValidator;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @Controller
@@ -39,34 +39,15 @@ public class MemberController {
     private final AdoptTempService adoptTempService;
     private final BoardService boardService;
     private final AdoptReviewService adoptReviewService;
-    private final JoinValidator joinValidator;
+    private final MailServiceImpl mailServiceImpl;
 
-    @InitBinder("memberJoinForm")
-    public void joinInit(WebDataBinder dataBinder) {
-        dataBinder.addValidators(joinValidator);
+    // 메인페이지
+    @GetMapping("/")
+    public String home() {
+        return "/main/index";
     }
 
-    // 회원 가입
-    @GetMapping("/join")
-    public String joinPage() {
-        return "/login/join";
-    }
-
-    @PostMapping("/join")
-    public String join(@Validated @ModelAttribute JoinForm joinForm,
-                       BindingResult bindingResult) {
-        log.info("POST memberJoinForm= {}", joinForm);
-
-        if (bindingResult.hasErrors()) {
-            log.info("join bindingResult= {}", bindingResult);
-            return "/login/join";
-        }
-
-        memberService.join(joinForm);
-
-        return "/alert/member/join";
-    }
-
+    // ============================ 로그인/아웃 =============================
     // 로그인
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {
@@ -112,25 +93,93 @@ public class MemberController {
     }
 
     // 로그아웃
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
 
         return "redirect:/";
     }
 
-    @RequestMapping("/")
-    public String home() {
-        return "/main/index";
+    // ============================ 회원가입 ============================
+    @GetMapping("/join")
+    public String joinPage() {
+        return "/login/join";
     }
 
+    @PostMapping("/join")
+    public String join(@Validated @ModelAttribute JoinForm joinForm,
+                       BindingResult bindingResult) {
+        log.info("POST memberJoinForm= {}", joinForm);
+
+        if (bindingResult.hasErrors()) {
+            log.info("join bindingResult= {}", bindingResult);
+            return "redirect:/join";
+        }
+
+        memberService.join(joinForm);
+
+        return "/alert/member/join";
+    }
+
+    // 아이디 중복체크
+    @PostMapping("/join/idValid")
+    @ResponseBody
+    public String validDupIdAtJoin(@RequestBody Map<String, String> requestBody) {
+        String id = requestBody.get("id");
+        log.info("id={}", id);
+
+        if (memberService.checkDuplicatedId(id) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 이메일 중복체크
+    @PostMapping("/join/emailValid")
+    @ResponseBody
+    public String validDupEmailAtJoin(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        log.info("email={}", email);
+
+        if (memberService.checkDuplicatedEmail(email) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 이메일 인증코드 전송
+    @PostMapping("/join/sendMailAuthCode")
+    @ResponseBody
+    public String sendEmailCodeAtJoin(@RequestBody Map<String, String> requestBody) throws MessagingException, UnsupportedEncodingException {
+        String email = requestBody.get("email");
+        log.info("email={}", email);
+
+        return mailServiceImpl.sendMail(email);
+    }
+
+    // 연락처 중복체크
+    @PostMapping("/join/phoneValid")
+    @ResponseBody
+    public String validDupPhoneAtJoin(@RequestBody Map<String, String> requestBody) {
+        String phone = requestBody.get("phone");
+        log.info("phone={}", phone);
+
+        if (memberService.checkDuplicatedPhone(phone) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // ============================ 회원정보 변경 ============================
     // 마이페이지 홈
     @GetMapping("/member/auth/mypage")
     public String mypage() {
         return "/member/mypage";
     }
 
-    // ======================= 회원정보 변경 =======================
     @GetMapping("/member/auth/changeInfo")
     public String changeInfoPage(Model model, HttpServletRequest request) {
         Member member = memberService.getMemberByPk(getAuthMNumber(request));
@@ -154,9 +203,9 @@ public class MemberController {
     }
 
     // 회원정보 변경 이메일 중복체크
-    @PostMapping("/member/auth/changeInfo/emailCheck")
+    @PostMapping("/member/auth/changeInfo/emailValid")
     @ResponseBody
-    public String changeInfoEmailCheck(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String changeInfoEmailValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String email = requestBody.get("email");
         log.info("email={}", email);
 
@@ -169,9 +218,9 @@ public class MemberController {
     }
 
     // 회원정보 변경 연락처 중복체크
-    @PostMapping("/member/auth/changeInfo/phoneCheck")
+    @PostMapping("/member/auth/changeInfo/phoneValid")
     @ResponseBody
-    public String changeInfoPhoneCheck(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String changeInfoPhoneValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String phone = requestBody.get("phone");
         log.info("phone={}", phone);
 
@@ -183,7 +232,7 @@ public class MemberController {
         return "ALREADY";
     }
 
-    // ======================== 비밀번호 변경 ========================
+    // ============================== 비밀번호 변경 ==============================
     @GetMapping("/member/auth/changePw")
     public String changePwPage() {
         return "/member/member_pw_change";
@@ -213,7 +262,7 @@ public class MemberController {
         String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
 
         if (!pw.equals(oldPw)) {
-            return "FAIL";
+            return "ERROR";
         }
 
         return "SUCCESS";
@@ -229,13 +278,13 @@ public class MemberController {
         String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
 
         if (pw.equals(newPw)) {
-            return "FAIL";
+            return "ERROR";
         }
 
         return "SUCCESS";
     }
 
-    // ======================== 매칭 시스템 ========================
+    // ============================== 매칭 시스템 ==============================
     // 찾아요 매칭된 페이지
     @GetMapping("/member/auth/findMatching")
     public String findMatching(@RequestParam(defaultValue = "1") int pageNo,
@@ -286,7 +335,7 @@ public class MemberController {
         return "/member/matched_look_findlist";
     }
 
-    // ======================== 입양, 임보 신청 현황 ========================
+    // ============================== 입양, 임보 신청 현황 ==============================
     @GetMapping("/member/auth/myApply/{type}")
     public String getMyApply(@PathVariable String type,
                              @RequestParam(defaultValue = "1") int pageNo,
@@ -306,7 +355,7 @@ public class MemberController {
         return "/member/adopt_temp_apply_list";
     }
 
-    // ======================== 내가 쓴 게시글 ========================
+    // ============================== 내가 쓴 게시글 ==============================
     @GetMapping("/member/auth/myPost/{type}")
     public String getMyPost(@PathVariable String type,
                             @RequestParam(defaultValue = "1") int pageNo,
@@ -342,7 +391,7 @@ public class MemberController {
         }
     }
 
-    // ======================== 회원 탈퇴 ========================
+    // ============================== 회원 탈퇴 ==============================
     @GetMapping("/member/auth/withdraw")
     public String withdrawPage() {
         return "/member/withdraw";
@@ -376,7 +425,7 @@ public class MemberController {
         return "SUCCESS";
     }
 
-    // ======================== 기타 메소드들 ========================
+    // ============================== 기타 메소드들 ==============================
     private Member getAuthUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Member authUser = (Member) session.getAttribute("authUser");

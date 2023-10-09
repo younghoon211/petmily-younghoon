@@ -27,7 +27,7 @@
     <style>
         .error {
             color: red;
-            font-size: 11.5px;
+            font-size: 12px;
             position: fixed;
         }
     </style>
@@ -41,7 +41,7 @@
                 <form action="/login" method="post">
                     <div class="login" id="login">
                         <a class="navbar-brand" href="/">
-                            <h4><span class="flaticon-pawprint-1 mr-2"></span><b>Petmily</b></h4>
+                            <h4><span class="flaticon-pawprint-1 mr-2" style="color: #00bd56"></span><b>Petmily</b></h4>
                         </a>
                     </div>
                     <div class="form-inputs">
@@ -61,13 +61,13 @@
                             >
                         </div>
                         <span class="error">
-                                <strong id="requiredMsg" style="display: none"></strong>
+                                <span id="requiredMsg" style="display: none"></span>
                             <c:if test="${not empty rejectedId}">
-                                <strong id="notCorrectMsg">아이디 또는 비밀번호가 일치하지 않습니다.</strong>
+                                <span id="notCorrectMsg">아이디 또는 비밀번호가 일치하지 않습니다.</span>
                             </c:if>
                             <br>
                         </span>
-                        <br>
+                        <br><br>
                         <div class="login">
                             <div>
                                 <button type="submit" id="loginBtn" class="btn btn-lg btn-block btn-success">로그인
@@ -131,7 +131,5 @@
     });
 </script>
 
-<%-- footer --%>
-<%@ include file="../include/footer.jspf" %>
 </body>
 </html>
