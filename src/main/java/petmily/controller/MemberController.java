@@ -39,7 +39,7 @@ public class MemberController {
     private final AdoptTempService adoptTempService;
     private final BoardService boardService;
     private final AdoptReviewService adoptReviewService;
-    private final MailServiceImpl mailServiceImpl;
+    private final MailService mailService;
 
     // 메인페이지
     @GetMapping("/")
@@ -156,7 +156,7 @@ public class MemberController {
         String email = requestBody.get("email");
         log.info("email={}", email);
 
-        return mailServiceImpl.sendMail(email);
+        return mailService.sendMailAtJoin(email);
     }
 
     // 연락처 중복체크
@@ -171,6 +171,38 @@ public class MemberController {
         }
 
         return "ALREADY";
+    }
+
+    // ============================ 아이디 찾기 ============================
+    @GetMapping("/findId")
+    public String findIdPage() {
+        return "/login/find_id";
+    }
+
+    @PostMapping("/findId")
+    @ResponseBody
+    public String findId(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        log.info("중복체크 할 email={}", email);
+
+        if (memberService.checkDuplicatedEmail(email) != 0) {
+            log.info("POST SUCCESS");
+
+            return "SUCCESS";
+        }
+
+        return "ERROR";
+    }
+
+    // 이메일 보내기
+    @PostMapping("/findId/sendMail")
+    @ResponseBody
+    public void sendMailAtFindId(@RequestBody Map<String, String> requestBody) throws MessagingException, UnsupportedEncodingException {
+        String email = requestBody.get("email");
+        log.info("send email={}", email);
+
+        Member member = memberService.getMemberByEmail(email);
+        mailService.sendMailAtFindId(email, member);
     }
 
     // ============================ 회원정보 변경 ============================

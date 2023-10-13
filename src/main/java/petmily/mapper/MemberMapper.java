@@ -52,6 +52,8 @@ public interface MemberMapper {
             @Param("phone") String phone
     );
 
+    Member selectMemberByEmail(String email);
+
     int selectCount(String keyword);
 
     List<Member> selectIndex(

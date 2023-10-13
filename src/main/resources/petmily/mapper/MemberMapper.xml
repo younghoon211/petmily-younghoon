@@ -84,6 +84,12 @@
         and MNUMBER != #{mNumber}
     </select>
 
+    <select id="selectMemberByEmail" resultType="petmily.domain.member.Member">
+        select *
+        from MEMBER
+        where EMAIL = #{email}
+    </select>
+
     <update id="updatePw">
         update MEMBER
         set PW = #{pw}

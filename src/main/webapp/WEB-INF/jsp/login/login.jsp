@@ -39,42 +39,50 @@
         <div class="form">
             <div class="left-side">
                 <form action="/login" method="post">
-                    <div class="login" id="login">
-                        <a class="navbar-brand" href="/">
-                            <h4><span class="flaticon-pawprint-1 mr-2" style="color: #00bd56"></span><b>Petmily</b></h4>
-                        </a>
-                    </div>
-                    <div class="form-inputs">
-                        <input type="text" name="id" id="id" placeholder="아이디"
-                               style="padding-left: 10px" maxlength="15"
-                               value="${rejectedId}"
-                        <c:if test="${empty rejectedId}">
-                               autofocus
-                        </c:if>
-                        >
-                        <div class="password">
-                            <input type="password" name="pw" id="pw" placeholder="비밀번호"
-                                   style="padding-left: 10px" maxlength="16"
-                            <c:if test="${not empty rejectedId}">
-                                   autofocus
-                            </c:if>
-                            >
+                    <div style="padding-bottom: 15%">
+                        <div class="login" id="login">
+                            <a class="navbar-brand" href="/">
+                                <h4><span class="flaticon-pawprint-1 mr-2" style="color: #00bd56"></span><b>Petmily</b>
+                                </h4>
+                            </a>
                         </div>
-                        <span class="error">
-                                <span id="requiredMsg" style="display: none"></span>
-                            <c:if test="${not empty rejectedId}">
-                                <span id="notCorrectMsg">아이디 또는 비밀번호가 일치하지 않습니다.</span>
-                            </c:if>
-                            <br>
-                        </span>
-                        <br><br>
-                        <div class="login">
+                        <div class="form-inputs">
                             <div>
+                                <input type="text" name="id" id="id" placeholder="아이디"
+                                       style="padding-left: 10px" maxlength="15"
+                                       value="${rejectedId}"
+                                <c:if test="${empty rejectedId}">
+                                       autofocus
+                                </c:if>
+                                >
+                            </div>
+                            <div class="password">
+                                <input type="password" name="pw" id="pw" placeholder="비밀번호"
+                                       style="padding-left: 10px" maxlength="16"
+                                <c:if test="${not empty rejectedId}">
+                                       autofocus
+                                </c:if>
+                                >
+                            </div>
+                            <div class="error">
+                                <span id="requiredMsg" style="display: none"></span>
+                                <c:if test="${not empty rejectedId}">
+                                    <span id="notCorrectMsg">아이디 또는 비밀번호가 일치하지 않습니다.</span>
+                                </c:if>
+                            </div>
+                            <br>
+                            <br style="line-height:50%">
+                            <div class="login">
                                 <button type="submit" id="loginBtn" class="btn btn-lg btn-block btn-success">로그인
                                 </button>
-                                <br>
+                                <br style="line-height:50%">
+                                <p class="login-text" style="position: fixed">
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a href="/findId" style="color: #008000">아이디 찾기</a>&nbsp;<span style="color: #9e9e9e">|</span>
+                                    <a href="/findPw" style="color: #008000">비밀번호 찾기</a>&nbsp;<span style="color: #9e9e9e">|</span>
+                                    <a href="/join" style="color: #008000">회원가입</a>
+                                </p>
                             </div>
-                            <p class="login-text">계정이 없으신가요? <a href="/join">회원가입</a></p>
                         </div>
                     </div>
                 </form>

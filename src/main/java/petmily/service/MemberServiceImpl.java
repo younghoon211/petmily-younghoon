@@ -158,6 +158,12 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.selectPhoneCheckChangeInfo(mNumber, phone);
     }
 
+    // 아이디 찾기 검증 (이메일)
+    @Override
+    public Member getMemberByEmail(String email) {
+        return memberDao.selectMemberByEmail(email);
+    }
+
 
     // ===================== CRUD / 검증 끝 =====================
 

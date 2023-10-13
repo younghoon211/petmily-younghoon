@@ -47,4 +47,6 @@ public interface MemberService {
     int checkDuplicatedEmailChangeInfo(int mNumber, String email);
 
     int checkDuplicatedPhoneChangeInfo(int mNumber, String phone);
+
+    Member getMemberByEmail(String email);
 }

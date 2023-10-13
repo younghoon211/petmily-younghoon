@@ -72,6 +72,10 @@ public class MemberDao implements BasicDao {
         return mapper.selectPhoneCheckChangeInfo(mNumber, email);
     }
 
+    public Member selectMemberByEmail(String email) {
+        return mapper.selectMemberByEmail(email);
+    }
+
     // 관리자 페이지 조건부검색 회원 총 개수
     public int selectCount(String keyword) {
         return mapper.selectCount(keyword);
