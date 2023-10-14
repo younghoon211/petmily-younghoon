@@ -139,7 +139,6 @@
                                         <button id="emailAuthBtn" type="button" class="btn btn-outline-success">인증하기
                                         </button>
                                     </div>
-
                                     <span class="emailMsg"></span>
 
                                     <div style="display: none" id="inputAuthCode">
@@ -364,6 +363,10 @@
             if (inputCode === authCode) {
                 emailAuthMsg.removeClass('error').addClass('success').text("인증코드가 일치합니다.");
                 $('#emailAuthValid').val("");
+                $('#emailAuth').prop('readonly', true);
+            } else if (!inputCode) {
+                emailAuthMsg.text("인증코드를 입력해주세요.");
+                $('#emailAuthValid').val("error");
             } else {
                 emailAuthMsg.text("인증코드가 일치하지 않습니다.");
                 $('#emailAuthValid').val("error");
@@ -537,9 +540,6 @@
         }
     });
 </script>
-
-<%-- footer --%>
-<%@ include file="../include/footer.jspf" %>
 
 </body>
 </html>

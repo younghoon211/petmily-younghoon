@@ -48,6 +48,10 @@ public class MemberDao implements BasicDao {
         mapper.updatePw((Member) obj);
     }
 
+    public void resetPw(DomainObj obj) {
+        mapper.resetPw((Member) obj);
+    }
+
     public List<Member> selectAll() {
         return mapper.selectAll();
     }
@@ -74,6 +78,10 @@ public class MemberDao implements BasicDao {
 
     public Member selectMemberByEmail(String email) {
         return mapper.selectMemberByEmail(email);
+    }
+
+    public String selectPwById(String id) {
+        return mapper.selectPwById(id);
     }
 
     // 관리자 페이지 조건부검색 회원 총 개수

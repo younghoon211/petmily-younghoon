@@ -79,7 +79,7 @@
                                 <p class="login-text" style="position: fixed">
                                     &nbsp;&nbsp;&nbsp;
                                     <a href="/findId" style="color: #008000">아이디 찾기</a>&nbsp;<span style="color: #9e9e9e">|</span>
-                                    <a href="/findPw" style="color: #008000">비밀번호 찾기</a>&nbsp;<span style="color: #9e9e9e">|</span>
+                                    <a href="/resetPw" style="color: #008000">비밀번호 찾기</a>&nbsp;<span style="color: #9e9e9e">|</span>
                                     <a href="/join" style="color: #008000">회원가입</a>
                                 </p>
                             </div>

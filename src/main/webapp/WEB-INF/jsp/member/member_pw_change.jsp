@@ -165,9 +165,9 @@
             let newPwError = $('#newPwValid').val() === "error";
             let newPwCheckError = $('#newPwCheckValid').val() === "error";
 
-            let isEmpty = !oldPw || !newPw || !newPwCheck;
+            let hasEmpty = !oldPw || !newPw || !newPwCheck;
 
-            if (isEmpty) {
+            if (hasEmpty) {
                 event.preventDefault();
 
                 if (!oldPw) {
@@ -186,7 +186,6 @@
                 if (confirm("비밀번호를 정말로 변경하시겠습니까?")) {
                     $("form").submit();
                 }
-                event.preventDefault();
             }
         });
 

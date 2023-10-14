@@ -1,12 +1,13 @@
 package petmily.service;
 
 import petmily.domain.admin_form.MemberInsertForm;
+import petmily.domain.admin_form.MemberPageForm;
 import petmily.domain.admin_form.MemberUpdateForm;
 import petmily.domain.member.Member;
 import petmily.domain.member.form.JoinForm;
 import petmily.domain.member.form.MemberInfoChangeForm;
 import petmily.domain.member.form.MemberPwChangeForm;
-import petmily.domain.admin_form.MemberPageForm;
+import petmily.domain.member.form.ResetPwForm;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public interface MemberService {
 
     Member getMemberByPk(int pk);
 
+    Member getMemberById(String id);
+
+    String getPwById(String id);
+
     List<Member> getMemberList();
 
     MemberPageForm getAdminListPage(int pageNo, String keyword);
@@ -29,6 +34,8 @@ public interface MemberService {
     Member changeInfo(MemberInfoChangeForm form);
 
     Member changePw(MemberPwChangeForm form);
+
+    Member resetPw(ResetPwForm form);
 
     MemberUpdateForm getUpdateForm(int mNumber);
 

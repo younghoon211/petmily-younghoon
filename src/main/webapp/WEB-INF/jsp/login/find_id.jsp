@@ -31,6 +31,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
+
 <div class="container">
     <form class="contactForm">
         <br><br><br><br><br><br><br><br><br><br>
@@ -97,13 +98,12 @@
         });
 
         function emailAjax() {
+            let email = $('#email').val().trim();
+
             $.ajax({
                 type: 'POST',
                 url: '/findId',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({email: $('#email').val().trim()}),
+                data: {email: email},
                 success: function (result) {
                     console.log("email result=" + result);
 
@@ -125,13 +125,12 @@
         }
 
         function sendMailAjax() {
+            let email = $('#email').val().trim();
+
             $.ajax({
                 type: 'POST',
                 url: '/findId/sendMail',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({email: $('#email').val().trim()}),
+                data: {email: email}
             });
         }
     });

@@ -19,6 +19,7 @@ import petmily.domain.member.Member;
 import petmily.domain.member.form.JoinForm;
 import petmily.domain.member.form.MemberInfoChangeForm;
 import petmily.domain.member.form.MemberPwChangeForm;
+import petmily.domain.member.form.ResetPwForm;
 import petmily.domain.temp.form.MypageTempPageForm;
 import petmily.service.*;
 
@@ -181,9 +182,8 @@ public class MemberController {
 
     @PostMapping("/findId")
     @ResponseBody
-    public String findId(@RequestBody Map<String, String> requestBody) {
-        String email = requestBody.get("email");
-        log.info("중복체크 할 email={}", email);
+    public String findId(@RequestParam String email) {
+        log.info("아이디 찾기: 입력받은 email={}", email);
 
         if (memberService.checkDuplicatedEmail(email) != 0) {
             log.info("POST SUCCESS");
@@ -197,13 +197,87 @@ public class MemberController {
     // 이메일 보내기
     @PostMapping("/findId/sendMail")
     @ResponseBody
-    public void sendMailAtFindId(@RequestBody Map<String, String> requestBody) throws MessagingException, UnsupportedEncodingException {
-        String email = requestBody.get("email");
+    public void sendMailAtFindId(@RequestParam String email) throws MessagingException, UnsupportedEncodingException {
         log.info("send email={}", email);
 
         Member member = memberService.getMemberByEmail(email);
         mailService.sendMailAtFindId(email, member);
     }
+
+    // ============================ 비밀번호 찾기 ============================
+    @GetMapping("/resetPw")
+    public String resetPwPage() {
+        return "/login/reset_pw";
+    }
+
+    // 인증번호 입력 및 비밀번호 재설정
+    @PostMapping("/resetPw")
+    public String resetPw(@Validated @ModelAttribute ResetPwForm resetPwForm, BindingResult bindingResult) {
+        log.info("POST resetPwForm= {}", resetPwForm);
+
+        if (bindingResult.hasErrors()) {
+            log.info("resetPw bindingResult= {}", bindingResult);
+            return "redirect:/resetPw";
+        }
+
+        if (!resetPwForm.getAuthCode().equals(resetPwForm.getInputCode())) {
+            log.info("서버검증 : 인증코드 불일치");
+            return "redirect:/resetPw";
+        }
+
+        memberService.resetPw(resetPwForm);
+
+        return "/alert/member/reset_pw";
+    }
+
+    // ID, EMAIL 정보 검증
+    @PostMapping("/resetPw/validIdAndEmail")
+    @ResponseBody
+    public String validIdAndEmail(@RequestBody Map<String, String> requestBody) {
+        String id = requestBody.get("id");
+        String email = requestBody.get("email");
+        log.info("비번 찾기: 입력받은 id={}, email={}", id, email);
+
+        boolean existId = memberService.checkDuplicatedId(id) != 0;
+        boolean existEmail = memberService.checkDuplicatedEmail(email) != 0;
+
+        if (existId && existEmail) {
+            boolean equalsInfo = email.equals(memberService.getMemberById(id).getEmail());
+
+            if (equalsInfo) {
+                log.info("POST SUCCESS");
+
+                return "SUCCESS";
+            }
+        }
+
+        return "ERROR";
+    }
+
+    // 이메일 보내기
+    @PostMapping("/resetPw/sendMail")
+    @ResponseBody
+    public String sendMailAtResetPw(@RequestParam String email) throws MessagingException, UnsupportedEncodingException {
+        log.info("send email={}", email);
+
+        Member member = memberService.getMemberByEmail(email);
+        String authCode = mailService.sendMailAtResetPw(email, member);
+        log.info("생성된 authCode={}", authCode);
+
+        return authCode;
+    }
+
+    // 검증: 새 비번 != 기존 비번
+    @PostMapping("/resetPw/validDupOldPw")
+    @ResponseBody
+    public String validDuplicatedOldPw(@RequestParam String id) {
+        String oldPw = memberService.getPwById(id);
+
+        log.info("id={}, oldPw={}", id, oldPw);
+
+        return oldPw;
+    }
+
 
     // ============================ 회원정보 변경 ============================
     // 마이페이지 홈

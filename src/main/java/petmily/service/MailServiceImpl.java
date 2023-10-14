@@ -29,7 +29,7 @@ public class MailServiceImpl implements MailService {
 
         message.setFrom(new InternetAddress(EMAIL_ADDRESS, SENDER));
         message.addRecipients(RecipientType.TO, to);
-        message.setSubject("petmily 회원가입 인증코드입니다.");
+        message.setSubject("[petmily] 회원가입 인증코드");
 
         String content = "";
         content += "안녕하세요. 유기동물 입양을 장려하는 petmily입니다 :)<br>";
@@ -49,7 +49,7 @@ public class MailServiceImpl implements MailService {
         message.setFrom(new InternetAddress(EMAIL_ADDRESS, SENDER));
         message.addRecipients(RecipientType.TO, to);
 
-        String subject = "안녕하세요 petmily입니다. " + member.getName() + "님의 아이디를 보내드립니다.";
+        String subject = "[petmily] " + member.getName() + "님의 아이디입니다.";
         message.setSubject(subject);
 
         String content = "";
@@ -59,6 +59,27 @@ public class MailServiceImpl implements MailService {
         message.setText(content, "utf-8", "html");
 
         mailSender.send(message);
+    }
+
+    @Override
+    public String sendMailAtResetPw(String to, Member member) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        String authCode = getAuthCode();
+
+        message.setFrom(new InternetAddress(EMAIL_ADDRESS, SENDER));
+        message.addRecipients(RecipientType.TO, to);
+        String subject = "[petmily] 비밀번호 재설정 인증코드";
+        message.setSubject(subject);
+
+        String content = "";
+        content += "안녕하세요. petmily입니다 :)<br>";
+        content += member.getName() + "님의 비밀번호 재설정 인증코드를 보내드립니다.<br><br>";
+        content += "인증코드 : " + "<b>" + authCode + "</b>";
+        message.setText(content, "utf-8", "html");
+
+        mailSender.send(message);
+
+        return authCode;
     }
 
     private String getAuthCode() {

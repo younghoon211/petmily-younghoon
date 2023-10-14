@@ -65,6 +65,18 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.findByPk(pk);
     }
 
+    // 아이디로 멤버 정보 조회
+    @Override
+    public Member getMemberById(String id) {
+        return memberDao.selectMemberById(id);
+    }
+
+    // 아이디로 비번 조회
+    @Override
+    public String getPwById(String id) {
+        return memberDao.selectPwById(id);
+    }
+
     // 회원 리스트 조회 (관리자)
     @Override
     public List<Member> getMemberList() {
@@ -97,6 +109,15 @@ public class MemberServiceImpl implements MemberService {
         memberDao.updatePw(updatePw);
 
         return updatePw;
+    }
+
+    // 비밀번호 재설정
+    @Override
+    public Member resetPw(ResetPwForm form) {
+        Member resetPw = toResetPw(form);
+        memberDao.resetPw(resetPw);
+
+        return resetPw;
     }
 
     // 수정 폼 (관리자)
@@ -205,6 +226,13 @@ public class MemberServiceImpl implements MemberService {
         return new Member(
                 form.getMNumber(),
                 form.getNewPw()
+        );
+    }
+
+    private Member toResetPw(ResetPwForm form) {
+        return new Member(
+                form.getId(),
+                form.getPw()
         );
     }
 

@@ -10,4 +10,7 @@ public interface MailService {
     String sendMailAtJoin(String to) throws MessagingException, UnsupportedEncodingException;
 
     void sendMailAtFindId(String to, Member member) throws MessagingException, UnsupportedEncodingException;
+
+    String sendMailAtResetPw(String to, Member member) throws MessagingException, UnsupportedEncodingException;
+
 }

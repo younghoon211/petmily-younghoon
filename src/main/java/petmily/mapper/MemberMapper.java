@@ -25,7 +25,11 @@ public interface MemberMapper {
 
     String selectName(int pk);
 
+    String selectPwById(String id);
+
     void updatePw(Member obj);
+
+    void resetPw(Member obj);
 
     int selectCount();
 

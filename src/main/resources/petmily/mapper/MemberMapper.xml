@@ -90,10 +90,22 @@
         where EMAIL = #{email}
     </select>
 
+    <select id="selectPwById" resultType="java.lang.String">
+        select PW
+        from MEMBER
+        where ID = #{id}
+    </select>
+
     <update id="updatePw">
         update MEMBER
         set PW = #{pw}
         where MNUMBER = #{mNumber}
+    </update>
+
+    <update id="resetPw">
+        update MEMBER
+        set PW = #{pw}
+        where ID = #{id}
     </update>
 
     <!--================= 관리자 페이지 =================-->
