@@ -45,9 +45,6 @@
             <div class="contact-wrap w-100 p-md-5 p-4">
                 <form action="/admin/member/update" method="POST" class="contactForm">
                     <div class="row">
-
-                        <input type="hidden" name="mNumber" value="${updateForm.getMNumber()}">
-
                         <div class="col-md-12 form-group">
                             <label class="label">아이디</label>
                             <input type="text"
@@ -104,6 +101,8 @@
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;
                         <button type="submit" class="btn btn-primary">회원정보 수정</button>
                     </div>
+
+                    <input name="mNumber" value="${updateForm.getMNumber()}" hidden>
                 </form>
             </div>
         </div>

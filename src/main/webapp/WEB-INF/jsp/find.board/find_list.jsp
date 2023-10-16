@@ -59,7 +59,7 @@
                     <div>
                         <c:if test="${empty param.species && empty param.animalState}">
                             <c:forEach var="sort" items="${['fno', 'fnoAsc', 'viewCount']}">
-                                <a href="/findBoard/list?sort=${sort}">
+                                <a href="<c:out value='/findBoard/list?sort=${sort}'/>">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'fno'}">최신순</c:when>
@@ -73,9 +73,9 @@
 
                         <c:if test="${not empty param.species && not empty param.animalState}">
                             <c:set var="linkParams"
-                                   value="?species=${param.species}&amp;animalState=${param.animalState}&amp;keyword=${param.keyword}&amp;sort="/>
+                                   value="?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort="/>
                             <c:forEach var="sort" items="${['fno', 'fnoAsc', 'viewCount']}">
-                                <a href="/findBoard/list${linkParams}${sort}">
+                                <a href="<c:out value='/findBoard/list${linkParams}${sort}'/>">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'fno'}">최신순</c:when>
@@ -95,27 +95,27 @@
             <c:forEach var="findBoard" items="${pageForm.content}">
                 <div class="col-md-4 ftco-animate" id="d-flex-out">
                     <div class="blog-entry align-self-stretch" id="d-flex-in">
-                        <a href="/findBoard/detail?faNumber=${findBoard.faNumber}"
+                        <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>"
                            class="block-20 rounded"
-                           style="background-image: url('/findBoard/upload?filename=${findBoard.imgPath}');">
+                           style="background-image: url('<c:out value="/findBoard/upload?filename=${findBoard.imgPath}"/>');">
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div><small>${findBoard.wrTime}</small></div>
+                                <div><small><c:out value="${findBoard.wrTime}"/></small></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
+                                <div><i class="far fa-eye"></i> <c:out value="종: ${findBoard.species} / 품종: ${findBoard.kind}"/></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 실종장소: ${findBoard.location}</div>
+                                <div><i class="far fa-eye"></i> 실종장소: <c:out value="${findBoard.location}"/></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 상태: ${findBoard.animalState}</div>
+                                <div><i class="far fa-eye"></i> 상태: <c:out value="${findBoard.animalState}"/></div>
                                 <br>
                             </div>
-                            <div><small style="color: #00bd56">${findBoard.name}</small></div>
+                            <div><small style="color: #00bd56"><c:out value="${findBoard.name}"/></small></div>
                             <h3 class="heading">
-                                <a href="/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a>
+                                <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>"><c:out value="${findBoard.title}"/></a>
                             </h3>
                             <div class="meta mb-2">
-                                <div>조회수: ${findBoard.viewCount}</div>
+                                <div>조회수: <c:out value="${findBoard.viewCount}"/></div>
                             </div>
                         </div>
                     </div>
@@ -125,14 +125,12 @@
 
         <span class="modal-footer">
                 <button type="button" class="btn btn-primary"
-                        onclick="location.href='/findBoard/auth/write'">글쓰기</button>
+                        onclick="window.location.href='/findBoard/auth/write'">글쓰기</button>
         </span>
 
         <div style="display: flex; justify-content: center;">
             <form action="/findBoard/list" method="get">
                 <div class="form-group row">
-                    <input type="hidden" name="sort" value="${param.sort}"/>
-
                     <div class="col">
                         <select name="species" class="form-control">
                             <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
@@ -162,6 +160,8 @@
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
+
+                <input name="sort" value="${param.sort}" hidden>
             </form>
         </div>
 

@@ -218,7 +218,7 @@
             <button id="submit" type="submit" class="btn btn-primary">임시보호 수정</button>
         </div>
         <br>
-        <input type="hidden" name="tNumber" value="${selectedTemp.getTNumber()}">
+        <input name="tNumber" value="${selectedTemp.getTNumber()}" hidden>
     </form>
 </div>
 

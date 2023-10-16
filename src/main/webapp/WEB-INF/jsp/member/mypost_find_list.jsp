@@ -101,27 +101,27 @@
                     <c:forEach var="findBoard" items="${myPost.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                <a href="/findBoard/detail?faNumber=${findBoard.faNumber}"
+                                <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/findBoard/upload?filename=${findBoard.imgPath}');">
+                                   style="background-image: url('<c:out value="/findBoard/upload?filename=${findBoard.imgPath}"/>');">
                                 </a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div>종: ${findBoard.species} / 품종: ${findBoard.kind}</div>
+                                        <div><c:out value="종: ${findBoard.species} / 품종: ${findBoard.kind}"/></div>
                                         <br>
-                                        <div>상태: ${findBoard.animalState}</div>
+                                        <div>상태: <c:out value="${findBoard.animalState}"/></div>
                                         <br>
-                                        <div>장소: ${findBoard.location}</div>
+                                        <div>장소: <c:out value="${findBoard.location}"/></div>
                                         <br>
-                                        <div>작성일: ${findBoard.wrTime}</div>
+                                        <div>작성일: <c:out value="${findBoard.wrTime}"/></div>
                                         <br>
-                                        <div>작성자: ${findBoard.name}</div>
+                                        <div>작성자: <c:out value="${findBoard.name}"/></div>
                                     </div>
                                     <h3 class="heading">
-                                        <a href="/findBoard/detail?faNumber=${findBoard.faNumber}">${findBoard.title}</a>
+                                        <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>"><c:out value="${findBoard.title}"/></a>
                                     </h3>
                                     <div class="meta mb-2">
-                                        <div>조회수: ${findBoard.viewCount}</div>
+                                        <div>조회수: <c:out value="${findBoard.viewCount}"/></div>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
                 </div>
 
                 <!-- 페이징 처리 -->

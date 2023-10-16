@@ -3,5 +3,5 @@
 
 <script>
     alert("게시글이 수정되었습니다.");
-    location.href = "/board/detail?kindOfBoard=${boardModifyForm.kindOfBoard}&bNumber=${boardModifyForm.getBNumber()}";
+    window.location.href = "/board/detail?kindOfBoard=${boardModifyForm.kindOfBoard}&bNumber=${boardModifyForm.getBNumber()}";
 </script>

@@ -74,10 +74,10 @@
             <div class="card-body">
                 <div class="media forum-item">
                     <div class="media-body ml-3">
-                        <b> <span style="font-size: 2em;">${detailForm.title}</span> </b>
+                        <b> <span style="font-size: 2em;"><c:out value="${detailForm.title}"/></span> </b>
                         <h6 class="mt-1"></h6><br>
-                        <small><a href="javascript:void(0)">${detailForm.name}</a></small>
-                        <small style="float: right">조회수: ${detailForm.viewCount}&nbsp;&nbsp;&nbsp;&nbsp;${detailForm.wrTime} </small>
+                        <small><a href="javascript:void(0)"><c:out value="${detailForm.name}"/></a></small>
+                        <small style="float: right">조회수: <c:out value="${detailForm.viewCount}"/>&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${detailForm.wrTime}"/> </small>
 
                         <c:if test="${param.kindOfBoard eq 'inquiry'}">
                             <c:if test="${detailForm.checkPublic eq 'Y'}">
@@ -91,7 +91,7 @@
                         <div class="modal-footer"></div>
 
                         <!-- content 내용 -->
-                        <div class="mt-3 font-size-lg">${detailForm.content}</div>
+                        <div class="mt-3 font-size-lg"><c:out value="${detailForm.content}"/></div>
                         <h1 class="mt-1"></h1>
 
                         <div class="modal-header"></div>
@@ -100,23 +100,23 @@
                             <!-- content 수정, 삭제 -->
                             <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                                 <button type="button" class="btn btn-primary"
-                                        onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}'">
+                                        onclick="window.location.href='<c:out value="/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}"/>'">
                                     수정
                                 </button>
                                 <button type="button" class="btn btn-danger"
                                         onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                {return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}';}">
+                                                {return window.location.href='<c:out value="/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}"/>';}">
                                     삭제
                                 </button>
                             </c:if>
 
                             <!-- 목록으로 버튼 -->
                             <button type="button" class="btn btn-secondary"
-                                    onclick="location.href='/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno'">목록으로
+                                    onclick="window.location.href='<c:out value="/board/list?kindOfBoard=${param.kindOfBoard}&sort=bno"/>'">목록으로
                             </button>
                             <c:if test="${authUser.grade eq '관리자'}">
                                 <button type="button" class="btn btn-dark"
-                                        onclick="location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
+                                        onclick="window.location.href='<c:out value="/admin/board?kindOfBoard=${param.kindOfBoard}"/>'">게시판 관리로
                                 </button>
                             </c:if>
                         </div>
@@ -211,12 +211,12 @@
         getPage("/replies/" + bNumber);
 
         //작성
-        $("#replyAddBtn").on("click", function () {
-            let mNumber = "${authUser.getMNumber()}";
+        $("#replyAddBtn").off().on("click", function () {
+            const mNumber = "${authUser.getMNumber()}";
             console.log("댓글작성 mNumber = " + mNumber);
 
-            let replytextObj = $("#message1");
-            let reply = replytextObj.val();
+            const replytextObj = $("#message1");
+            const reply = replytextObj.val();
 
             $.ajax({
                 type: 'POST',
@@ -239,13 +239,13 @@
 
         // 수정
         $(document).on("click", "#editBtn", function () {
-            let replyObj = $(this).closest(".replyObj");
-            let replyText = replyObj.find(".timeline-body").text();
-            let brNumber = replyObj.attr("data-brNumber");
+            const replyObj = $(this).closest(".replyObj");
+            const replyText = replyObj.find(".timeline-body").text();
+            const brNumber = replyObj.attr("data-brNumber");
 
             console.log("수정 brNumber=" + brNumber);
 
-            let editArea = $("<textarea>", {
+            const editArea = $("<textarea>", {
                 "class": "form-control",
                 "style": "height: 100px; resize: none",
                 "text": replyText,
@@ -254,13 +254,13 @@
                 "cols": "30", "rows": "3",
             });
 
-            let saveBtn = $("<button>", {
+            const saveBtn = $("<button>", {
                 "type": "button",
                 "class": "btn btn-outline-success saveEditBtn",
                 "text": "수정하기",
             });
 
-            let cancelBtn = $("<button>", {
+            const cancelBtn = $("<button>", {
                 "type": "button",
                 "class": "btn btn-outline-danger cancelEditBtn",
                 "text": "취소",
@@ -269,8 +269,8 @@
             replyObj.find(".timeline-body").empty().append(editArea).append('<br>');
             replyObj.find(".timeline-footer").empty().append(saveBtn).append('&nbsp;').append(cancelBtn).append('<br>');
 
-            saveBtn.on("click", function () {
-                let editedReply = editArea.val();
+            saveBtn.off().on("click", function () {
+                const editedReply = editArea.val();
 
                 $.ajax({
                     type: 'PATCH',
@@ -290,7 +290,7 @@
                 });
             });
 
-            cancelBtn.on("click", function () {
+            cancelBtn.off().on("click", function () {
                 replyObj.find(".timeline-body").text(replyText);
                 replyObj.find(".timeline-footer").empty()
                     .append('<br><div style="float: right">' +
@@ -302,12 +302,12 @@
 
         // 삭제
         $(document).on("click", "#deleteBtn", function () {
-            let replyObj = $(this).closest(".replyObj");
-            let brNumber = replyObj.attr("data-brNumber");
+            const replyObj = $(this).closest(".replyObj");
+            const brNumber = replyObj.attr("data-brNumber");
 
             console.log("삭제 brNumber=" + brNumber);
 
-            let isConfirmed = confirm("정말로 삭제하시겠습니까?");
+            const isConfirmed = confirm("정말로 삭제하시겠습니까?");
             if (isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
@@ -336,9 +336,9 @@
         });
     }
 
-    let printData = function (replyData, target, templateObject) {
-        let template = Handlebars.compile(templateObject.html());
-        let html = template(replyData);
+    const printData = function (replyData, target, templateObject) {
+        const template = Handlebars.compile(templateObject.html());
+        const html = template(replyData);
 
         $(".replyObj").remove();
         target.after(html);
@@ -347,5 +347,6 @@
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

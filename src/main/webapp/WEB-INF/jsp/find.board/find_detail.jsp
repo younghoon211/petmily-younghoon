@@ -57,14 +57,14 @@
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/findBoard/upload?filename=${detailForm.imgPath}"  style='width: 100%; object-fit: contain'/>
+                <img src="<c:out value='/findBoard/upload?filename=${detailForm.imgPath}'/>"  style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
-                    <h2 class="mb-4">${detailForm.title}</h2>
+                    <h2 class="mb-4"><c:out value="${detailForm.title}"/></h2>
                     <span>
-                        <small>조회수: ${detailForm.viewCount}</small>
-                        <small style="float: right">${detailForm.wrTime}</small>
+                        <small>조회수: <c:out value="${detailForm.viewCount}"/></small>
+                        <small style="float: right"><c:out value="${detailForm.wrTime}"/></small>
                     </span>
                 </div>
                 <br>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="text pl-3">
                             <h4>종</h4>
-                            <p>${detailForm.species}</p>
+                            <p><c:out value="${detailForm.species}"/></p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="text pl-3">
                             <h4>품종</h4>
-                            <p>${detailForm.kind}</p>
+                            <p><c:out value="${detailForm.kind}"/></p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -93,7 +93,7 @@
                         </div>
                         <div class="text pl-3">
                             <h4>실종 장소</h4>
-                            <p>${detailForm.location}</p>
+                            <p><c:out value="${detailForm.location}"/></p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -102,30 +102,30 @@
                         </div>
                         <div class="text pl-3">
                             <h4>상태</h4>
-                            <p>${detailForm.animalState}</p>
+                            <p><c:out value="${detailForm.animalState}"/></p>
                         </div>
                     </div>
                     <div class="col-md">
-                        <p>${detailForm.content}</p>
+                        <p><c:out value="${detailForm.content}"/></p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-primary"
-                                onclick="location.href='/findBoard/auth/modify?faNumber=${detailForm.faNumber}'">수정
+                                onclick="window.location.href='<c:out value="/findBoard/auth/modify?faNumber=${detailForm.faNumber}"/>'">수정
                         </button>
                         <button type="button" class="btn btn-danger"
                                 onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                        {return location.href='/findBoard/auth/delete?faNumber=${detailForm.faNumber}';}">
+                                        {return window.location.href='<c:out value="/findBoard/auth/delete?faNumber=${detailForm.faNumber}"/>';}">
                             삭제
                         </button>
                     </c:if>
                     <button type="button" class="btn btn-secondary"
-                            onclick="location.href='/findBoard/list?sort=fno'">목록으로
+                            onclick="window.location.href='/findBoard/list?sort=fno'">목록으로
                     </button>
                     <c:if test="${authUser.grade eq '관리자'}">
                         <button type="button" class="btn btn-dark"
-                                onclick="location.href='/admin/board?kindOfBoard=find'">게시판 관리로
+                                onclick="window.location.href='/admin/board?kindOfBoard=find'">게시판 관리로
                         </button>
                     </c:if>
                 </div>

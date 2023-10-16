@@ -78,16 +78,16 @@
                             <!-- 글 번호 -->
 
                             <div class="media-body">
-                                <small><i class="far fa-eye"></i>글번호 ${apply.pk}</small>
+                                <small><i class="far fa-eye"></i>글번호 <c:out value="${apply.pk}"/></small>
 
                                 <!-- 제목 -->
 
                                 <div class="text-secondary">
                                     <c:if test="${type eq 'adopt'}">
-                                        <strong>${apply.abName}</strong> 입양 신청 결과 : <strong>${apply.status}</strong>
+                                        <strong><c:out value="${apply.abName}"/></strong> 입양 신청 결과 : <strong><c:out value="${apply.status}"/></strong>
                                     </c:if>
                                     <c:if test="${type eq 'temp'}">
-                                        <strong>${apply.abName}</strong> 임시 보호 신청 결과 : <strong>${apply.status}</strong>
+                                        <strong><c:out value="${apply.abName}"/></strong> 임시 보호 신청 결과 : <strong><c:out value="${apply.status}"/></strong>
                                     </c:if>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
             </c:forEach>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
             </div>
 
             <!-- 페이징 처리 -->

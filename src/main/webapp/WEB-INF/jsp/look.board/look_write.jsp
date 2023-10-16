@@ -70,7 +70,7 @@
                     </div>
                 </c:if>
                 <c:if test="${authUser.grade eq '일반'}">
-                    <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
+                    <input name="mNumber" value="${authUser.getMNumber()}" hidden>
                 </c:if>
 
                 <div class="form-group col-md-auto col-lg-auto">
@@ -119,13 +119,13 @@
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input id="title" type="text" class="form-control" name="title"
-                           maxlength="18" placeholder="제목을 입력해주세요 (18자 이내)" required>
+                           maxlength="18" placeholder="제목을 입력해주세요." required>
                 </div>
 
                 <div>
                     <label for="content">내용</label>
                     <textarea id="content" rows="20" name="content" class="form-control"
-                              placeholder="내용을 입력해주세요 (360자 이내)"
+                              placeholder="내용을 입력해주세요."
                               maxlength="360" required></textarea>
                 </div>
 
@@ -176,21 +176,20 @@
 
 <script>
     $(document).ready(function () {
-
-        let fileDel = $("#fileDel");
-        let file = $("#file");
+        const fileDel = $("#fileDel");
+        const file = $("#file");
 
         fileDel.hide();
 
         file.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) {
                 fileDel.show();
             }
         });
 
-        fileDel.on("click", function () {
+        fileDel.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {

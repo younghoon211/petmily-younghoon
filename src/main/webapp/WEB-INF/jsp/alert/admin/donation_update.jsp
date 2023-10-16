@@ -2,5 +2,5 @@
 
 <script>
     alert("후원 정보가 수정되었습니다.");
-    location.href = "/admin/donation";
+    window.location.href = "/admin/donation";
 </script>

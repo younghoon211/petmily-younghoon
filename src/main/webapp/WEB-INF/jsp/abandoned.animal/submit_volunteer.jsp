@@ -92,12 +92,12 @@
         <br>
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/abandonedAnimal/upload?filename=${detailForm.imgPath}" style='width: 100%; object-fit: contain'/>
+                <img src="<c:out value='/abandonedAnimal/upload?filename=${detailForm.imgPath}'/>" style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
-                    <h2 class="mb-4">${detailForm.name}</h2>
-                    <h6 class="mb-4">소속중인 보호소: ${detailForm.groupName}</h6>
+                    <h2 class="mb-4"><c:out value="${detailForm.name}"/></h2>
+                    <h6 class="mb-4">소속중인 보호소: <c:out value="${detailForm.groupName}"/></h6>
                 </div>
 
                 <div class="row">
@@ -106,7 +106,7 @@
                                 class="flaticon-stethoscope"></span></div>
                         <div class="text pl-3">
                             <h4>종</h4>
-                            <p>${detailForm.species} (${detailForm.kind})</p>
+                            <p><c:out value="${detailForm.species} (${detailForm.kind})"/></p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -114,7 +114,7 @@
                                 class="flaticon-customer-service"></span></div>
                         <div class="text pl-3">
                             <h4>나이</h4>
-                            <p>${detailForm.age}살</p>
+                            <p><c:out value="${detailForm.age}"/>살</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -122,7 +122,7 @@
                                 class="flaticon-emergency-call"></span></div>
                         <div class="text pl-3">
                             <h4>몸무게</h4>
-                            <p>${detailForm.weight} Kg</p>
+                            <p><c:out value="${detailForm.weight}"/> Kg</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -130,17 +130,17 @@
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
                             <h4>성별</h4>
-                            <p>${detailForm.gender}</p>
+                            <p><c:out value="${detailForm.gender}"/></p>
                         </div>
                     </div>
                 </div><br>
-                <small><span style="color: red">※ 해당 기관에 연락하셔서 일정을 조율해 주세요.</span></small>
-                    <br>${detailForm.groupName} 연락처 : ${detailForm.phone}
+                <small><span style="color: red">※ 해당 기관에 직접 연락해 일정을 조율해 주세요.</span></small>
+                    <br><c:out value="${detailForm.groupName} 연락처 : ${detailForm.phone}"/>
             </div>
         </div>
     </div><br>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">돌아가기</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='<c:out value="/abandonedAnimal/detail?abNumber=${param.abNumber}"/>'">돌아가기</button>
     </div>
 </div>
 

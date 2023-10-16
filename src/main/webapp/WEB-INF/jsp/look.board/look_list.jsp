@@ -59,7 +59,7 @@
                     <div>
                         <c:if test="${empty param.species && empty param.animalState}">
                             <c:forEach var="sort" items="${['lno', 'lnoAsc', 'viewCount']}">
-                                <a href="/lookBoard/list?sort=${sort}">
+                                <a href="<c:out value='/lookBoard/list?sort=${sort}'/>">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'lno'}">최신순</c:when>
@@ -73,9 +73,9 @@
 
                         <c:if test="${not empty param.species && not empty param.animalState}">
                             <c:set var="linkParams"
-                                   value="?species=${param.species}&amp;animalState=${param.animalState}&amp;keyword=${param.keyword}&amp;sort="/>
+                                   value="?species=${param.species}&animalState=${param.animalState}&keyword=${param.keyword}&sort="/>
                             <c:forEach var="sort" items="${['lno', 'lnoAsc', 'viewCount']}">
-                                <a href="/lookBoard/list${linkParams}${sort}">
+                                <a href="<c:out value='/lookBoard/list${linkParams}${sort}'/>">
                                     <button type="button" class="btn btn-primary">
                                         <c:choose>
                                             <c:when test="${sort eq 'lno'}">최신순</c:when>
@@ -96,27 +96,27 @@
             <c:forEach var="lookBoard" items="${pageForm.content}">
                 <div class="col-md-4 ftco-animate" id="d-flex-out">
                     <div class="blog-entry align-self-stretch" id="d-flex-in">
-                        <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
+                        <a href="<c:out value='/lookBoard/detail?laNumber=${lookBoard.laNumber}'/>"
                            class="block-20 rounded"
-                           style="background-image: url('/lookBoard/upload/?filename=${lookBoard.imgPath}');">
+                           style="background-image: url('<c:out value="/lookBoard/upload/?filename=${lookBoard.imgPath}"/>');">
                         </a>
                         <div class="text p-4">
                             <div class="meta mb-2">
-                                <div><small>${lookBoard.wrTime}</small></div>
+                                <div><small><c:out value="${lookBoard.wrTime}"/></small></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
+                                <div><i class="far fa-eye"></i> <c:out value="종: ${lookBoard.species} / 품종: ${lookBoard.kind}"/></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 발견장소: ${lookBoard.location}</div>
+                                <div><i class="far fa-eye"></i> 발견장소: <c:out value="${lookBoard.location}"/></div>
                                 <br>
-                                <div><i class="far fa-eye"></i> 상태: ${lookBoard.animalState}</div>
+                                <div><i class="far fa-eye"></i> 상태: <c:out value="${lookBoard.animalState}"/></div>
                                 <br>
                             </div>
-                            <div><small style="color: #00bd56">${lookBoard.name}</small></div>
+                            <div><small style="color: #00bd56"><c:out value="${lookBoard.name}"/></small></div>
                             <h3 class="heading"><a
-                                    href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
+                                    href="<c:out value='/lookBoard/detail?laNumber=${lookBoard.laNumber}'/>"><c:out value="${lookBoard.title}"/></a>
                             </h3>
                             <div class="meta mb-2">
-                                <div>조회수: ${lookBoard.viewCount}</div>
+                                <div>조회수: <c:out value="${lookBoard.viewCount}"/></div>
                             </div>
                         </div>
                     </div>
@@ -126,14 +126,12 @@
 
         <span class="modal-footer">
                 <button type="button" class="btn btn-primary"
-                        onclick="location.href='/lookBoard/auth/write'">글쓰기</button>
+                        onclick="window.location.href='/lookBoard/auth/write'">글쓰기</button>
         </span>
 
         <div style="display: flex; justify-content: center;">
             <form action="/lookBoard/list" method="get">
                 <div class="form-group row">
-                    <input type="hidden" name="sort" value="${param.sort}"/>
-
                     <div class="col">
                         <select name="species" class="form-control">
                             <c:forEach var="animal" items="${['allSpecies', '개', '고양이', '기타']}">
@@ -163,6 +161,8 @@
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
+
+                <input name="sort" value="${param.sort}" hidden>
             </form>
         </div>
 

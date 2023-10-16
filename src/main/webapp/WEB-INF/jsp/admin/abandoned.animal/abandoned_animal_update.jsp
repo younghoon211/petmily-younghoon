@@ -300,8 +300,8 @@
                         <button type="submit" class="btn btn-primary">수정 등록</button>
                     </div>
 
-                    <input type="hidden" name="abNumber" value="${updateForm.abNumber}">
-                    <input type="hidden" name="imgPath" id="imgPath" value="">
+                    <input name="abNumber" value="${updateForm.abNumber}" hidden>
+                    <input name="imgPath" id="imgPath" hidden>
 
                 </form>
             </div>
@@ -330,15 +330,15 @@
     $(document).ready(function () {
 
         // 입양, 임보 작성 폼 및 보호소 선택
-        let adoptInfo = document.getElementById('adoptInfo');
-        let tempInfo = document.getElementById('tempInfo');
-        let shelter = document.getElementById('shelter');
-        let animalStateInputs = $("input[name='animalState']");
+        const adoptInfo = document.getElementById('adoptInfo');
+        const tempInfo = document.getElementById('tempInfo');
+        const shelter = document.getElementById('shelter');
+        const animalStateInputs = $("input[name='animalState']");
 
         showOrHideForm(animalStateInputs.filter(':checked').val());
 
         animalStateInputs.change(function () {
-            let selectedState = $(this).val();
+            const selectedState = $(this).val();
             showOrHideForm(selectedState);
         });
 
@@ -512,14 +512,14 @@
 
     // 파일 첨부 기능
     function hasImage() {
-        let fileName = $("#fileName");
-        let initFileDel = $("#initFileDel");
-        let notUpload1 = $("#notUpload1");
-        let fileDel1 = $("#fileDel1");
-        let file1 = $("#file1");
+        const fileName = $("#fileName");
+        const initFileDel = $("#initFileDel");
+        const notUpload1 = $("#notUpload1");
+        const fileDel1 = $("#fileDel1");
+        const file1 = $("#file1");
 
         file1.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) { // 파일 첨부한 경우
                 fileName.hide();
@@ -529,7 +529,7 @@
             }
         });
 
-        fileDel1.on("click", function () {
+        fileDel1.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {
@@ -539,7 +539,7 @@
             }
         });
 
-        initFileDel.on("click", function () {
+        initFileDel.off().on("click", function () {
             const isConfirmed = confirm("기존 파일을 정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {
@@ -556,12 +556,12 @@
     }
 
     function noImage() {
-        let fileDel2 = $("#fileDel2");
-        let notUpload2 = $("#notUpload2");
-        let file2 = $("#file2");
+        const fileDel2 = $("#fileDel2");
+        const notUpload2 = $("#notUpload2");
+        const file2 = $("#file2");
 
         file2.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) { // 파일 첨부한 경우
                 fileDel2.show();
@@ -569,7 +569,7 @@
             }
         });
 
-        fileDel2.on("click", function () {
+        fileDel2.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
             if (isConfirmed) {
                 file2.val(null);

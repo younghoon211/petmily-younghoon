@@ -204,7 +204,7 @@
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
             <button id="submit" type="submit" class="btn btn-primary">입양 수정</button>
         </div><br>
-        <input type="hidden" name="adNumber" value="${selectedAdopt.adNumber}">
+        <input name="adNumber" value="${selectedAdopt.adNumber}" hidden>
     </form>
 </div>
 

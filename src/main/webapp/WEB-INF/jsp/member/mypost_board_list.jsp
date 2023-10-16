@@ -103,27 +103,27 @@
 
                                 <!-- 글 번호 -->
                                 <div class="media-body">
-                                    <small><i class="far fa-eye"></i>글번호 ${board.getBNumber()}</small>
+                                    <small><i class="far fa-eye"></i>글번호 <c:out value="${board.getBNumber()}"/></small>
 
                                     <!-- 제목 -->
                                     <div class="text-secondary">
                                         <c:if test="${param.kindOfBoard eq 'free'}">
-                                            <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                               class="text-body" style="font-size: 1.3em;">${board.title}</a>
-                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                            <a href="<c:out value='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
+                                               class="text-body" style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                            <span style="font-size: 0.9em; color: red">[<c:out value="${board.replyCount}"/>]</span>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                             <c:choose>
                                                 <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
                                                     <a class="text-body"
-                                                       style="font-size: 1.3em;">${board.title}</a>
-                                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                                       style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                                    <span style="font-size: 0.9em; color: red">[<c:out value="${board.replyCount}"/>]</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                                    <a href="<c:out value='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
                                                        class="text-body"
-                                                       style="font-size: 1.3em;">${board.title}</a>
-                                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                                       style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                                    <span style="font-size: 0.9em; color: red">[<c:out value="${board.replyCount}"/>]</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:if>
@@ -131,9 +131,9 @@
 
                                     <!-- 작성자, 작성 날짜 -->
                                     <div class="text-muted">
-                                        <small><a href="javascript:void(0)">by ${board.name}</a><span>
+                                        <small><a href="javascript:void(0)">by <c:out value="${board.name}"/></a><span>
 									<i class="far fa-comment ml-2"></i>
-									</span>date ${board.wrTime} </small>
+									</span>date <c:out value="${board.wrTime}"/> </small>
                                     </div>
 
                                 </div>
@@ -152,7 +152,7 @@
                                     </c:if>
 
                                     <div>
-                                        조회수 : ${board.viewCount}
+                                        조회수 : <c:out value="${board.viewCount}"/>
                                     </div>
                                 </div>
 
@@ -162,7 +162,7 @@
                 </c:forEach>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
                 </div>
 
                 <!-- 페이징 처리 -->

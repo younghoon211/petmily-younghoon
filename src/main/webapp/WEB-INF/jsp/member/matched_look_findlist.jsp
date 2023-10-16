@@ -63,22 +63,22 @@
                     <c:forEach var="findBoard" items="${pageForm.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                <a href="/findBoard/detail?faNumber=${findBoard.faNumber}"
+                                <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/findBoard/upload?filename=${findBoard.imgPath}');">
+                                   style="background-image: url('<c:out value="/findBoard/upload?filename=${findBoard.imgPath}"/>');">
                                 </a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div><small>${findBoard.wrTime}</small></div>
+                                        <div><small><c:out value="${findBoard.wrTime}"/></small></div>
                                         <br>
-                                        <div>종: ${findBoard.species} / 품종: ${findBoard.kind} / 실종장소: ${findBoard.location}</div>
+                                        <div><c:out value="종: ${findBoard.species} / 품종: ${findBoard.kind} / 실종장소: ${findBoard.location}"/></div>
                                         <br>
-                                        <div>상태: ${findBoard.animalState}</div>
+                                        <div><c:out value="상태: ${findBoard.animalState}"/></div>
                                     </div>
-                                    <div><small style="color: #00bd56">${findBoard.name}</small></div>
+                                    <div><small style="color: #00bd56"><c:out value="${findBoard.name}"/></small></div>
                                     <h3 class="heading">
-                                        <a href="/findBoard/detail?faNumber=${findBoard.faNumber}">
-                                                ${findBoard.title}
+                                        <a href="<c:out value='/findBoard/detail?faNumber=${findBoard.faNumber}'/>">
+                                                <c:out value="${findBoard.title}"/>
                                         </a></h3>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/lookMatching'">뒤로가기</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/lookMatching'">뒤로가기</button>
             </div>
 
             <!-- 페이징 처리 -->
@@ -150,5 +150,6 @@
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

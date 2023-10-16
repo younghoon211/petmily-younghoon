@@ -5,9 +5,9 @@
     alert("입양후기가 수정되었습니다.");
 
     <c:if test="${authUser.grade eq '관리자'}">
-        location.href = "/admin/board?kindOfBoard=adoptReview";
+        window.location.href = "/admin/board?kindOfBoard=adoptReview";
     </c:if>
     <c:if test="${authUser.grade eq '일반'}">
-        location.href = "/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${adoptReviewModifyForm.getBNumber()}";
+        window.location.href = "/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${adoptReviewModifyForm.getBNumber()}";
     </c:if>
 </script>

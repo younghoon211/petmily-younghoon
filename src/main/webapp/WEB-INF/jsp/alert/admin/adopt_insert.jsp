@@ -2,5 +2,5 @@
 
 <script>
     alert("입양 정보가 추가되었습니다.");
-    location.href = "/admin/adopt";
+    window.location.href = "/admin/adopt";
 </script>

@@ -177,10 +177,10 @@
 
 <script>
     $(document).ready(function () {
-        $('#submit').on('click', function (event) {
-            let nameError = $('#nameValid').val() === "error";
-            let emailError = $('#emailValid').val() === "error";
-            let phoneError = $('#phoneValid').val() === "error";
+        $('#submit').off().on('click', function (event) {
+            const nameError = $('#nameValid').val() === "error";
+            const emailError = $('#emailValid').val() === "error";
+            const phoneError = $('#phoneValid').val() === "error";
 
             if (nameError) {
                 event.preventDefault();
@@ -196,10 +196,10 @@
             }
         });
 
-        $('#name').on('input', function () {
+        $('#name').off().on('input', function () {
             const initName = "${member.name}";
-            let name = $('#name').val().trim();
-            let nameMsg = $('.nameMsg').addClass('error');
+            const name = $('#name').val().trim();
+            const nameMsg = $('.nameMsg').addClass('error');
             const nameRegex = /^[0-9a-zA-Z가-힣]+$/g;
 
             if (initName === name) {
@@ -220,10 +220,10 @@
             }
         });
 
-        $('#email').on('input', function () {
+        $('#email').off().on('input', function () {
             const initEmail = "${member.email}";
-            let email = $('#email').val().trim();
-            let emailMsg = $('.emailMsg').addClass('error');
+            const email = $('#email').val().trim();
+            const emailMsg = $('.emailMsg').addClass('error');
             const emailRegex = /^[0-9a-zA-Z]+([-_.]*[0-9a-zA-Z])*@[0-9a-zA-Z]+([.]*[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/g;
 
             if (initEmail === email) {
@@ -239,14 +239,14 @@
                 emailMsg.text("이메일 형식을 지켜주세요.");
                 $('#emailValid').val("error");
             } else {
-                emailAjax();
+                validEmail();
             }
         });
 
-        $('#phone').on('input', function () {
+        $('#phone').off().on('input', function () {
             const initPhone = "${member.phone}";
-            let phone = $('#phone').val().trim();
-            let phoneMsg = $('.phoneMsg').addClass('error');
+            const phone = $('#phone').val().trim();
+            const phoneMsg = $('.phoneMsg').addClass('error');
             const phoneRegex = /^(010)(\d{8})$/g;
 
             if (initPhone === phone) {
@@ -259,21 +259,19 @@
                 phoneMsg.text("올바른 형식(예: 01012345678)으로 입력하세요.");
                 $('#phoneValid').val("error");
             } else {
-                phoneAjax();
+                validPhone();
             }
         });
     });
 
-    function emailAjax() {
-        let emailMsg = $('.emailMsg').addClass('error');
+    function validEmail() {
+        const email = $('#email').val().trim();
+        const emailMsg = $('.emailMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
             url: '/member/auth/changeInfo/emailValid',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({email: $('#email').val().trim()}),
+            data: {email: email},
             success: function (result) {
                 console.log("email result=" + result);
 
@@ -291,17 +289,14 @@
         });
     }
 
-    function phoneAjax() {
-        let phoneMsg = $('.phoneMsg').addClass('error');
+    function validPhone() {
+        const phone = $('#phone').val().trim();
+        const phoneMsg = $('.phoneMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
             url: '/member/auth/changeInfo/phoneValid',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({phone: $('#phone').val()}),
-            dataType: 'text',
+            data: {phone: phone},
             success: function (result) {
                 console.log("phone result=" + result);
 

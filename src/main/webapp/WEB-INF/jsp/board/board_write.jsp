@@ -78,15 +78,16 @@
                                     </label>
                                     <select name="mNumber" id="mNumber" class="form-control">
                                         <c:forEach var="m" items="${memberList}">
-                                            <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id}
-                                                / ${m.name}</option>
+                                            <option value="${m.getMNumber()}">
+                                                    <c:out value="${m.getMNumber()} / ${m.id} / ${m.name}"/>
+                                            </option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <hr width="100%" style="color: #9e9e9e">
                             </c:if>
                             <c:if test="${authUser.grade eq '일반'}">
-                                <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
+                                <input name="mNumber" value="${authUser.getMNumber()}" hidden>
                             </c:if>
 
                             <!-- 글 title, content, kindOfBoard, wrTime -->
@@ -94,7 +95,8 @@
                                 <div>
                                     <label for="title">제목</label>
                                     <input id="title" type="text" class="form-control" name="title"
-                                           placeholder="제목을 입력해주세요" autofocus maxlength="30" required>
+                                           placeholder="제목을 입력해주세요." autofocus maxlength="30"
+                                           required>
                                 </div>
                             </div>
                             <div>
@@ -102,15 +104,13 @@
                                 <textarea id="content" rows="20" name="content" class="form-control"
                                           placeholder="내용을 입력해주세요" maxlength="1300" required></textarea>
                             </div>
-                            <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
-                            <input type="hidden" name="wrTime" value="wrTime">
                         </div>
 
                         <!-- checkPublic 공개 / 비공개 여부  -->
 
                         <div class="modal-footer">
                             <c:if test="${param.kindOfBoard eq 'free'}">
-                                <input type="hidden" name="checkPublic" value="Y">
+                                <input name="checkPublic" value="Y" hidden>
                             </c:if>
                             <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                 <div>
@@ -125,10 +125,10 @@
                             </c:if>
                             <button type="button" class="btn btn-secondary"
                                     <c:if test="${authUser.grade eq '일반' && param.kindOfBoard eq 'free'}">
-                                        onclick="location.href='/board/list?kindOfBoard=free&sort=bno'"
+                                        onclick="window.location.href='/board/list?kindOfBoard=free&sort=bno'"
                                     </c:if>
                                     <c:if test="${authUser.grade eq '일반' && param.kindOfBoard eq 'inquiry'}">
-                                        onclick="location.href='/board/list?kindOfBoard=inquiry&sort=bno'"
+                                        onclick="window.location.href='/board/list?kindOfBoard=inquiry&sort=bno'"
                                     </c:if>
                                     <c:if test="${authUser.grade eq '관리자'}">
                                         onclick="history.back()"
@@ -137,6 +137,8 @@
                             </button>
                             <button type="submit" class="btn btn-primary">글 등록</button>
                         </div>
+
+                        <input name="kindOfBoard" value="${param.kindOfBoard}" hidden>
                     </form>
                 </div>
             </div>

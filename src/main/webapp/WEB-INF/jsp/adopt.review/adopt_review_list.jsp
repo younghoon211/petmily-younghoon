@@ -80,18 +80,18 @@
                 <div class="col-md-4">
                     <div class="blog-entry align-self-stretch">
 
-                        <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                        <a href="<c:out value='/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
                            class="block-20 rounded"
-                           style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
+                           style="background-image: url('<c:out value="/adoptReview/upload?filename=${board.imgPath}"/>')"></a>
 
                         <div class="text p-4">
-                            <div class="meta mb-2"><small>${board.wrTime}</small></div>
-                            <div><small style="color: #00bd56">${board.name}</small></div>
+                            <div class="meta mb-2"><small><c:out value="${board.wrTime}"/></small></div>
+                            <div><small style="color: #00bd56"><c:out value="${board.name}"/></small></div>
                             <br>
-                            <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
-                                <h3 class="heading">${board.title}</h3></a>
+                            <a href="<c:out value='/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>">
+                                <h3 class="heading"><c:out value="${board.title}"/></h3></a>
                             <div class="meta mb-2">
-                                <div>조회수: ${board.viewCount}</div>
+                                <div>조회수: <c:out value="${board.viewCount}"/></div>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                 </c:if>
 
                 <c:if test="${empty authUser || authUser.grade eq '관리자' || adopt.status eq '완료'}">
-                    onclick="location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
+                    onclick="window.location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
                 </c:if>
         >글쓰기</button>
     </span>
@@ -116,11 +116,7 @@
         <!-- 검색 바 -->
         <div style="display: flex; justify-content: center;">
             <form action="/adoptReview/list" method="get">
-
                 <div class="form-group row">
-                    <input type="hidden" name="kindOfBoard" value="adoptReview">
-                    <input type="hidden" name="sort" value="${param.sort}"/>
-
                     <div class="col">
                         <select name="condition" class="form-control">
                             <option value="title" <c:if test="${param.condition eq 'title'}">selected</c:if>>제목
@@ -144,6 +140,9 @@
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
+
+                <input name="kindOfBoard" value="adoptReview" hidden>
+                <input name="sort" value="${param.sort}" hidden>
             </form>
         </div>
 

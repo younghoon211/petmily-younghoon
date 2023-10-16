@@ -53,7 +53,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 text-center mb-5">
-                <h2 class="heading-section">${authUser.name}님의 마이페이지</h2>
+                <h2 class="heading-section"><c:out value="${authUser.name}"/>님의 마이페이지</h2>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -66,7 +66,7 @@
                                     <span class="fa fa-map-marker"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span>생년월일 : </span>${authUser.birth}</p>
+                                    <p><span>생년월일 : </span><c:out value="${authUser.birth}"/></p>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                     <span class="fa fa-phone"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span>이메일 : </span>${authUser.email}</p>
+                                    <p><span>이메일 : </span><c:out value="${authUser.email}"/></p>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                     <span class="fa fa-paper-plane"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span>전화번호 : </span>${authUser.phone}</p>
+                                    <p><span>전화번호 : </span><c:out value="${authUser.phone}"/></p>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                     <span class="fa fa-globe"></span>
                                 </div>
                                 <div class="text">
-                                    <p><span>회원 등급 : </span>${authUser.grade}</p>
+                                    <p><span>회원 등급 : </span><c:out value="${authUser.grade}"/></p>
                                 </div>
                             </div>
                         </div>

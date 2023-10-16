@@ -104,15 +104,15 @@
                         </thead>
                         <c:forEach var="temp" items="${pageForm.content}">
                             <tbody>
-                            <td>${temp.getTNumber()}</td>
-                            <td>${temp.memberId} (${temp.getMNumber()})</td>
-                            <td>${temp.animalName} (${temp.abNumber})</td>
-                            <td>${temp.memberName}</td>
-                            <td>${temp.tempDate}</td>
-                            <td>${temp.tempPeriod}개월</td>
-                            <td>${temp.residence}</td>
-                            <td>${temp.maritalStatus}</td>
-                            <td>${temp.job}</td>
+                            <td><c:out value="${temp.getTNumber()}"/></td>
+                            <td><c:out value="${temp.memberId} (${temp.getMNumber()})"/></td>
+                            <td><c:out value="${temp.animalName} (${temp.abNumber})"/></td>
+                            <td><c:out value="${temp.memberName}"/></td>
+                            <td><c:out value="${temp.tempDate}"/></td>
+                            <td><c:out value="${temp.tempPeriod}개월"/></td>
+                            <td><c:out value="${temp.residence}"/></td>
+                            <td><c:out value="${temp.maritalStatus}"/></td>
+                            <td><c:out value="${temp.job}"/></td>
                             </tbody>
                         </c:forEach>
                     </table>
@@ -120,7 +120,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
         </div>

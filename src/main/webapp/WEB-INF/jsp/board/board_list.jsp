@@ -90,25 +90,25 @@
 
                         <!-- 글 번호 -->
                         <div class="media-body">
-                            <small><i class="far fa-eye"></i> 글번호: ${board.getBNumber()}</small>
+                            <small><i class="far fa-eye"></i> 글번호: <c:out value="${board.getBNumber()}"/></small>
 
                             <!-- 제목 -->
                             <div class="text-secondary">
                                 <c:if test="${param.kindOfBoard eq 'free'}">
-                                    <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                       class="text-body" style="font-size: 1.3em;">${board.title}</a>
-                                    <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                    <a href="<c:out value='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
+                                       class="text-body" style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                    <span style="font-size: 0.9em; color: red"><c:out value="[${board.replyCount}]"/></span>
                                 </c:if>
                                 <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                     <c:choose>
                                         <c:when test="${authUser.grade ne '관리자' and authUser.getMNumber() ne board.getMNumber() and board.checkPublic eq 'N'}">
-                                            <a class="text-body" style="font-size: 1.3em;">${board.title}</a>
-                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                            <a class="text-body" style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                            <span style="font-size: 0.9em; color: red"><c:out value="[${board.replyCount}]"/></span>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
-                                               class="text-body" style="font-size: 1.3em;">${board.title}</a>
-                                            <span style="font-size: 0.9em; color: red">[${board.replyCount}]</span>
+                                            <a href="<c:out value='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
+                                               class="text-body" style="font-size: 1.3em;"><c:out value="${board.title}"/></a>
+                                            <span style="font-size: 0.9em; color: red"><c:out value="[${board.replyCount}]"/></span>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:if>
@@ -116,7 +116,7 @@
 
                             <!-- 작성자, 작성 날짜 -->
                             <div class="text-muted">
-                                <small><a href="javascript:void(0)">${board.name}</a>&nbsp;&nbsp;&nbsp;${board.wrTime}
+                                <small><a href="javascript:void(0)"><c:out value="${board.name}"/></a>&nbsp;&nbsp;&nbsp;<c:out value="${board.wrTime}"/>
                                 </small>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                             <c:if test="${param.kindOfBoard eq 'inquiry' && board.checkPublic eq 'N'}">
                                 &#x1F512; 비공개
                             </c:if>
-                            <div>조회수: ${board.viewCount}</div>
+                            <div>조회수: <c:out value="${board.viewCount}"/></div>
                         </div>
 
                     </div>
@@ -138,16 +138,13 @@
         <br>
         <span class="modal-footer">
 				<button type="button" class="btn btn-primary"
-                        onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'">글쓰기</button>
+                        onclick="window.location.href='<c:out value="/board/auth/write?kindOfBoard=${param.kindOfBoard}"/>'">글쓰기</button>
 			</span>
 
         <!-- 조건부 검색 -->
         <div style="display: flex; justify-content: center;">
             <form action="/board/list" method="get">
                 <div class="form-group row">
-                    <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
-                    <input type="hidden" name="sort" value="${param.sort}">
-
                     <div class="col">
                         <select name="condition" class="form-control">
                             <option value="title" <c:if test="${param.condition eq 'title'}">selected</c:if>>제목</option>
@@ -170,6 +167,9 @@
                         <button type="submit" class="btn btn-primary">검색</button>
                     </div>
                 </div>
+
+                <input name="kindOfBoard" value="${param.kindOfBoard}" hidden>
+                <input name="sort" value="${param.sort}" hidden>
             </form>
         </div>
 

@@ -20,6 +20,10 @@ public class ResetPwForm {
     private String pw;
 
     @NotBlank
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}$")
+    private String pwCheck;
+
+    @NotBlank
     @Pattern(regexp = "^[0-9]{6}$")
     private String inputCode;
 

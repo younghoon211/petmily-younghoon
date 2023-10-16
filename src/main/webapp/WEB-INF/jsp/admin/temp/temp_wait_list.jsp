@@ -105,25 +105,25 @@
                         </thead>
                         <c:forEach var="wait" items="${pageForm.content}">
                             <tbody>
-                            <td>${wait.getTNumber()}</td>
-                            <td>${wait.memberId} (${wait.getMNumber()})</td>
-                            <td>${wait.animalName} (${wait.abNumber})</td>
-                            <td>${wait.memberName}</td>
-                            <td>${wait.tempDate}</td>
-                            <td>${wait.tempPeriod}개월</td>
-                            <td>${wait.residence}</td>
-                            <td>${wait.maritalStatus}</td>
-                            <td>${wait.job}</td>
+                            <td><c:out value="${wait.getTNumber()}"/></td>
+                            <td><c:out value="${wait.memberId} (${wait.getMNumber()})"/></td>
+                            <td><c:out value="${wait.animalName} (${wait.abNumber})"/></td>
+                            <td><c:out value="${wait.memberName}"/></td>
+                            <td><c:out value="${wait.tempDate}"/></td>
+                            <td><c:out value="${wait.tempPeriod}개월"/></td>
+                            <td><c:out value="${wait.residence}"/></td>
+                            <td><c:out value="${wait.maritalStatus}"/></td>
+                            <td><c:out value="${wait.job}"/></td>
                             <td>
                                 <button type="button" class="btn btn-primary"
                                         onclick="if(confirm('정말로 승인하시겠습니까?'))
-                                                { return location.href='/admin/temp/wait/approve?tNumber=${wait.getTNumber()}';}">
+                                                { return window.location.href='/admin/temp/wait/approve?tNumber=${wait.getTNumber()}';}">
                                     승인
                                 </button>
                                 &nbsp;
                                 <button type="button" class="btn btn-danger"
                                         onclick="if(confirm('정말로 거절하시겠습니까?'))
-                                                { return location.href='/admin/temp/wait/refuse?tNumber=${wait.getTNumber()}';}">
+                                                { return window.location.href='/admin/temp/wait/refuse?tNumber=${wait.getTNumber()}';}">
                                     거절
                                 </button>
                             </td>
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
         </div>

@@ -157,31 +157,38 @@
 
 <script>
     $(document).ready(function () {
-        $('#submit').on('click', function (event) {
-            let oldPw = $('#oldPw').val().trim();
-            let newPw = $('#newPw').val().trim();
-            let newPwCheck = $('#newPwCheck').val().trim();
-            let oldPwError = $('#oldPwValid').val() === "error";
-            let newPwError = $('#newPwValid').val() === "error";
-            let newPwCheckError = $('#newPwCheckValid').val() === "error";
+        $('#submit').off().on('click', function (event) {
+            const oldPw = $('#oldPw').val().trim();
+            const newPw = $('#newPw').val().trim();
+            const newPwCheck = $('#newPwCheck').val().trim();
 
-            let hasEmpty = !oldPw || !newPw || !newPwCheck;
+            const oldPwError = $('#oldPwValid').val() === "error";
+            const newPwError = $('#newPwValid').val() === "error";
+            const newPwCheckError = $('#newPwCheckValid').val() === "error";
+
+            const hasEmpty = !oldPw || !newPw || !newPwCheck;
+            const isNotSamePwCheck = ($('#newPw').val().trim() !== $('#newPwCheck').val().trim());
 
             if (hasEmpty) {
                 event.preventDefault();
 
                 if (!oldPw) {
-                    $('#oldPw').focus();
                     $('.oldPwMsg').addClass('error').text("비밀번호를 입력하세요.");
+                    $('#oldPw').focus();
                 } else if (!newPw) {
-                    $('#newPw').focus();
                     $('.newPwMsg').addClass('error').text("새 비밀번호를 입력하세요.");
+                    $('#newPw').focus();
                 } else if (!newPwCheck) {
-                    $('#newPwCheck').focus();
                     $('.newPwCheckMsg').addClass('error').text("새 비밀번호 확인을 입력하세요.");
+                    $('#newPwCheck').focus();
                 }
             } else if (oldPwError || newPwError || newPwCheckError) {
                 event.preventDefault();
+            } else if (isNotSamePwCheck) {
+                event.preventDefault();
+
+                $('.newPwCheckMsg').addClass('error').text("새 비밀번호와 확인이 일치하지 않습니다.");
+                $('#newPwCheck').focus();
             } else {
                 if (confirm("비밀번호를 정말로 변경하시겠습니까?")) {
                     $("form").submit();
@@ -189,13 +196,13 @@
             }
         });
 
-        $('#oldPw').on('input', function () {
-            oldPwAjax();
+        $('#oldPw').off().on('input', function () {
+            validOldPw();
         });
 
-        $('#newPw').on('input', function () {
-            let newPw = $('#newPw').val().trim();
-            let newPwMsg = $('.newPwMsg').addClass('error');
+        $('#newPw').off().on('input', function () {
+            const newPw = $('#newPw').val().trim();
+            const newPwMsg = $('.newPwMsg').addClass('error');
             const pwRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]+$/;
 
             if (!newPw) {
@@ -208,14 +215,14 @@
                 newPwMsg.text("영문+숫자+특수문자로 입력하세요.");
                 $('#newPwValid').val("error");
             } else {
-                newPwAjax();
+                validNewPw();
             }
         });
 
-        $('#newPwCheck').on('input', function () {
-            let newPw = $('#newPw').val().trim();
-            let newPwCheck = $('#newPwCheck').val().trim();
-            let newPwCheckMsg = $('.newPwCheckMsg').addClass('error');
+        $('#newPwCheck').off().on('input', function () {
+            const newPw = $('#newPw').val().trim();
+            const newPwCheck = $('#newPwCheck').val().trim();
+            const newPwCheckMsg = $('.newPwCheckMsg').addClass('error');
 
             if (newPw !== newPwCheck) {
                 newPwCheckMsg.addClass('error').text("비밀번호와 확인이 일치하지 않습니다.");
@@ -227,16 +234,17 @@
         });
     });
 
-    function oldPwAjax() {
-        let oldPwMsg = $('.oldPwMsg').addClass('error');
+    function validOldPw() {
+        const oldPw = $('#oldPw').val().trim();
+        const oldPwMsg = $('.oldPwMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changePw/valid1',
+            url: '/member/auth/changePw/validOldPw',
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({oldPw: $('#oldPw').val().trim()}),
+            data: JSON.stringify({oldPw: oldPw}),
             success: function (result) {
                 console.log("oldPw result=" + result);
 
@@ -254,16 +262,17 @@
         });
     }
 
-    function newPwAjax() {
-        let newPwMsg = $('.newPwMsg').addClass('error');
+    function validNewPw() {
+        const newPw = $('#newPw').val().trim();
+        const newPwMsg = $('.newPwMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/changePw/valid2',
+            url: '/member/auth/changePw/validNewPw',
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({newPw: $('#newPw').val().trim()}),
+            data: JSON.stringify({newPw: newPw}),
             success: function (result) {
                 console.log("newPw result=" + result);
 

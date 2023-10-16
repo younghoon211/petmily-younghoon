@@ -63,22 +63,22 @@
                     <c:forEach var="lookBoard" items="${pageForm.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
+                                <a href="<c:out value='/lookBoard/detail?laNumber=${lookBoard.laNumber}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                   style="background-image: url('<c:out value="/lookBoard/upload?filename=${lookBoard.imgPath}"/>');">
                                 </a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div><small>${lookBoard.wrTime}</small></div>
+                                        <div><small><c:out value="${lookBoard.wrTime}"/></small></div>
                                         <br>
-                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}</div>
+                                        <div><c:out value="종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}"/></div>
                                         <br>
-                                        <div>상태: ${lookBoard.animalState}</div>
+                                        <div>상태: <c:out value="${lookBoard.animalState}"/></div>
                                     </div>
-                                    <div><small style="color: #00bd56">${lookBoard.name}</small></div>
+                                    <div><small style="color: #00bd56"><c:out value="${lookBoard.name}"/></small></div>
                                     <h3 class="heading">
-                                        <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">
-                                                ${lookBoard.title}
+                                        <a href="<c:out value='lookBoard/detail?laNumber=${lookBoard.laNumber}'/>">
+                                                <c:out value="${lookBoard.title}"/>
                                         </a></h3>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/findMatching'">뒤로가기</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/findMatching'">뒤로가기</button>
             </div>
 
             <!-- 페이징 처리 -->

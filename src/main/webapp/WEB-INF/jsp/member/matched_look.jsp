@@ -44,7 +44,7 @@
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
                 <p class="breadcrumbs mb-2"><span>Member - Look Matching<i class="ion-ios-arrow-forward"></i></span></p>
-                <h1 class="mb-0 bread">봤어요 매칭 결과</h1>
+                <h1 class="mb-0 bread">매칭된 봤어요 게시글</h1>
             </div>
         </div>
     </div>
@@ -57,21 +57,22 @@
         <div style="text-align: center">
             <c:set var="URI" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 
-            <input type="radio" id="find" onclick="location.href='/member/auth/findMatching'"
+            <input type="radio" id="find" onclick="window.location.href='/member/auth/findMatching'"
             <c:if test="${URI.contains('findMatching')}">
                    checked
             </c:if>>
-            <label for="find">찾아요 매칭 결과</label>
+            <label for="find">매칭된 찾아요 게시글</label>
 
             &nbsp;&nbsp;&nbsp;
 
-            <input type="radio" id="look" onclick="location.href='/member/auth/lookMatching'"
+            <input type="radio" id="look" onclick="window.location.href='/member/auth/lookMatching'"
             <c:if test="${URI.contains('lookMatching')}">
                    checked
-            </c:if>> <label for="look">봤어요 매칭 결과</label>
+            </c:if>> <label for="look">매칭된 봤어요 게시글</label>
         </div>
 
         <br>
+        <p style="text-align: center; color: red">※ 게시글 클릭 시, 해당 글에 매칭된 찾아요 게시글 리스트로 이동됩니다.</p>
 
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
             <div class="container">
@@ -81,22 +82,22 @@
                     <c:forEach var="lookBoard" items="${pageForm.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                <a href="/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}"
+                                <a href="<c:out value='/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                   style="background-image: url('<c:out value="/lookBoard/upload?filename=${lookBoard.imgPath}"/>');">
                                 </a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div><small>${lookBoard.wrTime}</small></div>
+                                        <div><small><c:out value="${lookBoard.wrTime}"/></small></div>
                                         <br>
-                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}</div>
+                                        <div><c:out value="종: ${lookBoard.species} / 품종: ${lookBoard.kind} / 발견장소: ${lookBoard.location}"/></div>
                                         <br>
-                                        <div>상태: ${lookBoard.animalState}</div>
+                                        <div>상태: <c:out value="${lookBoard.animalState}"/></div>
                                     </div>
-                                    <div><small style="color: #00bd56">${lookBoard.name}</small></div>
+                                    <div><small style="color: #00bd56"><c:out value="${lookBoard.name}"/></small></div>
                                     <h3 class="heading">
-                                        <a href="/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}">
-                                                ${lookBoard.title}
+                                        <a href="<c:out value='/member/auth/lookMatching/findList?laNumber=${lookBoard.laNumber}'/>">
+                                                <c:out value="${lookBoard.title}"/>
                                         </a></h3>
                                 </div>
                             </div>
@@ -107,7 +108,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
         </div>
 
         <!-- 페이징 처리 -->

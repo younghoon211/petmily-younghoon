@@ -70,15 +70,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="wrTime">작성일시 (여기를 클릭 후 스페이스바를 누르세요)</label>
+                        <label for="wrTime">작성일시 <b>[이곳을 클릭 후 스페이스바를 누르세요]</b></label>
                         <input type="datetime-local" name="wrTime" class="form-control" id="wrTime"
                                value="${modifyForm.wrTime}" max="2099-12-30 00:00"
                                required>
                     </div>
                 </c:if>
                 <c:if test="${authUser.grade eq '일반'}">
-                    <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
-                    <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
+                    <input name="mNumber" value="${modifyForm.getMNumber()}" hidden>
+                    <input name="wrTime" value="${modifyForm.wrTime}" hidden>
                 </c:if>
 
                 <div class="form-group col-md-auto col-lg-auto">
@@ -161,14 +161,14 @@
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input id="title" type="text" class="form-control" name="title"
-                           value="${modifyForm.title}" maxlength="18" placeholder="제목을 입력해주세요 (18자 이내)" required>
+                           value="${modifyForm.title}" maxlength="18" placeholder="제목을 입력해주세요." required>
                 </div>
 
                 <div>
                     <label for="content">내용</label>
                     <textarea id="content" rows="20" name="content" class="form-control"
-                              placeholder="내용을 입력해주세요 (360자 이내)"
-                              maxlength="360" required>${modifyForm.content}</textarea>
+                              placeholder="내용을 입력해주세요."
+                              maxlength="360" required><c:out value="${modifyForm.content}"/></textarea>
                 </div>
 
                 <!-- 첨부파일 -->
@@ -183,7 +183,7 @@
                         </div>
 
                         <div id="fileName">
-                            <small>업로드 된 이미지 파일명: <b>${modifyForm.imgPath}</b></small>
+                            <small>업로드 된 이미지 파일명: <b><c:out value="${modifyForm.imgPath}"/></b></small>
                         </div>
 
                         <div id="initFileDel">
@@ -220,9 +220,8 @@
                 <button type="submit" class="btn btn-primary">수정</button>
             </div>
 
-            <input type="hidden" name="laNumber" value="${modifyForm.laNumber}">
-            <input type="hidden" name="imgPath" id="imgPath" value="">
-
+            <input name="laNumber" value="${modifyForm.laNumber}" hidden>
+            <input name="imgPath" id="imgPath" hidden>
         </form>
     </div>
 </section>
@@ -261,14 +260,14 @@
     });
 
     function hasImage() {
-        let fileName = $("#fileName");
-        let initFileDel = $("#initFileDel");
-        let notUpload1 = $("#notUpload1");
-        let fileDel1 = $("#fileDel1");
-        let file1 = $("#file1");
+        const fileName = $("#fileName");
+        const initFileDel = $("#initFileDel");
+        const notUpload1 = $("#notUpload1");
+        const fileDel1 = $("#fileDel1");
+        const file1 = $("#file1");
 
         file1.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) { // 파일 첨부한 경우
                 fileName.hide();
@@ -278,7 +277,7 @@
             }
         });
 
-        fileDel1.on("click", function () {
+        fileDel1.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {
@@ -288,7 +287,7 @@
             }
         });
 
-        initFileDel.on("click", function () {
+        initFileDel.off().on("click", function () {
             const isConfirmed = confirm("기존 파일을 정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {
@@ -305,12 +304,12 @@
     }
 
     function noImage() {
-        let fileDel2 = $("#fileDel2");
-        let notUpload2 = $("#notUpload2");
-        let file2 = $("#file2");
+        const fileDel2 = $("#fileDel2");
+        const notUpload2 = $("#notUpload2");
+        const file2 = $("#file2");
 
         file2.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) { // 파일 첨부한 경우
                 fileDel2.show();
@@ -318,7 +317,7 @@
             }
         });
 
-        fileDel2.on("click", function () {
+        fileDel2.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
             if (isConfirmed) {
                 file2.val(null);

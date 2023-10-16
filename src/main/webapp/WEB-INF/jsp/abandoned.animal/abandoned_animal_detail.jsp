@@ -63,12 +63,12 @@
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <img src="/abandonedAnimal/upload?filename=${detailForm.imgPath}"
+                <img src="<c:out value='/abandonedAnimal/upload?filename=${detailForm.imgPath}'/>"
                      style='width: 100%; object-fit: contain'/>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
                 <div class="heading-section pt-md-5">
-                    <h2 class="mb-4">${detailForm.name}</h2>
+                    <h2 class="mb-4"><c:out value="${detailForm.name}"/></h2>
                 </div>
                 <div class="row">
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -76,7 +76,7 @@
                                 class="flaticon-stethoscope"></span></div>
                         <div class="text pl-3">
                             <h4>종</h4>
-                            <p>${detailForm.species} (${detailForm.kind})</p>
+                            <p><c:out value="${detailForm.species}"/> (<c:out value="${detailForm.kind}"/>)</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -84,7 +84,7 @@
                                 class="flaticon-customer-service"></span></div>
                         <div class="text pl-3">
                             <h4>나이</h4>
-                            <p>${detailForm.age}살</p>
+                            <p><c:out value="${detailForm.age}"/>살</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -92,7 +92,12 @@
                                 class="flaticon-emergency-call"></span></div>
                         <div class="text pl-3">
                             <h4>몸무게 / 성별</h4>
-                            <p>${detailForm.weight}kg / ${detailForm.gender}</p>
+                            <p><c:out value="${detailForm.weight}kg / "/>
+                                <c:if test="${detailForm.gender eq 'M'}">수컷</c:if>
+                                <c:if test="${detailForm.gender eq 'F'}">암컷</c:if>
+                                <c:if test="${detailForm.gender eq '-'}">모름</c:if>
+                            </p>
+
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -100,7 +105,7 @@
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
                             <h4>상태</h4>
-                            <p>${detailForm.animalState}</p>
+                            <p><c:out value="${detailForm.animalState}"/></p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
@@ -108,17 +113,21 @@
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
                             <h4>발견 장소</h4>
-                            <p>${detailForm.location}</p>
+                            <p><c:out value="${detailForm.location}"/></p>
                         </div>
                     </div>
-                    <div class="col-md-6 services-2 w-100 d-flex">
-                        <div class="icon d-flex align-items-center justify-content-center"><span
-                                class="flaticon-veterinarian"></span></div>
-                        <div class="text pl-3">
-                            <h4>보호중인 보호소</h4>
-                            <p>${detailForm.groupName} (${detailForm.shelterLocation})</p>
+
+                    <c:if test="${detailForm.animalState eq '보호'}">
+                        <div class="col-md-6 services-2 w-100 d-flex">
+                            <div class="icon d-flex align-items-center justify-content-center"><span
+                                    class="flaticon-veterinarian"></span></div>
+                            <div class="text pl-3">
+                                <h4>보호중인 보호소</h4>
+                                <p><c:out value="${detailForm.groupName} (${detailForm.shelterLocation})"/></p>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
+
                 </div>
             </div>
         </div>
@@ -132,7 +141,7 @@
                 <div class="d-block services text-center">
                     <div class="media-body p-4">
                         <h3 class="heading">특이사항</h3>
-                        <p>${detailForm.uniqueness}</p>
+                        <p><c:out value="${detailForm.uniqueness}"/></p>
                     </div>
                 </div>
             </div>
@@ -140,7 +149,7 @@
                 <div class="d-block services text-center">
                     <div class="media-body p-4">
                         <h3 class="heading">소개글</h3>
-                        <p>${detailForm.description}</p>
+                        <p><c:out value="${detailForm.description}"/></p>
                     </div>
                 </div>
             </div>
@@ -148,7 +157,7 @@
                 <div class="d-block services text-center">
                     <div class="media-body p-4">
                         <h3 class="heading">입소 날짜</h3>
-                        <p>${detailForm.admissionDate}</p>
+                        <p><c:out value="${detailForm.admissionDate}"/></p>
                     </div>
                 </div>
             </div>
@@ -161,8 +170,8 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">후원하기</h3>
-                        <p><small>작은 나눔은 ${detailForm.name}에게 큰 힘이 됩니다.</small></p>
-                        <a href="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}"
+                        <p><small>작은 나눔은 큰 힘이 됩니다.</small></p>
+                        <a href="<c:out value='/abandonedAnimal/auth/donate?abNumber=${param.abNumber}'/>"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -175,10 +184,10 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">입양/임시보호하기</h3>
-                        <p><small>${detailForm.name}에게 손길을 내밀어주세요.</small></p>
+                        <p><small>사랑의 손길을 내밀어주세요.</small></p>
                         <a
                                 <c:if test="${adopt.status ne '처리중'}">
-                                    href="/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}"
+                                    href="<c:out value='/abandonedAnimal/auth/adoptTemp?abNumber=${param.abNumber}'/>"
                                 </c:if>
                                 <c:if test="${adopt.status eq '처리중'}">
                                     href="" id="adoptWait"
@@ -196,10 +205,10 @@
                     </div>
                     <div class="media-body p-4">
                         <h3 class="heading">봉사하기</h3>
-                        <p><small>${detailForm.name}(이)가 여러분을 기다리고 있어요!</small></p>
+                        <p><small>여러분을 기다리고 있어요!</small></p>
                         <a
                                 <c:if test="${detailForm.animalState eq '보호'}">
-                                    href="/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}"
+                                    href="<c:out value='/abandonedAnimal/auth/volunteer?abNumber=${param.abNumber}'/>"
                                 </c:if>
                                 <c:if test="${detailForm.animalState ne '보호'}">
                                     href="" id="notProtected"
@@ -215,20 +224,20 @@
         <div class="modal-footer">
             <c:if test="${authUser.grade eq '관리자'}">
                 <button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/abandonedAnimal/update?abNumber=${param.abNumber}'">
+                        onclick="window.location.href='/admin/abandonedAnimal/update?abNumber=${param.abNumber}'">
                     수정
                 </button>
                 <button type="button" class="btn btn-danger"
                         onclick="if(confirm('삭제 시 해당 동물과 관련된 모든 정보(입양/임보/후원)가 삭제됩니다.'))
-                                { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/abandonedAnimal/list?sort=abNo';}">
+                                { if(confirm('정말로 삭제하시겠습니까?')) return window.location.href='/abandonedAnimal/list?sort=abNo';}">
                     삭제
                 </button>
                 <button type="button" class="btn btn-dark"
-                        onclick="location.href='/admin/abandonedAnimal'">유기동물 관리로
+                        onclick="window.location.href='/admin/abandonedAnimal'">유기동물 관리로
                 </button>
             </c:if>
             <button type="button" class="btn btn-secondary"
-                    onclick="location.href='/abandonedAnimal/list?sort=abNo'">목록으로
+                    onclick="window.location.href='/abandonedAnimal/list?sort=abNo'">목록으로
             </button>
         </div>
     </div>

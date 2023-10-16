@@ -168,7 +168,7 @@
                 <label>2. 거주 지역</label>
                 <select name="residence" class="form-control" required>
                     <c:forEach var="residence" items="${residences}">
-                        <option value="${residence}">${residence}</option>
+                        <option <c:out value="${residence}"/>><c:out value="${residence}"/></option>
                     </c:forEach>
                 </select>
             </div>
@@ -199,7 +199,7 @@
             <br>
             <br>
             <div class="modal-footer" style="justify-content: center">
-                <button type="button" class="btn btn-secondary" onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='<c:out value="/abandonedAnimal/detail?abNumber=${param.abNumber}"/>'">취소</button>
                 <button type="submit" class="btn btn-primary">신청하기</button>
             </div>
 
@@ -231,10 +231,10 @@
 <script>
     $(document).ready(function () {
 
-        let tempInfo = document.getElementById('tempInfo');
+        const tempInfo = document.getElementById('tempInfo');
 
         $("input[name='adoptOrTemp']").change(function () {
-            let selectedState = $(this).val();
+            const selectedState = $(this).val();
             showOrHideForm(selectedState);
         });
 

@@ -82,28 +82,28 @@
                         <c:forEach var="abAnimal" items="${pageForm.content}">
                             <tbody>
                             <tr>
-                                <td>${abAnimal.name} (${abAnimal.abNumber})</td>
-                                <td>${abAnimal.species}</td>
-                                <td>${abAnimal.kind}</td>
-                                <td>${abAnimal.gender}</td>
-                                <td>${abAnimal.age}</td>
-                                <td>${abAnimal.groupName} (${abAnimal.getSNumber()})</td>
-                                <td>${abAnimal.shelterLocation}</td>
-                                <td>${abAnimal.admissionDate}</td>
-                                <td>${abAnimal.location}</td>
-                                <td>${abAnimal.animalState}</td>
+                                <td><c:out value="${abAnimal.name} (${abAnimal.abNumber})"/></td>
+                                <td><c:out value="${abAnimal.species}"/></td>
+                                <td><c:out value="${abAnimal.kind}"/></td>
+                                <td><c:out value="${abAnimal.gender}"/></td>
+                                <td><c:out value="${abAnimal.age}"/></td>
+                                <td><c:out value="${abAnimal.groupName} (${abAnimal.getSNumber()})"/></td>
+                                <td><c:out value="${abAnimal.shelterLocation}"/></td>
+                                <td><c:out value="${abAnimal.admissionDate}"/></td>
+                                <td><c:out value="${abAnimal.location}"/></td>
+                                <td><c:out value="${abAnimal.animalState}"/></td>
                                 <td>
                                     <button type="button" class="btn btn-dark"
-                                            onclick="location.href='/abandonedAnimal/detail?abNumber=${abAnimal.abNumber}'">
+                                            onclick="window.location.href='/abandonedAnimal/detail?abNumber=${abAnimal.abNumber}'">
                                         상세
                                     </button>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/abandonedAnimal/update?abNumber=${abAnimal.abNumber}'">
+                                            onclick="window.location.href='/admin/abandonedAnimal/update?abNumber=${abAnimal.abNumber}'">
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
                                             onclick="if(confirm('삭제 시 해당 동물과 관련된 모든 정보(입양/임보/후원)가 삭제됩니다.'))
-                                                    { if(confirm('정말로 삭제하시겠습니까?')) return location.href='/admin/abandonedAnimal/delete?abNumber=${abAnimal.abNumber}';}">
+                                                    { if(confirm('정말로 삭제하시겠습니까?')) return window.location.href='/admin/abandonedAnimal/delete?abNumber=${abAnimal.abNumber}';}">
                                         삭제
                                     </button>
                                 </td>
@@ -116,9 +116,9 @@
 
             <!-- 글쓰기 버튼  -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark" onclick="location.href='/admin'">관리자 페이지로</button>
+                <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">관리자 페이지로</button>
                 <button type="button" class="btn btn-primary"
-                        onclick="location.href='/admin/abandonedAnimal/insert'">유기동물 추가
+                        onclick="window.location.href='/admin/abandonedAnimal/insert'">유기동물 추가
                 </button>
             </div>
 

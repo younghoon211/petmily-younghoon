@@ -87,18 +87,18 @@
 <script>
     $(document).ready(function () {
         $('#submit').off('click').on('click', function () {
-            let email = $('#email').val().trim();
+            const email = $('#email').val().trim();
 
             if (!email) {
                 $('#email').focus();
                 alert("이메일을 입력하세요.");
             } else {
-                emailAjax();
+                sendMail();
             }
         });
 
-        function emailAjax() {
-            let email = $('#email').val().trim();
+        function sendMail() {
+            const email = $('#email').val().trim();
 
             $.ajax({
                 type: 'POST',
@@ -111,7 +111,7 @@
                         alert("이메일로 아이디를 발송했습니다.\n이메일 확인 후 로그인하세요.");
                         window.location.replace('/login');
 
-                        sendMailAjax();
+                        sendEmailVal();
                     } else {
                         alert("존재하지 않는 회원 정보입니다.\n이메일 주소를 다시 한번 확인하세요.");
                         $('#email').focus();
@@ -124,8 +124,8 @@
             });
         }
 
-        function sendMailAjax() {
-            let email = $('#email').val().trim();
+        function sendEmailVal() {
+            const email = $('#email').val().trim();
 
             $.ajax({
                 type: 'POST',

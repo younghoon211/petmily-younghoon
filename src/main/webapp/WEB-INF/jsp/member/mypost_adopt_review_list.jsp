@@ -102,20 +102,20 @@
                     <c:forEach var="board" items="${myPost.content}">
                         <div class="col-md-4">
                             <div class="blog-entry align-self-stretch">
-                                <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
+                                <a href="<c:out value='/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/adoptReview/upload?filename=${board.imgPath}')"></a>
+                                   style="background-image: url('<c:out value="/adoptReview/upload?filename=${board.imgPath}"/>')"></a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div><i class="far fa-eye"></i>date ${board.wrTime}</div>
+                                        <div><i class="far fa-eye"></i>date <c:out value="${board.wrTime}"/></div>
                                         <br>
                                         <div><i class="far fa-eye"></i>by<a
-                                                href="javascript:void(0)"> ${board.name}</a></div>
+                                                href="javascript:void(0)"> <c:out value="${board.name}"/></a></div>
                                     </div>
-                                    <a href="/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}">
-                                        <h3 class="heading">${board.title}</h3></a>
+                                    <a href="<c:out value='/adoptReview/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'/>">
+                                        <h3 class="heading"><c:out value="${board.title}"/></h3></a>
                                     <div class="meta mb-2">
-                                        <div>조회수: ${board.viewCount}</div>
+                                        <div>조회수: <c:out value="${board.viewCount}"/></div>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
                 </div>
 
                 <!-- 페이징 처리 -->

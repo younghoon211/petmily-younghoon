@@ -156,10 +156,10 @@
 
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-            <button id="submit" type="submit" class="btn btn-primary">후원정보 수정</button>
+            <button type="submit" class="btn btn-primary" id="submit" >후원정보 수정</button>
         </div>
         <br>
-        <input type="hidden" name="dNumber" value="${updateForm.getDNumber()}">
+        <input name="dNumber" value="${updateForm.getDNumber()}" hidden>
     </form>
 </div>
 

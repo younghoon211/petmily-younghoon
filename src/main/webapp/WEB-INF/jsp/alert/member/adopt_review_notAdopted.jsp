@@ -2,5 +2,5 @@
 
 <script>
     alert("동물을 입양한 이력이 있는 회원만 후기 작성이 가능합니다.");
-    location.href = "/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo";
+    window.location.href = "/adoptReview/list?kindOfBoard=adoptReview&sort=adoptReviewNo";
 </script>

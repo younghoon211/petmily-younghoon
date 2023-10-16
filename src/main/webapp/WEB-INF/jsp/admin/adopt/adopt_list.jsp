@@ -107,21 +107,21 @@
                         </thead>
                         <c:forEach var="adopt" items="${pageForm.content}">
                             <tbody>
-                            <td>${adopt.adNumber}</td>
-                            <td>${adopt.memberId} (${adopt.getMNumber()})</td>
-                            <td>${adopt.animalName} (${adopt.abNumber})</td>
-                            <td>${adopt.memberName}</td>
-                            <td>${adopt.residence}</td>
-                            <td>${adopt.maritalStatus}</td>
-                            <td>${adopt.job}</td>
-                            <td>${adopt.status}</td>
+                            <td><c:out value="${adopt.adNumber}"/></td>
+                            <td><c:out value="${adopt.memberId} (${adopt.getMNumber()})"/></td>
+                            <td><c:out value="${adopt.animalName} (${adopt.abNumber})"/></td>
+                            <td><c:out value="${adopt.memberName}"/></td>
+                            <td><c:out value="${adopt.residence}"/></td>
+                            <td><c:out value="${adopt.maritalStatus}"/></td>
+                            <td><c:out value="${adopt.job}"/></td>
+                            <td><c:out value="${adopt.status}"/></td>
                             <td>
                                 <button type="button" class="btn btn-primary"
-                                        onclick="location.href='/admin/adopt/update?adNumber=${adopt.adNumber}'">수정
+                                        onclick="window.location.href='/admin/adopt/update?adNumber=${adopt.adNumber}'">수정
                                 </button>
                                 <button type="button" class="btn btn-danger"
                                         onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                { return location.href='/admin/adopt/delete?adNumber=${adopt.adNumber}';}">
+                                                { return window.location.href='/admin/adopt/delete?adNumber=${adopt.adNumber}';}">
                                     삭제
                                 </button>
                             </td>
@@ -134,11 +134,11 @@
 
         <!-- 입양 추가 버튼  -->
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/adopt/insert'">입양 추가
+                    onclick="window.location.href='/admin/adopt/insert'">입양 추가
             </button>
         </div>
 

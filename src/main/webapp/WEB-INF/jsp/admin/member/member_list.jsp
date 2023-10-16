@@ -79,24 +79,24 @@
                         <c:forEach var="member" items="${pageForm.content}">
                             <tbody>
                             <tr>
-                                <td>${member.getMNumber()}</td>
-                                <td>${member.id}</td>
-                                <td>${member.pw}</td>
-                                <td>${member.name}</td>
-                                <td>${member.birth}</td>
-                                <td>${member.gender}</td>
-                                <td>${member.email}</td>
-                                <td>${member.phone}</td>
-                                <td>${member.grade}</td>
+                                <td><c:out value="${member.getMNumber()}"/></td>
+                                <td><c:out value="${member.id}"/></td>
+                                <td><c:out value="${member.pw}"/></td>
+                                <td><c:out value="${member.name}"/></td>
+                                <td><c:out value="${member.birth}"/></td>
+                                <td><c:out value="${member.gender}"/></td>
+                                <td><c:out value="${member.email}"/></td>
+                                <td><c:out value="${member.phone}"/></td>
+                                <td><c:out value="${member.grade}"/></td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/member/update?mNumber=${member.getMNumber()}'">
+                                            onclick="window.location.href='/admin/member/update?mNumber=${member.getMNumber()}'">
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
                                             onclick="if(confirm('삭제 시 해당 회원과 관련된 모든 정보(작성글/댓글/입양/임보/후원)가 삭제됩니다.')) {
                                                     if(confirm('정말로 삭제하시겠습니까?'))
-                                                    return location.href='/admin/member/delete?mNumber=${member.getMNumber()}';}
+                                                    return window.location.href='/admin/member/delete?mNumber=${member.getMNumber()}';}
                                                     deleteMember()">삭제
                                     </button>
                                 </td>
@@ -109,11 +109,11 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/member/insert'">회원정보 추가
+                    onclick="window.location.href='/admin/member/insert'">회원정보 추가
             </button>
         </div>
 
@@ -190,7 +190,7 @@
 <script>
     function deleteMember() {
         alert("회원 정보가 삭제되었습니다.");
-        location.href = "/admin/member";
+        window.location.href = "/admin/member";
     }
 </script>
 

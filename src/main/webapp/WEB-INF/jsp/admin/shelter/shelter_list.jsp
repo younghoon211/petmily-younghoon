@@ -80,20 +80,19 @@
                         <tbody>
                         <c:forEach var="shelter" items="${pageForm.content}">
                             <tr>
-
-                                <td>${shelter.getSNumber()}</td>
-                                <td>${shelter.groupName}</td>
-                                <td>${shelter.location}</td>
-                                <td>${shelter.phone}</td>
+                                <td><c:out value="${shelter.getSNumber()}"/></td>
+                                <td><c:out value="${shelter.groupName}"/></td>
+                                <td><c:out value="${shelter.location}"/></td>
+                                <td><c:out value="${shelter.phone}"/></td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/shelter/update?sNumber=${shelter.getSNumber()}'">
+                                            onclick="window.location.href='/admin/shelter/update?sNumber=${shelter.getSNumber()}'">
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
                                             onclick="if(confirm('삭제 시 해당 보호소에 소속된 유기동물들의 모든 정보가 삭제됩니다.'))
                                                     { if(confirm('정말로 삭제하시겠습니까?'))
-                                                    return location.href='/admin/shelter/delete?sNumber=${shelter.getSNumber()}';}">
+                                                    return window.location.href='/admin/shelter/delete?sNumber=${shelter.getSNumber()}';}">
                                         삭제
                                     </button>
                                 </td>
@@ -107,11 +106,11 @@
 
         <!-- 생성, 관리자 페이지 이동 버튼  -->
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/shelter/insert'">보호소 추가
+                    onclick="window.location.href='/admin/shelter/insert'">보호소 추가
             </button>
         </div>
 

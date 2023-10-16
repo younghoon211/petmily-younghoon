@@ -173,7 +173,8 @@
                 </label>
             </div>
             <div class="col-md-auto">
-                <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력"> 원
+                <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"> 원
                 <br><small style="color: red">회원들에겐 최소 10,000원이상으로 명시</small>
             </div>
         </div>
@@ -207,17 +208,17 @@
 
 <script>
     $(document).ready(function () {
-        let amountInput = $('#customAmount');
-        let radioButtons = $('input[type="radio"].userRatings');
+        const amountInput = $('#customAmount');
+        const radioButtons = $('input[type="radio"].userRatings');
 
         // "직접 입력"에 값 입력 시 라디오 버튼 체크 해제
-        amountInput.on('input', function () {
+        amountInput.off().on('input', function () {
             radioButtons.prop('checked', false);
         });
 
         // 라디오 버튼 클릭시 "직접 입력" 값 초기화
         radioButtons.each(function () {
-            $(this).on('click', function () {
+            $(this).off().on('click', function () {
                 amountInput.val('');
             });
         });
@@ -225,10 +226,10 @@
         // 후원금액 입력 검증
         $("#submit").on("click", function () {
             let radioChecked = false;
-            let radioButtons = $("[name='donaSum']");
-            let amountInputVal = amountInput.val().trim();
-            let accountHolder = $('#accountHolder').val().trim();
-            let accountNumber = $('#accountNumber').val().trim();
+            const radioButtons = $("[name='donaSum']");
+            const amountInputVal = amountInput.val().trim();
+            const accountHolder = $('#accountHolder').val().trim();
+            const accountNumber = $('#accountNumber').val().trim();
 
             radioButtons.each(function () {
                 if ($(this).prop('checked')) {
@@ -237,7 +238,7 @@
                 }
             });
 
-            let notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+            const notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
 
             if (notInjectedAmount) {
                 alert("후원 금액을 선택하거나 입력해주세요.");

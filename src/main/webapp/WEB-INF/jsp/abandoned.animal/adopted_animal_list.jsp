@@ -53,40 +53,35 @@
 <section class="ftco-section bg-light">
     <div class="container" style="max-width: 1400px;">
         <div class="modal-header">
-            <form action="/abandonedAnimal/adoptedList" method="get">
-                <div class="form-group row">
-                    <div>
-                        <c:if test="${empty param.species && empty param.gender}">
-                            <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandonedAnimal/adoptedList?sort=${sort}">
-                                    <button type="button" class="btn btn-primary">
-                                        <c:choose>
-                                            <c:when test="${sort eq 'abNo'}">최신순</c:when>
-                                            <c:when test="${sort eq 'abNoAsc'}">오래된순</c:when>
-                                        </c:choose>
-                                    </button>&nbsp;
-                                </a>
-                            </c:forEach>
-                        </c:if>
+            <div class="form-group row">
+                <c:if test="${empty param.species && empty param.gender}">
+                    <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
+                        <a href="<c:out value='/abandonedAnimal/adoptedList?sort=${sort}'/>">
+                            <button type="button" class="btn btn-primary">
+                                <c:choose>
+                                    <c:when test="${sort eq 'abNo'}">최신순</c:when>
+                                    <c:when test="${sort eq 'abNoAsc'}">오래된순</c:when>
+                                </c:choose>
+                            </button>&nbsp;
+                        </a>
+                    </c:forEach>
+                </c:if>
 
-                        <c:if test="${not empty param.species && not empty param.gender}">
-                            <c:set var="linkParams"
-                                   value="?species=${param.species}&amp;gender=${param.gender}&amp;keyword=${param.keyword}&amp;sort="/>
-                            <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
-                                <a href="/abandonedAnimal/adoptedList${linkParams}${sort}">
-                                    <button type="button" class="btn btn-primary">
-                                        <c:choose>
-                                            <c:when test="${sort eq 'abNo'}">최신순</c:when>
-                                            <c:when test="${sort eq 'abNoAsc'}">오래된순</c:when>
-                                        </c:choose>
-                                    </button>&nbsp;
-                                </a>
-                            </c:forEach>
-                        </c:if>
-                    </div>
-
-                </div>
-            </form>
+                <c:if test="${not empty param.species && not empty param.gender}">
+                    <c:set var="linkParams"
+                           value="?species=${param.species}&gender=${param.gender}&keyword=${param.keyword}&sort="/>
+                    <c:forEach var="sort" items="${['abNo', 'abNoAsc']}">
+                        <a href="<c:out value='/abandonedAnimal/adoptedList${linkParams}${sort}'/>">
+                            <button type="button" class="btn btn-primary">
+                                <c:choose>
+                                    <c:when test="${sort eq 'abNo'}">최신순</c:when>
+                                    <c:when test="${sort eq 'abNoAsc'}">오래된순</c:when>
+                                </c:choose>
+                            </button>&nbsp;
+                        </a>
+                    </c:forEach>
+                </c:if>
+            </div>
         </div>
         <br>
 
@@ -96,21 +91,21 @@
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
                             <div class="img align-self-stretch"
-                                 style="background-image: url('/abandonedAnimal/upload?filename=${abAnimal.imgPath}')"></div>
+                                 style="background-image: url('<c:out value="/abandonedAnimal/upload?filename=${abAnimal.imgPath}"/>')"></div>
                         </div>
                         <div class="text pt-3 px-3 pb-4 text-center"><br>
-                            <h3>${abAnimal.name}</h3>
-                            <span class="position mb-2">${abAnimal.species} / ${abAnimal.kind}</span>
+                            <h3><c:out value="${abAnimal.name}"/></h3>
+                            <span class="position mb-2"><c:out value="${abAnimal.species} / ${abAnimal.kind}"/></span>
                             <div class="faded">
                                 <c:choose>
                                     <c:when test="${abAnimal.gender eq 'M'}">
-                                        <p>${abAnimal.age}살 / 수컷 / ${abAnimal.weight}kg</p>
+                                        <p><c:out value="${abAnimal.age}살 / 수컷 / ${abAnimal.weight}kg"/></p>
                                     </c:when>
                                     <c:when test="${abAnimal.gender eq 'F'}">
-                                        <p>${abAnimal.age}살 / 암컷 / ${abAnimal.weight}kg</p>
+                                        <p><c:out value="${abAnimal.age}살 / 암컷 / ${abAnimal.weight}kg"/></p>
                                     </c:when>
                                     <c:when test="${abAnimal.gender eq '-'}">
-                                        <p>${abAnimal.age}살 / 모름 / ${abAnimal.weight}kg</p>
+                                        <p><c:out value="${abAnimal.age}살 / 모름 / ${abAnimal.weight}kg"/></p>
                                     </c:when>
                                 </c:choose>
                             </div>
@@ -151,14 +146,16 @@
                     </div>
 
                     <div class="col-md-auto">
-                        <button name="sort" type="submit" class="btn btn-primary"
-                                value="${param.sort}">검색
+                        <button type="submit" class="btn btn-primary">
+                            검색
                         </button>
                     </div>
                 </div>
+                <input name="sort" value="${param.sort}" hidden>
             </form>
         </div>
         <%-- 검색 끝 --%>
+
 
         <div class="row mt-5">
             <div class="col text-center">

@@ -4,9 +4,9 @@
 <script>
     alert("게시글이 수정되었습니다.");
     <c:if test="${authUser.grade eq '관리자'}">
-        location.href = "/admin/board?kindOfBoard=look";
+        window.location.href = "/admin/board?kindOfBoard=look";
     </c:if>
     <c:if test="${authUser.grade eq '일반'}">
-        location.href = "/lookBoard/detail?laNumber=${lookBoardModifyForm.laNumber}";
+        window.location.href = "/lookBoard/detail?laNumber=${lookBoardModifyForm.laNumber}";
     </c:if>
 </script>

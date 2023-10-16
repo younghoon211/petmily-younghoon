@@ -110,7 +110,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#loginBtn").on("click", function (event) {
+        $("#loginBtn").off().on("click", function (event) {
             const id = $("#id");
             const pw = $("#pw");
             const requiredMsg = $("#requiredMsg");

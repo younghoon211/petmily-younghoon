@@ -30,6 +30,7 @@ public class JoinForm {
     private String birth;
 
     @NotBlank
+    @Size(min = 1)
     private String gender;
 
     @NotBlank

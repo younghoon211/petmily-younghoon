@@ -96,7 +96,7 @@
         </div>
 
         <form id="survey-form" method="post"
-              action="/abandonedAnimal/auth/donate?abNumber=${param.abNumber}">
+              action="<c:out value='/abandonedAnimal/auth/donate?abNumber=${param.abNumber}'/>">
             <div class="form-row">
                 <div class="col">
                     <label>은행명</label>
@@ -163,7 +163,8 @@
                     </label>
                 </div>
                 <div class="col">
-                    <input name="donaSum" type="number" id="customAmount" placeholder="직접 입력" min="10000"> 원
+                    <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '');"> 원
                     <br>
                     <small id="defaultMsg">최소 10,000원이상 가능합니다.</small>
                     <small id="errorMsg" style="display: none; color: red">최소 10,000원이상 가능합니다.</small>
@@ -174,7 +175,7 @@
 
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary"
-                        onclick="location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소
+                        onclick="window.location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소
                 </button>
                 <button type="submit" id="submit" class="btn btn-primary">후원하기</button>
             </div>
@@ -205,31 +206,30 @@
 
 <script>
     $(document).ready(function () {
-        let amountInput = $('#customAmount');
-        let radioButtons = $('input[type="radio"].userRatings');
+        const radioButtons = $('input[type="radio"].userRatings');
 
-        // "직접 입력"에 값 입력 시 라디오 버튼 체크 해제
-        amountInput.on('input', function () {
+        // 직접 입력에 값 입력 시 라디오 버튼 체크 해제
+        $('#customAmount').off().on('input', function () {
             radioButtons.prop('checked', false);
         });
 
-        // 라디오 버튼 클릭시 "직접 입력" 값 초기화
+        // 라디오버튼 클릭 시 직접 입력값 초기화
         radioButtons.each(function () {
-            $(this).on('click', function () {
-                amountInput.val('');
+            $(this).off().on('click', function () {
+                $('#customAmount').val("");
             });
         });
 
         // 후원금액 검증
-        $("#submit").on("click", function (event) {
+        $("#submit").off().on("click", function (event) {
             let radioChecked = false;
-            let radioButtons = $("[name='donaSum']");
-            let defaultMsg = $('#defaultMsg');
-            let errorMsg = $('#errorMsg');
-            let successMsg = $('#successMsg');
-            let amountInputVal = amountInput.val().trim();
-            let accountHolder = $('#accountHolder').val().trim();
-            let accountNumber = $('#accountNumber').val().trim();
+            const radioButtons = $("[name='donaSum']");
+            const defaultMsg = $('#defaultMsg');
+            const errorMsg = $('#errorMsg');
+            const successMsg = $('#successMsg');
+            const amountInputVal = $('#customAmount').val().trim();
+            const accountHolder = $('#accountHolder').val().trim();
+            const accountNumber = $('#accountNumber').val().trim();
 
             radioButtons.each(function () {
                 if ($(this).prop('checked')) {
@@ -238,23 +238,29 @@
                 }
             });
 
-            let notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+            const notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+
+            const numRegex = /^[0-9]+$/;
 
             if (notInjectedAmount) {
                 alert("후원 금액을 선택하거나 입력해주세요.");
-                amountInput.focus();
+                $('#customAmount').focus();
                 return false;
             } else if (amountInputVal !== "") {
-                if (amountInputVal < 10000) {
+                if (!numRegex.test(amountInputVal)) {
                     event.preventDefault();
+                } else if (amountInputVal < 10000) {
+                    event.preventDefault();
+
                     defaultMsg.hide();
                     successMsg.hide();
                     errorMsg.show();
-                    amountInput.focus();
+                    $('#customAmount').focus();
                 } else {
                     defaultMsg.hide();
                     errorMsg.hide();
                     successMsg.show();
+
                     $("form").submit();
                 }
             }

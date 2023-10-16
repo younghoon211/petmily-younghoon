@@ -120,7 +120,7 @@
                     <div class="form-group">
                         <span class="label">새 비밀번호 확인</span>
                         <input type="password" class="form-control"
-                               id="pwCheck"
+                               id="pwCheck" name="pwCheck"
                                placeholder="비밀번호를 한번 더 입력해주세요."
                                maxlength="16"
                                style="font-weight: normal">
@@ -167,8 +167,8 @@
         // ====================== 이메일 인증코드 보내는 폼 ======================
         // 이메일 전송 버튼
         $('#submitBtn1').off('click').on('click', function () {
-            let id = $('#id').val().trim();
-            let email = $('#email').val().trim();
+            const id = $('#id').val().trim();
+            const email = $('#email').val().trim();
 
             if (!id) {
                 alert("아이디를 입력하세요.");
@@ -187,7 +187,7 @@
         // ========================= 비밀번호 재설정 폼 =========================
         // 인증코드 인증 버튼
         $('#authBtn').off('click').on('click', function () {
-            let inputCode = $('#inputCode').val().trim();
+            const inputCode = $('#inputCode').val().trim();
 
             if (!inputCode) {
                 $('.authMsg').addClass('error').text("인증코드를 입력하세요.");
@@ -208,17 +208,17 @@
 
         // 비밀번호 재설정 버튼
         $('#submitBtn2').off('click').on('click', function (event) {
-            let inputCode = $('#inputCode').val().trim();
-            let pw = $('#pw').val().trim();
-            let pwCheck = $('#pwCheck').val().trim();
-            let authCodeError = $('#authCodeValid').val() === "error";
-            let pwError = $('#pwValid').val() === "error";
-            let pwCheckError = $('#pwCheckValid').val() === "error";
+            const inputCode = $('#inputCode').val().trim();
+            const pw = $('#pw').val().trim();
+            const pwCheck = $('#pwCheck').val().trim();
+            const authCodeError = $('#authCodeValid').val() === "error";
+            const pwError = $('#pwValid').val() === "error";
+            const pwCheckError = $('#pwCheckValid').val() === "error";
 
-            const isNotSamePwAndCheck = (pw !== pwCheck);
+            const isNotSamePwCheck = (pw !== pwCheck);
 
-            let hasEmpty = !authCode || !pw || !pwCheck;
-            let hasErrors = authCodeError || pwError || pwCheckError;
+            const hasEmpty = !authCode || !pw || !pwCheck;
+            const hasErrors = authCodeError || pwError || pwCheckError;
 
             if (hasEmpty) {
                 event.preventDefault();
@@ -244,7 +244,7 @@
                 } else if (pwCheckError) {
                     $('#pwCheck').focus();
                 }
-            } else if (isNotSamePwAndCheck) {
+            } else if (isNotSamePwCheck) {
                 event.preventDefault();
                 $('.pwCheckMsg').addClass('error').text("새 비밀번호와 확인이 일치하지 않습니다.");
                 $('#pwCheck').focus();
@@ -254,9 +254,9 @@
         });
 
         // 새 비밀번호 검증
-        $('#pw').on('input', function () {
-            let pw = $('#pw').val().trim();
-            let pwMsg = $('.pwMsg').addClass('error');
+        $('#pw').off().on('input', function () {
+            const pw = $('#pw').val().trim();
+            const pwMsg = $('.pwMsg').addClass('error');
             const pwRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]+$/;
 
             if (!pw) {
@@ -274,10 +274,10 @@
         });
 
         // 새 비밀번호 확인 검증
-        $('#pwCheck').on('input', function () {
-            let pw = $('#pw').val().trim();
-            let pwCheck = $('#pwCheck').val().trim();
-            let pwCheckMsg = $('.pwCheckMsg').addClass('error');
+        $('#pwCheck').off().on('input', function () {
+            const pw = $('#pw').val().trim();
+            const pwCheck = $('#pwCheck').val().trim();
+            const pwCheckMsg = $('.pwCheckMsg').addClass('error');
 
             if (!pwCheck) {
                 pwCheckMsg.addClass('error').text("새 비밀번호 확인을 입력하세요.");
@@ -292,8 +292,8 @@
         });
 
         function validAndSendMail() {
-            let id = $('#id').val().trim();
-            let email = $('#email').val().trim();
+            const id = $('#id').val().trim();
+            const email = $('#email').val().trim();
 
             $.ajax({
                 type: 'POST',
@@ -328,7 +328,7 @@
         }
 
         function sendMail() {
-            let email = $('#email').val().trim();
+            const email = $('#email').val().trim();
 
             $.ajax({
                 type: 'POST',
@@ -351,8 +351,8 @@
         }
 
         function validDupPw() {
-            let pw = $('#pw').val().trim();
-            let id = $('#id').val().trim();
+            const pw = $('#pw').val().trim();
+            const id = $('#id').val().trim();
 
             $.ajax({
                 type: 'POST',

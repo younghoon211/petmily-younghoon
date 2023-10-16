@@ -61,7 +61,6 @@
             <div class="col-lg-12">
                 <div class="col text-center">
                     <table class="table table-hover bg-white">
-
                         <thead>
                         <tr class="table table-border">
                             <th>후원번호</th>
@@ -75,34 +74,31 @@
                             <th>관리버튼</th>
                         </tr>
                         </thead>
-                        <c:forEach var="donation" items="${pageForm.content}">
-                            <tbody>
-
-                            <tr>
-                                <td>${donation.getDNumber()}</td>
-                                <td>${donation.animalName} (${donation.abNumber})</td>
-                                <td>${donation.memberId} (${donation.getMNumber()})</td>
-                                <td>${donation.memberName}</td>
-                                <td><fmt:formatNumber value="${donation.donaSum}" pattern="#,##0" /></td>
-                                <td>${donation.bank}</td>
-                                <td>${donation.accountHolder}</td>
-                                <td>${donation.accountNumber}</td>
+                        <tbody>
+                        <tr>
+                            <c:forEach var="donation" items="${pageForm.content}">
+                                <td><c:out value="${donation.getDNumber()}"/></td>
+                                <td><c:out value="${donation.animalName} (${donation.abNumber})"/></td>
+                                <td><c:out value="${donation.memberId} (${donation.getMNumber()})"/></td>
+                                <td><c:out value="${donation.memberName}"/></td>
+                                <td><fmt:formatNumber value="${donation.donaSum}" pattern="#,##0"/></td>
+                                <td><c:out value="${donation.bank}"/></td>
+                                <td><c:out value="${donation.accountHolder}"/></td>
+                                <td><c:out value="${donation.accountNumber}"/></td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="location.href='/admin/donation/update?dNumber=${donation.getDNumber()}'">
+                                            onclick="window.location.href='/admin/donation/update?dNumber=${donation.getDNumber()}'">
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
                                             onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                    { return location.href='/admin/donation/delete?dNumber=${donation.getDNumber()}';}">
+                                                    { return window.location.href='/admin/donation/delete?dNumber=${donation.getDNumber()}';}">
                                         삭제
                                     </button>
                                 </td>
-                            </tr>
-
-                            </tbody>
-
-                        </c:forEach>
+                            </c:forEach>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -110,11 +106,11 @@
 
         <!-- 생성, 관리자 페이지 이동 버튼  -->
         <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                 관리자 페이지로
             </button>
             <button type="button" class="btn btn-primary"
-                    onclick="location.href='/admin/donation/insert'">후원 추가
+                    onclick="window.location.href='/admin/donation/insert'">후원 추가
             </button>
         </div>
 

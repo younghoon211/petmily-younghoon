@@ -217,21 +217,27 @@
         const fieldIds = ['#id', '#pw', '#pwCheck', '#name', '#birth', '#email', '#emailAuth', '#phone'];
         let authCode;
 
-        $('#submit').on('click', function (event) {
+        $('#submit').off().on('click', function (event) {
+            const isNotSamePwCheck = ($('#pw').val().trim() !== $('#pwCheck').val().trim());
+
             if (hasEmpty()) {
                 event.preventDefault();
                 focusAtEmpty();
             } else if (hasErrors()) {
                 event.preventDefault();
                 focusAtErrors();
+            } else if (isNotSamePwCheck) {
+                event.preventDefault();
+                $('.pwCheckMsg').addClass('error').text("비밀번호와 확인이 일치하지 않습니다.");
+                $('#pwCheck').focus();
             } else {
                 $("form").submit();
             }
         });
 
-        $('#id').on('input', function () {
-            let id = $('#id').val().trim();
-            let idMsg = $('.idMsg').addClass('error');
+        $('#id').off().on('input', function () {
+            const id = $('#id').val().trim();
+            const idMsg = $('.idMsg').addClass('error');
             const idRegex = /^[0-9a-z]+$/g
 
             if (!id) {
@@ -244,13 +250,13 @@
                 idMsg.text("소문자, 숫자로 입력하세요.");
                 $('#idValid').val("error");
             } else {
-                idAjax();
+                validId();
             }
         });
 
-        $('#pw').on('input', function () {
-            let pw = $('#pw').val().trim();
-            let pwMsg = $('.pwMsg').addClass('error');
+        $('#pw').off().on('input', function () {
+            const pw = $('#pw').val().trim();
+            const pwMsg = $('.pwMsg').addClass('error');
             const pwRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]+$/;
 
             if (!pw) {
@@ -267,10 +273,10 @@
             }
         });
 
-        $('#pwCheck').on('input', function () {
-            let pw = $('#pw').val().trim();
-            let pwCheck = $('#pwCheck').val().trim();
-            let pwCheckMsg = $('.pwCheckMsg').addClass('error');
+        $('#pwCheck').off().on('input', function () {
+            const pw = $('#pw').val().trim();
+            const pwCheck = $('#pwCheck').val().trim();
+            const pwCheckMsg = $('.pwCheckMsg').addClass('error');
 
             if (!pwCheck) {
                 pwCheckMsg.text("비밀번호 확인을 입력하세요.");
@@ -283,9 +289,9 @@
             }
         });
 
-        $('#name').on('input', function () {
-            let name = $('#name').val().trim();
-            let nameMsg = $('.nameMsg').addClass('error');
+        $('#name').off().on('input', function () {
+            const name = $('#name').val().trim();
+            const nameMsg = $('.nameMsg').addClass('error');
             const nameRegex = /^[0-9a-zA-Z가-힣]+$/g;
 
             if (!name) {
@@ -302,9 +308,9 @@
             }
         });
 
-        $('#birth').on('input', function () {
-            let birth = $('#birth').val().trim();
-            let birthMsg = $('.birthMsg').addClass('error');
+        $('#birth').off().on('input', function () {
+            const birth = $('#birth').val().trim();
+            const birthMsg = $('.birthMsg').addClass('error');
 
             if (!birth) {
                 birthMsg.text("올바른 형식으로 입력하세요.");
@@ -314,9 +320,9 @@
             }
         });
 
-        $('#email').on('input', function () {
-            let email = $('#email').val().trim();
-            let emailMsg = $('.emailMsg').addClass('error');
+        $('#email').off().on('input', function () {
+            const email = $('#email').val().trim();
+            const emailMsg = $('.emailMsg').addClass('error');
             const emailRegex = /^[0-9a-zA-Z]+([-_.]*[0-9a-zA-Z])*@[0-9a-zA-Z]+([.]*[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/g;
 
             if (!email) {
@@ -329,11 +335,11 @@
                 emailMsg.text("이메일 형식을 지켜주세요.");
                 $('#emailValid').val("error");
             } else {
-                emailAjax();
+                validEmail();
             }
         });
 
-        $('#emailAuthBtn').on('click', function (event) {
+        $('#emailAuthBtn').off().on('click', function (event) {
             if ($('#emailValid').val() === "success") {
                 $('#inputAuthCode').show();
                 $('.emailMsg').removeClass('error').addClass('success').text("인증코드가 발송되었습니다.");
@@ -341,7 +347,7 @@
 
                 alert("인증코드가 발송되었습니다.\n이메일 확인 후 인증코드를 입력하세요.");
 
-                emailAuthAjax();
+                authEmail();
                 $('#emailAuth').focus();
                 $('#emailValid').val("send");
             } else if ($('#emailValid').val() === "send") {
@@ -356,9 +362,9 @@
             }
         });
 
-        $('#emailAuth').on('input', function () {
-            let inputCode = $('#emailAuth').val().trim();
-            let emailAuthMsg = $('.emailAuthMsg').addClass('error');
+        $('#emailAuth').off().on('input', function () {
+            const inputCode = $('#emailAuth').val().trim();
+            const emailAuthMsg = $('.emailAuthMsg').addClass('error');
 
             if (inputCode === authCode) {
                 emailAuthMsg.removeClass('error').addClass('success').text("인증코드가 일치합니다.");
@@ -374,9 +380,9 @@
         });
 
 
-        $('#phone').on('input', function () {
-            let phone = $('#phone').val().trim();
-            let phoneMsg = $('.phoneMsg').addClass('error');
+        $('#phone').off().on('input', function () {
+            const phone = $('#phone').val().trim();
+            const phoneMsg = $('.phoneMsg').addClass('error');
             const phoneRegex = /^(010)(\d{8})$/g;
 
             if (!phone) {
@@ -386,7 +392,7 @@
                 phoneMsg.text("올바른 형식(예: 01012345678)으로 입력하세요.");
                 $('#phoneValid').val("error");
             } else {
-                phoneAjax();
+                validPhone();
             }
         });
 
@@ -438,16 +444,14 @@
             }
         }
 
-        function idAjax() {
-            let idMsg = $('.idMsg').addClass('error');
+        function validId() {
+            const id = $('#id').val().trim();
+            const idMsg = $('.idMsg').addClass('error');
 
             $.ajax({
                 type: 'POST',
                 url: '/join/idValid',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({id: $('#id').val().trim()}),
+                data: {id: id},
                 success: function (result) {
                     console.log("id result=" + result);
 
@@ -465,16 +469,14 @@
             });
         }
 
-        function emailAjax() {
-            let emailMsg = $('.emailMsg').addClass('error');
+        function validEmail() {
+            const email = $('#email').val().trim();
+            const emailMsg = $('.emailMsg').addClass('error');
 
             $.ajax({
                 type: 'POST',
                 url: '/join/emailValid',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({email: $('#email').val().trim()}),
+                data: {email: email},
                 success: function (result) {
                     console.log("email result=" + result);
 
@@ -492,14 +494,13 @@
             });
         }
 
-        function emailAuthAjax() {
+        function authEmail() {
+            const email = $('#email').val().trim();
+
             $.ajax({
                 type: 'POST',
                 url: '/join/sendMailAuthCode',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({email: $('#email').val().trim()}),
+                data: {email: email},
                 success: function (result) {
                     console.log("authCode=" + result);
 
@@ -511,17 +512,14 @@
             });
         }
 
-        function phoneAjax() {
-            let phoneMsg = $('.phoneMsg').addClass('error');
+        function validPhone() {
+            const phoneMsg = $('.phoneMsg').addClass('error');
+            const phone = $('#phone').val().trim();
 
             $.ajax({
                 type: 'POST',
                 url: '/join/phoneValid',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify({phone: $('#phone').val()}),
-                dataType: 'text',
+                data: {phone: phone},
                 success: function (result) {
                     console.log("phone result=" + result);
 

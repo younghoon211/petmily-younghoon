@@ -228,15 +228,15 @@
     $(document).ready(function () {
 
         // 입양, 임보 작성 폼 및 보호소 선택
-        let adoptInfo = document.getElementById('adoptInfo');
-        let tempInfo = document.getElementById('tempInfo');
-        let memberInfo = document.getElementById('memberInfo');
-        let shelter = document.getElementById('shelter');
+        const adoptInfo = document.getElementById('adoptInfo');
+        const tempInfo = document.getElementById('tempInfo');
+        const memberInfo = document.getElementById('memberInfo');
+        const shelter = document.getElementById('shelter');
 
         shelter.innerHTML = selectShelterHtml;
 
         $("input[name='animalState']").change(function () {
-            let selectedState = $(this).val();
+            const selectedState = $(this).val();
             showOrHideForm(selectedState);
         });
 
@@ -263,20 +263,20 @@
         }
 
         // 파일 첨부 기능
-        let fileDel = $("#fileDel");
-        let file = $("#file");
+        const fileDel = $("#fileDel");
+        const file = $("#file");
 
         fileDel.hide();
 
         file.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) {
                 fileDel.show();
             }
         });
 
-        fileDel.on("click", function () {
+        fileDel.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {

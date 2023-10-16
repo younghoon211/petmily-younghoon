@@ -112,8 +112,16 @@ public class MemberController {
                        BindingResult bindingResult) {
         log.info("POST memberJoinForm= {}", joinForm);
 
-        if (bindingResult.hasErrors()) {
-            log.info("join bindingResult= {}", bindingResult);
+        boolean isNotSamePwCheck = !joinForm.getPw().equals(joinForm.getConfirmPw());
+
+        if (bindingResult.hasErrors() || isNotSamePwCheck) {
+            if (bindingResult.hasErrors()) {
+                log.info("join bindingResult= {}", bindingResult);
+            }
+            if (isNotSamePwCheck) {
+                log.info("회원가입 서버 검증: 비밀번호와 확인 불일치");
+            }
+
             return "redirect:/join";
         }
 
@@ -125,8 +133,7 @@ public class MemberController {
     // 아이디 중복체크
     @PostMapping("/join/idValid")
     @ResponseBody
-    public String validDupIdAtJoin(@RequestBody Map<String, String> requestBody) {
-        String id = requestBody.get("id");
+    public String validDupIdAtJoin(@RequestParam String id) {
         log.info("id={}", id);
 
         if (memberService.checkDuplicatedId(id) == 0) {
@@ -139,8 +146,7 @@ public class MemberController {
     // 이메일 중복체크
     @PostMapping("/join/emailValid")
     @ResponseBody
-    public String validDupEmailAtJoin(@RequestBody Map<String, String> requestBody) {
-        String email = requestBody.get("email");
+    public String validDupEmailAtJoin(@RequestParam String email) {
         log.info("email={}", email);
 
         if (memberService.checkDuplicatedEmail(email) == 0) {
@@ -153,8 +159,7 @@ public class MemberController {
     // 이메일 인증코드 전송
     @PostMapping("/join/sendMailAuthCode")
     @ResponseBody
-    public String sendEmailCodeAtJoin(@RequestBody Map<String, String> requestBody) throws MessagingException, UnsupportedEncodingException {
-        String email = requestBody.get("email");
+    public String sendEmailCodeAtJoin(@RequestParam String email) throws MessagingException, UnsupportedEncodingException {
         log.info("email={}", email);
 
         return mailService.sendMailAtJoin(email);
@@ -163,8 +168,7 @@ public class MemberController {
     // 연락처 중복체크
     @PostMapping("/join/phoneValid")
     @ResponseBody
-    public String validDupPhoneAtJoin(@RequestBody Map<String, String> requestBody) {
-        String phone = requestBody.get("phone");
+    public String validDupPhoneAtJoin(@RequestParam String phone) {
         log.info("phone={}", phone);
 
         if (memberService.checkDuplicatedPhone(phone) == 0) {
@@ -215,13 +219,20 @@ public class MemberController {
     public String resetPw(@Validated @ModelAttribute ResetPwForm resetPwForm, BindingResult bindingResult) {
         log.info("POST resetPwForm= {}", resetPwForm);
 
-        if (bindingResult.hasErrors()) {
-            log.info("resetPw bindingResult= {}", bindingResult);
-            return "redirect:/resetPw";
-        }
+        boolean isNotSameAuthCode = !resetPwForm.getAuthCode().equals(resetPwForm.getInputCode());
+        boolean isNotSamePw = !resetPwForm.getPw().equals(resetPwForm.getPwCheck());
 
-        if (!resetPwForm.getAuthCode().equals(resetPwForm.getInputCode())) {
-            log.info("서버검증 : 인증코드 불일치");
+        if (bindingResult.hasErrors() || isNotSameAuthCode || isNotSamePw) {
+            if (bindingResult.hasErrors()) {
+                log.info("resetPw bindingResult= {}", bindingResult);
+            }
+            if (isNotSameAuthCode) {
+                log.info("서버검증 : 인증코드 불일치");
+            }
+            if (isNotSamePw) {
+                log.info("서버검증 : 비밀번호 불일치");
+            }
+
             return "redirect:/resetPw";
         }
 
@@ -311,8 +322,7 @@ public class MemberController {
     // 회원정보 변경 이메일 중복체크
     @PostMapping("/member/auth/changeInfo/emailValid")
     @ResponseBody
-    public String changeInfoEmailValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
-        String email = requestBody.get("email");
+    public String changeInfoEmailValid(@RequestParam String email, HttpServletRequest request) {
         log.info("email={}", email);
 
         int dupEmail = memberService.checkDuplicatedEmailChangeInfo(getAuthMNumber(request), email);
@@ -326,8 +336,7 @@ public class MemberController {
     // 회원정보 변경 연락처 중복체크
     @PostMapping("/member/auth/changeInfo/phoneValid")
     @ResponseBody
-    public String changeInfoPhoneValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
-        String phone = requestBody.get("phone");
+    public String changeInfoPhoneValid(@RequestParam String phone, HttpServletRequest request) {
         log.info("phone={}", phone);
 
         int dupPhone = memberService.checkDuplicatedPhoneChangeInfo(getAuthMNumber(request), phone);
@@ -348,8 +357,20 @@ public class MemberController {
     public String changePw(@Validated @ModelAttribute MemberPwChangeForm memberPwChangeForm, BindingResult bindingResult, HttpServletRequest request) {
         log.info("POST memberChangePwForm= {}", memberPwChangeForm);
 
-        if (bindingResult.hasErrors()) {
-            log.info("changePw bindingResult= {}", bindingResult);
+        boolean isSameOldAndNewPw = memberPwChangeForm.getOldPw().equals(memberPwChangeForm.getNewPw());
+        boolean isNotSameNewPwCheck = !memberPwChangeForm.getNewPw().equals(memberPwChangeForm.getNewPwCheck());
+
+        if (bindingResult.hasErrors() || isSameOldAndNewPw || isNotSameNewPwCheck) {
+            if (bindingResult.hasErrors()) {
+                log.info("changePw bindingResult= {}", bindingResult);
+            }
+            if (isSameOldAndNewPw) {
+                log.info("비밀번호 변경 서버 검증: 기존 비번 == 새 비번");
+            }
+            if (isNotSameNewPwCheck) {
+                log.info("비밀번호 변경 서버 검증: 새 비번 != 새 비번 확인");
+            }
+
             return "/member/member_pw_change";
         }
 
@@ -359,9 +380,9 @@ public class MemberController {
     }
 
     // 기존 비번 입력값 틀릴 시
-    @PostMapping("/member/auth/changePw/valid1")
+    @PostMapping("/member/auth/changePw/validOldPw")
     @ResponseBody
-    public String changePwValid1(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String validOldPwAtChangePw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String oldPw = requestBody.get("oldPw");
         log.info("oldPw= {}", oldPw);
 
@@ -375,9 +396,9 @@ public class MemberController {
     }
 
     // 새 비번에 기존 비번값 입력 시
-    @PostMapping("/member/auth/changePw/valid2")
+    @PostMapping("/member/auth/changePw/validNewPw")
     @ResponseBody
-    public String changePwValid2(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+    public String validNewPwAtChangePw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String newPw = requestBody.get("newPw");
         log.info("newPw= {}", newPw);
 
@@ -514,7 +535,7 @@ public class MemberController {
     }
 
     // 비밀번호 검증
-    @PostMapping("/member/auth/withdraw/valid")
+    @PostMapping("/member/auth/withdraw/validPw")
     @ResponseBody
     public String withdrawValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String pw = requestBody.get("pw");

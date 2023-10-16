@@ -100,27 +100,27 @@
                     <c:forEach var="lookBoard" items="${myPost.content}">
                         <div class="col-md-4 ftco-animate" id="d-flex-out">
                             <div class="blog-entry align-self-stretch" id="d-flex-in">
-                                <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}"
+                                <a href="<c:out value='/lookBoard/detail?laNumber=${lookBoard.laNumber}'/>"
                                    class="block-20 rounded"
-                                   style="background-image: url('/lookBoard/upload?filename=${lookBoard.imgPath}');">
+                                   style="background-image: url('<c:out value="/lookBoard/upload?filename=${lookBoard.imgPath}"/>');">
                                 </a>
                                 <div class="text p-4">
                                     <div class="meta mb-2">
-                                        <div>종: ${lookBoard.species} / 품종: ${lookBoard.kind}</div>
+                                        <div><c:out value="종: ${lookBoard.species} / 품종: ${lookBoard.kind}"/></div>
                                         <br>
-                                        <div>상태: ${lookBoard.animalState}</div>
+                                        <div>상태: <c:out value="${lookBoard.animalState}"/></div>
                                         <br>
-                                        <div>장소: ${lookBoard.location}</div>
+                                        <div>장소: <c:out value="${lookBoard.location}"/></div>
                                         <br>
-                                        <div>작성일: ${lookBoard.wrTime}</div>
+                                        <div>작성일: <c:out value="${lookBoard.wrTime}"/></div>
                                         <br>
-                                        <div>작성자: ${lookBoard.name}</div>
+                                        <div>작성자: <c:out value="${lookBoard.name}"/></div>
                                     </div>
                                     <h3 class="heading">
-                                        <a href="/lookBoard/detail?laNumber=${lookBoard.laNumber}">${lookBoard.title}</a>
+                                        <a href="<c:out value='/lookBoard/detail?laNumber=${lookBoard.laNumber}'/>"><c:out value="${lookBoard.title}"/></a>
                                     </h3>
                                     <div class="meta mb-2">
-                                        <div>조회수: ${lookBoard.viewCount}</div>
+                                        <div>조회수: <c:out value="${lookBoard.viewCount}"/></div>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/member/auth/mypage'">돌아가기</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/member/auth/mypage'">돌아가기</button>
                 </div>
 
                 <!-- 페이징 처리 -->

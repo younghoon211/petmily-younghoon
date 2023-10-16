@@ -76,20 +76,20 @@
                                     </label>
                                     <select name="mNumber" id="mNumber" class="form-control">
                                         <c:forEach var="m" items="${memberList}">
-                                            <option value="${m.getMNumber()}">${m.getMNumber()} / ${m.id} / ${m.name}</option>
+                                            <option value="${m.getMNumber()}"><c:out value="${m.getMNumber()} / ${m.id} / ${m.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="wrTime">작성일시 (여기를 클릭 후 스페이스바를 누르세요)</label>
+                                    <label for="wrTime">작성일시 <b>[이곳을 클릭 후 스페이스바를 누르세요]</b></label>
                                     <input type="datetime-local" name="wrTime" class="form-control" id="wrTime"
                                            value="${modifyForm.wrTime}" max="2099-12-30 00:00"
                                            required>
                                 </div>
                             </c:if>
                             <c:if test="${authUser.grade eq '일반'}">
-                                <input type="hidden" name="mNumber" value="${modifyForm.getMNumber()}">
-                                <input type="hidden" name="wrTime" value="${modifyForm.wrTime}">
+                                <input name="mNumber" value="${modifyForm.getMNumber()}" hidden>
+                                <input name="wrTime" value="${modifyForm.wrTime}" hidden>
                             </c:if>
 
 
@@ -106,7 +106,7 @@
                                 <label for="content">내용</label>
                                 <textarea id="content" rows="20" name="content" class="form-control"
                                           placeholder="내용을 입력해주세요"
-                                          maxlength="1300" required>${modifyForm.content}</textarea>
+                                          maxlength="1300" required><c:out value="${modifyForm.content}"/></textarea>
                             </div>
 
                         </div>
@@ -115,7 +115,7 @@
 
                         <div class="modal-footer">
                             <c:if test="${param.kindOfBoard eq 'free'}">
-                                <input type="hidden" name="checkPublic" value="Y">
+                                <input name="checkPublic" value="Y" hidden>
                             </c:if>
                             <c:if test="${param.kindOfBoard eq 'inquiry'}">
                                 <c:choose>
@@ -144,10 +144,10 @@
                             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
                             <button type="submit" class="btn btn-primary">글 수정 등록</button>
                         </div>
-                        <input type="hidden" name="bNumber" value="${modifyForm.getBNumber()}">
-                        <input type="hidden" name="kindOfBoard" value="${modifyForm.kindOfBoard}">
-                    </form>
 
+                        <input name="bNumber" value="${modifyForm.getBNumber()}" hidden>
+                        <input name="kindOfBoard" value="${modifyForm.kindOfBoard}" hidden>
+                    </form>
                 </div>
             </div>
         </div>

@@ -81,7 +81,7 @@
                             <hr width="100%" style="color: #9e9e9e">
                         </c:if>
                         <c:if test="${authUser.grade eq '일반'}">
-                            <input type="hidden" name="mNumber" value="${authUser.getMNumber()}">
+                            <input name="mNumber" value="${authUser.getMNumber()}" hidden>
                         </c:if>
 
                         <!-- 글 title, content, kindOfBoard, wrTime -->
@@ -89,7 +89,7 @@
                             <div>
                                 <label for="title">제목</label>
                                 <input id="title" type="text" class="form-control" name="title"
-                                       placeholder="제목을 입력해주세요 (18자 이내)" autofocus maxlength="18" required>
+                                       placeholder="제목을 입력해주세요." autofocus maxlength="18" required>
                             </div>
                         </div>
 
@@ -98,8 +98,6 @@
                             <textarea id="content" rows="20" name="content" class="form-control"
                                       placeholder="내용을 입력해주세요" maxlength="1300" required></textarea>
                         </div>
-
-                        <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
 
                         <!-- 첨부파일 -->
                         <div class="custom-file form-control-sm mt-3">
@@ -126,6 +124,8 @@
                         </button>
                         <button type="submit" class="btn btn-primary">글 등록</button>
                     </div>
+
+                    <input name="kindOfBoard" value="${param.kindOfBoard}" hidden>
                 </form>
             </div>
         </div>
@@ -152,21 +152,20 @@
 
 <script>
     $(document).ready(function () {
-
-        let fileDel = $("#fileDel");
-        let file = $("#file");
+        const fileDel = $("#fileDel");
+        const file = $("#file");
 
         fileDel.hide();
 
         file.change(function () {
-            let selectedFile = $(this).val();
+            const selectedFile = $(this).val();
 
             if (selectedFile !== null) {
                 fileDel.show();
             }
         });
 
-        fileDel.on("click", function () {
+        fileDel.off().on("click", function () {
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 
             if (isConfirmed) {

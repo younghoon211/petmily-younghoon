@@ -125,9 +125,9 @@
 
 <script>
     $(document).ready(function () {
-        $("#submit").on("click", function (event) {
-            let pw = $('#pw').val().trim();
-            let pwMsg = $('.pwMsg').addClass('error');
+        $("#submit").off().on("click", function (event) {
+            const pw = $('#pw').val().trim();
+            const pwMsg = $('.pwMsg').addClass('error');
 
             if (!pw) {
                 event.preventDefault();
@@ -142,30 +142,30 @@
             }
         });
 
-        $('#pw').on('input', function () {
-            let pw = $('#pw').val().trim();
-            let pwMsg = $('.pwMsg').addClass('error');
+        $('#pw').off().on('input', function () {
+            const pw = $('#pw').val().trim();
+            const pwMsg = $('.pwMsg').addClass('error');
 
             if (!pw) {
                 pwMsg.text("비밀번호를 입력하세요.");
                 $('#pwValid').val("error");
             } else {
-                pwAjax();
+                validPw();
             }
         });
     });
 
-    function pwAjax() {
-        let pwMsg = $('.pwMsg').addClass('error');
+    function validPw() {
+        const pw = $('#pw').val().trim();
+        const pwMsg = $('.pwMsg').addClass('error');
 
         $.ajax({
             type: 'POST',
-            url: '/member/auth/withdraw/valid',
+            url: '/member/auth/withdraw/validPw',
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({pw: $('#pw').val().trim()}),
-            dataType: 'text',
+            data: JSON.stringify({pw: pw}),
             success: function (result) {
                 console.log("회원 탈퇴 result=" + result);
                 if (result === "SUCCESS") {

@@ -112,7 +112,7 @@
                                         <td>
                                             <a href="/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}"
                                                class="text-body">
-                                                    ${board.title}
+                                                    <c:out value="${board.title}"/>
                                             </a>
                                         </td>
                                     </c:if>
@@ -122,7 +122,7 @@
                                         <td>
                                             <a href="/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}"
                                                class="text-body">
-                                                    ${board.title}
+                                                    <c:out value="${board.title}"/>
                                             </a>
                                         </td>
                                     </c:if>
@@ -131,7 +131,7 @@
                                         <td>${board.faNumber}</td>
                                         <td>
                                             <a href="/findBoard/detail?faNumber=${board.faNumber}" class="text-body">
-                                                    ${board.title}
+                                                    <c:out value="${board.title}"/>
                                             </a>
                                         </td>
                                     </c:if>
@@ -140,71 +140,71 @@
                                         <td>${board.laNumber}</td>
                                         <td>
                                             <a href="/lookBoard/detail?laNumber=${board.laNumber}" class="text-body">
-                                                    ${board.title}
+                                                    <c:out value="${board.title}"/>
                                             </a>
                                         </td>
                                     </c:if>
-                                    <td>${board.memberId} (${board.getMNumber()})</td>
-                                    <td>${board.name}</td>
-                                    <td>${board.wrTime}</td>
+                                    <td><c:out value="${board.memberId} (${board.getMNumber()})"/></td>
+                                    <td><c:out value="${board.name}"/></td>
+                                    <td><c:out value="${board.wrTime}"/></td>
                                     <td>
                                         <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
+                                                    onclick="window.location.href='/board/detail?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
                                                 상세
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
+                                                    onclick="window.location.href='/board/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}'">
                                                 수정
                                             </button>
                                             <button type="button" class="btn btn-danger"
                                                     onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                            { return location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}';}">
+                                                            { return window.location.href='/board/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${board.getBNumber()}';}">
                                                 삭제
                                             </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'adoptReview'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
+                                                    onclick="window.location.href='/adoptReview/detail?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
                                                 상세
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
+                                                    onclick="window.location.href='/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}'">
                                                 수정
                                             </button>
                                             <button type="button" class="btn btn-danger"
                                                     onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                            { return location.href='/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}';}">
+                                                            { return window.location.href='/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${board.getBNumber()}';}">
                                                 삭제
                                             </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'find'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/findBoard/detail?faNumber=${board.faNumber}'">
+                                                    onclick="window.location.href='/findBoard/detail?faNumber=${board.faNumber}'">
                                                 상세
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/findBoard/auth/modify?faNumber=${board.faNumber}'">
+                                                    onclick="window.location.href='/findBoard/auth/modify?faNumber=${board.faNumber}'">
                                                 수정
                                             </button>
                                             <button type="button" class="btn btn-danger"
                                                     onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                            { return location.href='/findBoard/auth/delete?faNumber=${board.faNumber}';}">
+                                                            { return window.location.href='/findBoard/auth/delete?faNumber=${board.faNumber}';}">
                                                 삭제
                                             </button>
                                         </c:if>
                                         <c:if test="${param.kindOfBoard eq 'look'}">
                                             <button type="button" class="btn btn-dark"
-                                                    onclick="location.href='/lookBoard/detail?laNumber=${board.laNumber}'">
+                                                    onclick="window.location.href='/lookBoard/detail?laNumber=${board.laNumber}'">
                                                 상세
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="location.href='/lookBoard/auth/modify?laNumber=${board.laNumber}'">
+                                                    onclick="window.location.href='/lookBoard/auth/modify?laNumber=${board.laNumber}'">
                                                 수정
                                             </button>
                                             <button type="button" class="btn btn-danger"
                                                     onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                                            { return location.href='/lookBoard/auth/delete?laNumber=${board.laNumber}';}">
+                                                            { return window.location.href='/lookBoard/auth/delete?laNumber=${board.laNumber}';}">
                                                 삭제
                                             </button>
                                         </c:if>
@@ -217,23 +217,23 @@
 
                         <div class="modal-footer">
                             <!-- 돌아가기 -->
-                            <button type="button" class="btn btn-dark" onclick="location.href='/admin'">
+                            <button type="button" class="btn btn-dark" onclick="window.location.href='/admin'">
                                 관리자 페이지로
                             </button>
 
                             <!-- 글쓰기 -->
                             <button type="button" class="btn btn-primary" style="float: right"
                                     <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry'}">
-                                        onclick="location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'"
+                                        onclick="window.location.href='/board/auth/write?kindOfBoard=${param.kindOfBoard}'"
                                     </c:if>
                                     <c:if test="${param.kindOfBoard eq 'adoptReview'}">
-                                        onclick="location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
+                                        onclick="window.location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
                                     </c:if>
                                     <c:if test="${param.kindOfBoard eq 'find'}">
-                                        onclick="location.href='/findBoard/auth/write'"
+                                        onclick="window.location.href='/findBoard/auth/write'"
                                     </c:if>
                                     <c:if test="${param.kindOfBoard eq 'look'}">
-                                        onclick="location.href='/lookBoard/auth/write'"
+                                        onclick="window.location.href='/lookBoard/auth/write'"
                                     </c:if>>글쓰기
                             </button>
                         </div>
@@ -245,7 +245,7 @@
         <!-- 검색 -->
         <div style="display: flex; justify-content: center;">
             <form action="/admin/board" method="get">
-                <input type="hidden" name="kindOfBoard" value="${param.kindOfBoard}">
+                <input name="kindOfBoard" value="${param.kindOfBoard}" hidden>
                 <div class="form-group row">
 
                     <c:if test="${param.kindOfBoard eq 'free' || param.kindOfBoard eq 'inquiry' || param.kindOfBoard eq 'adoptReview'}">
