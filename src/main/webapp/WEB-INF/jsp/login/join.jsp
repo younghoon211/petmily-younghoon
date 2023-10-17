@@ -112,7 +112,6 @@
                                     <span class="label">생년월일</span>
                                     <input type="date" class="form-control"
                                            id="birth" name="birth"
-                                           placeholder="생년월일"
                                            min="1900-01-01" max="2030-12-31"
                                            style="font-weight: normal">
                                     <span class="birthMsg"></span>
@@ -220,12 +219,14 @@
         $('#submit').off().on('click', function (event) {
             const isNotSamePwCheck = ($('#pw').val().trim() !== $('#pwCheck').val().trim());
 
-            if (hasEmpty()) {
+            if (hasEmpty() || hasErrors()) {
                 event.preventDefault();
-                focusAtEmpty();
-            } else if (hasErrors()) {
-                event.preventDefault();
-                focusAtErrors();
+
+                if (hasEmpty()) {
+                    focusAtEmpty();
+                } else {
+                    focusAtErrors();
+                }
             } else if (isNotSamePwCheck) {
                 event.preventDefault();
                 $('.pwCheckMsg').addClass('error').text("비밀번호와 확인이 일치하지 않습니다.");

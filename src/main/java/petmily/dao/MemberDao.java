@@ -68,12 +68,16 @@ public class MemberDao implements BasicDao {
         return mapper.selectPhoneCheck(phone);
     }
 
-    public int selectEmailCheckChangeInfo(int mNumber, String email) {
-        return mapper.selectEmailCheckChangeInfo(mNumber, email);
+    public int selectIdCheckAtChange(int mNumber, String id) {
+        return mapper.selectIdCheckAtChange(mNumber, id);
     }
 
-    public int selectPhoneCheckChangeInfo(int mNumber, String email) {
-        return mapper.selectPhoneCheckChangeInfo(mNumber, email);
+    public int selectEmailCheckAtChange(int mNumber, String email) {
+        return mapper.selectEmailCheckAtChange(mNumber, email);
+    }
+
+    public int selectPhoneCheckAtChange(int mNumber, String email) {
+        return mapper.selectPhoneCheckAtChange(mNumber, email);
     }
 
     public Member selectMemberByEmail(String email) {

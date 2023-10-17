@@ -167,16 +167,22 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.selectPhoneCheck(phone);
     }
 
-    // 회원정보 변경 검증 (이메일)
+    // 회원정보 변경 검증 (아이디) : 관리자
     @Override
-    public int checkDuplicatedEmailChangeInfo(int mNumber, String email) {
-        return memberDao.selectEmailCheckChangeInfo(mNumber, email);
+    public int checkDuplicatedIdAtChange(int mNumber, String id) {
+        return memberDao.selectIdCheckAtChange(mNumber, id);
     }
 
-    // 회원정보 변경 검증 (연락처)
+    // 회원정보 변경 검증 (이메일) : 관리자+회원
     @Override
-    public int checkDuplicatedPhoneChangeInfo(int mNumber, String phone) {
-        return memberDao.selectPhoneCheckChangeInfo(mNumber, phone);
+    public int checkDuplicatedEmailAtChange(int mNumber, String email) {
+        return memberDao.selectEmailCheckAtChange(mNumber, email);
+    }
+
+    // 회원정보 변경 검증 (연락처) : 관리자+회원
+    @Override
+    public int checkDuplicatedPhoneAtChange(int mNumber, String phone) {
+        return memberDao.selectPhoneCheckAtChange(mNumber, phone);
     }
 
     // 아이디 찾기 검증 (이메일)
@@ -253,6 +259,7 @@ public class MemberServiceImpl implements MemberService {
     private Member toUpdate(MemberUpdateForm form) {
         return new Member(
                 form.getMNumber(),
+                form.getId(),
                 form.getPw(),
                 form.getName(),
                 form.getBirth(),

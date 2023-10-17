@@ -84,7 +84,10 @@
                                 <td><c:out value="${member.pw}"/></td>
                                 <td><c:out value="${member.name}"/></td>
                                 <td><c:out value="${member.birth}"/></td>
-                                <td><c:out value="${member.gender}"/></td>
+                                <td>
+                                    <c:if test="${member.gender eq 'M'}">남자</c:if>
+                                    <c:if test="${member.gender eq 'F'}">여자</c:if>
+                                </td>
                                 <td><c:out value="${member.email}"/></td>
                                 <td><c:out value="${member.phone}"/></td>
                                 <td><c:out value="${member.grade}"/></td>

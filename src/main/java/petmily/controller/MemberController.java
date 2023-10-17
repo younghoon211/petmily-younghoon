@@ -325,7 +325,7 @@ public class MemberController {
     public String changeInfoEmailValid(@RequestParam String email, HttpServletRequest request) {
         log.info("email={}", email);
 
-        int dupEmail = memberService.checkDuplicatedEmailChangeInfo(getAuthMNumber(request), email);
+        int dupEmail = memberService.checkDuplicatedEmailAtChange(getAuthMNumber(request), email);
         if (dupEmail == 0) {
             return "SUCCESS";
         }
@@ -339,7 +339,7 @@ public class MemberController {
     public String changeInfoPhoneValid(@RequestParam String phone, HttpServletRequest request) {
         log.info("phone={}", phone);
 
-        int dupPhone = memberService.checkDuplicatedPhoneChangeInfo(getAuthMNumber(request), phone);
+        int dupPhone = memberService.checkDuplicatedPhoneAtChange(getAuthMNumber(request), phone);
         if (dupPhone == 0) {
             return "SUCCESS";
         }

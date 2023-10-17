@@ -308,6 +308,7 @@
             console.log("삭제 brNumber=" + brNumber);
 
             const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+
             if (isConfirmed) {
                 $.ajax({
                     type: 'DELETE',

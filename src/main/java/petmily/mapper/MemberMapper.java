@@ -46,12 +46,17 @@ public interface MemberMapper {
 
     int selectPhoneCheck(String phone);
 
-    int selectEmailCheckChangeInfo(
+    int selectIdCheckAtChange(
+            @Param("mNumber") int mNumber,
+            @Param("id") String id
+    );
+
+    int selectEmailCheckAtChange(
             @Param("mNumber") int mNumber,
             @Param("email") String email
     );
 
-    int selectPhoneCheckChangeInfo(
+    int selectPhoneCheckAtChange(
             @Param("mNumber") int mNumber,
             @Param("phone") String phone
     );

@@ -85,8 +85,12 @@
                                 <td><c:out value="${abAnimal.name} (${abAnimal.abNumber})"/></td>
                                 <td><c:out value="${abAnimal.species}"/></td>
                                 <td><c:out value="${abAnimal.kind}"/></td>
-                                <td><c:out value="${abAnimal.gender}"/></td>
-                                <td><c:out value="${abAnimal.age}"/></td>
+                                <td>
+                                    <c:if test="${abAnimal.gender eq 'M'}">수컷</c:if>
+                                    <c:if test="${abAnimal.gender eq 'F'}">암컷</c:if>
+                                    <c:if test="${abAnimal.gender eq '-'}">모름</c:if>
+                                </td>
+                                <td><c:out value="${abAnimal.age}살"/></td>
                                 <td><c:out value="${abAnimal.groupName} (${abAnimal.getSNumber()})"/></td>
                                 <td><c:out value="${abAnimal.shelterLocation}"/></td>
                                 <td><c:out value="${abAnimal.admissionDate}"/></td>

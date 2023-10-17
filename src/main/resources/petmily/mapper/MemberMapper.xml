@@ -70,14 +70,21 @@
         where PHONE = #{phone}
     </select>
 
-    <select id="selectEmailCheckChangeInfo" resultType="int">
+    <select id="selectIdCheckAtChange" resultType="int">
+        select count(ID)
+        from MEMBER
+        where ID = #{id}
+          and MNUMBER != #{mNumber}
+    </select>
+
+    <select id="selectEmailCheckAtChange" resultType="int">
         select count(*)
         from MEMBER
         where EMAIL = #{email}
         and MNUMBER != #{mNumber}
     </select>
 
-    <select id="selectPhoneCheckChangeInfo" resultType="int">
+    <select id="selectPhoneCheckAtChange" resultType="int">
         select count(*)
         from MEMBER
         where PHONE = #{phone}
@@ -167,7 +174,7 @@
 
     <update id="updateAdmin">
         update MEMBER
-        set PW = #{pw}, NAME = #{name}, BIRTH = #{birth}, GENDER = #{gender}, EMAIL = #{email}, PHONE = #{phone}
+        set ID = #{id}, PW = #{pw}, NAME = #{name}, BIRTH = #{birth}, GENDER = #{gender}, EMAIL = #{email}, PHONE = #{phone}
         where MNUMBER = #{mNumber}
     </update>
 </mapper>

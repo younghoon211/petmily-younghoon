@@ -37,8 +37,9 @@ public class Member implements DomainObj {
         this.phone = phone;
     }
 
-    public Member(int mNumber, String pw, String name, String birth, String gender, String email, String phone) {
+    public Member(int mNumber, String id, String pw, String name, String birth, String gender, String email, String phone) {
         this.mNumber = mNumber;
+        this.id = id;
         this.pw = pw;
         this.name = name;
         this.birth = birth;

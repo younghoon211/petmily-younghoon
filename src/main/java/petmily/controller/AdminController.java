@@ -76,6 +76,45 @@ public class AdminController {
         return "/alert/admin/member_insert";
     }
 
+    // 회원 추가 (insert) - 아이디 중복체크
+    @PostMapping("/member/insert/idValid")
+    @ResponseBody
+    public String validIdAtInsert(@RequestParam String id) {
+        log.info("id={}", id);
+
+        if (memberService.checkDuplicatedId(id) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 회원 추가 (insert) - 이메일 중복체크
+    @PostMapping("/member/insert/emailValid")
+    @ResponseBody
+    public String validEmailAtInsert(@RequestParam String email) {
+        log.info("email={}", email);
+
+        if (memberService.checkDuplicatedEmail(email) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 회원 추가 (insert) - 연락처 중복체크
+    @PostMapping("/member/insert/phoneValid")
+    @ResponseBody
+    public String validPhoneAtInsert(@RequestParam String phone) {
+        log.info("phone={}", phone);
+
+        if (memberService.checkDuplicatedPhone(phone) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
     // 회원정보 수정 (update)
     @GetMapping("/member/update")
     public String memberUpdatePage(@RequestParam int mNumber, Model model) {
@@ -93,6 +132,45 @@ public class AdminController {
         log.info("POST MemberUpdateForm = {}", updateForm);
 
         return "/alert/admin/member_update";
+    }
+
+    // 회원정보 수정 (update) - 아이디 중복체크
+    @PostMapping("/member/update/idValid")
+    @ResponseBody
+    public String validIdAtUpdate(@RequestParam int mNumber, @RequestParam String id) {
+        log.info("id={}, mNumber={}", id, mNumber);
+
+        if (memberService.checkDuplicatedIdAtChange(mNumber, id) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 회원정보 수정 (update) - 이메일 중복체크
+    @PostMapping("/member/update/emailValid")
+    @ResponseBody
+    public String validEmailAtUpdate(@RequestParam int mNumber, @RequestParam String email) {
+        log.info("email={}, mNumber={}", email, mNumber);
+
+        if (memberService.checkDuplicatedEmailAtChange(mNumber, email) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
+    }
+
+    // 회원정보 수정 (update) - 연락처 중복체크
+    @PostMapping("/member/update/phoneValid")
+    @ResponseBody
+    public String validPhoneAtUpdate(@RequestParam int mNumber, @RequestParam String phone) {
+        log.info("phone={}, mNumber={}", phone, mNumber);
+
+        if (memberService.checkDuplicatedPhoneAtChange(mNumber, phone) == 0) {
+            return "SUCCESS";
+        }
+
+        return "ALREADY";
     }
 
     // 회원정보 삭제 (delete)

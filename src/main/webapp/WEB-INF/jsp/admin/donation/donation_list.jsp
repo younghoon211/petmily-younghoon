@@ -75,13 +75,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <c:forEach var="donation" items="${pageForm.content}">
+                        <c:forEach var="donation" items="${pageForm.content}">
+                            <tr>
                                 <td><c:out value="${donation.getDNumber()}"/></td>
                                 <td><c:out value="${donation.animalName} (${donation.abNumber})"/></td>
                                 <td><c:out value="${donation.memberId} (${donation.getMNumber()})"/></td>
                                 <td><c:out value="${donation.memberName}"/></td>
-                                <td><fmt:formatNumber value="${donation.donaSum}" pattern="#,##0"/></td>
+                                <td><fmt:formatNumber value="${donation.donaSum}" pattern="#,##0원"/></td>
                                 <td><c:out value="${donation.bank}"/></td>
                                 <td><c:out value="${donation.accountHolder}"/></td>
                                 <td><c:out value="${donation.accountNumber}"/></td>
@@ -96,8 +96,8 @@
                                         삭제
                                     </button>
                                 </td>
-                            </c:forEach>
-                        </tr>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>

@@ -51,9 +51,11 @@ public interface MemberService {
 
     int checkDuplicatedPhone(String phone);
 
-    int checkDuplicatedEmailChangeInfo(int mNumber, String email);
+    int checkDuplicatedIdAtChange(int mNumber, String id);
 
-    int checkDuplicatedPhoneChangeInfo(int mNumber, String phone);
+    int checkDuplicatedEmailAtChange(int mNumber, String email);
+
+    int checkDuplicatedPhoneAtChange(int mNumber, String phone);
 
     Member getMemberByEmail(String email);
 }
