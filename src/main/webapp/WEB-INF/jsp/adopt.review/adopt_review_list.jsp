@@ -103,14 +103,7 @@
         <!-- 글쓰기 버튼  -->
         <span class="modal-footer">
       	<button type="button" class="btn btn-primary"
-                <c:if test="${authUser.grade eq '일반' && adopt.status ne '완료'}">
-                    onclick="alert('동물을 입양한 이력이 있는 회원만 후기 작성이 가능합니다.')"
-                </c:if>
-
-                <c:if test="${empty authUser || authUser.grade eq '관리자' || adopt.status eq '완료'}">
-                    onclick="window.location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'"
-                </c:if>
-        >글쓰기</button>
+                onclick="window.location.href='/adoptReview/auth/write?kindOfBoard=adoptReview'">글쓰기</button>
     </span>
 
         <!-- 검색 바 -->
@@ -233,5 +226,6 @@
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

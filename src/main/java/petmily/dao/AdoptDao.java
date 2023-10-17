@@ -43,9 +43,9 @@ public class AdoptDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    // mNumber로 입양 조회
-    public Adopt selectAllBymNumber(int mNumber) {
-        return mapper.selectAllBymNumber(mNumber);
+    // mNumber로 입양 '완료' 여부 조회
+    public int selectCountAdoptedStatus(int mNumber) {
+        return mapper.selectCountAdoptedStatus(mNumber);
     }
 
     // ========================= 마이페이지 ========================

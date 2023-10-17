@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt.form.MypageAdoptPageForm;
 import petmily.domain.adopt_review.form.AdoptReviewPageForm;
 import petmily.domain.board.form.BoardPageForm;
@@ -63,7 +62,7 @@ public class MemberController {
         Member authUser = memberService.login(id, pw);
         log.info("authUser= {}", authUser);
 
-        // 없는 계정 또는 틀린 비번 입력 시
+        // 잘못된 아이디, 비밀번호 입력 시
         if (authUser == null) {
             model.addAttribute("rejectedId", id);
             return "/login/login";
@@ -77,15 +76,15 @@ public class MemberController {
 
         removeSessions(session);
 
-        if (originalRequest != null) { //로그인 인터셉터 후 원래 가려던 페이지로
-            return canWriteAdoptReviewOnlyAuthUser(originalRequest, request);
-        } else if ("http://localhost:8080/join".equals(prevPage)) { // 회원가입 후 로그인 시 메인페이지로
+        if (originalRequest != null) { //로그인 인터셉터 후: 원래 가려던 페이지로
+            return "redirect:" + originalRequest;
+        } else if ("http://localhost:8080/join".equals(prevPage)) { // 회원가입 후 로그인: 메인페이지로
             return "redirect:/";
         } else if (prevPage != null && !"http://localhost:8080/".equals(prevPage)) { // 로그인 후 원래 있던 페이지로
             return "redirect:" + prevPage;
         }
 
-        // 관리자 등급 회원: 메인 화면에서 로그인 시 관리자 페이지로
+        // 관리자가 메인 화면에서 로그인: 관리자 페이지로
         if (isAdminUser(request)) {
             return "redirect:/admin";
         }
@@ -241,7 +240,7 @@ public class MemberController {
         return "/alert/member/reset_pw";
     }
 
-    // ID, EMAIL 정보 검증
+    // 아이디, 이메일 검증
     @PostMapping("/resetPw/validIdAndEmail")
     @ResponseBody
     public String validIdAndEmail(@RequestBody Map<String, String> requestBody) {
@@ -278,7 +277,7 @@ public class MemberController {
         return authCode;
     }
 
-    // 검증: 새 비번 != 기존 비번
+    // 새 비번이 기존 비번과 다른지 검증
     @PostMapping("/resetPw/validDupOldPw")
     @ResponseBody
     public String validDuplicatedOldPw(@RequestParam String id) {
@@ -567,10 +566,6 @@ public class MemberController {
         return getAuthUser(request).getMNumber();
     }
 
-    private boolean isGeneralUser(HttpServletRequest request) {
-        return "일반".equals(getAuthUser(request).getGrade());
-    }
-
     private boolean isAdminUser(HttpServletRequest request) {
         return "관리자".equals(getAuthUser(request).getGrade());
     }
@@ -582,26 +577,6 @@ public class MemberController {
 
     private void removeSessions(HttpSession session) {
         session.removeAttribute("originalRequest"); // 원래 요청했던 URL (로그인 인터셉터에 걸린 경우)
-        session.removeAttribute("prevPage"); // 로그인 전 있던 페이지
-    }
-
-    // 입양기록 없는 회원이 입양후기 글 못쓰게
-    private String canWriteAdoptReviewOnlyAuthUser(String originalRequest, HttpServletRequest request) {
-        Adopt adoptedLog = adoptTempService.getAdoptBymNumber(getAuthMNumber(request));
-        boolean isGeneralUser = isGeneralUser(request);
-
-        if (adoptedLog == null && isGeneralUser && containsAdoptReviewWriteURI(originalRequest)) {
-            return "/alert/member/adopt_review_notAdopted";
-        } else if (adoptedLog != null) {
-            if (isGeneralUser(request) && !"완료".equals(adoptedLog.getStatus()) && containsAdoptReviewWriteURI(originalRequest)) {
-                return "/alert/member/adopt_review_notAdopted";
-            }
-        }
-        return "redirect:" + originalRequest;
-    }
-
-    // 비로그인 유저가 입양후기에 글 쓰려다 로그인 인터셉터에 걸렸을 경우
-    private boolean containsAdoptReviewWriteURI(String originalRequest) {
-        return originalRequest.contains("adoptReview/auth/write?kindOfBoard=adoptReview");
+        session.removeAttribute("prevPage"); // 로그인 전에 있던 페이지
     }
 }

@@ -242,6 +242,12 @@
         where MNUMBER = #{mNumber}
     </select>
 
+    <select id="selectCountAdoptedStatus" resultType="int">
+        select count(STATUS)
+        from ADOPT
+        where MNUMBER = #{mNumber} and STATUS = '완료'
+    </select>
+
 
     <!--========== 유기동물 수정 시 기존 입양 정보 삭제 ==========-->
 

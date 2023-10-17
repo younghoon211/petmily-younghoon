@@ -10,11 +10,11 @@ import javax.servlet.http.HttpSession;
 
 @Component
 @Slf4j
-public class LoginCheckInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("LoginCheckInterceptor 실행");
+        log.info("LoginInterceptor 실행");
 
         HttpSession session = request.getSession(false);
 

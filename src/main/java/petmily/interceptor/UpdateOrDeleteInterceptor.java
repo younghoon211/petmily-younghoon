@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BoardPermissionInterceptor implements HandlerInterceptor {
+public class UpdateOrDeleteInterceptor implements HandlerInterceptor {
 
     private final BoardService boardService;
     private final FindBoardService findBoardService;
@@ -24,7 +24,7 @@ public class BoardPermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("BoardPermissionInterceptor 실행");
+        log.info("UpdateOrDeleteInterceptor 실행");
 
         Member authUser = getAuthUser(request);
         Integer boardWriter = getWriter(request, "bNumber", boardService);

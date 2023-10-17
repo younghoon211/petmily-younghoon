@@ -13,11 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import petmily.domain.adopt.Adopt;
 import petmily.domain.adopt_review.form.*;
 import petmily.domain.member.Member;
 import petmily.service.AdoptReviewService;
-import petmily.service.AdoptTempService;
 import petmily.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,18 +35,12 @@ import java.util.List;
 public class AdoptReviewController {
 
     private final AdoptReviewService adoptReviewService;
-    private final AdoptTempService adoptTempService;
     private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(@Validated @ModelAttribute AdoptReviewConditionForm conditionForm, Model model, HttpServletRequest request) {
         log.info("GET AdoptReviewConditionForm = {}", conditionForm);
         AdoptReviewPageForm pageForm = adoptReviewService.getListPage(conditionForm);
-
-        if (getAuthUser(request) != null) {
-            Adopt adopt = adoptTempService.getAdoptBymNumber(getAuthUser(request).getMNumber());
-            model.addAttribute("adopt", adopt);
-        }
 
         model.addAttribute("pageForm", pageForm);
 
@@ -90,6 +82,12 @@ public class AdoptReviewController {
         adoptReviewService.write(writeForm);
 
         return "/alert/member/adopt_review_write";
+    }
+
+    // 입양기록 없는 회원이 후기글 작성 시도 시 알림창
+    @GetMapping("/auth/write/alert/NotAdopted")
+    public String alertNotAdopted() {
+        return "/alert/member/adopt_review_notAdopted";
     }
 
     @GetMapping("/auth/modify")

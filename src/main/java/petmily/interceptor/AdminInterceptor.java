@@ -11,11 +11,11 @@ import javax.servlet.http.HttpSession;
 
 @Component
 @Slf4j
-public class AdminCheckInterceptor implements HandlerInterceptor {
+public class AdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("AdminCheckInterceptor 실행");
+        log.info("AdminInterceptor 실행");
 
         Member authUser = getAuthUser(request);
 

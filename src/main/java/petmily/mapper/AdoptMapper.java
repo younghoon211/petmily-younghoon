@@ -58,7 +58,7 @@ public interface AdoptMapper {
 
     Adopt selectAllCompleteByAbNumber(int abNumber);
 
-    Adopt selectAllBymNumber(int mNumber);
+    int selectCountAdoptedStatus(int mNumber);
 
     void deleteCompleteWhenUpdateAB(int abNumber);
 
