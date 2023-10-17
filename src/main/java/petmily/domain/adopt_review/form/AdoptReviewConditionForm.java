@@ -10,10 +10,6 @@ import javax.validation.constraints.NotBlank;
 public class AdoptReviewConditionForm {
 
     int pageNo = 1;
-
-    @NotBlank
-    String kindOfBoard;
-
     String condition;
     String keyword;
 

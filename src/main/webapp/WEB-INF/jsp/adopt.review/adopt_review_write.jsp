@@ -124,8 +124,6 @@
                         </button>
                         <button type="submit" class="btn btn-primary">글 등록</button>
                     </div>
-
-                    <input name="kindOfBoard" value="${param.kindOfBoard}" hidden>
                 </form>
             </div>
         </div>

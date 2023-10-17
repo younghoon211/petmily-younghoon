@@ -79,13 +79,13 @@
             <div class="modal-footer">
                 <c:if test="${authUser.getMNumber() eq detailForm.getMNumber() || authUser.grade eq '관리자'}">
                     <button type="button" class="btn btn-primary"
-                            onclick="window.location.href='<c:out value="/adoptReview/auth/modify?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}"/>'">
+                            onclick="window.location.href='<c:out value="/adoptReview/auth/modify?kindOfBoard=adoptReview&bNumber=${detailForm.getBNumber()}"/>'">
                         수정
                     </button>
 
                     <button type="button" class="btn btn-danger"
                             onclick="if(confirm('정말로 삭제하시겠습니까?'))
-                                    {return window.location.href='<c:out value="/adoptReview/auth/delete?kindOfBoard=${param.kindOfBoard}&bNumber=${detailForm.getBNumber()}"/>';}">
+                                    {return window.location.href='<c:out value="/adoptReview/auth/delete?kindOfBoard=adoptReview&bNumber=${detailForm.getBNumber()}"/>';}">
                         삭제
                     </button>
                 </c:if>
@@ -96,7 +96,7 @@
                 </button>
                 <c:if test="${authUser.grade eq '관리자'}">
                     <button type="button" class="btn btn-dark"
-                            onclick="window.location.href='/admin/board?kindOfBoard=${param.kindOfBoard}'">게시판 관리로
+                            onclick="window.location.href='/admin/board?kindOfBoard=adoptReview'">게시판 관리로
                     </button>
                 </c:if>
             </div>

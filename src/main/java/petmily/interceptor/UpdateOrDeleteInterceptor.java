@@ -1,6 +1,7 @@
 package petmily.interceptor;
 
 import petmily.domain.member.Member;
+import petmily.service.AdoptReviewService;
 import petmily.service.BoardService;
 import petmily.service.FindBoardService;
 import petmily.service.LookBoardService;
@@ -21,6 +22,7 @@ public class UpdateOrDeleteInterceptor implements HandlerInterceptor {
     private final BoardService boardService;
     private final FindBoardService findBoardService;
     private final LookBoardService lookBoardService;
+    private final AdoptReviewService adoptReviewService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -28,10 +30,11 @@ public class UpdateOrDeleteInterceptor implements HandlerInterceptor {
 
         Member authUser = getAuthUser(request);
         Integer boardWriter = getWriter(request, "bNumber", boardService);
+        Integer adoptReviewWriter = getWriter(request, "bNumber", adoptReviewService);
         Integer findWriter = getWriter(request, "faNumber", findBoardService);
         Integer lookWriter = getWriter(request, "laNumber", lookBoardService);
 
-        if (!hasPermission(authUser, findWriter) || !hasPermission(authUser, boardWriter) || !hasPermission(authUser, lookWriter)) {
+        if (!hasPermission(authUser, boardWriter)|| !hasPermission(authUser, adoptReviewWriter) || !hasPermission(authUser, findWriter) || !hasPermission(authUser, lookWriter)) {
             log.info("일반 회원이 타 회원의 게시글 수정/삭제 시도");
             response.sendRedirect("/error");
 
@@ -52,8 +55,11 @@ public class UpdateOrDeleteInterceptor implements HandlerInterceptor {
         }
 
         int pkNumber = Integer.parseInt(pkValue);
+
         if (service instanceof BoardService) {
             return boardService.getBoard(pkNumber).getMNumber();
+        } else if (service instanceof AdoptReviewService) {
+            return adoptReviewService.getAdoptReview(pkNumber).getMNumber();
         } else if (service instanceof FindBoardService) {
             return findBoardService.getFindBoard(pkNumber).getMNumber();
         } else if (service instanceof LookBoardService) {

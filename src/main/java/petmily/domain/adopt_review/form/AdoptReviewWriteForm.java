@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdoptReviewWriteForm {
 
     private int mNumber;
-    private String kindOfBoard;
     private String title;
     private String content;
     private String imgPath;
