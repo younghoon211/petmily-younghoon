@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.LookBoardMapper">
 
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.look_board.LookBoard">
         select *
         from LOOKANIMALBOARD
@@ -11,10 +12,12 @@
     </select>
 
     <insert id="insert">
-        insert into LOOKANIMALBOARD(MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
+        insert into LOOKANIMALBOARD
+        (MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
         ,IMGPATH
         )
-        values (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
+        values
+        (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
 
         <if test='imgPath != null'>
             , #{imgPath}
@@ -45,10 +48,11 @@
         from LOOKANIMALBOARD
         where LANUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
 
-    <!--================== 일반 회원 페이지 ==================-->
-
+    <!--==================================== 회원 페이지 ==================================== -->
+    <!-- 닉네임 조회 -->
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from LOOKANIMALBOARD L
@@ -56,12 +60,7 @@
         where L.LANUMBER = #{pk}
     </select>
 
-    <update id="updateViewCount">
-        update LOOKANIMALBOARD
-        set VIEWCOUNT = VIEWCOUNT + 1
-        where LANUMBER = #{pk}
-    </update>
-
+    <!-- 조건부 검색 - 총 게시글 수 (페이징) -->
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
@@ -82,6 +81,7 @@
         </where>
     </select>
 
+    <!-- 조건부 검색 - 글 index -->
     <select id="selectIndexWithCondition" resultType="petmily.domain.look_board.LookBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -107,6 +107,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'lno'">
             order by LANUMBER desc
@@ -120,14 +121,15 @@
     </sql>
 
 
-    <!--================== 마이페이지 - 내가 쓴 게시글 ==================-->
-
+    <!--============================== 마이페이지 - 내가 쓴 게시글 ============================== -->
+    <!-- 내가 쓴 게시글 - 총 게시글 수 (페이징) -->
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
         where MNUMBER = #{mNumber}
     </select>
 
+    <!-- 내가 쓴 게시글 - 글 index -->
     <select id="selectIndexBymNumber" resultType="petmily.domain.look_board.LookBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -136,8 +138,8 @@
     </select>
 
 
-    <!--================== 찾-봤 매칭 시스템 ==================-->
-
+    <!--==================================== 찾-봤 매칭 시스템 ==================================== -->
+    <!-- 봤어요에 매칭된 찾아요 게시글 -->
     <select id="selectMatchedFa" resultType="int">
         select FANUMBER
         from FINDANIMALBOARD
@@ -152,6 +154,7 @@
         </where>
     </select>
 
+    <!-- 봤어요 매칭된 페이지 - 총 게시글 수 (페이징) -->
     <select id="selectCountLookMatching" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
@@ -161,6 +164,7 @@
         </where>
     </select>
 
+    <!-- 봤어요 매칭된 페이지 - 글 index -->
     <select id="selectIndexLookMatching" resultType="petmily.domain.look_board.LookBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -173,6 +177,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 봤어요에 매칭된 찾아요 리스트 - 총 게시글 수 (페이징) -->
     <select id="selectCountFindMatchedLook" resultType="int">
         select count(*)
         from FINDANIMALBOARD
@@ -188,6 +193,7 @@
         </where>
     </select>
 
+    <!-- 봤어요에 매칭된 찾아요 리스트 - 글 index -->
     <select id="selectIndexFindMatchedLook" resultType="petmily.domain.find_board.FindBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -206,43 +212,55 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 봤어요 게시판 모든 데이터 조회 -->
     <select id="selectAll" resultType="petmily.domain.look_board.LookBoard">
         select *
         from LOOKANIMALBOARD
     </select>
-
+    
+    <!-- 최근 업로드된 봤어요 게시글 조회 -->
     <select id="selectByPkMax" resultType="int">
         select MAX(LANUMBER)
         from LOOKANIMALBOARD
     </select>
 
+    <!-- 봤어요 게시글 상태 '매칭됨'으로 업데이트 -->
     <update id="changeState">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '매칭됨'
         where LANUMBER = #{pk}
     </update>
 
+    <!-- 봤어요 게시글 상태 '보호'로 업데이트 -->
     <update id="backState">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '보호'
         where LANUMBER = #{pk}
     </update>
 
+    <!-- 찾아요 게시글 상태 '매칭됨'으로 업데이트 -->
     <update id="changeStateFind">
         update FINDANIMALBOARD
         set ANIMALSTATE = '매칭됨'
         where FANUMBER = #{faNumber}
     </update>
 
+    <!-- 찾아요 게시글 상태 '실종'으로 업데이트 -->
     <update id="backStateFind">
         update FINDANIMALBOARD
         set ANIMALSTATE = '실종'
         where FANUMBER = #{faNumber}
     </update>
 
+    <!-- 조회수 증가 -->
+    <update id="updateViewCount">
+        update LOOKANIMALBOARD
+        set VIEWCOUNT = VIEWCOUNT + 1
+        where LANUMBER = #{pk}
+    </update>
 
-    <!--================== 관리자 ==================-->
-
+    <!--==================================== 관리자 페이지 ==================================== -->
+    <!-- 리스트 페이지 - 글 index -->
     <select id="selectIndexByPkDesc" resultType="petmily.domain.look_board.LookBoard">
         select *
         from (select ROWNUM as NUM, A.* from
@@ -280,10 +298,11 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 회원 아이디 조회 -->
     <select id="selectMemberId" resultType="java.lang.String">
         select M.ID
         from LOOKANIMALBOARD L
-                 inner join MEMBER M on L.MNUMBER = M.MNUMBER
+        inner join MEMBER M on L.MNUMBER = M.MNUMBER
         where L.LANUMBER = #{pk}
     </select>
 </mapper>

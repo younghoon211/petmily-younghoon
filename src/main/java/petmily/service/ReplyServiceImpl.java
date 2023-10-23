@@ -18,7 +18,6 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final ReplyDao replyDao;
 
-    // ===================== Create =====================
     // 댓글 쓰기
     @Override
     public void write(ReplyWriteForm form) {
@@ -26,14 +25,12 @@ public class ReplyServiceImpl implements ReplyService {
         replyDao.insert(reply);
     }
 
-    // ===================== Read =====================
     // 댓글 리스트
     @Override
     public List<ReplyListForm> getListPage(int bNumber) {
         return replyDao.selectIndexBybNumber(bNumber);
     }
 
-    // ===================== Update =====================
     // 수정
     @Override
     public void modify(ReplyModifyForm form) {
@@ -41,16 +38,11 @@ public class ReplyServiceImpl implements ReplyService {
         replyDao.update(reply);
     }
 
-    // ===================== Delete =====================
     // 삭제
     @Override
     public void delete(int pk) {
         replyDao.delete(pk);
     }
-
-
-    // ===================== CRUD 끝 =====================
-
 
     private Reply toWrite(ReplyWriteForm form) {
         return new Reply(

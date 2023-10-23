@@ -75,7 +75,7 @@
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/changeInfo" method="post" class="contactForm">
+                <form action="/member/auth/changeInfo" method="post" class="contactForm" id="form">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -142,7 +142,7 @@
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-                        <button type="submit" id="submit" class="btn btn-primary">변경하기</button>
+                        <button type="submit" class="btn btn-primary">변경하기</button>
                     </div>
 
                     <input name="mNumber" value="${authUser.getMNumber()}" hidden>
@@ -177,7 +177,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#submit').off().on('click', function (event) {
+        $("#form").off().on("submit", function(event) {
             const nameError = $('#nameValid').val() === "error";
             const emailError = $('#emailValid').val() === "error";
             const phoneError = $('#phoneValid').val() === "error";
@@ -191,8 +191,6 @@
             } else if (phoneError) {
                 event.preventDefault();
                 $('#phone').focus();
-            } else {
-                $("form").submit();
             }
         });
 

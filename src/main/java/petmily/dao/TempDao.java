@@ -45,10 +45,12 @@ public class TempDao implements BasicDao {
 
     // ================ 회원 페이지 ================
 
+    // 임보 신청 내역(마이페이지) - 총 게시글 수 (페이징)
     public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
+    // 임보 신청 내역(마이페이지) - 글 index
     public List<MypageTempListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<MypageTempListForm> mypageTempListForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndexBymNumber(start, end, mNumber);
@@ -74,7 +76,7 @@ public class TempDao implements BasicDao {
         mapper.adminInsert((TempPet) obj);
     }
 
-    // 총 게시글 수 조회
+    // 총 게시글 수 조회 (페이징)
     public int selectCount(String keyword) {
         return mapper.selectCount(keyword);
     }
@@ -89,12 +91,12 @@ public class TempDao implements BasicDao {
         return tempListForms;
     }
 
-    // 입양 승인관리 및 승인, 거절된 리스트 페이지 총 게시글 조회
+    // 임보 승인관리 및 승인, 거절 페이지 총 게시글 수 조회 (페이징)
     public int selectCountByStatus(String keyword, String status) {
         return mapper.selectCountByStatus(keyword, status);
     }
 
-    // 입양 승인관리 및 승인, 거절된 리스트 페이지 index
+    // 임보 승인관리 및 승인, 거절 페이지 글 index
     public List<TempListForm> selectIndexByStatus(int start, int end, String keyword, String status) {
         List<TempListForm> tempListForms = new ArrayList<>();
         List<TempPet> tempPets = mapper.selectIndexByStatus(start, end, keyword, status);
@@ -104,22 +106,22 @@ public class TempDao implements BasicDao {
         return tempListForms;
     }
 
-    // 임시보호 승인
+    // 임시보호 승인버튼
     public void tempApprove(int pk) {
         mapper.tempApprove(pk);
     }
 
-    // 임시보호 거절
+    // 임시보호 거절버튼
     public void tempRefuse(int pk) {
         mapper.tempRefuse(pk);
     }
 
-    // 수정 시 동일한 abNumber 중 상태 '완료' 삭제
+    // 기존 임보 정보 delete
     public void deleteCompleteWhenUpdateAB(int abNumber) {
         mapper.deleteCompleteWhenUpdateAB(abNumber);
     }
 
-    // 수정 시 동일한 abNumber 중 상태 '처리중' 삭제
+    // 임보 상태 '처리중' delete
     public void deleteWaitingWhenUpdateAB(int abNumber) {
         mapper.deleteWaitingWhenUpdateAB(abNumber);
     }

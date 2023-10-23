@@ -19,6 +19,8 @@ public interface AdoptMapper {
     void delete(int pk);
 
     // ========== 회원 페이지 ==========
+    int selectCountAdoptedStatus(int mNumber);
+
     int selectCountBymNumber(int mNumber);
 
     List<Adopt> selectIndexBymNumber(
@@ -26,6 +28,10 @@ public interface AdoptMapper {
             @Param("end") int end,
             @Param("mNumber") int mNumber
     );
+
+    Adopt selectAllByAbNumber(int abNumber);
+
+    Adopt selectAllCompleteByAbNumber(int abNumber);
 
     // ========== 관리자 페이지 ==========
     void adminInsert(Adopt obj);
@@ -53,12 +59,6 @@ public interface AdoptMapper {
     void adoptApprove(int pk);
 
     void adoptRefuse(int pk);
-
-    Adopt selectAllByAbNumber(int abNumber);
-
-    Adopt selectAllCompleteByAbNumber(int abNumber);
-
-    int selectCountAdoptedStatus(int mNumber);
 
     void deleteCompleteWhenUpdateAB(int abNumber);
 

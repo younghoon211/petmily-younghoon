@@ -54,7 +54,7 @@
                     </a>
                 </div>
 
-                <form action="/join" method="post" class="contactForm">
+                <form action="/join" method="post" class="contactForm" id="form">
                     <div class="form-inputs">
                         <div class="row">
 
@@ -119,14 +119,16 @@
                             </div>
 
                             <div class="col-md-12">
-                                <span class="label">성별</span>
-                                <select name="gender" class="form-control">
-                                    <option value="M">남자</option>
-                                    <option value="F">여자</option>
-                                </select>
+                                <div class="form-group">
+                                    <span class="label">성별</span>
+                                    <select name="gender" class="form-control">
+                                        <option value="M">남자</option>
+                                        <option value="F">여자</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="col-md-12"><br>
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <span class="label">이메일</span>
                                     <div style="display: flex; align-items: center">
@@ -135,22 +137,22 @@
                                                placeholder="ex) pet@petmily.com"
                                                maxlength="30"
                                                style="font-weight: normal">&nbsp;&nbsp;&nbsp;
-                                        <button id="emailAuthBtn" type="button" class="btn btn-outline-success">인증하기
+                                        <button id="authBtn" type="button" class="btn btn-outline-success">인증하기
                                         </button>
                                     </div>
                                     <span class="emailMsg"></span>
 
-                                    <div style="display: none" id="inputAuthCode">
+                                    <div style="display: none" id="hiddenInputCode">
                                         <div style="display: flex; align-items: center">
                                             <input type="text" class="form-control"
-                                                   id="emailAuth"
+                                                   id="inputCode" name="inputCode"
                                                    placeholder="인증번호를 입력해주세요."
                                                    maxlength="6"
                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                                    style="font-weight: normal">
                                         </div>
                                     </div>
-                                    <span class="emailAuthMsg"></span>
+                                    <span class="inputCodeMsg"></span>
                                 </div>
                             </div>
 
@@ -169,7 +171,7 @@
 
                             <div class="login col-md-7" style="margin: auto">
                                 <br>
-                                <button type="submit" id="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
+                                <button type="submit" class="btn btn-lg btn-block btn-success">회원가입</button>
                             </div>
 
                             <div class="login-text" style="font-size: smaller; text-align: center">
@@ -186,8 +188,9 @@
                     <input id="nameValid" hidden>
                     <input id="birthValid" hidden>
                     <input id="emailValid" hidden>
-                    <input id="emailAuthValid" hidden>
                     <input id="phoneValid" hidden>
+
+                    <input id="inputCodeValid" hidden>
                 </form>
             </div>
         </div>
@@ -213,13 +216,35 @@
 
 <script>
     $(document).ready(function () {
-        const fieldIds = ['#id', '#pw', '#pwCheck', '#name', '#birth', '#email', '#emailAuth', '#phone'];
+        const fieldIds = ['#id', '#pw', '#pwCheck', '#name', '#birth', '#email', '#phone'];
         let authCode;
 
-        $('#submit').off().on('click', function (event) {
+        // 메일 검증 끝 ~ 인증코드 인증 전까지 : 엔터키 = 인증버튼 클릭
+        $(document).on('keypress', function (event) {
+            if (event.which === 13) {
+                if (($('#emailValid').val() === "success")) {
+                    $("#authBtn").click();
+                }
+            }
+        });
+
+        // 폼 제출
+        $("#form").off().on("submit", function (event) {
+            const emailValid = $('#emailValid').val();
+            const isEmptyInputCode = !$('#inputCode').val();
+            const inputCodeValid = $('#inputCodeValid').val();
             const isNotSamePwCheck = ($('#pw').val().trim() !== $('#pwCheck').val().trim());
 
-            if (hasEmpty() || hasErrors()) {
+            if (emailValid === "send") { // 메일 보낸 상태면
+                if (isEmptyInputCode) {
+                    event.preventDefault();
+                    $('.inputCodeMsg').addClass('error').text("인증코드를 입력하세요.");
+                    $('#inputCode').focus();
+                } else if (inputCodeValid === "error") {
+                    event.preventDefault();
+                    $('#inputCode').focus();
+                }
+            } else if (hasEmpty() || hasErrors()) {
                 event.preventDefault();
 
                 if (hasEmpty()) {
@@ -227,15 +252,14 @@
                 } else {
                     focusAtErrors();
                 }
-            } else if (isNotSamePwCheck) {
+            } else if (isNotSamePwCheck) { // 2차검증 (비번, 확인 일치시킨 후 pw만 변경하고 제출하는 것 방지)
                 event.preventDefault();
                 $('.pwCheckMsg').addClass('error').text("비밀번호와 확인이 일치하지 않습니다.");
                 $('#pwCheck').focus();
-            } else {
-                $("form").submit();
             }
         });
 
+        // 아이디
         $('#id').off().on('input', function () {
             const id = $('#id').val().trim();
             const idMsg = $('.idMsg').addClass('error');
@@ -255,6 +279,7 @@
             }
         });
 
+        // 비밀번호
         $('#pw').off().on('input', function () {
             const pw = $('#pw').val().trim();
             const pwMsg = $('.pwMsg').addClass('error');
@@ -274,6 +299,7 @@
             }
         });
 
+        // 비밀번호 확인
         $('#pwCheck').off().on('input', function () {
             const pw = $('#pw').val().trim();
             const pwCheck = $('#pwCheck').val().trim();
@@ -290,6 +316,7 @@
             }
         });
 
+        // 닉네임
         $('#name').off().on('input', function () {
             const name = $('#name').val().trim();
             const nameMsg = $('.nameMsg').addClass('error');
@@ -309,6 +336,7 @@
             }
         });
 
+        // 생년월일
         $('#birth').off().on('input', function () {
             const birth = $('#birth').val().trim();
             const birthMsg = $('.birthMsg').addClass('error');
@@ -321,6 +349,7 @@
             }
         });
 
+        // 이메일
         $('#email').off().on('input', function () {
             const email = $('#email').val().trim();
             const emailMsg = $('.emailMsg').addClass('error');
@@ -329,6 +358,7 @@
             if (!email) {
                 emailMsg.text("이메일을 입력하세요.");
                 $('#emailValid').val("error");
+                $('#email').focus();
             } else if (email.length < 5 || email.length > 30) {
                 emailMsg.text("5-30자 이내로 입력해주세요.");
                 $('#emailValid').val("error");
@@ -340,47 +370,51 @@
             }
         });
 
-        $('#emailAuthBtn').off().on('click', function (event) {
-            if ($('#emailValid').val() === "success") {
-                $('#inputAuthCode').show();
+        // 이메일 인증하기 버튼
+        $('#authBtn').off().on('click', function () {
+            const emailValid = $('#emailValid').val();
+
+            if (emailValid === "error") {
+                $('#email').focus();
+            } else if (emailValid === "complete") {
+                alert("이미 인증을 완료했습니다.");
+            } else if (emailValid === "send") {
+                alert("발송된 인증코드를 입력해주세요.");
+
+                $('#inputCode').focus();
+                $('.inputCodeMsg').addClass('error').text("인증코드를 입력하세요.");
+            } else if (emailValid === "success") {
+                $('#hiddenInputCode').show();
                 $('.emailMsg').removeClass('error').addClass('success').text("인증코드가 발송되었습니다.");
                 $('#email').prop('readonly', true);
 
                 alert("인증코드가 발송되었습니다.\n이메일 확인 후 인증코드를 입력하세요.");
 
-                authEmail();
-                $('#emailAuth').focus();
+                getAuthCode();
+                $('#inputCode').focus();
                 $('#emailValid').val("send");
-            } else if ($('#emailValid').val() === "send") {
-                alert("발송된 인증코드를 입력해주세요.");
-
-                $('#emailAuth').focus();
-                $('.emailAuthMsg').addClass('error').text("인증코드를 입력하세요.");
-            } else if ($('#emailValid').val === "error") {
-                event.preventDefault();
-            } else if (!$('#email').val()) {
-                $('.emailMsg').removeClass('success').addClass('error').text("이메일을 입력하세요.");
             }
         });
 
-        $('#emailAuth').off().on('input', function () {
-            const inputCode = $('#emailAuth').val().trim();
-            const emailAuthMsg = $('.emailAuthMsg').addClass('error');
+        // 인증코드 입력창
+        $('#inputCode').off().on('input', function () {
+            const inputCode = $('#inputCode').val().trim();
+            const inputCodeMsg = $('.inputCodeMsg').addClass('error');
 
             if (inputCode === authCode) {
-                emailAuthMsg.removeClass('error').addClass('success').text("인증코드가 일치합니다.");
-                $('#emailAuthValid').val("");
-                $('#emailAuth').prop('readonly', true);
+                inputCodeMsg.removeClass('error').addClass('success').text("인증코드가 일치합니다.");
+                $('#emailValid').val("complete");
+                $('#inputCode').prop('readonly', true);
+                $('#phone').focus();
             } else if (!inputCode) {
-                emailAuthMsg.text("인증코드를 입력해주세요.");
-                $('#emailAuthValid').val("error");
+                inputCodeMsg.text("인증코드를 입력하세요.");
             } else {
-                emailAuthMsg.text("인증코드가 일치하지 않습니다.");
-                $('#emailAuthValid').val("error");
+                inputCodeMsg.text("인증코드가 일치하지 않습니다.");
+                $('#inputCodeValid').val("error");
             }
         });
 
-
+        // 전화번호
         $('#phone').off().on('input', function () {
             const phone = $('#phone').val().trim();
             const phoneMsg = $('.phoneMsg').addClass('error');
@@ -423,8 +457,6 @@
                         $('.birthMsg').addClass('error').text("생일을 입력하세요.");
                     } else if (fieldId === '#email') {
                         $('.emailMsg').addClass('error').text("이메일을 입력하세요.");
-                    } else if (fieldId === '#emailAuth') {
-                        $('.emailAuthMsg').addClass('error').text("인증코드를 입력하세요.");
                     } else if (fieldId === '#phone') {
                         $('.phoneMsg').addClass('error').text("번호를 입력하세요.");
                     }
@@ -495,7 +527,7 @@
             });
         }
 
-        function authEmail() {
+        function getAuthCode() {
             const email = $('#email').val().trim();
 
             $.ajax({

@@ -16,7 +16,7 @@ public interface ReplyMapper {
     void update(Reply obj);
 
     void delete(int pk);
-    // ===============================
 
+    // 댓글 조회
     List<Reply> selectIndexBybNumber(int bNumber);
 }

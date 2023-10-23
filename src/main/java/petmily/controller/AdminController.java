@@ -223,7 +223,7 @@ public class AdminController {
     // 유기동물 추가 (insert)
     @GetMapping("/abandonedAnimal/insert")
     public String abandonedAnimalInsertPage(Model model) {
-        List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
+        List<Shelter> shelters = shelterService.getShelterList();
         List<Member> members = memberService.getMemberList();
         List<String> residences = abandonedAnimalService.getResidenceList();
 
@@ -266,7 +266,7 @@ public class AdminController {
         AbandonedAnimalUpdateForm updateForm = abandonedAnimalService.getUpdateForm(abNumber);
         log.info("GET AbandonedAnimalUpdateForm = {}", updateForm);
 
-        List<Shelter> shelters = shelterService.getShelterListNotSNumber0();
+        List<Shelter> shelters = shelterService.getShelterList();
         List<Member> members = memberService.getMemberList();
         Adopt selectedAdopt = abandonedAnimalService.getAdoptCompleteByPk(abNumber);
         TempPet selectedTemp = abandonedAnimalService.getTempCompleteByPk(abNumber);
@@ -310,9 +310,9 @@ public class AdminController {
         abandonedAnimalService.update(updateForm);
 
         if ("입양".equals(updateForm.getAnimalState())) {
-            abandonedAnimalService.updateWithAdopt(updateForm);
+            abandonedAnimalService.updateTempToAdopt(updateForm);
         } else if ("임보".equals(updateForm.getAnimalState())) {
-            abandonedAnimalService.updateWithTemp(updateForm);
+            abandonedAnimalService.updateAdoptToTemp(updateForm);
         } else {
             abandonedAnimalService.deleteAdoptAndTemp(updateForm.getAbNumber());
         }
@@ -334,6 +334,8 @@ public class AdminController {
             } else {
                 log.info("이미지 파일 삭제 실패");
             }
+        } else {
+            return "ERROR";
         }
 
         return "SUCCESS";
@@ -371,7 +373,7 @@ public class AdminController {
     @GetMapping("/adopt/insert")
     public String adoptInsertPage(Model model) {
         List<Member> members = memberService.getMemberList();
-        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
+        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtected();
         List<String> residences = adoptTempService.getResidenceList();
 
         model.addAttribute("members", members);
@@ -395,7 +397,7 @@ public class AdminController {
         List<Member> members = memberService.getMemberList();
         Adopt selectedAdopt = adoptTempService.getAdoptByPk(adNumber);
 
-        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
+        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtected();
         List<AbandonedAnimal> adoptWaitingAnimals = adoptTempService.getAnimalListAdoptWait();
         List<AbandonedAnimal> adoptCompleteAnimals = adoptTempService.getAnimalListAdoptComplete();
         List<String> residences = adoptTempService.getResidenceList();
@@ -496,7 +498,7 @@ public class AdminController {
     @GetMapping("/temp/insert")
     public String tempInsertPage(Model model) {
         List<Member> members = memberService.getMemberList();
-        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
+        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtected();
         List<String> residences = adoptTempService.getResidenceList();
 
         model.addAttribute("members", members);
@@ -520,7 +522,7 @@ public class AdminController {
         List<Member> members = memberService.getMemberList();
         TempPet selectedTemp = adoptTempService.getTempByPk(tNumber);
 
-        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtect();
+        List<AbandonedAnimal> onlyProtectedAnimals = adoptTempService.getAnimalListOnlyProtected();
         List<AbandonedAnimal> tempWaitingAnimals = adoptTempService.getAnimalListTempWait();
         List<AbandonedAnimal> tempCompleteAnimals = adoptTempService.getAnimalListTempComplete();
         List<String> residences = adoptTempService.getResidenceList();

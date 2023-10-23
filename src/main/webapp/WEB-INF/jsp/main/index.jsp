@@ -41,9 +41,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center"
              data-scrollax-parent="true">
             <div class="col-md-11 ftco-animate text-center">
-                <h1 class="mb-4">사지 말고 입양하세요</h1>
-                <p><a href="#about-us" class="btn btn-primary mr-md-4 py-3 px-4">수 많은 아이들이 당신을 기다리고 있습니다<span
-                        class="ion-ios-arrow-forward"></span></a></p>
+                <h1 class="mb-4">사지 말고, 입양하세요.<br>Don't buy, Do adopt.</h1>
             </div>
         </div>
     </div>
@@ -59,8 +57,8 @@
                     </div>
                     <div class="media-body">
                         <h3 class="heading">유기동물 조회</h3>
-                        <p>가족을 찾고 계신가요? 수 많은 아이들이 당신의 가족이 되길 기다리고 있습니다. 아이들에게 희망의 손길을 내밀어 주세요.</p>
-                        <a href="/abandonedAnimal/list"
+                        <p>가족을 찾고 계신가요? 수많은 아이들이 당신의 가족이 되길 기다리고 있습니다. 아이들에게 희망의 손길을 내밀어 주세요.</p>
+                        <a href="/abandonedAnimal/list?sort=abNo"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -74,7 +72,7 @@
                     <div class="media-body">
                         <h3 class="heading">반려동물 찾아요</h3>
                         <p>소중한 가족을 잃어버리셨나요? 반려동물 찾아요 게시판에 정보를 등록해주세요. 당신의 가족을 찾기 위한 도움을 제공합니다.</p>
-                        <a href="/findBoard/list"
+                        <a href="/findBoard/list?sort=fno"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
@@ -86,21 +84,19 @@
                         <span class="flaticon-grooming"></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="heading">자유게시판</h3>
-                        <p>자유롭게 소통해요!</p>
-                        <a href="/board/list?kindOfBoard=free&sort=bno"
+                        <h3 class="heading">유기동물 봤어요</h3>
+                        <p>유기동물을 발견하셨나요? 유기동물 봤어요 게시판에 정보를 등록해주세요. 소중한 가족을 애타게 찾고 있습니다.</p>
+                        <a href="/lookBoard/list?sort=lno"
                            class="btn-custom d-flex align-items-center justify-content-center"><span
                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                     </div>
                 </div>
             </div>
         </div>
-        <a name=about-us></a>
     </div>
 </section>
 
 <section class="ftco-section ftco-no-pt ftco-no-pb">
-
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
@@ -117,32 +113,32 @@
                         <div class="icon d-flex align-items-center justify-content-center"><span
                                 class="flaticon-stethoscope"></span></div>
                         <div class="text pl-3">
-                            <h4>about us-1</h4>
-                            <p>한 해에 수천마리의 동물이 유기되고 있습니다.</p>
+                            <h4>책임감을 가져주세요</h4>
+                            <p>한 해에만 수천마리의 동물들이 유기되고 있습니다.</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span
                                 class="flaticon-customer-service"></span></div>
                         <div class="text pl-3">
-                            <h4>about us-2</h4>
-                            <p>사이트를 설계한 이유 목적</p>
+                            <h4>입양 절차가 궁금해요!</h4>
+                            <p>유기동물 입양 장려 기관인 저희 팻밀리가 도와드립니다.</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span
                                 class="flaticon-emergency-call"></span></div>
                         <div class="text pl-3">
-                            <h4>about us-3</h4>
-                            <p>도움 요청</p>
+                            <h4>문의해주세요</h4>
+                            <p>임시보호, 후원 등 궁금한 점을 물어보세요.</p>
                         </div>
                     </div>
                     <div class="col-md-6 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span
                                 class="flaticon-veterinarian"></span></div>
                         <div class="text pl-3">
-                            <h4>about us-4</h4>
-                            <p>글글글</p>
+                            <h4>여러분을 기다립니다</h4>
+                            <p>아이들을 사랑으로 보듬어주세요.</p>
                         </div>
                     </div>
                 </div>
@@ -204,10 +200,6 @@
             <div class="col-lg-6 order-md-last">
                 <div class="img img-video d-flex align-self-stretch align-items-center justify-content-center justify-content-md-center mb-4 mb-sm-0"
                      style="background-image:url('../../../resources/petsitting-master/images/about-4.jpg');">
-                    <a href="https://vimeo.com/248735074"
-                       class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
-                        <span class="fa fa-play"></span>
-                    </a>
                 </div>
                 <div class="d-flex mt-3">
                     <div class="img img-2 mr-md-2"
@@ -220,7 +212,6 @@
             <div class="col-lg-6">
                 <div class="heading-section mb-5 mt-5 mt-lg-0">
                     <h2 class="mb-3">자주 하는 질문 모음</h2>
-                    <p>자주 하는 질문 모음입니다.</p>
                 </div>
                 <div id="accordion" class="myaccordion w-100" aria-multiselectable="true">
                     <div class="card">
@@ -230,7 +221,7 @@
                                         class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link"
                                         data-parent="#accordion" data-toggle="collapse" aria-expanded="true"
                                         aria-controls="collapseOne">
-                                    <p class="mb-0">입양 절차는 어떻게 진행하게 되나요?</p>
+                                    <p class="mb-0">입양 절차는 어떻게 진행되나요?</p>
                                     <i class="fa" aria-hidden="true"></i>
                                 </button>
                             </h2>
@@ -238,7 +229,7 @@
                         <div class="collapse show" id="collapseOne" role="tabpanel" aria-labelledby="headingOne">
                             <div class="card-body py-3 px-0">
                                 <ol>
-                                    <li>입양신청서 작성 > 전화상담 및 방문면담 > 입양동의서 작성 후 입양 순으로 진행됩니다.
+                                    <li>입양신청서 작성 > 마이페이지 결과 확인 > 방문면담 > 입양동의서 작성 후 입양 순으로 진행됩니다.
                                     </li>
                                     <li>입양 자격 심사 등 추가적인 조건이 생길 수 있습니다.</li>
                                     <li>입양 이후 지속해서 기관의 연락이 갈 수 있습니다.</li>
@@ -255,7 +246,7 @@
                                         class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link"
                                         data-parent="#accordion" data-toggle="collapse" aria-expanded="false"
                                         aria-controls="collapseTwo">
-                                    <p class="mb-0">후원하던 보호소가 사라졌어요! 제가 후원하던 동물은 어떻게 되나요?</p>
+                                    <p class="mb-0">후원하던 동물의 보호소가 사라졌어요! 제가 후원하던 동물은 어떻게 되나요?</p>
                                     <i class="fa" aria-hidden="true"></i>
                                 </button>
                             </h2>
@@ -287,273 +278,10 @@
                                 <ol>
                                     <li>반려동물 찾아요 게시판에 작성해 주신 내용을 바탕으로
                                         유기동물 봤어요 게시판과 실시간으로 매칭하여 그 결과를 마이페이지에 보여드리고 있습니다.</li>
-                                    <li>마이페이지 -> 찾아요 매칭 결과 -> 작성한 글 중 '매칭됨' 상태 클릭 -> 매칭된 결과 확인 가능합니다.</li>
+                                    <li>마이페이지 > 찾아요/봤어요 매칭 결과 > 매칭된 찾아요 게시글에서 확인 가능합니다.</li>
                                     <li>본인의 반려동물이 맞다면 저희 기관에 연락주세요. 확인 후, 보호중인 분과의 만남을 주선해 드립니다.</li>
                                 </ol>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="ftco-section testimony-section" style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row justify-content-center pb-5 mb-3">
-            <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2>보호 기간이 얼마 남지 않은 아이들 </h2>
-                <%-- 보호기간이 얼마 남지 않은 안락사 예정인 아이들이 노출됐으면 하는 페이지입니다.--%>
-            </div>
-        </div>
-        <div class="row ftco-animate">
-            <div class="col-md-12">
-                <div class="carousel-testimony owl-carousel ftco-owl">
-                    <div class="item">
-                        <div class="testimony-wrap py-4">
-                            <div class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-quote-left"></span></div>
-                            <div class="text">
-                                <p class="mb-4">얌전하고 잘 짖지 않는 강아지입니다. 사람의 손길을 그리워해서 쓰다듬어주는걸 좋아합니다.</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img"
-                                         style="background-image: url('../../../resources/petsitting-master/images/abani-01.jpg')"></div>
-                                    <div class="pl-3">
-                                        <p class="name">바둑이(3년 추정)</p>
-                                        <span class="position">강아지 - 비숑</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimony-wrap py-4">
-                            <div class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-quote-left"></span></div>
-                            <div class="text">
-                                <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다. </p>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img"
-                                         style="background-image: url('../../../resources/petsitting-master/images/abani-02.jpg')"></div>
-                                    <div class="pl-3">
-                                        <p class="name">코코(6개월 추정)</p>
-                                        <span class="position">고양이 - 코리안 숏헤어</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimony-wrap py-4">
-                            <div class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-quote-left"></span></div>
-                            <div class="text">
-                                <p class="mb-4">얌전하고 잘 짖지 않는 강아지입니다. 사람의 손길을 그리워해서 쓰다듬어주는걸 좋아합니다.</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img"
-                                         style="background-image: url('../../../resources/petsitting-master/images/abani-03.jpg')"></div>
-                                    <div class="pl-3">
-                                        <p class="name">몽실이(5년 추정)</p>
-                                        <span class="position">강아지 - 삽살견</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimony-wrap py-4">
-                            <div class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-quote-left"></span></div>
-                            <div class="text">
-                                <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다.</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img"
-                                         style="background-image: url('../../../resources/petsitting-master/images/abani-04.jpg')"></div>
-                                    <div class="pl-3">
-                                        <p class="name">시루(1년 추정)</p>
-                                        <span class="position">강아지 - 말티즈</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimony-wrap py-4">
-                            <div class="icon d-flex align-items-center justify-content-center"><span
-                                    class="fa fa-quote-left"></span></div>
-                            <div class="text">
-                                <p class="mb-4">사람을 좋아하는 수다쟁이에 애교쟁이 고양이입니다. 비 오는 날 안양 동안구 하천 아래에서 발견되었습니다.</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img"
-                                         style="background-image: url('../../../resources/petsitting-master/images/abani-05.jpg')"></div>
-                                    <div class="pl-3">
-                                        <p class="name">치즈(1년 추정)</p>
-                                        <span class="position">고양이 - 코리안 숏헤어</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="ftco-section bg-light">
-    <div class="container">
-        <div class="row justify-content-center pb-5 mb-3">
-            <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2>오늘의 입양후기</h2>
-            </div>
-        </div>
-        <div class="row d-flex">
-            <div class="col-md-4 d-flex ftco-animate">
-                <div class="blog-entry align-self-stretch">
-                    <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('../../../resources/petsitting-master/images/image_1.jpg');">
-                    </a>
-                    <div class="text p-4">
-                        <div class="meta mb-2">
-                            <div><a href="#">April 07, 2020</a></div>
-                            <div><a href="#">Admin</a></div>
-                            <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                        </div>
-                        <h3 class="heading"><a href="#">저희집 자랑이 된 몽실이를 소개합니다!</a></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 d-flex ftco-animate">
-                <div class="blog-entry align-self-stretch">
-                    <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('../../../resources/petsitting-master/images/gallery-12.jpg');">
-                    </a>
-                    <div class="text p-4">
-                        <div class="meta mb-2">
-                            <div><a href="#">April 07, 2020</a></div>
-                            <div><a href="#">Admin</a></div>
-                            <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                        </div>
-                        <h3 class="heading"><a href="#">사랑둥이 치치에요 이 아이가 가져다준 행복이 너무 큽니다</a></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 d-flex ftco-animate">
-                <div class="blog-entry align-self-stretch">
-                    <a href="blog-single.html" class="block-20 rounded"
-                       style="background-image: url('../../../resources/petsitting-master/images/image_3.jpg');">
-                    </a>
-                    <div class="text p-4">
-                        <div class="meta mb-2">
-                            <div><a href="#">April 07, 2020</a></div>
-                            <div><a href="#">Admin</a></div>
-                            <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-                        </div>
-                        <h3 class="heading"><a href="#">저희집 고양이가 세상에서 제일 귀여워요</a></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="ftco-section">
-    <div class="container">
-        <div class="row justify-content-center pb-5 mb-3">
-            <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2>내새끼 자랑해요</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-8.jpg');">
-                    <a href="images/gallery-1.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>말티즈</span>
-                            <h2><a href="work-single.html">몽쉬리</a></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-9.jpg');">
-                    <a href="images/gallery-2.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>말티즈</span>
-                            <h2><a href="work-single.html">쉬리몽</a></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-10.jpg');">
-                    <a href="images/gallery-3.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>강아지</span>
-                            <h2><a href="work-single.html">몽실이</a></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-11.jpg');">
-                    <a href="images/gallery-4.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>사실은대형견</span>
-                            <h2><a href="work-single.html">시루</a></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-12.jpg');">
-                    <a href="images/gallery-5.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>강아지</span>
-                            <h2><a href="work-single.html">쉴몽</a></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 ftco-animate">
-                <div class="work mb-4 img d-flex align-items-end"
-                     style="background-image: url('../../../resources/petsitting-master/images/gallery-13.jpg');">
-                    <a href="images/gallery-6.jpg"
-                       class="icon image-popup d-flex justify-content-center align-items-center">
-                        <span class="fa fa-expand"></span>
-                    </a>
-                    <div class="desc w-100 px-4">
-                        <div class="text w-100 mb-3">
-                            <span>개</span>
-                            <h2><a href="work-single.html">권몽실</a></h2>
                         </div>
                     </div>
                 </div>
@@ -581,5 +309,6 @@
 
 <%-- footer --%>
 <%@ include file="../include/footer.jspf" %>
+
 </body>
 </html>

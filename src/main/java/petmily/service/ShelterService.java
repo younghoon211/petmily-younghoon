@@ -13,7 +13,7 @@ public interface ShelterService {
 
     ShelterPageForm getListPage(int pageNo, String keyword);
 
-    List<Shelter> getShelterListNotSNumber0();
+    List<Shelter> getShelterList();
 
     ShelterUpdateForm getUpdateForm(int sNumber);
 

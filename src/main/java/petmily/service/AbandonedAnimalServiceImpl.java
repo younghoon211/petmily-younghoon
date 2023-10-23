@@ -36,7 +36,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
     private final TempDao tempDao;
     private final int size = 12;
 
-    // 유기동물 CUD : 관리자만 가능
+    // * 유기동물 CUD : 관리자만 가능
 
     // ===================== Create =====================
     // 글쓰기 (보호)
@@ -147,13 +147,13 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         return new AbandonedAnimalPageForm(total, pageNo, size, content);
     }
 
-    // pk로 입양 조회
+    // pk로 최근 입양 조회
     @Override
     public Adopt getAdoptCompleteByPk(int pk) {
         return abandonedAnimalDao.selectAdoptCompleteByPk(pk);
     }
 
-    // pk로 임보 조회
+    // pk로 최근 임보 조회
     @Override
     public TempPet getTempCompleteByPk(int pk) {
         return abandonedAnimalDao.selectTempCompleteByPk(pk);
@@ -185,9 +185,9 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         abandonedAnimalDao.update(abandonedAnimal);
     }
 
-    // 수정 시 입양 insert 및 동일한 abNumber중 '처리중' 상태 + 기존 임보 정보 delete
+    // 임보->입양 수정 시: 입양 insert, 입양 상태 '처리중' 있으면 delete, 기존 임보 정보 delete
     @Override
-    public void updateWithAdopt(AbandonedAnimalUpdateForm form) {
+    public void updateTempToAdopt(AbandonedAnimalUpdateForm form) {
         Adopt adopt = toUpdateAdopt(form);
         adoptDao.adminInsert(adopt);
 
@@ -195,9 +195,9 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         tempDao.deleteCompleteWhenUpdateAB(form.getAbNumber());
     }
 
-    // 수정 시 임보 insert 및 동일한 abNumber중 '처리중' 상태 + 기존 입양 정보 delete
+    // 입양->임보 수정 시: 임보 insert, 임보 상태 '처리중' 있으면 delete, 기존 입양 정보 delete
     @Override
-    public void updateWithTemp(AbandonedAnimalUpdateForm form) {
+    public void updateAdoptToTemp(AbandonedAnimalUpdateForm form) {
         TempPet temp = toUpdateTemp(form);
         tempDao.adminInsert(temp);
 
@@ -213,7 +213,7 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
         abandonedAnimalDao.delete(pk);
     }
 
-    // 유기동물 보호로 수정 시 기존 입양/임보테이블 삭제
+    // 유기동물 입양/임보->보호로 수정 시 기존 입양/임보 정보 삭제
     @Override
     public void deleteAdoptAndTemp(int pk) {
         adoptDao.deleteCompleteWhenUpdateAB(pk);
@@ -223,6 +223,9 @@ public class AbandonedAnimalServiceImpl implements AbandonedAnimalService {
 
     // ===================== CRUD 끝 =====================
 
+
+
+    // ===================== private 메소드 =====================
 
     private AbandonedAnimal toInsert(AbandonedAnimalInsertForm form) {
         return new AbandonedAnimal(

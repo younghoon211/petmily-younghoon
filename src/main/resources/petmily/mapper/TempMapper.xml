@@ -4,9 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.TempMapper">
 
-
-    <!--=======BasicMapper 메소드=======-->
-
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.temp.TempPet">
         select *
         from TEMPPET
@@ -14,8 +12,10 @@
     </select>
 
     <insert id="insert">
-        insert into TEMPPET (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD)
-        values (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, SYSDATE, 2)
+        insert into TEMPPET
+        (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD)
+        values
+        (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, SYSDATE, 2)
     </insert>
 
     <update id="update">
@@ -29,31 +29,37 @@
         delete from TEMPPET
         where TNUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
 
-    <!--=============== 마이페이지 임보 신청내역 ===============-->
-
+    <!--=================================== 회원 페이지 =================================== -->
+    <!-- 임보 신청 내역(마이페이지) - 총 게시글 수 (페이징) -->
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from TEMPPET
         where MNUMBER = #{mNumber}
     </select>
 
+    <!-- 임보 신청 내역(마이페이지) - 글 index -->
     <select id="selectIndexBymNumber" resultType="petmily.domain.temp.TempPet">
         select *
         from (select ROWNUM as NUM, T.*
-              from (select * from TEMPPET where MNUMBER = #{mNumber} order by TNUMBER DESC) T)
+        from (select * from TEMPPET
+        where MNUMBER = #{mNumber} order by TNUMBER DESC) T)
         where NUM between #{start} and #{end}
     </select>
 
 
-    <!--==================== 관리자 페이지 ====================-->
-
+    <!--=================================== 관리자 페이지 =================================== -->
+    <!-- 관리자 insert (status 선택 가능) -->
     <insert id="adminInsert">
-        insert into TEMPPET(ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD, STATUS)
-        values (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, #{tempDate}, #{tempPeriod}, #{status})
+        insert into TEMPPET
+        (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, TEMPDATE, TEMPPERIOD, STATUS)
+        values
+        (#{abNumber}, #{mNumber}, #{residence}, #{maritalStatus}, #{job}, #{tempDate}, #{tempPeriod}, #{status})
     </insert>
 
+    <!-- 총 게시글 수 조회 (페이징) -->
     <select id="selectCount" resultType="int">
         select count(*)
         from TEMPPET
@@ -90,6 +96,7 @@
         </where>
     </select>
 
+    <!-- 리스트 페이지 index -->
     <select id="selectIndex" resultType="petmily.domain.temp.TempPet">
         select *
         from (select ROWNUM as NUM, T.*
@@ -131,6 +138,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 임보 승인관리 및 승인, 거절 페이지 총 게시글 수 조회 (페이징) -->
     <select id="selectCountByStatus" resultType="int">
         select count(*)
         from TEMPPET
@@ -165,6 +173,7 @@
         </where>
     </select>
 
+    <!-- 임보 승인관리 및 승인, 거절 페이지 글 index -->
     <select id="selectIndexByStatus" resultType="petmily.domain.temp.TempPet">
         select *
         from (select ROWNUM as NUM, T.*
@@ -204,6 +213,7 @@
         where (NUM between #{start} and #{end}) and STATUS = #{status}
     </select>
 
+    <!-- 임시보호 승인버튼 -->
     <select id="tempApprove">
         {call
             declare
@@ -225,37 +235,44 @@
             }
     </select>
 
+    <!-- 임시보호 거절버튼 -->
     <select id="tempRefuse">
-        update TEMPPET set STATUS = '거절' where STATUS = '처리중'
+        update TEMPPET set STATUS = '거절'
+        where STATUS = '처리중'
         and ABNUMBER = (select T.ABNUMBER
-        from TEMPPET T join ABANDONEDANIMAL AB
-        on AB.ABNUMBER = T.ABNUMBER
+        from TEMPPET T join ABANDONEDANIMAL AB on AB.ABNUMBER = T.ABNUMBER
         where T.TNUMBER = #{pk})
     </select>
 
+    <!-- 유기동물 pk로 임시보호 조회 -->
     <select id="selectAllByAbNumber" resultType="petmily.domain.temp.TempPet">
         select *
         from TEMPPET
         where ABNUMBER = #{abNumber}
     </select>
 
+    <!-- 유기동물 pk로 최근 임보 조회 -->
     <select id="selectAllCompleteByAbNumber" resultType="petmily.domain.temp.TempPet">
         select *
         from TEMPPET
-        where ABNUMBER = #{abNumber} and STATUS = '완료' and TNUMBER = (select max(TNUMBER) from TEMPPET)
+        where ABNUMBER = #{abNumber}
+        and STATUS = '완료'
+        and TNUMBER = (select max(TNUMBER) from TEMPPET)
     </select>
 
 
-
-    <!--========== 유기동물 수정 시 기존 임보 정보 삭제 ==========-->
-
+    <!--========================= 유기동물 수정 시 기존 임보 정보 삭제 ========================= -->
+    <!-- 기존 임보 정보 delete -->
     <delete id="deleteCompleteWhenUpdateAB">
         delete from TEMPPET
-        where ABNUMBER = #{abNumber} and STATUS = '완료'
+        where ABNUMBER = #{abNumber}
+        and STATUS = '완료'
     </delete>
 
+    <!-- 임보 상태 '처리중' delete -->
     <delete id="deleteWaitingWhenUpdateAB">
         delete from TEMPPET
-        where ABNUMBER = #{abNumber} and STATUS = '처리중'
+        where ABNUMBER = #{abNumber}
+        and STATUS = '처리중'
     </delete>
 </mapper>

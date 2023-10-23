@@ -108,22 +108,17 @@ public class FindBoardDao implements BasicDao {
 
 
     // ========================= 회원 페이지 ========================
-    // 회원이름 조회
+    // 닉네임 조회
     public String selectName(int pk) {
         return mapper.selectName(pk);
     }
 
-    // 조회수 증가
-    public int updateViewCount(int pk) {
-        return mapper.updateViewCount(pk);
-    }
-
-    // 게시판 - 총 게시글 수 조회
+    // 조건부 검색 - 총 게시글 수 (페이징)
     public int selectCountWithCondition(String species, String animalState, String keyword) {
         return mapper.selectCountWithCondition(species, animalState, keyword);
     }
 
-    // 게시판 - 리스트 페이지 index
+    // 조건부 검색 - 글 index
     public List<FindBoardListForm> selectIndexWithCondition(int start, int end, FindBoardConditionForm form) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
 
@@ -142,12 +137,12 @@ public class FindBoardDao implements BasicDao {
 
 
     // ========================= 마이페이지 ==========================
-    // 내가 쓴 게시글 - 총 게시글 수 조회
+    // 내가 쓴 게시글 - 총 게시글 수 (페이징)
     public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    // 내가 쓴 게시글 - 리스트 페이지 index
+    // 내가 쓴 게시글 - 글 index
     public List<FindBoardListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
         List<FindBoard> findBoards = mapper.selectIndexBymNumber(start, end, mNumber);
@@ -159,12 +154,12 @@ public class FindBoardDao implements BasicDao {
 
 
     // ======================== 매칭 관련 시스템 ==========================
-    // 찾아요 매칭된 페이지 - 총 게시글 수 조회
+    // 찾아요 매칭된 페이지 - 총 게시글 수 (페이징)
     public int selectCountFindMatching(int mNumber) {
         return mapper.selectCountFindMatching(mNumber);
     }
 
-    // 찾아요 매칭된 페이지 index
+    // 찾아요 매칭된 페이지 - 글 index
     public List<FindBoardListForm> selectIndexFindMatching(int start, int end, int mNumber) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
         List<FindBoard> findBoards = mapper.selectIndexFindMatching(start, end, mNumber);
@@ -174,7 +169,7 @@ public class FindBoardDao implements BasicDao {
         return findBoardListForms;
     }
 
-    // 봤어요에 매칭된 찾아요 리스트 - 총 게시글 수 조회
+    // 봤어요에 매칭된 찾아요 리스트 - 총 게시글 수 (페이징)
     public int selectCountFindMatchedLook(LookBoard lookBoard) {
         return lookBoardMapper.selectCountFindMatchedLook(
                 lookBoard.getSpecies(),
@@ -183,7 +178,7 @@ public class FindBoardDao implements BasicDao {
         );
     }
 
-    // 봤어요에 매칭된 찾아요 리스트 index
+    // 봤어요에 매칭된 찾아요 리스트 - 글 index
     public List<FindBoardListForm> selectIndexFindMatchedLook(int start, int end, LookBoard lookBoard) {
         List<FindBoard> findBoards = lookBoardMapper.selectIndexFindMatchedLook(start, end, lookBoard.getSpecies(), lookBoard.getKind(), lookBoard.getLocation());
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
@@ -208,9 +203,13 @@ public class FindBoardDao implements BasicDao {
         return findBoardListForms;
     }
 
+    // 조회수 증가
+    public int updateViewCount(int pk) {
+        return mapper.updateViewCount(pk);
+    }
 
     // ======================== 관리자 페이지 ==========================
-    // 리스트 페이지 index
+    // 리스트 페이지 - 글 index
     public List<FindBoardListForm> selectIndexByPkDesc(int start, int end, AdminBoardConditionForm form) {
         List<FindBoardListForm> findBoardListForms = new ArrayList<>();
         List<FindBoard> findBoards = mapper.selectIndexByPkDesc(start, end, form.getSpecies(), form.getAnimalState(), form.getKeyword());
@@ -239,7 +238,7 @@ public class FindBoardDao implements BasicDao {
 
     // ======================== private 메소드 ==========================
 
-    // 다른 유저일 경우만 매치 (else: 오류로 인해 같은 유저끼리 매치돼 있다면 backState)
+    // 다른 유저일 경우만 매치 (오류로 인해 같은 유저끼리 매치돼 있다면 backState)
     private void matchOnlyNotSameUser(int pk) {
         List<FindBoard> findBoards = mapper.selectAll();
 

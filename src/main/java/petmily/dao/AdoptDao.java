@@ -43,18 +43,18 @@ public class AdoptDao implements BasicDao {
         mapper.delete(pk);
     }
 
-    // mNumber로 입양 '완료' 여부 조회
+    // 회원 pk로 입양 상태 '완료' 여부 조회
     public int selectCountAdoptedStatus(int mNumber) {
         return mapper.selectCountAdoptedStatus(mNumber);
     }
 
     // ========================= 마이페이지 ========================
-    // 내가 쓴 게시글 - 총 게시글 수 조회
+    // 입양 신청 내역(마이페이지) - 총 게시글 수 (페이징)
     public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
-    // 내가 쓴 게시글 - 리스트 페이지 index
+    // 입양 신청 내역(마이페이지) - 글 index
     public List<MypageAdoptListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<MypageAdoptListForm> mypageAdoptListForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndexBymNumber(start, end, mNumber);
@@ -78,12 +78,12 @@ public class AdoptDao implements BasicDao {
         mapper.adminInsert((Adopt) obj);
     }
 
-    // 총 게시글 수 조회
+    // 총 게시글 수 (페이징)
     public int selectCount(String keyword) {
         return mapper.selectCount(keyword);
     }
 
-    // 리스트 페이지 index
+    // 글 index
     public List<AdoptListForm> selectIndex(int start, int end, String keyword) {
         List<AdoptListForm> adoptListForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndex(start, end, keyword);
@@ -93,12 +93,12 @@ public class AdoptDao implements BasicDao {
         return adoptListForms;
     }
 
-    // 입양 승인관리 및 승인, 거절된 리스트 페이지 총 게시글 조회
+    // 입양 승인관리 및 승인, 거절 페이지 총 게시글 수 (페이징)
     public int selectCountByStatus(String keyword, String status) {
         return mapper.selectCountByStatus(keyword, status);
     }
 
-    // 입양 승인관리 및 승인, 거절된 리스트 페이지 index
+    // 입양 승인관리 및 승인, 거절 페이지 게시글 index
     public List<AdoptListForm> selectIndexByStatus(int start, int end, String keyword, String status) {
         List<AdoptListForm> adoptListForms = new ArrayList<>();
         List<Adopt> adopts = mapper.selectIndexByStatus(start, end, keyword, status);
@@ -108,22 +108,22 @@ public class AdoptDao implements BasicDao {
         return adoptListForms;
     }
 
-    // 입양 승인
+    // 입양 승인버튼
     public void adoptApprove(int pk) {
         mapper.adoptApprove(pk);
     }
 
-    // 입양 거절
+    // 입양 거절버튼
     public void adoptRefuse(int pk) {
         mapper.adoptRefuse(pk);
     }
 
-    // 수정 시 동일한 abNumber 중 상태 '완료' 삭제
+    // 기존 입양정보 delete
     public void deleteCompleteWhenUpdateAB(int abNumber) {
         mapper.deleteCompleteWhenUpdateAB(abNumber);
     }
 
-    // 수정 시 동일한 abNumber 중 상태 '처리중' 삭제
+    // 입양 상태 '처리중' delete
     public void deleteWaitingWhenUpdateAB(int abNumber) {
         mapper.deleteWaitingWhenUpdateAB(abNumber);
     }

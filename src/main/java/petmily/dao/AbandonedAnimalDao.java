@@ -47,12 +47,12 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     // ========================= 회원 페이지 ========================
-    // 조건부 검색 총 게시글 수 조회
+    // 조건부 검색 - 총 게시글 수 (페이징)
     public int selectCountWithCondition(AbandonedAnimalConditionForm form) {
         return mapper.selectCountWithCondition(form);
     }
 
-    // 조건부 검색 리스트 페이지 index
+    // 조건부 검색 - 글 index
     public List<AbandonedAnimalListForm> selectIndexWithCondition(int start, int end, AbandonedAnimalConditionForm form) {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
 
@@ -80,12 +80,12 @@ public class AbandonedAnimalDao implements BasicDao {
         return abandonedAnimalListForms;
     }
 
-    // 입양 완료 리스트 : 조건부 검색 총 게시글 수 조회
+    // 입양 완료 리스트 : 조건부 검색 총 게시글 수 (페이징)
     public int selectCountAdopted(AbandonedAnimalConditionForm form) {
         return mapper.selectCountAdopted(form);
     }
 
-    // 입양 완료 리스트 : 조건부 검색 리스트 페이지 index
+    // 입양 완료 리스트 : 조건부 검색 글 index
     public List<AbandonedAnimalListForm> selectIndexAdopted(int start, int end, AbandonedAnimalConditionForm form) {
         List<AbandonedAnimalListForm> adoptedListForms = new ArrayList<>();
 
@@ -115,21 +115,23 @@ public class AbandonedAnimalDao implements BasicDao {
         return adoptedListForms;
     }
 
+    // 유기동물 pk로 입양 조회
     public Adopt selectAdoptByAbNumber(int pk) {
         return adoptMapper.selectAllByAbNumber(pk);
     }
 
+    // 유기동물 pk로 임시보호 조회
     public TempPet selectTempByAbNumber(int pk) {
         return tempMapper.selectAllByAbNumber(pk);
     }
 
     // ======================== 관리자 페이지 ==========================
-    // 총 게시글 수 조회
+    // 총 게시글 수 (페이징)
     public int selectCount(AbandonedAnimalConditionForm form) {
         return mapper.selectCount(form);
     }
 
-    // 리스트 페이지 index
+    // 게시글 index
     public List<AbandonedAnimalListForm> selectIndex(AbandonedAnimalConditionForm form, int start, int end) {
         List<AbandonedAnimalListForm> abandonedAnimalListForms = new ArrayList<>();
         List<AbandonedAnimal> abandonedAnimals = mapper.selectIndex(
@@ -168,8 +170,8 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     // 보호중인 유기동물 리스트
-    public List<AbandonedAnimal> selectAllOnlyProtect() {
-        return mapper.selectAllOnlyProtect();
+    public List<AbandonedAnimal> selectAllOnlyProtected() {
+        return mapper.selectAllOnlyProtected();
     }
 
     // 가장 최신 업로드 된 pk 조회
@@ -182,17 +184,13 @@ public class AbandonedAnimalDao implements BasicDao {
         return shelterMapper.selectAllByAbNumber(pk);
     }
 
-    // pk로 입양 조회
+
+    // ============================= 입양 ===============================
+    // pk로 최근 입양 조회
     public Adopt selectAdoptCompleteByPk(int pk) {
         return adoptMapper.selectAllCompleteByAbNumber(pk);
     }
 
-    // pk로 임보 조회
-    public TempPet selectTempCompleteByPk(int pk) {
-        return tempMapper.selectAllCompleteByAbNumber(pk);
-    }
-
-    // ============================= 입양 ===============================
     // 입양 승인 대기중인 유기동물 리스트
     public List<AbandonedAnimal> selectAllAdoptWait() {
         return mapper.selectAllAdoptWait();
@@ -219,6 +217,11 @@ public class AbandonedAnimalDao implements BasicDao {
     }
 
     // ============================= 임시보호 ===============================
+    // pk로 최근 임보 조회
+    public TempPet selectTempCompleteByPk(int pk) {
+        return tempMapper.selectAllCompleteByAbNumber(pk);
+    }
+
     // 임시보호 상태:'처리중'인 유기동물 리스트
     public List<AbandonedAnimal> selectAllTempWait() {
         return mapper.selectAllTempWait();

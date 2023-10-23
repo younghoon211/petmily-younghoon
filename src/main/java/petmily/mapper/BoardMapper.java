@@ -17,8 +17,8 @@ public interface BoardMapper {
     void update(Board obj);
 
     void delete(int pk);
-    // ===============================
 
+    // ========== 회원 페이지 ==========
     int selectCountBymNumber(
             @Param("mNumber") int mNumber,
             @Param("kindOfBoard") String kindOfBoard
@@ -46,6 +46,9 @@ public interface BoardMapper {
             @Param("kindOfBoard") String kindOfBoard
     );
 
+    int updateViewCount(int pk);
+
+    // ========== 관리자 페이지 ==========
     List<Board> selectIndexByPkDesc(
             @Param("start") int start,
             @Param("end") int end,
@@ -54,11 +57,8 @@ public interface BoardMapper {
             @Param("kindOfBoard") String kindOfBoard
     );
 
+    // 회원 페이지 DAO private 메소드
     String selectName(int pk);
-
-    String selectMemberId(int pk);
-
-    int updateViewCount(int pk);
 
     int selectReplyCount(int pk);
 }

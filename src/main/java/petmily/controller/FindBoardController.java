@@ -140,6 +140,8 @@ public class FindBoardController {
             } else {
                 log.info("이미지 파일 삭제 실패");
             }
+        } else {
+            return "ERROR";
         }
 
         return "SUCCESS";

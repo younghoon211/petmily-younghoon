@@ -54,7 +54,7 @@
 
 <section class="ftco-section bg-light">
     <div class="container">
-        <form class="form" method="post" action="/findBoard/auth/modify"
+        <form class="form" method="post" action="/findBoard/auth/modify" id="form"
               enctype="multipart/form-data">
 
             <div class="modal-body">
@@ -298,7 +298,7 @@
                 initFileDel.hide();
                 notUpload1.show();
 
-                $(document).on('submit', 'form', function () {
+                $("#form").off().on("submit", function() {
                     deleteImage('${modifyForm.imgPath}');
                 });
             }
@@ -340,6 +340,8 @@
             success: function (result) {
                 if (result === "SUCCESS") {
                     console.log("이미지 삭제 요청 성공");
+                } else {
+                    console.log("이미지 삭제 요청 실패 (이미지파일 존재x)")
                 }
             }
         });

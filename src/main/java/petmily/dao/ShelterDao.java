@@ -36,10 +36,12 @@ public class ShelterDao implements BasicDao {
         mapper.delete(pk);
     }
 
+    // 조건부 검색 - 총 보호소 수 (페이징)
     public int selectCount(String keyword) {
         return mapper.selectCount(keyword);
     }
 
+    // 조건부 검색 - 보호소 index
     public List<ShelterListForm> selectIndex(int start, int end, String keyword) {
         List<ShelterListForm> shelterListForms = new ArrayList<>();
         List<Shelter> shelters = mapper.selectIndex(start, end, keyword);
@@ -58,10 +60,8 @@ public class ShelterDao implements BasicDao {
         return shelterListForms;
     }
 
+    // 보호소 리스트
     public List<Shelter> selectAll() {
         return mapper.selectAll();
-    }
-    public List<Shelter> selectAllNot0() {
-        return mapper.selectAllNot0();
     }
 }

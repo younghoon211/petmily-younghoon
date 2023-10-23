@@ -39,8 +39,8 @@ public class ShelterServiceImpl implements ShelterService {
     }
 
     @Override
-    public List<Shelter> getShelterListNotSNumber0() {
-        return shelterDao.selectAllNot0();
+    public List<Shelter> getShelterList() {
+        return shelterDao.selectAll();
     }
 
     // ===================== Update =====================
@@ -68,6 +68,10 @@ public class ShelterServiceImpl implements ShelterService {
 
 
     // ===================== CRUD 끝 =====================
+
+
+
+    // ===================== private 메소드 =====================
 
     private Shelter toInsert(ShelterInsertForm form) {
         return new Shelter(

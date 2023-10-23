@@ -158,6 +158,9 @@ public class LookBoardServiceImpl implements LookBoardService {
     // ===================== CRUD 끝 =====================
 
 
+
+    // ===================== private 메소드 =====================
+
     private LookBoard toWrite(LookBoardWriteForm form) {
         return new LookBoard(
                 form.getSpecies(),

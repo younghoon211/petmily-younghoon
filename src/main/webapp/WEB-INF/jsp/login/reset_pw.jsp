@@ -40,14 +40,25 @@
             color: #dc3545;
             font-size: 12px;
         }
+
+        .position1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .position2 {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <form action="/resetPw" method="post" class="contactForm">
-
-        <span id="br1"><br style="line-height: 250px"></span>
-        <span id="br2" style="display: none"><br style="line-height: 170px"></span>
+<div class="container position1" id="position">
+    <form action="/resetPw" method="post" class="contactForm" id="form">
 
         <div class="form-inputs">
             <div class="row no-gutters" style="margin: 0 auto; width:30%">
@@ -78,7 +89,7 @@
 
                     <div class="login col-md-7" style="margin: auto">
                         <br>
-                        <button type="button" id="submitBtn1" class="btn btn-lg btn-block btn-success">비밀번호 재설정
+                        <button type="button" id="getResetPwForm" class="btn btn-lg btn-block btn-success">비밀번호 재설정
                         </button>
                     </div>
 
@@ -116,7 +127,6 @@
                         <span class="pwMsg"></span>
                     </div>
 
-
                     <div class="form-group">
                         <span class="label">새 비밀번호 확인</span>
                         <input type="password" class="form-control"
@@ -129,16 +139,18 @@
 
                     <div class="login col-md-7" style="margin: auto">
                         <br>
-                        <button type="submit" id="submitBtn2" class="btn btn-lg btn-block btn-success">비밀번호 변경
+                        <button type="submit" class="btn btn-lg btn-block btn-success">비밀번호 변경
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
         <input id="authCode" name="authCode" hidden>
         <input id="authCodeValid" hidden>
         <input id="pwValid" hidden>
         <input id="pwCheckValid" hidden>
+        <input id="submitBtnValid" hidden>
     </form>
 </div>
 <%--</section>--%>
@@ -163,10 +175,22 @@
 <script>
     $(document).ready(function () {
         let authCode;
+        $('#submitBtnValid').val("send");
+
+        // 인증코드 인증 전까지 엔터키 누를 시: 1.비번 재설정 페이지 2.인증코드 인증
+        $(document).on('keypress', function (event) {
+            if (event.which === 13) {
+                if ($('#submitBtnValid').val() === "send") {
+                    $("#getResetPwForm").click();
+                } else if (($('#submitBtnValid').val() === "beforeAuth")) {
+                    $("#authBtn").click();
+                }
+            }
+        });
 
         // ====================== 이메일 인증코드 보내는 폼 ======================
         // 이메일 전송 버튼
-        $('#submitBtn1').off('click').on('click', function () {
+        $('#getResetPwForm').off().on('click', function () {
             const id = $('#id').val().trim();
             const email = $('#email').val().trim();
 
@@ -180,16 +204,20 @@
                 alert("아이디와 이메일을 입력하세요.");
                 $('#id').focus();
             } else {
-                validAndSendMail();
+                sendMail();
+                $('#submitBtnValid').val("beforeAuth");
             }
         });
 
         // ========================= 비밀번호 재설정 폼 =========================
         // 인증코드 인증 버튼
-        $('#authBtn').off('click').on('click', function () {
+        $('#authBtn').off().on('click', function () {
             const inputCode = $('#inputCode').val().trim();
 
-            if (!inputCode) {
+            if ($('#authCodeValid').val() === "completed") {
+                alert("이미 인증을 완료했습니다.");
+                $('#pw').focus();
+            } else if (!inputCode) {
                 $('.authMsg').addClass('error').text("인증코드를 입력하세요.");
                 $('#authCodeValid').val("error");
                 $('#inputCode').focus();
@@ -198,16 +226,20 @@
                 $('#authCodeValid').val("error");
                 $('#inputCode').focus();
             } else {
-                $('#inputCode').prop('readonly', true);
+                alert("인증이 완료되었습니다.");
                 $('.authMsg').removeClass('error').addClass('success').text("인증이 완료되었습니다.");
-                $('#authCodeValid').val("");
+                $('#position').removeClass('position2').addClass('position1');
+
                 $('.resetPwForm').show();
+                $('#inputCode').prop('readonly', true);
+                $('#authCodeValid').val("completed");
+                $('#submitBtnValid').val("")
                 $('#pw').focus();
             }
         });
 
         // 비밀번호 재설정 버튼
-        $('#submitBtn2').off('click').on('click', function (event) {
+        $('#form').off().on("submit", function (event) {
             const inputCode = $('#inputCode').val().trim();
             const pw = $('#pw').val().trim();
             const pwCheck = $('#pwCheck').val().trim();
@@ -224,7 +256,7 @@
                 event.preventDefault();
 
                 if (!inputCode) {
-                    $('#inputCode').val("error");
+                    $('#authCodeValid').val("error");
                 } else if (!pw) {
                     $('.pwMsg').addClass('error').text("새 비밀번호를 입력하세요.");
                     $('#pwValid').val("error");
@@ -248,8 +280,6 @@
                 event.preventDefault();
                 $('.pwCheckMsg').addClass('error').text("새 비밀번호와 확인이 일치하지 않습니다.");
                 $('#pwCheck').focus();
-            } else {
-                $('form').submit();
             }
         });
 
@@ -291,7 +321,7 @@
             }
         });
 
-        function validAndSendMail() {
+        function sendMail() {
             const id = $('#id').val().trim();
             const email = $('#email').val().trim();
 
@@ -309,13 +339,12 @@
                         alert("이메일로 인증코드를 발송했습니다.\n인증코드를 확인 후 비밀번호를 변경하세요.");
 
                         $('.sendEmailForm').hide();
-                        $('#br1').hide();
-
                         $('.authCodeForm').show();
-                        $('#br2').show();
+                        $('#position').removeClass('position1').addClass('position2');
+
                         $('#inputCode').focus();
 
-                        sendMail();
+                        getAuthCode();
                     } else {
                         alert("아이디 또는 이메일이 일치하지 않습니다.");
                     }
@@ -327,7 +356,7 @@
             });
         }
 
-        function sendMail() {
+        function getAuthCode() {
             const email = $('#email').val().trim();
 
             $.ajax({
@@ -339,7 +368,7 @@
                         authCode = result;
                         console.log("authCode=" + authCode);
 
-                        // 서버 검증용 데이터 보내기
+                        // 서버 검증용 authCode 설정
                         $('#authCode').val(authCode);
                     }
                 },

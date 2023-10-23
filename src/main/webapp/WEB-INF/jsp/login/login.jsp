@@ -38,7 +38,7 @@
     <div class="container">
         <div class="form">
             <div class="left-side">
-                <form action="/login" method="post">
+                <form action="/login" method="post" id="form">
                     <div style="padding-bottom: 15%">
                         <div class="login" id="login">
                             <a class="navbar-brand" href="/">
@@ -73,7 +73,7 @@
                             <br>
                             <br style="line-height:50%">
                             <div class="login">
-                                <button type="submit" id="loginBtn" class="btn btn-lg btn-block btn-success">로그인
+                                <button type="submit" class="btn btn-lg btn-block btn-success">로그인
                                 </button>
                                 <br style="line-height:50%">
                                 <p class="login-text" style="position: fixed">
@@ -110,7 +110,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#loginBtn").off().on("click", function (event) {
+        $("#form").off().on("submit", function(event) {
             const id = $("#id");
             const pw = $("#pw");
             const requiredMsg = $("#requiredMsg");
@@ -132,8 +132,6 @@
                 event.preventDefault();
                 notCorrectMsg.hide();
                 requiredMsg.text(errorMsg).show();
-            } else {
-                $("form").submit();
             }
         });
     });

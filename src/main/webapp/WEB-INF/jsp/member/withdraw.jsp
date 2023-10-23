@@ -75,7 +75,7 @@
         <div class="row no-gutters" style="margin: 0 auto; width:50%">
             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                <form action="/member/auth/withdraw" method="post" class="contactForm">
+                <form action="/member/auth/withdraw" method="post" class="contactForm" id="form">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -97,7 +97,7 @@
                     <br>
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>&nbsp;&nbsp;
-                        <button type="submit" id="submit" class="btn btn-danger">탈퇴하기</button>
+                        <button type="submit" class="btn btn-danger">탈퇴하기</button>
                     </div>
                 </form>
             </div>
@@ -125,7 +125,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#submit").off().on("click", function (event) {
+        $("#form").off().on("submit", function (event) {
             const pw = $('#pw').val().trim();
             const pwMsg = $('.pwMsg').addClass('error');
 
@@ -180,9 +180,7 @@
     }
 
     function showConfirm(event) {
-        if (confirm("회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?")) {
-            $("form").submit();
-        } else {
+        if (!confirm("회원 탈퇴 시 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?")) {
             event.preventDefault();
             $('.pwMsg').removeClass('error').addClass('success').text("올바른 비밀번호입니다.")
         }

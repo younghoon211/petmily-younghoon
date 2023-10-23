@@ -55,7 +55,7 @@
 <section class="ftco-section bg-light">
     <div class="container">
         <form class="form" method="post" action="/lookBoard/auth/modify"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data" id="form">
             <div class="modal-body">
 
                 <c:if test="${authUser.grade eq '관리자'}">
@@ -296,7 +296,7 @@
                 initFileDel.hide();
                 notUpload1.show();
 
-                $(document).on('submit', 'form', function () {
+                $("#form").off().on("submit", function () {
                     deleteImage('${modifyForm.imgPath}');
                 });
             }
@@ -338,6 +338,8 @@
             success: function (result) {
                 if (result === "SUCCESS") {
                     console.log("이미지 삭제 요청 성공");
+                } else {
+                    console.log("이미지 삭제 요청 실패 (이미지파일 존재x)")
                 }
             }
         });

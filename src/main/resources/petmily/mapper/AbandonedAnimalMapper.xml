@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.AbandonedAnimalMapper">
 
-    <!--=======BasicMapper 메소드=======-->
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
@@ -21,6 +21,7 @@
         (
         #{sNumber}, #{name}, #{species}, #{kind}, #{gender}, #{age}, #{weight},
         #{location}, #{admissionDate}, #{uniqueness}, #{description}, #{animalState}
+
         <if test='imgPath != null'>
             , #{imgPath}
         </if>
@@ -48,10 +49,11 @@
         from ABANDONEDANIMAL
         where ABNUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
 
-    <!--================= 회원 페이지 =================-->
-
+    <!--============================== 회원 페이지 ============================== -->
+    <!-- 조건부 검색 - 총 게시글 수 (페이징)  -->
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from ABANDONEDANIMAL
@@ -79,6 +81,7 @@
         </where>
     </select>
 
+    <!-- 조건부 검색 - 글 index -->
     <select id="selectIndexWithCondition" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select * from
         (select ROWNUM as NUM, A.ABNUMBER, A.NAME, A.LOCATION, A.ADMISSIONDATE, A.IMGPATH from
@@ -110,6 +113,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 입양 완료 리스트 : 조건부 검색 총 게시글 수 (페이징) -->
     <select id="selectCountAdopted" resultType="int">
         select count(*)
         from ABANDONEDANIMAL
@@ -133,6 +137,7 @@
         </where>
     </select>
 
+    <!-- 입양 완료 리스트 : 조건부 검색 글 index -->
     <select id="selectIndexAdopted" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select * from
         (select ROWNUM as NUM, AB.ABNUMBER, AB.NAME, AB.SPECIES, AB.KIND, AB.GENDER, AB.AGE, AB.WEIGHT, AB.IMGPATH from
@@ -160,6 +165,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'abNo'">
             order by ABNUMBER desc
@@ -170,8 +176,8 @@
     </sql>
 
 
-    <!--================= 관리자 페이지 =================-->
-
+    <!--============================== 관리자 페이지 ============================== -->
+    <!-- 총 게시글 수 (페이징) -->
     <select id="selectCount" resultType="int">
         select count(*)
         from ABANDONEDANIMAL
@@ -209,6 +215,7 @@
         </where>
     </select>
 
+    <!-- 게시글 index -->
     <select id="selectIndex" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select * from
         (select ROWNUM as NUM, A.* from
@@ -250,13 +257,15 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 유기동물 리스트 -->
     <select id="selectAll" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         order by ABNUMBER
     </select>
 
-    <select id="selectAllOnlyProtect" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
+    <!-- 보호중인 유기동물 리스트 -->
+    <select id="selectAllOnlyProtected" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         <where>
@@ -267,42 +276,43 @@
         order by ABNUMBER
     </select>
 
+    <!-- 가장 최신 업로드 된 pk 조회 -->
     <select id="selectByPkMax" resultType="int">
         select MAX(ABNUMBER)
         from ABANDONEDANIMAL
     </select>
 
 
-    <!--====================================== 입양 ======================================-->
-    <!--========== 입양 수정 폼에 받아올 유기동물 리스트 ==========-->
-
+    <!--====================================== 입양 ====================================== -->
+    <!-- 입양 승인 대기중인 유기동물 리스트 -->
     <select id="selectAllAdoptWait" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ANIMALSTATE = '보호'
-          AND ABNUMBER
-            in (select ABNUMBER from ADOPT where STATUS = '처리중')
+        AND ABNUMBER
+        in (select ABNUMBER from ADOPT where STATUS = '처리중')
         order by ABNUMBER
     </select>
 
+    <!-- 입양 '완료' 유기동물 리스트 -->
     <select id="selectAllAdoptComplete" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ANIMALSTATE = '입양'
-          AND ABNUMBER
-            in (select ABNUMBER from ADOPT where STATUS = '완료')
+        AND ABNUMBER
+        in (select ABNUMBER from ADOPT where STATUS = '완료')
         order by ABNUMBER
     </select>
 
 
-    <!--========== 수정 시 유기동물 상태 수정 ==========-->
-
+    <!-- 입양 '완료'인 유기동물 '입양'으로 업데이트 -->
     <update id="updateToAdopt">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '입양'
         where ABNUMBER in (select ABNUMBER from ADOPT where STATUS = '완료')
     </update>
 
+    <!-- 입양 '처리중' 또는 '거절'인 유기동물 '보호'로 업데이트 -->
     <update id="updateToProtectInAdopt">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '보호'
@@ -310,7 +320,7 @@
     </update>
 
 
-    <!--========== 입양완료 삭제 시 유기동물 상태 임보->보호 ==========-->
+    <!-- 입양 '완료' 삭제 시 유기동물 상태 '입양'->'보호' -->
     <update id="updateToProtectForDeleteInAdopt">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '보호'
@@ -318,44 +328,43 @@
     </update>
 
 
-    <!--==================================== 임시보호 ====================================-->
-    <!--========== 임시보호 수정 폼에 받아올 유기동물 리스트 ==========-->
-
+    <!--==================================== 임시보호 ==================================== -->
+    <!-- 임시보호 상태:'처리중'인 유기동물 리스트 -->
     <select id="selectAllTempWait" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ANIMALSTATE = '보호'
-          AND ABNUMBER
-            in (select ABNUMBER from TEMPPET where STATUS = '처리중')
+        AND ABNUMBER
+        in (select ABNUMBER from TEMPPET where STATUS = '처리중')
         order by ABNUMBER
     </select>
 
+    <!-- 임시보호 중인 유기동물 리스트 -->
     <select id="selectAllTempComplete" resultType="petmily.domain.abandoned_animal.AbandonedAnimal">
         select *
         from ABANDONEDANIMAL
         where ANIMALSTATE = '임보'
-          AND ABNUMBER
-            in (select ABNUMBER from TEMPPET where STATUS = '완료')
+        AND ABNUMBER
+        in (select ABNUMBER from TEMPPET where STATUS = '완료')
         order by ABNUMBER
     </select>
 
 
-    <!--========== 수정 시 유기동물 상태 수정 ==========-->
-
+    <!-- 임보 '완료'인 유기동물 '임보'로 업데이트 -->
     <update id="updateToTemp">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '임보'
         where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS = '완료')
     </update>
 
+    <!-- 임보 '처리중' 또는 '거절'인 유기동물 '보호'로 업데이트 -->
     <update id="updateToProtectInTemp">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '보호'
         where ABNUMBER in (select ABNUMBER from TEMPPET where STATUS in ('거절', '처리중'))
     </update>
 
-
-    <!--========== 임시보호 완료 삭제 시 유기동물 상태 임보->보호 ==========-->
+    <!-- 임시보호 '완료' 삭제 시 유기동물 상태 '임보'->'보호' -->
     <update id="updateToProtectForDeleteInTemp">
         update ABANDONEDANIMAL
         set ANIMALSTATE = '보호'

@@ -157,6 +157,8 @@ public class FindBoardServiceImpl implements FindBoardService {
     // ===================== CRUD 끝 =====================
 
 
+    // ===================== private 메소드 =====================
+
     private FindBoard toWrite(FindBoardWriteForm form) {
         return new FindBoard(
                 form.getSpecies(),

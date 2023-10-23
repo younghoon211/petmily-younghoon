@@ -78,7 +78,7 @@ public class MemberController {
 
         if (originalRequest != null) { //로그인 인터셉터 후: 원래 가려던 페이지로
             return "redirect:" + originalRequest;
-        } else if ("http://localhost:8080/join".equals(prevPage)) { // 회원가입 후 로그인: 메인페이지로
+        } else if (isJoinOrFindAccountPage(prevPage)) { // 회원가입, 아이디/비번찾기 후 로그인: 메인페이지로
             return "redirect:/";
         } else if (prevPage != null && !"http://localhost:8080/".equals(prevPage)) { // 로그인 후 원래 있던 페이지로
             return "redirect:" + prevPage;
@@ -471,9 +471,11 @@ public class MemberController {
         if ("adopt".equals(type)) {
             MypageAdoptPageForm pageForm = adoptTempService.getMypageAdopt(pageNo, mNumber, type);
             model.addAttribute("pageForm", pageForm);
-        } else {
+        } else if ("temp".equals(type)) {
             MypageTempPageForm pageForm = adoptTempService.getMypageTemp(pageNo, mNumber, type);
             model.addAttribute("pageForm", pageForm);
+        } else {
+            return null;
         }
 
         model.addAttribute("type", type);
@@ -578,5 +580,9 @@ public class MemberController {
     private void removeSessions(HttpSession session) {
         session.removeAttribute("originalRequest"); // 원래 요청했던 URL (로그인 인터셉터에 걸린 경우)
         session.removeAttribute("prevPage"); // 로그인 전에 있던 페이지
+    }
+
+    private boolean isJoinOrFindAccountPage(String prevPage) {
+        return "http://localhost:8080/join".equals(prevPage) || "http://localhost:8080/resetPw".equals(prevPage) || "http://localhost:8080/findId".equals(prevPage);
     }
 }

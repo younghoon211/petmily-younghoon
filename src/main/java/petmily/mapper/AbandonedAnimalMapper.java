@@ -20,7 +20,6 @@ public interface AbandonedAnimalMapper {
     void delete(int pk);
 
     // ========== 회원 페이지 ==========
-    // 유기동물 조회
     int selectCountWithCondition(AbandonedAnimalConditionForm form);
 
     List<AbandonedAnimal> selectIndexWithCondition(
@@ -33,7 +32,6 @@ public interface AbandonedAnimalMapper {
             @Param("sort") String sort
     );
 
-    // 입양완료 조회
     int selectCountAdopted(AbandonedAnimalConditionForm form);
 
     List<AbandonedAnimal> selectIndexAdopted(
@@ -58,11 +56,11 @@ public interface AbandonedAnimalMapper {
 
     List<AbandonedAnimal> selectAll();
 
-    List<AbandonedAnimal> selectAllOnlyProtect();
+    List<AbandonedAnimal> selectAllOnlyProtected();
 
     int selectByPkMax();
 
-    // 입양
+    // ============== 입양 ==============
     List<AbandonedAnimal> selectAllAdoptWait();
 
     List<AbandonedAnimal> selectAllAdoptComplete();
@@ -73,7 +71,7 @@ public interface AbandonedAnimalMapper {
 
     void updateToProtectForDeleteInAdopt(int adNumber);
 
-    // 임보
+    // ============== 임보 ==============
     List<AbandonedAnimal> selectAllTempWait();
 
     List<AbandonedAnimal> selectAllTempComplete();

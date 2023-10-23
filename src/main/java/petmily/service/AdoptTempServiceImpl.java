@@ -48,7 +48,7 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return new MypageAdoptPageForm(total, pageNo, size, content);
     }
 
-    // mNumber로 입양 '완료' 여부 조회
+    // 회원 pk로 입양 상태 '완료' 여부 조회
     @Override
     public int getCountAdoptedStatus(int mNumber) {
         return adoptDao.selectCountAdoptedStatus(mNumber);
@@ -110,13 +110,13 @@ public class AdoptTempServiceImpl implements AdoptTempService {
         return adoptDao.findByPk(pk);
     }
 
-    // 입양 '처리중' 상태 유기동물 리스트
+    // 입양 승인 대기중인 유기동물 리스트
     @Override
     public List<AbandonedAnimal> getAnimalListAdoptWait() {
         return abandonedAnimalDao.selectAllAdoptWait();
     }
 
-    // '입양' 상태 유기동물 리스트
+    // 입양 완료된 유기동물 리스트
     @Override
     public List<AbandonedAnimal> getAnimalListAdoptComplete() {
         return abandonedAnimalDao.selectAllAdoptComplete();
@@ -303,8 +303,8 @@ public class AdoptTempServiceImpl implements AdoptTempService {
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 관리자 페이지(입양/임보 관련) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     // 입양,임보 '처리중' 상태 제외한 유기동물 리스트
     @Override
-    public List<AbandonedAnimal> getAnimalListOnlyProtect() {
-        return abandonedAnimalDao.selectAllOnlyProtect();
+    public List<AbandonedAnimal> getAnimalListOnlyProtected() {
+        return abandonedAnimalDao.selectAllOnlyProtected();
     }
 
     // 거주지 리스트

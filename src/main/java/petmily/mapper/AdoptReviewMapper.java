@@ -17,21 +17,14 @@ public interface AdoptReviewMapper {
     void update(AdoptReview obj);
 
     void delete(int pk);
-    // ===============================
 
+    // ========== 회원 페이지 ==========
     int selectCountBymNumber(int mNumber);
 
     List<AdoptReview> selectIndexBymNumber(
             @Param("start") int start,
             @Param("end") int end,
             @Param("mNumber") int mNumber
-    );
-
-    List<AdoptReview> selectIndexByPkDesc(
-            @Param("start") int start,
-            @Param("end") int end,
-            @Param("keyword") String keyword,
-            @Param("condition") String condition
     );
 
     int selectCountWithCondition(
@@ -47,9 +40,17 @@ public interface AdoptReviewMapper {
             @Param("condition") String condition
     );
 
-    String selectMemberId(int pk);
-
     String selectName(int pk);
 
     int updateViewCount(int pk);
+
+    // ========== 관리자 페이지 ==========
+    List<AdoptReview> selectIndexByPkDesc(
+            @Param("start") int start,
+            @Param("end") int end,
+            @Param("keyword") String keyword,
+            @Param("condition") String condition
+    );
+
+    String selectMemberId(int pk);
 }

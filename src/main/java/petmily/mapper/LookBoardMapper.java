@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface LookBoardMapper {
 
+    // =======BasicMapper 메소드=======
     LookBoard selectByPk(int pk);
 
     void insert(LookBoard obj);
@@ -18,10 +19,8 @@ public interface LookBoardMapper {
 
     void delete(int pk);
 
-    // =========== 일반 회원 페이지 ===========
+    // =========== 회원 페이지 ===========
     String selectName(int pk);
-
-    int updateViewCount(int pk);
 
     int selectCountWithCondition(
             @Param("species") String species,
@@ -38,7 +37,6 @@ public interface LookBoardMapper {
             @Param("sort") String sort
     );
 
-    // ========= 마이페이지 - 내가 쓴 게시글 =========
     int selectCountBymNumber(int mNumber);
 
     List<LookBoard> selectIndexBymNumber(
@@ -47,7 +45,7 @@ public interface LookBoardMapper {
             @Param("mNumber") int mNumber
     );
 
-    // ================== 매칭 시스템 ==================
+    // =========== 매칭 시스템 ===========
     List<Integer> selectMatchedFa(LookBoard obj);
 
     int selectCountLookMatching(int mNumber);
@@ -84,8 +82,9 @@ public interface LookBoardMapper {
 
     void backStateFind(int faNumber);
 
+    int updateViewCount(int pk);
 
-    // =============== 관리자 ===============
+    // =============== 관리자 페이지 ===============
     List<LookBoard> selectIndexByPkDesc(
             @Param("start") int start,
             @Param("end") int end,

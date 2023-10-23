@@ -42,6 +42,11 @@
                 display: block;
             }
         }
+
+        .error {
+            font-size: 12px;
+            color: red;
+        }
     </style>
 </head>
 
@@ -81,7 +86,7 @@
 <div class="container survey">
     <h1 id="title" class="text-center">후원하기</h1><br>
     <div class="container">
-        <span class="form-text text-muted text-center" style="font-family: -apple-system">1233-45-6787910 카카오뱅크(예금주: petmily)</span>
+        <span class="form-text text-muted text-center" style="font-family: -apple-system">3333-19-1234567 카카오뱅크 (예금주: petmily)</span>
         <small class="form-text text-muted text-center"><span
                 style="color: red">※ 예금주를 [동물이름/닉네임] (예: 초코/홍길동)으로 입금 후 후원 신청서를 제출하시면 후원이 완료됩니다.</span></small><br><br>
 
@@ -95,7 +100,7 @@
             <input type="text" class="form-control" value="${authUser.name}" readonly>
         </div>
 
-        <form id="survey-form" method="post"
+        <form id="form" method="post"
               action="<c:out value='/abandonedAnimal/auth/donate?abNumber=${param.abNumber}'/>">
             <div class="form-row">
                 <div class="col">
@@ -126,12 +131,12 @@
                 </div>
                 <div class="col">
                     <label>예금주</label>
-                    <input name="accountHolder" id="accountHolder" type="text"
+                    <input name="accountHolder" type="text" maxlength="30"
                            class="form-control" placeholder="후원할 동물이름/닉네임" required>
                 </div>
                 <div class="col">
                     <label>계좌번호</label>
-                    <input name="accountNumber" id="accountNumber" type="text"
+                    <input name="accountNumber" type="text" maxlength="30"
                            class="form-control" placeholder="계좌번호" required>
                 </div>
             </div>
@@ -164,11 +169,9 @@
                 </div>
                 <div class="col">
                     <input name="donaSum" type="text" id="customAmount" placeholder="직접 입력"
-                           oninput="this.value = this.value.replace(/[^0-9]/g, '');"> 원
+                                               oninput="this.value = this.value.replace(/[^0-9]/g, '');"> 원
                     <br>
-                    <small id="defaultMsg">최소 10,000원이상 가능합니다.</small>
-                    <small id="errorMsg" style="display: none; color: red">최소 10,000원이상 가능합니다.</small>
-                    <small id="successMsg" style="display: none; color: #28a745">후원 가능한 금액입니다.</small>
+                    <span class="customAmountMsg"></span>
                 </div>
             </div>
             <br><br>
@@ -177,7 +180,7 @@
                 <button type="button" class="btn btn-secondary"
                         onclick="window.location.href='/abandonedAnimal/detail?abNumber=${param.abNumber}'">취소
                 </button>
-                <button type="submit" id="submit" class="btn btn-primary">후원하기</button>
+                <button type="submit" class="btn btn-primary">후원하기</button>
             </div>
 
             <input name="mNumber" value="${authUser.getMNumber()}" hidden>
@@ -207,6 +210,7 @@
 <script>
     $(document).ready(function () {
         const radioButtons = $('input[type="radio"].userRatings');
+        $('.customAmountMsg').css("font-size", "12px").text("최소 10,000원이상 가능합니다.");
 
         // 직접 입력에 값 입력 시 라디오 버튼 체크 해제
         $('#customAmount').off().on('input', function () {
@@ -221,15 +225,11 @@
         });
 
         // 후원금액 검증
-        $("#submit").off().on("click", function (event) {
+        $("#form").off().on("submit", function (event) {
             let radioChecked = false;
             const radioButtons = $("[name='donaSum']");
-            const defaultMsg = $('#defaultMsg');
-            const errorMsg = $('#errorMsg');
-            const successMsg = $('#successMsg');
-            const amountInputVal = $('#customAmount').val().trim();
-            const accountHolder = $('#accountHolder').val().trim();
-            const accountNumber = $('#accountNumber').val().trim();
+            const customAmount = $('#customAmount').val().trim();
+            const customAmountReg = /^[0-9]+$/;
 
             radioButtons.each(function () {
                 if ($(this).prop('checked')) {
@@ -237,34 +237,26 @@
                     return false;
                 }
             });
+            const notInputAmount = !radioChecked && customAmount === "";
 
-            const notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
-
-            const numRegex = /^[0-9]+$/;
-
-            if (notInjectedAmount) {
+            if (notInputAmount) {
+                event.preventDefault();
                 alert("후원 금액을 선택하거나 입력해주세요.");
                 $('#customAmount').focus();
-                return false;
-            } else if (amountInputVal !== "") {
-                if (!numRegex.test(amountInputVal)) {
-                    event.preventDefault();
-                } else if (amountInputVal < 10000) {
-                    event.preventDefault();
-
-                    defaultMsg.hide();
-                    successMsg.hide();
-                    errorMsg.show();
-                    $('#customAmount').focus();
-                } else {
-                    defaultMsg.hide();
-                    errorMsg.hide();
-                    successMsg.show();
-
-                    $("form").submit();
+            } else if (customAmount !== "") {
+                if (!customAmountReg.test(customAmount)) {
+                    customAmountError(event, "숫자만 입력해주세요.");
+                } else if (customAmount < 10000) {
+                    customAmountError(event, "최소 10,000원이상 가능합니다.");
                 }
             }
         });
+
+        function customAmountError(event, msg) {
+            event.preventDefault();
+            $('.customAmountMsg').addClass('error').text(msg);
+            $('#customAmount').focus();
+        }
     });
 </script>
 

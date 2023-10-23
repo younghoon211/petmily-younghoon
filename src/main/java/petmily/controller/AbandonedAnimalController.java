@@ -56,7 +56,7 @@ public class AbandonedAnimalController {
         return "/abandoned.animal/abandoned_animal_detail";
     }
 
-    // 입양완료 리스트
+    // 입양완료 리스트 게시판
     @GetMapping("/adoptedList")
     public String adoptedList(@ModelAttribute AbandonedAnimalConditionForm conditionForm, Model model) {
         log.info("GET AbandonedAnimalConditionForm = {}", conditionForm);

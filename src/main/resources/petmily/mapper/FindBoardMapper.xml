@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.FindBoardMapper">
 
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.find_board.FindBoard">
         select *
         from FINDANIMALBOARD
@@ -11,10 +12,12 @@
     </select>
 
     <insert id="insert">
-        insert into FINDANIMALBOARD(MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
+        insert into FINDANIMALBOARD
+        (MNUMBER, SPECIES, KIND, LOCATION, TITLE, CONTENT
         ,IMGPATH
         )
-        values (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
+        values
+        (#{mNumber}, #{species}, #{kind}, #{location}, #{title}, #{content}
 
         <if test='imgPath != null'>
             , #{imgPath}
@@ -45,23 +48,19 @@
         from FINDANIMALBOARD
         where FANUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
 
-    <!--================== 일반 회원 페이지 ==================-->
-
+    <!--============================== 회원 페이지 ============================== -->
+    <!-- 닉네임 조회 -->
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from FINDANIMALBOARD F
-                 inner join MEMBER M on F.MNUMBER = M.MNUMBER
+        inner join MEMBER M on F.MNUMBER = M.MNUMBER
         where F.FANUMBER = #{pk}
     </select>
 
-    <update id="updateViewCount">
-        update FINDANIMALBOARD
-        set VIEWCOUNT = VIEWCOUNT + 1
-        where FANUMBER = #{pk}
-    </update>
-
+    <!-- 조건부 검색 - 총 게시글 수 (페이징) -->
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from FINDANIMALBOARD
@@ -83,6 +82,7 @@
         </where>
     </select>
 
+    <!-- 조건부 검색 - 글 index -->
     <select id="selectIndexWithCondition" resultType="petmily.domain.find_board.FindBoard">
         select *
         from (select ROWNUM as NUM, A.* from
@@ -108,6 +108,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'fno'">
             order by FANUMBER desc
@@ -121,24 +122,27 @@
     </sql>
 
 
-    <!--================== 마이페이지 - 내가 쓴 게시글 ==================-->
+    <!--======================== 마이페이지 - 내가 쓴 게시글 ======================== -->
 
+    <!-- 내가 쓴 게시글 - 총 게시글 수 (페이징) -->
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from FINDANIMALBOARD
         where MNUMBER = #{mNumber}
     </select>
 
+    <!-- 내가 쓴 게시글 - 글 index -->
     <select id="selectIndexBymNumber" resultType="petmily.domain.find_board.FindBoard">
         select *
         from (select ROWNUM as NUM, A.*
-              from (select * from FINDANIMALBOARD where MNUMBER = #{mNumber} order by FANUMBER DESC) A)
+        from (select * from FINDANIMALBOARD where MNUMBER = #{mNumber} order by FANUMBER DESC) A)
         where NUM between #{start} and #{end}
     </select>
 
 
-    <!--================== 찾-봤 매칭 시스템 ==================-->
+    <!--============================== 찾-봤 매칭 시스템 ============================== -->
 
+    <!-- 찾아요에 매칭된 봤어요 게시글 -->
     <select id="selectMatchedLa" resultType="int">
         select LANUMBER
         from LOOKANIMALBOARD
@@ -153,6 +157,7 @@
         </where>
     </select>
 
+    <!-- 찾아요 매칭된 페이지 - 총 게시글 수 (페이징) -->
     <select id="selectCountFindMatching" resultType="int">
         select count(*)
         from FINDANIMALBOARD
@@ -162,6 +167,7 @@
         </where>
     </select>
 
+    <!-- 찾아요 매칭된 페이지 - 글 index -->
     <select id="selectIndexFindMatching" resultType="petmily.domain.find_board.FindBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -174,6 +180,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 찾아요에 매칭된 봤어요 리스트 - 총 게시글 수 (페이징) -->
     <select id="selectCountLookMatchedFind" resultType="int">
         select count(*)
         from LOOKANIMALBOARD
@@ -189,6 +196,7 @@
         </where>
     </select>
 
+    <!-- 찾아요에 매칭된 봤어요 리스트 - 글 index -->
     <select id="selectIndexLookMatchedFind" resultType="petmily.domain.look_board.LookBoard">
         select *
         from (select ROWNUM as NUM, A.*
@@ -207,43 +215,55 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 찾아요 게시판 모든 데이터 조회 -->
     <select id="selectAll" resultType="petmily.domain.find_board.FindBoard">
         select *
         from FINDANIMALBOARD
     </select>
 
+    <!-- 최근 업로드된 찾아요 게시글 조회 -->
     <select id="selectByPkMax" resultType="int">
         select MAX(FANUMBER)
         from FINDANIMALBOARD
     </select>
 
+    <!-- 찾아요 게시글 상태 '매칭됨'으로 업데이트 -->
     <update id="changeState">
         update FINDANIMALBOARD
         set ANIMALSTATE = '매칭됨'
         where FANUMBER = #{pk}
     </update>
 
+    <!-- 찾아요 게시글 상태 '실종'으로 업데이트 -->
     <update id="backState">
         update FINDANIMALBOARD
         set ANIMALSTATE = '실종'
         where FANUMBER = #{pk}
     </update>
 
+    <!-- 봤어요 게시글 상태 '매칭됨'으로 업데이트 -->
     <update id="changeStateLook">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '매칭됨'
         where LANUMBER = #{laNumber}
     </update>
 
+    <!-- 봤어요 게시글 상태 '보호'로 업데이트 -->
     <update id="backStateLook">
         update LOOKANIMALBOARD
         set ANIMALSTATE = '보호'
         where LANUMBER = #{laNumber}
     </update>
 
+    <!-- 조회수 증가 -->
+    <update id="updateViewCount">
+        update FINDANIMALBOARD
+        set VIEWCOUNT = VIEWCOUNT + 1
+        where FANUMBER = #{pk}
+    </update>
 
-    <!--================== 관리자 ==================-->
-
+    <!--==================================== 관리자 페이지 ==================================== -->
+    <!-- 관리자 리스트 페이지 - 글 index -->
     <select id="selectIndexByPkDesc" resultType="petmily.domain.find_board.FindBoard">
         select *
         from (select ROWNUM as NUM, A.* from
@@ -281,10 +301,11 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 회원 아이디 조회 -->
     <select id="selectMemberId" resultType="java.lang.String">
         select M.ID
         from FINDANIMALBOARD F
-                 inner join MEMBER M on F.MNUMBER = M.MNUMBER
+        inner join MEMBER M on F.MNUMBER = M.MNUMBER
         where F.FANUMBER = #{pk}
     </select>
 </mapper>

@@ -62,7 +62,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-lg-12">
-                <form class="form" method="post" action="/adoptReview/auth/modify" enctype='multipart/form-data'>
+                <form class="form" method="post" action="/adoptReview/auth/modify" enctype='multipart/form-data'
+                      id="form">
 
                     <!-- 글 bNumber, title, content -->
                     <div class="modal-body">
@@ -186,14 +187,14 @@
         $("#mNumber").val(${modifyForm.getMNumber()});
 
         <c:if test="${not empty modifyForm.imgPath && modifyForm.imgPath ne 'no_image.png'}">
-            $("#notUpload1").hide();
-            $("#fileDel1").hide();
-            hasImage();
+        $("#notUpload1").hide();
+        $("#fileDel1").hide();
+        hasImage();
         </c:if>
 
         <c:if test="${modifyForm.imgPath eq 'no_image.png'}">
-            $("#fileDel2").hide();
-            noImage();
+        $("#fileDel2").hide();
+        noImage();
         </c:if>
     });
 
@@ -234,7 +235,7 @@
                 initFileDel.hide();
                 notUpload1.show();
 
-                $(document).on('submit', 'form', function () {
+                $("#form").off().on("submit", function () {
                     deleteImage('${modifyForm.imgPath}');
                 });
             }
@@ -276,6 +277,8 @@
             success: function (result) {
                 if (result === "SUCCESS") {
                     console.log("이미지 삭제 요청 성공");
+                } else {
+                    console.log("이미지 삭제 요청 실패 (이미지파일 존재x)")
                 }
             }
         });

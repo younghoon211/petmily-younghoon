@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface FindBoardMapper {
 
+    // =======BasicMapper 메소드=======
     FindBoard selectByPk(int pk);
 
     void insert(FindBoard obj);
@@ -18,11 +19,8 @@ public interface FindBoardMapper {
 
     void delete(int pk);
 
-
-    // =========== 일반 회원 페이지 ===========
+    // =========== 회원 페이지 ===========
     String selectName(int pk);
-
-    int updateViewCount(int pk);
 
     int selectCountWithCondition(
             @Param("species") String species,
@@ -39,8 +37,6 @@ public interface FindBoardMapper {
             @Param("sort") String sort
     );
 
-
-    // ========= 마이페이지 - 내가 쓴 게시글 =========
     int selectCountBymNumber(int mNumber);
 
     List<FindBoard> selectIndexBymNumber(
@@ -49,8 +45,7 @@ public interface FindBoardMapper {
             @Param("mNumber") int mNumber
     );
 
-
-    // ============== 매칭 시스템  ==============
+    // =========== 매칭 시스템 ===========
     List<Integer> selectMatchedLa(FindBoard obj);
 
     int selectCountFindMatching(int mNumber);
@@ -87,7 +82,9 @@ public interface FindBoardMapper {
 
     void backStateLook(int laNumber);
 
-    // =============== 관리자 ===============
+    int updateViewCount(int pk);
+
+    // =============== 관리자 페이지 ===============
     List<FindBoard> selectIndexByPkDesc(
             @Param("start") int start,
             @Param("end") int end,

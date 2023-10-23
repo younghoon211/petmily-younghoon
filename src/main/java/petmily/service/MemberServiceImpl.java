@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.findByPk(pk);
     }
 
-    // 아이디로 멤버 정보 조회
+    // 아이디로 회원 정보 조회
     @Override
     public Member getMemberById(String id) {
         return memberDao.selectMemberById(id);
@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
         return updateMember;
     }
 
-    // 비밀번호 변경
+    // 비밀번호 변경 (마이페이지)
     @Override
     public Member changePw(MemberPwChangeForm form) {
         Member updatePw = toChangePw(form);
@@ -111,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
         return updatePw;
     }
 
-    // 비밀번호 재설정
+    // 비밀번호 재설정 (비번찾기)
     @Override
     public Member resetPw(ResetPwForm form) {
         Member resetPw = toResetPw(form);
@@ -185,15 +185,16 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.selectPhoneCheckAtChange(mNumber, phone);
     }
 
-    // 아이디 찾기 검증 (이메일)
+    // 아이디, 비번 찾기 검증 (이메일)
     @Override
     public Member getMemberByEmail(String email) {
         return memberDao.selectMemberByEmail(email);
     }
 
-
     // ===================== CRUD / 검증 끝 =====================
 
+
+    // ===================== private 메소드 =====================
 
     private Member toJoin(JoinForm form) {
         return new Member(

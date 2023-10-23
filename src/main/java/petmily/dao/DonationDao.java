@@ -25,6 +25,7 @@ public class DonationDao implements BasicDao {
         return mapper.selectByPk(pk);
     }
 
+    // insert 제외 나머지 : 관리자
     @Override
     public void insert(DomainObj obj) {
         mapper.insert((Donation) obj);
@@ -40,10 +41,12 @@ public class DonationDao implements BasicDao {
         mapper.delete(pk);
     }
 
+    // 후원 리스트 페이지 - 총 게시글 수 (페이징)
     public int selectCount(String keyword) {
         return mapper.selectCount(keyword);
     }
 
+    // 후원 리스트 페이지 - 글 index
     public List<DonationListForm> selectIndex(int start, int end, String keyword) {
         List<DonationListForm> donationListForms = new ArrayList<>();
         List<Donation> donations = mapper.selectIndex(start, end, keyword);
@@ -67,6 +70,9 @@ public class DonationDao implements BasicDao {
 
         return donationListForms;
     }
+
+
+    // =============== private 메소드 ===============
 
     private String getAnimalName(int abNumber) {
         return abandonedAnimalMapper.selectByPk(abNumber).getName();

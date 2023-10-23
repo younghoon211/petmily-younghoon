@@ -41,4 +41,8 @@ public class JoinForm {
     @NotBlank
     @Size(min = 11, max = 11)
     private String phone;
+
+    @NotBlank
+    @Size(min = 6, max = 6)
+    private String inputCode;
 }

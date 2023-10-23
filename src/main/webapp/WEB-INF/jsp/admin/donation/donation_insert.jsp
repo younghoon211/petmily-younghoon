@@ -83,7 +83,7 @@
     <h1 id="title" class="text-center">후원 관리 추가</h1>
     <p id="description" class="text-center"></p> <br><br>
 
-    <form action="/admin/donation/insert" method="post">
+    <form action="/admin/donation/insert" method="post" id="form">
 
         <label>후원받을 동물 (번호)</label>
         <select class="form-control" name="abNumber" required>
@@ -182,7 +182,7 @@
 
         <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-            <button type="submit" id="submit" class="btn btn-primary">후원정보 추가</button>
+            <button type="submit" class="btn btn-primary">후원정보 추가</button>
         </div>
         <br>
     </form>
@@ -208,28 +208,24 @@
 
 <script>
     $(document).ready(function () {
-        const amountInput = $('#customAmount');
         const radioButtons = $('input[type="radio"].userRatings');
 
         // "직접 입력"에 값 입력 시 라디오 버튼 체크 해제
-        amountInput.off().on('input', function () {
+        $('#customAmount').off().on('input', function () {
             radioButtons.prop('checked', false);
         });
 
         // 라디오 버튼 클릭시 "직접 입력" 값 초기화
         radioButtons.each(function () {
             $(this).off().on('click', function () {
-                amountInput.val('');
+                $('#customAmount').val("");
             });
         });
 
         // 후원금액 입력 검증
-        $("#submit").on("click", function () {
+        $("#form").off().on("submit", function (event) {
             let radioChecked = false;
             const radioButtons = $("[name='donaSum']");
-            const amountInputVal = amountInput.val().trim();
-            const accountHolder = $('#accountHolder').val().trim();
-            const accountNumber = $('#accountNumber').val().trim();
 
             radioButtons.each(function () {
                 if ($(this).prop('checked')) {
@@ -238,14 +234,13 @@
                 }
             });
 
-            const notInjectedAmount = !radioChecked && amountInputVal === "" && accountHolder !== "" && accountNumber !== "";
+            const notInputAmount = !radioChecked && $('#customAmount').val().trim() === "" && $('#accountHolder').val().trim() !== "" && $('#accountNumber').val().trim() !== "";
 
-            if (notInjectedAmount) {
+            if (notInputAmount) {
+                event.preventDefault();
+
                 alert("후원 금액을 선택하거나 입력해주세요.");
-                amountInput.focus();
-                return false;
-            } else {
-                $("form").submit();
+                $('#customAmount').focus();
             }
         });
     });
@@ -253,5 +248,6 @@
 
 <%-- footer --%>
 <%@ include file="../../include/footer.jspf" %>
+
 </body>
 </html>

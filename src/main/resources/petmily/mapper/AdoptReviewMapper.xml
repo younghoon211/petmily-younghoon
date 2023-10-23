@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.AdoptReviewMapper">
 
-    <!--=======BasicMapper 메소드=======-->
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.adopt_review.AdoptReview">
         select *
         from BOARD
@@ -12,17 +12,22 @@
     </select>
 
     <insert id="insert">
-        insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT
+        insert into BOARD
+        (MNUMBER, KINDOFBOARD, TITLE, CONTENT
         , IMGPATH
-        , CHECKPUBLIC)
-        values (#{mNumber}, '입양후기', #{title}, #{content}
+        , CHECKPUBLIC
+        )
+        values
+        (#{mNumber}, '입양후기', #{title}, #{content}
+
         <if test='imgPath != null'>
         , #{imgPath}
         </if>
         <if test='imgPath == null'>
         , 'no_image.png'
         </if>
-        , 'Y')
+        , 'Y'
+        )
     </insert>
 
     <update id="update">
@@ -31,7 +36,7 @@
             TITLE = #{title},
             CONTENT = #{content},
             WRTIME = #{wrTime}
-        <if test='imgPath != ""'> <!-- x->o 또는 사진변경 -->
+        <if test='imgPath != ""'> <!-- x->o 또는 사진변경  -->
             ,IMGPATH = #{imgPath}
         </if>
         where BNUMBER = #{bNumber}
@@ -41,21 +46,28 @@
         delete from BOARD
         where BNUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
+    <!--============================== 회원 페이지 ============================== -->
+    <!-- 내가 쓴 게시글 (마이페이지) - 총 게시글 수 (페이징) -->
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from BOARD
         where MNUMBER = #{mNumber} and KINDOFBOARD = '입양후기'
     </select>
 
+    <!-- 내가 쓴 게시글 (마이페이지) - 글 index -->
     <select id="selectIndexBymNumber" resultType="petmily.domain.adopt_review.AdoptReview">
         select *
-        from (select ROWNUM as NUM, A.*
-              from (select * from BOARD where MNUMBER = #{mNumber} and KINDOFBOARD = '입양후기' order by BNUMBER DESC) A)
+        from
+        (select ROWNUM as NUM, A.*
+        from (select * from BOARD where MNUMBER = #{mNumber}
+        and KINDOFBOARD = '입양후기' order by BNUMBER DESC)
+        A)
         where NUM between #{start} and #{end}
     </select>
 
-    <!--======= 조건부 검색 게시글 개수 =======-->
+    <!-- 조건부 검색 - 총 게시글 수 (페이징) -->
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from BOARD
@@ -90,7 +102,7 @@
         </where>
     </select>
 
-    <!--======= 조건부 검색 =======-->
+    <!-- 조건부 검색 - 글 index -->
     <select id="selectIndexWithCondition" resultType="petmily.domain.adopt_review.AdoptReview">
         select *
         from (select ROWNUM as NUM, A.*
@@ -130,6 +142,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'adoptReviewNo'">
             order by BNUMBER desc
@@ -142,27 +155,23 @@
         </if>
     </sql>
 
-    <select id="selectMemberId" resultType="java.lang.String">
-        select M.ID
-        from BOARD B inner join MEMBER M
-        on B.MNUMBER = M.MNUMBER
-        where B.BNUMBER = #{pk}
-    </select>
-
+    <!-- 닉네임 조회 -->
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from BOARD B inner join MEMBER M
         on B.MNUMBER = M.MNUMBER
         where B.BNUMBER = #{pk}
     </select>
-
+    
+    <!-- 조회수 증가 -->
     <update id="updateViewCount">
         update BOARD
         set VIEWCOUNT = VIEWCOUNT + 1
         where BNUMBER = #{pk}
     </update>
 
-    <!--관리자-->
+    <!--============================== 관리자 페이지 ============================== -->
+    <!-- 글 index -->
     <select id="selectIndexByPkDesc" resultType="petmily.domain.adopt_review.AdoptReview">
         select *
         from (select ROWNUM as NUM, A.*
@@ -200,5 +209,13 @@
         order by BNUMBER desc
         ) A)
         where NUM between #{start} and #{end}
+    </select>
+
+    <!-- 회원 아이디 조회 -->
+    <select id="selectMemberId" resultType="java.lang.String">
+        select M.ID
+        from BOARD B inner join MEMBER M
+        on B.MNUMBER = M.MNUMBER
+        where B.BNUMBER = #{pk}
     </select>
 </mapper>

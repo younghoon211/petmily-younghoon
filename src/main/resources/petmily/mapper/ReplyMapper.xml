@@ -12,8 +12,10 @@
     </select>
 
     <insert id="insert">
-        insert into BOARDREPLY(BNUMBER, MNUMBER, REPLY)
-        values (#{bNumber}, #{mNumber}, #{reply})
+        insert into BOARDREPLY
+        (BNUMBER, MNUMBER, REPLY)
+        values
+        (#{bNumber}, #{mNumber}, #{reply})
     </insert>
 
     <update id="update">
@@ -27,8 +29,9 @@
         from BOARDREPLY
         where BRNUMBER = #{pk}
     </delete>
-    <!--=======BasicMapper 메소드=======-->
+    <!--=======BasicMapper 메소드 끝=======-->
 
+    <!-- 댓글 조회 -->
     <select id="selectIndexBybNumber" resultType="petmily.domain.reply.Reply">
         select *
         from BOARDREPLY

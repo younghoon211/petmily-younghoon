@@ -17,8 +17,8 @@ public interface DonationMapper {
     void update(Donation donation);
 
     void delete(int pk);
-    // ===============================
 
+    // ========== 관리자 페이지 ==========
     int selectCount(String keyword);
 
     List<Donation> selectIndex(

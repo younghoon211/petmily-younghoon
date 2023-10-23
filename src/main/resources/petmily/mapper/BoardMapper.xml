@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmily.mapper.BoardMapper">
 
+    <!--=======BasicMapper 메소드======= -->
     <select id="selectByPk" resultType="petmily.domain.board.Board">
         select *
         from BOARD
@@ -11,8 +12,10 @@
     </select>
 
     <insert id="insert">
-        insert into BOARD(MNUMBER, KINDOFBOARD, TITLE, CONTENT, CHECKPUBLIC)
-        values (#{mNumber}, #{kindOfBoard}, #{title}, #{content}, #{checkPublic})
+        insert into BOARD
+        (MNUMBER, KINDOFBOARD, TITLE, CONTENT, CHECKPUBLIC)
+        values
+        (#{mNumber}, #{kindOfBoard}, #{title}, #{content}, #{checkPublic})
     </insert>
 
     <update id="update">
@@ -30,22 +33,28 @@
         from BOARD
         where BNUMBER = #{pk}
     </delete>
+    <!--=======BasicMapper 메소드 끝======= -->
 
+
+    <!--============================== 회원 페이지 ============================== -->
+    <!-- 내가 쓴 게시글 (마이페이지) - 총 게시글 수 (페이징) -->
     <select id="selectCountBymNumber" resultType="int">
         select count(*)
         from BOARD
         where MNUMBER = #{mNumber} and KINDOFBOARD = #{kindOfBoard}
     </select>
 
+    <!-- 내가 쓴 게시글 (마이페이지) - 글 index -->
     <select id="selectIndexBymNumber" resultType="petmily.domain.board.Board">
         select *
         from (select ROWNUM as NUM, A.*
-              from (select * from BOARD where MNUMBER = #{mNumber}
-                    and KINDOFBOARD = #{kindOfBoard}
-                    order by BNUMBER DESC) A)
+        from (select * from BOARD where MNUMBER = #{mNumber}
+        and KINDOFBOARD = #{kindOfBoard}
+        order by BNUMBER DESC) A)
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 조건부 검색 - 총 게시글 수 (페이징) -->
     <select id="selectCountWithCondition" resultType="int">
         select count(*)
         from BOARD
@@ -81,6 +90,7 @@
         </where>
     </select>
 
+    <!-- 조건부 검색 - 글 index -->
     <select id="selectIndexWithCondition" resultType="petmily.domain.board.Board">
         select *
         from (select ROWNUM as NUM, A.*
@@ -120,6 +130,7 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'bno'">
             order by BNUMBER desc
@@ -132,6 +143,15 @@
         </if>
     </sql>
 
+    <!-- 조회수 증가 -->
+    <update id="updateViewCount">
+        update BOARD
+        set VIEWCOUNT = VIEWCOUNT + 1
+        where BNUMBER = #{pk}
+    </update>
+
+    <!--============================== 관리자 페이지 ============================== -->
+    <!-- 리스트 페이지 글 index -->
     <select id="selectIndexByPkDesc" resultType="petmily.domain.board.Board">
         select *
         from (select ROWNUM as NUM, A.*
@@ -171,28 +191,17 @@
         where NUM between #{start} and #{end}
     </select>
 
+    <!--============================== 회원 페이지 DAO private 메소드 ============================== -->
+    <!-- 닉네임 조회 -->
     <select id="selectName" resultType="java.lang.String">
         select M.NAME
         from BOARD B
-             inner join MEMBER M
-             on B.MNUMBER = M.MNUMBER
+        inner join MEMBER M
+        on B.MNUMBER = M.MNUMBER
         where B.BNUMBER = #{pk}
     </select>
 
-    <select id="selectMemberId" resultType="java.lang.String">
-        select M.ID
-        from BOARD B
-                 inner join MEMBER M
-                            on B.MNUMBER = M.MNUMBER
-        where B.BNUMBER = #{pk}
-    </select>
-
-    <update id="updateViewCount">
-        update BOARD
-        set VIEWCOUNT = VIEWCOUNT + 1
-        where BNUMBER = #{pk}
-    </update>
-
+    <!-- 댓글 수 조회 -->
     <select id="selectReplyCount" resultType="int">
         select count(*)
         from BOARD B inner join BOARDREPLY BR on B.BNUMBER = BR.BNUMBER

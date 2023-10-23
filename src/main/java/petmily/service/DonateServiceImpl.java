@@ -73,6 +73,8 @@ public class DonateServiceImpl implements DonateService {
     // ===================== CRUD 끝 =====================
 
 
+    // ===================== private 메소드 =====================
+
     private Donation toSubmit(DonateSubmitForm form) {
         return new Donation(
                 form.getAbNumber(),

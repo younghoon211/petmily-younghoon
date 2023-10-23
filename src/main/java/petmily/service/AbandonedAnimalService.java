@@ -49,9 +49,9 @@ public interface AbandonedAnimalService {
 
     void update(AbandonedAnimalUpdateForm form);
 
-    void updateWithAdopt(AbandonedAnimalUpdateForm form);
+    void updateTempToAdopt(AbandonedAnimalUpdateForm form);
 
-    void updateWithTemp(AbandonedAnimalUpdateForm form);
+    void updateAdoptToTemp(AbandonedAnimalUpdateForm form);
 
     void delete(int abNumber);
 

@@ -77,7 +77,7 @@
 
                 <!-- 폼 시작 -->
 
-                <form class="form" method="post" action="/admin/abandonedAnimal/update?abNumber=${updateForm.abNumber}"
+                <form class="form" method="post" action="/admin/abandonedAnimal/update?abNumber=${updateForm.abNumber}" id="form"
                       enctype='multipart/form-data'>
                     <div class="modal-body">
 
@@ -548,7 +548,7 @@
                 initFileDel.hide();
                 notUpload1.show();
 
-                $(document).on('submit', 'form', function () {
+                $("#form").off().on("submit", function() {
                     deleteImage('${updateForm.imgPath}');
                 });
             }

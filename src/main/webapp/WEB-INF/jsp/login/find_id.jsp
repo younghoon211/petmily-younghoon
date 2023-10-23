@@ -29,12 +29,20 @@
 
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style>
+        .position {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <form class="contactForm">
-        <br><br><br><br><br><br><br><br><br><br>
+<div class="container position">
+    <div class="contactForm">
         <div class="form-inputs">
             <div class="row no-gutters" style="margin: 0 auto; width:30%">
                 <div style="text-align: center">
@@ -64,7 +72,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 <script src="/resources/petsitting-master/js/jquery.min.js"></script>
@@ -86,7 +94,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#submit').off('click').on('click', function () {
+        $('#submit').off().on('click', function () {
             const email = $('#email').val().trim();
 
             if (!email) {
@@ -94,6 +102,12 @@
                 alert("이메일을 입력하세요.");
             } else {
                 sendMail();
+            }
+        });
+
+        $(document).on('keypress', function (event) {
+            if (event.which === 13) { // 13:Enter
+                $("#submit").click();
             }
         });
 

@@ -154,6 +154,9 @@ public class AdoptReviewServiceImpl implements AdoptReviewService {
     // ===================== CRUD 끝 =====================
 
 
+
+    // ===================== private 메소드 =====================
+
     private AdoptReview toWrite(AdoptReviewWriteForm form) {
         return new AdoptReview(
                 form.getMNumber(),

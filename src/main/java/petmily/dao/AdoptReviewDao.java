@@ -37,10 +37,12 @@ public class AdoptReviewDao implements BasicDao {
         mapper.delete(pk);
     }
 
+    // 내가 쓴 게시글 (마이페이지) - 총 게시글 수 (페이징)
     public int selectCountBymNumber(int mNumber) {
         return mapper.selectCountBymNumber(mNumber);
     }
 
+    // 내가 쓴 게시글 (마이페이지) - 글 index
     public List<AdoptReviewListForm> selectIndexBymNumber(int start, int end, int mNumber) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
         List<AdoptReview> adoptReviews = mapper.selectIndexBymNumber(start, end, mNumber);
@@ -50,10 +52,12 @@ public class AdoptReviewDao implements BasicDao {
         return adoptReviewListForms;
     }
 
+    // 조건부 검색 - 총 게시글 수 (페이징)
     public int selectCountWithCondition(String keyword, String condition) {
         return mapper.selectCountWithCondition(keyword, condition);
     }
 
+    // 조건부 검색 - 글 index
     public List<AdoptReviewListForm> selectIndexWithCondition(int start, int end, String sort, String keyword, String condition) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
         List<AdoptReview> adoptReviews = mapper.selectIndexWithCondition(start, end, sort, keyword, condition);
@@ -63,7 +67,17 @@ public class AdoptReviewDao implements BasicDao {
         return adoptReviewListForms;
     }
 
-    // 관리자
+    // 닉네임 조회
+    public String selectName(int pk) {
+        return mapper.selectName(pk);
+    }
+
+    // 조회수 증가
+    public int updateViewCount(int pk) {
+        return mapper.updateViewCount(pk);
+    }
+
+    // 관리자 페이지 - 글 index
     public List<AdoptReviewListForm> selectIndexByPkDesc(int start, int end, String keyword, String condition) {
         List<AdoptReviewListForm> adoptReviewListForms = new ArrayList<>();
         List<AdoptReview> adoptReviews = mapper.selectIndexByPkDesc(start, end, keyword, condition);
@@ -88,13 +102,6 @@ public class AdoptReviewDao implements BasicDao {
         return adoptReviewListForms;
     }
 
-    public String selectName(int pk) {
-        return mapper.selectName(pk);
-    }
-
-    public int updateViewCount(int pk) {
-        return mapper.updateViewCount(pk);
-    }
 
     // =============== private 메소드 ===============
 

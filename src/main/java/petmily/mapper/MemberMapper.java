@@ -17,11 +17,10 @@ public interface MemberMapper {
     void update(Member obj);
 
     void delete(int pk);
-    // ===============================
 
+
+    // =========== 회원 페이지 ===========
     Member selectMemberById(String id);
-
-    String selectMemberId(int pk);
 
     String selectName(int pk);
 
@@ -31,15 +30,23 @@ public interface MemberMapper {
 
     void resetPw(Member obj);
 
-    int selectCount();
+    // =========== 관리자 페이지 ===========
+    int selectCount(String keyword);
 
     List<Member> selectIndex(
             @Param("start") int start,
-            @Param("end") int end
+            @Param("end") int end,
+            @Param("keyword") String keyword
     );
 
     List<Member> selectAll();
 
+    // 회원 아이디 조회 (타 DAO에서 사용)
+    String selectMemberId(int pk);
+
+    void updateAdmin(Member obj);
+
+    // ============= 검증 =============
     int selectIdCheck(String id);
 
     int selectEmailCheck(String email);
@@ -62,14 +69,4 @@ public interface MemberMapper {
     );
 
     Member selectMemberByEmail(String email);
-
-    int selectCount(String keyword);
-
-    List<Member> selectIndex(
-            @Param("start") int start,
-            @Param("end") int end,
-            @Param("keyword") String keyword
-    );
-
-    void updateAdmin(Member obj);
 }

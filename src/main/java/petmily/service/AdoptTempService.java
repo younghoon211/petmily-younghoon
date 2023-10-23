@@ -70,7 +70,7 @@ public interface AdoptTempService {
     void deleteTemp(int tNumber);
 
     // 입양/임보
-    List<AbandonedAnimal> getAnimalListOnlyProtect();
+    List<AbandonedAnimal> getAnimalListOnlyProtected();
 
     List<String> getResidenceList();
 }

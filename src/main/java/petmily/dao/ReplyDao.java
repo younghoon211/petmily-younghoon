@@ -39,6 +39,7 @@ public class ReplyDao implements BasicDao {
         mapper.delete(pk);
     }
 
+    // 댓글 index
     public List<ReplyListForm> selectIndexBybNumber(int bNumber) {
         List<ReplyListForm> replyListForms = new ArrayList<>();
         List<Reply> replies = mapper.selectIndexBybNumber(bNumber);

@@ -133,6 +133,10 @@ public class BoardServiceImpl implements BoardService {
 
     // ===================== CRUD 끝 =====================
 
+
+
+    // ===================== private 메소드 =====================
+
     private Board toWrite(BoardWriteForm form) {
         return new Board(
                 form.getMNumber(),
