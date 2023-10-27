@@ -20,7 +20,7 @@ public class AbandonedAnimalUpdateForm {
     private String kind;
     private String gender;
     private int age;
-    private double weight;
+    private float weight;
     private String imgPath;
     private MultipartFile file;
     private String location;
@@ -40,7 +40,7 @@ public class AbandonedAnimalUpdateForm {
     private Date tempDate;
     private int tempPeriod;
 
-    public AbandonedAnimalUpdateForm(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AbandonedAnimalUpdateForm(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.name = name;

@@ -19,7 +19,7 @@ public class AbandonedAnimal implements DomainObj {
     private String kind;
     private String gender;
     private int age;
-    private double weight;
+    private float weight;
     private String imgPath;
     private String location;
     private Date admissionDate;
@@ -27,7 +27,7 @@ public class AbandonedAnimal implements DomainObj {
     private String description;
     private String animalState;
 
-    public AbandonedAnimal(int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AbandonedAnimal(int sNumber, String name, String species, String kind, String gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.sNumber = sNumber;
         this.name = name;
         this.species = species;
@@ -43,7 +43,7 @@ public class AbandonedAnimal implements DomainObj {
         this.animalState = animalState;
     }
 
-    public AbandonedAnimal(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, double weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
+    public AbandonedAnimal(int abNumber, int sNumber, String name, String species, String kind, String gender, int age, float weight, String imgPath, String location, Date admissionDate, String uniqueness, String description, String animalState) {
         this.abNumber = abNumber;
         this.sNumber = sNumber;
         this.name = name;

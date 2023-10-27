@@ -16,7 +16,7 @@ public class AbandonedAnimalInsertForm {
     private String kind;
     private String gender;
     private int age;
-    private double weight;
+    private float weight;
     private String imgPath;
     private MultipartFile file;
     private String location;

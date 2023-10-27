@@ -99,8 +99,13 @@
                                     <button type="button" class="btn btn-danger"
                                             onclick="if(confirm('삭제 시 해당 회원과 관련된 모든 정보(작성글/댓글/입양/임보/후원)가 삭제됩니다.')) {
                                                     if(confirm('정말로 삭제하시겠습니까?'))
-                                                    return window.location.href='/admin/member/delete?mNumber=${member.getMNumber()}';}
-                                                    deleteMember()">삭제
+                                            <c:if test="${member.getMNumber() eq 1}">
+                                                    return alert('관리자 계정은 삭제할 수 없습니다.');
+                                            </c:if>
+                                            <c:if test="${member.getMNumber() ne 1}">
+                                                    return window.location.href='/admin/member/delete?mNumber=${member.getMNumber()}';
+                                            </c:if>
+                                                    }">삭제
                                     </button>
                                 </td>
                             </tr>
@@ -189,13 +194,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="/resources/petsitting-master/js/google-map.js"></script>
 <script src="/resources/petsitting-master/js/main.js"></script>
-
-<script>
-    function deleteMember() {
-        alert("회원 정보가 삭제되었습니다.");
-        window.location.href = "/admin/member";
-    }
-</script>
 
 <%-- footer --%>
 <%@ include file="../../include/footer.jspf" %>

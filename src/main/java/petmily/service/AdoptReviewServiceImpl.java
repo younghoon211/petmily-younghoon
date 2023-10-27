@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import petmily.dao.AdoptDao;
 import petmily.dao.AdoptReviewDao;
 import petmily.domain.admin_form.AdminBoardConditionForm;
 import petmily.domain.adopt_review.AdoptReview;
@@ -25,7 +24,6 @@ import java.util.UUID;
 public class AdoptReviewServiceImpl implements AdoptReviewService {
 
     private final AdoptReviewDao adoptReviewDao;
-    private final AdoptDao adoptDao;
     private int size = 6;
     private int adminSize = 10;
 

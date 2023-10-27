@@ -19,7 +19,7 @@ import java.util.Random;
 public class MailServiceImpl implements MailService {
 
     private final JavaMailSender mailSender;
-    private final String EMAIL_ADDRESS = "이메일 주소";
+    private final String EMAIL_ADDRESS = "계정";
     private final String SENDER = "PETMILY";
 
     @Override

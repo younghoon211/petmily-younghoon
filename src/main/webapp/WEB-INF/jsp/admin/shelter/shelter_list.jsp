@@ -90,10 +90,15 @@
                                         수정
                                     </button>
                                     <button type="button" class="btn btn-danger"
-                                            onclick="if(confirm('삭제 시 해당 보호소에 소속된 유기동물들의 모든 정보가 삭제됩니다.'))
-                                                    { if(confirm('정말로 삭제하시겠습니까?'))
-                                                    return window.location.href='/admin/shelter/delete?sNumber=${shelter.getSNumber()}';}">
-                                        삭제
+                                            onclick="if(confirm('삭제 시 해당 보호소에 소속된 유기동물들의 모든 정보가 삭제됩니다.')) {
+                                                    if(confirm('정말로 삭제하시겠습니까?'))
+                                            <c:if test="${shelter.getSNumber() eq 0}">
+                                                    return alert('입양/임보 구분용은 삭제할 수 없습니다.');
+                                            </c:if>
+                                            <c:if test="${shelter.getSNumber() ne 0}">
+                                                    return window.location.href='/admin/shelter/delete?sNumber=${shelter.getSNumber()}';
+                                            </c:if>
+                                                    }">삭제
                                     </button>
                                 </td>
                             </tr>

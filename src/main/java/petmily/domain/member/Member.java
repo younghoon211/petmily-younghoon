@@ -1,11 +1,13 @@
 package petmily.domain.member;
 
+import lombok.Setter;
 import petmily.domain.DomainObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public class Member implements DomainObj {
@@ -19,6 +21,10 @@ public class Member implements DomainObj {
     private String email;
     private String phone;
     private String grade;
+
+    public Member(String id) {
+        this.id = id;
+    }
 
     public Member(int mNumber, String pw) {
         this.mNumber = mNumber;

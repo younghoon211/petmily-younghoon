@@ -34,7 +34,8 @@
 <%@ include file="../include/header.jspf" %>
 
 <%-- 현재 페이지 --%>
-<section class="hero-wrap hero-wrap-2" style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('../../../resources/petsitting-master/images/bg_2.jpg');"
          data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
@@ -108,7 +109,8 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">입양/임보 신청내역</h3>
-                                        <a href="/member/auth/myApply/adopt" class="btn-custom d-flex align-items-center justify-content-center"><span
+                                        <a href="/member/auth/myApply/adopt"
+                                           class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>
@@ -117,7 +119,8 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">내가 쓴 게시글</h3>
-                                        <a href="/member/auth/myPost/find" class="btn-custom d-flex align-items-center justify-content-center"><span
+                                        <a href="/member/auth/myPost/find"
+                                           class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>
@@ -126,7 +129,8 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">찾아요/봤어요 매칭 결과</h3>
-                                        <a href="/member/auth/findMatching" class="btn-custom d-flex align-items-center justify-content-center"><span
+                                        <a href="/member/auth/findMatching"
+                                           class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>
@@ -157,8 +161,15 @@
                                 <div class="d-block services text-center">
                                     <div class="media-body p-4">
                                         <h3 class="heading">회원 탈퇴</h3>
-                                        <a href="/member/auth/withdraw"
-                                           class="btn-custom d-flex align-items-center justify-content-center"><span
+
+                                        <a
+                                                <c:if test="${authUser.grade eq '관리자'}">
+                                                    onclick="alert('관리자는 탈퇴할 수 없습니다.')"
+                                                </c:if>
+                                                <c:if test="${authUser.grade eq '일반'}">
+                                                    href="/member/auth/withdraw"
+                                                </c:if>
+                                                class="btn-custom d-flex align-items-center justify-content-center"><span
                                                 class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
                                     </div>
                                 </div>

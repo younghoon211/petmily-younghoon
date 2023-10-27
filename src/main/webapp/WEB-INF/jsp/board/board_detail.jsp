@@ -84,7 +84,7 @@
                                 <span><small><i class="far fa-comment ml-2"></i> 공개</small></span>
                             </c:if>
                             <c:if test="${detailForm.checkPublic eq 'N'}">
-                                <span><small><i class="far fa-comment ml-2"></i> 비공개</small></span>
+                                <span><small>&nbsp; &#x1F512; 비공개</small></span>
                             </c:if>
                         </c:if>
 
