@@ -114,7 +114,11 @@
 - 한글, 영문, 숫자만 입력 가능합니다.
 <br>
 
-<img width="850" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/e0127883-b62e-493e-ad6e-15be725cc577">☜ `Click here!`
+<img width="850" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/e0127883-b62e-493e-ad6e-15be725cc577">
+
+↑ `Click here!` ↑
+
+<br>
 
 `생년월일`
 - 1900년-2023년 이내어야 합니다.
