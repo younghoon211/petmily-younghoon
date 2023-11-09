@@ -51,7 +51,7 @@
 </section>
 
 <section class="ftco-section bg-light">
-    <div class="container" style="max-width: 1400px;">
+    <div class="container">
         <div class="modal-header">
             <div class="form-group row">
                 <c:if test="${empty param.species && empty param.gender}">

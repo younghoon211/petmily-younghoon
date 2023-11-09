@@ -168,10 +168,10 @@
     <!-- 정렬 기능 -->
     <sql id="sort">
         <if test="sort == 'abNo'">
-            order by ABNUMBER desc
+            order by ADMISSIONDATE desc
         </if>
         <if test="sort == 'abNoAsc'">
-            order by ABNUMBER asc
+            order by ADMISSIONDATE asc
         </if>
     </sql>
 

@@ -144,7 +144,7 @@
 
                     <div class="col">
                         <select name="animalState" class="form-control">
-                            <c:forEach var="state" items="${['allAnimalState', '보호', '매칭됨', '완료']}">
+                            <c:forEach var="state" items="${['allAnimalState', '보호', '매칭됨']}">
                                 <option value="${state}" <c:if test="${param.animalState eq state}">selected</c:if>>
                                     <c:out value="${state eq 'allAnimalState' ? '모든 상태' : state}"/>
                                 </option>

@@ -25,7 +25,7 @@
     <style>
         .success {
             font-size: xx-small;
-            color: #00bd56;
+            color: #008000;
         }
 
         .error {

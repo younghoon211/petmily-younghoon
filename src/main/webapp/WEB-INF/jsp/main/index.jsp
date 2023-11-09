@@ -41,7 +41,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center"
              data-scrollax-parent="true">
             <div class="col-md-11 ftco-animate text-center">
-                <h1 class="mb-4">사지 말고, 입양하세요.<br>Don't buy, Do adopt.</h1>
+                <h1 class="mb-4">사지 말고, 입양하세요!<br>Don't buy, Do adopt!</h1>
             </div>
         </div>
     </div>

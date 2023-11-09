@@ -112,7 +112,7 @@
                                     <span class="label">생년월일</span>
                                     <input type="date" class="form-control"
                                            id="birth" name="birth"
-                                           min="1900-01-01" max="2030-12-31"
+                                           min="1900-01-01" max="2023-12-31"
                                            style="font-weight: normal">
                                     <span class="birthMsg"></span>
                                 </div>

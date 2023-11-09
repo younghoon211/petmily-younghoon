@@ -553,11 +553,10 @@ END;
 
 
 -- DML 예시 데이터 추가
--- 시간 넣고싶으면 TO_DATE('2023-01-01 00:00', 'YYYY-MM-DD HH24:MI') 형식으로
 
 -- MEMBER INSERT
 INSERT INTO MEMBER (ID, PW, NAME, BIRTH, GENDER, EMAIL, PHONE, GRADE)
-VALUES ('admin', 'admin', 'admin', '2023-01-01', 'M', 'admin@petmily.com', '01000000000', '관리자');
+VALUES ('admin', 'admin', '관리자', '2023-01-01', 'M', 'admin@petmily.com', '01000000000', '관리자');
 INSERT INTO MEMBER (ID, PW, NAME, BIRTH, GENDER, EMAIL, PHONE)
 VALUES ('petmily1', 'petmily123!','베들링턴boy','1995-01-09', 'M', 'pet1@petmily.com', '01000000001');
 INSERT INTO MEMBER (ID, PW, NAME, BIRTH, GENDER, EMAIL, PHONE)
@@ -608,15 +607,17 @@ VALUES (1,'몽이','개','비숑','M',2,5.5,'bichon.jpg','신촌','2023-10-19','
 
 --임보
 INSERT INTO ABANDONEDANIMAL (SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, IMGPATH, LOCATION, ADMISSIONDATE, UNIQUENESS, DESCRIPTION, ANIMALSTATE)
-VALUES (0,'초코','고양이','코숏','M',3,5.6,'cat_mix.jpg','노원','2023-06-15','초면엔 경계심이 많음','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '임보');
+VALUES (0,'초코','고양이','코숏','M',3,5.6,'cat_mix.jpg','노원','2023-11-15','초면엔 경계심이 많음','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '임보');
 INSERT INTO ABANDONEDANIMAL (SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, IMGPATH, LOCATION, ADMISSIONDATE, UNIQUENESS, DESCRIPTION, ANIMALSTATE)
-VALUES (0,'콩이','기타','코알라','M',3,8.2,'koala.jpg','마포','2023-07-11','사람을 좋아하고 애교가 많음','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '임보');
+VALUES (0,'콩이','기타','코알라','M',3,8.2,'koala.jpg','마포','2023-11-17','사람을 좋아하고 애교가 많음','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '임보');
 
 --입양
 INSERT INTO ABANDONEDANIMAL (SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, IMGPATH, LOCATION, ADMISSIONDATE, UNIQUENESS, DESCRIPTION, ANIMALSTATE)
-VALUES (0,'망고','기타','수달','M',1,2.2,'otter.jpg','광교','2023-02-21','건강하지만 사람을 무서워함','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '입양');
+VALUES (0,'망고','기타','수달','M',3,12.7,'otter.jpg','광교','2023-11-21','건강하지만 사람을 무서워함','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '입양');
 INSERT INTO ABANDONEDANIMAL (SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, IMGPATH, LOCATION, ADMISSIONDATE, UNIQUENESS, DESCRIPTION, ANIMALSTATE)
-VALUES (0,'별이','개','포메라니안','M',1,2.2,'pome.jpg','인천','2023-3-27','건강하지만 사람을 무서워함','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '입양');
+VALUES (0,'별이','개','포메라니안','M',1,3.1,'pome.jpg','인천','2023-12-20','건강하지만 사람을 무서워함','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '입양');
+INSERT INTO ABANDONEDANIMAL (SNUMBER, NAME, SPECIES, KIND, GENDER, AGE, WEIGHT, IMGPATH, LOCATION, ADMISSIONDATE, UNIQUENESS, DESCRIPTION, ANIMALSTATE)
+VALUES (0,'동글이','기타','코알라','F',2,7.5,'koala.jpg','성수','2023-12-25','초면엔 경계심이 많음','아픔이 있는 아이를 사랑으로 보듬어줄 가족을 찾고 있어요', '입양');
 
 
 -- TEMPPET INSERT
@@ -651,133 +652,159 @@ INSERT INTO ADOPT (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
 VALUES (11, 3, '경기도', 'single', '요양보호사', '완료');
 INSERT INTO ADOPT (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
 VALUES (12, 4, '서울특별시', 'married', '요리사', '완료');
+INSERT INTO ADOPT (ABNUMBER, MNUMBER, RESIDENCE, MARITALSTATUS, JOB, STATUS)
+VALUES (13, 5, '충청남도', 'married', '건축가', '완료');
 
 
 -- FINDANIMALBOARD INSERT
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (1, '개', '불독', '구로', 'bulldog.jpg', '불독을 잃어버렸습니다ㅠㅠ!', '구로에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (2, '개', '비숑', '금천', 'bichon.jpg', '비숑을 잃어버렸습니다ㅠㅠ!', '금천에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (3, '고양이', '코숏', '양재', 'cat_mix.jpg', '고양이를 잃어버렸습니다ㅠㅠ!', '양재천에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (4, '고양이', '먼치킨', '미아', 'cat_chicken.jpg', '저희집 고양이을 잃어버렸습니다ㅠㅠ!', '미아에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (1, '개', '불독', '구로', 'bulldog.jpg', TO_DATE('2023-01-01 01:12', 'YYYY-MM-DD HH24:MI'), 14, '불독을 잃어버렸습니다ㅠㅠ!', '구로에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (2, '개', '비숑', '금천', 'bichon.jpg', TO_DATE('2023-01-10 03:24', 'YYYY-MM-DD HH24:MI'), 35, '비숑을 잃어버렸습니다ㅠㅠ!', '금천에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (3, '고양이', '코숏', '양재', 'cat_mix.jpg', TO_DATE('2023-01-12 04:15', 'YYYY-MM-DD HH24:MI'), 15, '고양이를 잃어버렸습니다ㅠㅠ!', '양재천에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (4, '고양이', '먼치킨', '미아', 'cat_chicken.jpg', TO_DATE('2023-01-14 05:38', 'YYYY-MM-DD HH24:MI'), 51, '저희집 고양이를 잃어버렸습니다ㅠㅠ!', '미아에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
 
 
 -- LOOKANIMALBOARD INSERT
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (1, '기타', '도마뱀', '길음', 'lizard.jpg', '도마뱀 잃어버리신분~!! (길음역)', '길음역 부근에서 발견해서 보호중입니다~');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (2, '개', '말티즈', '수유', 'maltese.jpg', '말티즈 보호중입니다!', '수유역 부근에서 발견해서 보호중입니다~');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (3, '개', '진돗개', '역삼', 'jindo.jpg', '역삼에서 진돗개를 발견해 데리고 있습니다', '역삼 부근에서 발견해서 보호중입니다~');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, TITLE, CONTENT)
-VALUES (4, '고양이', '아메리칸컬', '언주', 'cat_curl.jpg', '언주역에서 고양이 잃어버리신분 있나요?', '언주역 부근에서 발견해서 보호중입니다~');
-
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (1, '기타', '도마뱀', '길음', 'lizard.jpg', TO_DATE('2023-01-17 06:31', 'YYYY-MM-DD HH24:MI'), 22, '도마뱀 잃어버리신분~!! (길음역)', '길음역 부근에서 발견해서 보호중입니다~');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (2, '개', '말티즈', '수유', 'maltese.jpg', TO_DATE('2023-01-18 07:01', 'YYYY-MM-DD HH24:MI'), 11, '말티즈 보호중입니다!', '수유역 부근에서 발견해서 보호중입니다~');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (3, '개', '진돗개', '역삼', 'jindo.jpg', TO_DATE('2023-01-22 08:13', 'YYYY-MM-DD HH24:MI'), 4, '역삼에서 진돗개를 발견해 데리고 있습니다', '역삼 부근에서 발견해서 보호중입니다~');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (4, '고양이', '아메리칸컬', '언주', 'cat_curl.jpg', TO_DATE('2023-01-27 09:41', 'YYYY-MM-DD HH24:MI'), 7, '언주역에서 고양이 잃어버리신분 있나요?', '언주역 부근에서 발견해서 보호중입니다~');
 
 -- FIND, LOOK 매칭
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (1, '개', '비숑', '종각', '매칭됨', 'bichon.jpg', '비숑을 잃어버렸습니다ㅠㅠ!', '종각에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (2, '개', '비숑', '종각', '매칭됨', 'bichon.jpg', '강아지 비숑을 보호중입니다!', '종각에서 산책 중 발견해 보호중입니다. 주인 분은 연락주세요!');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (1, '개', '비숑', '종각', '매칭됨', 'bichon.jpg', TO_DATE('2023-02-01 10:21', 'YYYY-MM-DD HH24:MI'),118, '비숑을 잃어버렸습니다ㅠㅠ!', '종각에서 산책 중 잠시 한눈 판 사이 저희 집 아이가 사라졌습니다ㅠㅠ');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (2, '개', '비숑', '종각', '매칭됨', 'bichon.jpg', TO_DATE('2023-02-08 11:55', 'YYYY-MM-DD HH24:MI'),27, '강아지 비숑을 보호중입니다!', '종각에서 산책 중 발견해 보호중입니다. 주인 분은 연락주세요!');
 
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (3, '개', '말티즈', '회현', '매칭됨', 'maltese.jpg', '말티즈를 잃어버렸습니다ㅠㅠ!', '회현에서 산책 중 잠시 한눈 판 사이 저희 집 강아지가 사라졌습니다ㅠㅠ');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (4, '개', '말티즈', '회현', '매칭됨', 'maltese.jpg', '말티즈를 발견해 보호중입니다!', '회현에서 산책 중 발견해 보호중입니다. 주인 분은 연락주세요!');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (3, '개', '말티즈', '회현', '매칭됨', 'maltese.jpg', TO_DATE('2023-02-11 12:44', 'YYYY-MM-DD HH24:MI'),27, '말티즈를 잃어버렸습니다ㅠㅠ!', '회현에서 산책 중 잠시 한눈 판 사이 저희 집 강아지가 사라졌습니다ㅠㅠ');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (4, '개', '말티즈', '회현', '매칭됨', 'maltese.jpg', TO_DATE('2023-02-14 13:07', 'YYYY-MM-DD HH24:MI'),81, '말티즈를 발견해 보호중입니다!', '회현에서 산책 중 발견해 보호중입니다. 주인 분은 연락주세요!');
 
-INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (5, '고양이', '러시안블루', '왕십리', '매칭됨', 'russian_blue.jpg', '러시안블루 고양이를 잃어버렸습니다ㅠ', '왕십리에서 산책 중 잠시 한눈 판 사이 저희 집 고양이가 사라졌습니다ㅠㅠ');
-INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, TITLE, CONTENT)
-VALUES (6, '고양이', '러시안블루', '왕십리', '매칭됨', 'russian_blue.jpg', '러시안블루 고양이를 보호중입니다!', '왕십리에서 발견해 보호중입니다. 주인 분은 연락주세요!');
+INSERT INTO FINDANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (5, '고양이', '러시안블루', '왕십리', '매칭됨', 'russian_blue.jpg', TO_DATE('2023-02-17 14:11', 'YYYY-MM-DD HH24:MI'),118, '러시안블루 고양이를 잃어버렸습니다ㅠ', '왕십리에서 산책 중 잠시 한눈 판 사이 저희 집 고양이가 사라졌습니다ㅠㅠ');
+INSERT INTO LOOKANIMALBOARD (MNUMBER, SPECIES, KIND, LOCATION, ANIMALSTATE, IMGPATH, WRTIME, VIEWCOUNT, TITLE, CONTENT)
+VALUES (6, '고양이', '러시안블루', '왕십리', '매칭됨', 'russian_blue.jpg', TO_DATE('2023-02-21 15:24', 'YYYY-MM-DD HH24:MI'),75, '러시안블루 고양이를 보호중입니다!', '왕십리에서 발견해 보호중입니다. 주인 분은 연락주세요!');
 
 
 -- BOARD INSERT
 -- 자유
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (1, '자유', '좋은하루 되세요~', '저도 좋은하루 될게요~');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (2, '자유', '오늘 하루 어떠셨나요?', '저는 좋았어요 ㅋㅋ');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (3, '자유', '입양 후 느낀 현실적인 후기 들려주실 분 계실까요?', '실 후기가 궁금합니다 ㅠㅠ');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (4, '자유', '강아지는 베들링턴 테리어가 귀여운것 같아요~', '특히 옆으로 눌려있는 듯한 좁고 긴 머리가 매력적이에요!');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (5, '자유', '피곤하네요 ㅠㅠ', '자고싶어요!');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (6, '자유', '개발이 너무 즐거워요 ㅎㅎ', '전 born to be developer인가봐요~');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (1, '자유', '아랫분 저도 개발잔데 부럽네요', '저도 개발이 즐거웠으면 좋겠어요~');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (2, '자유', '오늘 저녁 뭐먹을까요?', '저녁 추천좀 해주세요 :)');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (3, '자유', '귀뚜라미 소리가 좋네요', '역시 산속에 들어와 살길 잘했어요~ 와이파이는 필수~');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (4, '자유', '여행가고 싶네요ㅎㅎㅎ', '좋아하는 여행지 있으신가요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (5, '자유', '날씨가 쌀쌀해지네요 ㅠ', '다들 감기 조심하세요 :)');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (6, '자유', '새해 복 많이 받으세요~', '항상 감사합니다:)');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (1, '자유', '보통 다들 몇시간쯤 주무시나요?', '전 요즘 하루에 1시간씩만 자도 충분하더라구요~ :)');
-
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (1, '자유', '좋은하루 되세요~', '저도 좋은하루 될게요~', TO_DATE('2023-02-22 16:53', 'YYYY-MM-DD HH24:MI'), 122);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (2, '자유', '오늘 하루 어떠셨나요?', '저는 좋았어요 ㅋㅋ', TO_DATE('2023-02-24 17:33', 'YYYY-MM-DD HH24:MI'), 98);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (3, '자유', '입양 후 느낀 현실적인 후기 들려주실 분 계실까요?', '실 후기가 궁금합니다 ㅠㅠ', TO_DATE('2023-03-01 18:17', 'YYYY-MM-DD HH24:MI'), 87);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (4, '자유', '강아지는 베들링턴 테리어가 귀여운것 같아요~', '특히 옆으로 눌려있는 듯한 좁고 긴 머리가 매력적이에요!', TO_DATE('2023-03-04 19:22', 'YYYY-MM-DD HH24:MI'), 86);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (5, '자유', '피곤하네요 ㅠㅠ', '자고싶어요!', TO_DATE('2023-03-11 20:22', 'YYYY-MM-DD HH24:MI'), 44);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (6, '자유', '개발이 너무 즐거워요 ㅎㅎ', '전 born to be developer인가봐요~', TO_DATE('2023-03-13 21:34', 'YYYY-MM-DD HH24:MI'), 64);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (1, '자유', '아랫분 저도 개발잔데 부럽네요', '저도 개발이 즐거웠으면 좋겠어요~', TO_DATE('2023-03-14 22:51', 'YYYY-MM-DD HH24:MI'), 18);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (2, '자유', '오늘 저녁 뭐먹을까요?', '저녁 추천좀 해주세요 :)', TO_DATE('2023-03-17 23:18', 'YYYY-MM-DD HH24:MI'), 65);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (3, '자유', '귀뚜라미 소리가 좋네요', '역시 산속에 들어와 살길 잘했어요~ 와이파이는 필수~', TO_DATE('2023-03-22 00:42', 'YYYY-MM-DD HH24:MI'), 71);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (4, '자유', '여행가고 싶네요ㅎㅎㅎ', '좋아하는 여행지 있으신가요?', TO_DATE('2023-03-23 01:22', 'YYYY-MM-DD HH24:MI'), 8);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (5, '자유', '날씨가 쌀쌀해지네요 ㅠ', '다들 감기 조심하세요 :)', TO_DATE('2023-03-24 02:18', 'YYYY-MM-DD HH24:MI'), 22);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (6, '자유', '새해 복 많이 받으세요~', '항상 감사합니다:)', TO_DATE('2023-03-28 03:04', 'YYYY-MM-DD HH24:MI'), 7);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (1, '자유', '보통 다들 몇시간쯤 주무시나요?', '전 요즘 하루에 1시간씩만 자도 충분하더라구요~ :)', TO_DATE('2023-04-01 04:02', 'YYYY-MM-DD HH24:MI'), 28);
 
 -- 문의
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, CHECKPUBLIC)
-VALUES (1, '문의', '문의드립니다!', '입양 절차는 어떻게 되나요?', 'N');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (2, '문의', '수고하십니다. 문의드릴게 있어서요~', '매칭 결과는 언제쯤 나올까요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (3, '문의', '문의드립니다!', '입양 거절 사유가 있나요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (4, '문의', '궁금한점 있습니다.', '임시보호 기간이 최소 1개월인 이유가 무엇인가요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, CHECKPUBLIC)
-VALUES (5, '문의', '문의드려요', '임시보호 거절 기준은 어떻게되나요?', 'N');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (6, '문의', '문의드립니다!', '보호소에 따로 후원을 할 수 있는 방법은 없나요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (1, '문의', '파양 관련해서 문의드립니다ㅠ', '혹시 파양을 하게되면 받아주시나요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (2, '문의', '문의드립니다!', '봉사하고 싶은데 방법을 모르겠어요');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (3, '문의', '안녕하세요~ 문의드립니다!', '팻밀리는 봉사 단체인건가요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, CHECKPUBLIC)
-VALUES (4, '문의', '궁금한 점 질문있습니다~', '입양한지 얼마 안됐는데 한마리 더 입양 가능할까요?', 'N');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (5, '문의', '안녕하세요 문의드립니다!', '최대 동시에 임시보호 가능한 마릿수가 어떻게 되나요?');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (6, '문의', '궁금한 사항이 있습니다~', '서울에 있는 보호소 지역을 알려주세요.');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT)
-VALUES (1, '문의', '문의드립니다!', '임시보호 중입니다. 간식은 하루에 최대 몇번까지 줘도 되나요?');
-
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, CHECKPUBLIC, VIEWCOUNT)
+VALUES (1, '문의', '문의드립니다!', '입양 절차는 어떻게 되나요?', TO_DATE('2023-04-02 05:26', 'YYYY-MM-DD HH24:MI'), 'N', 3);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (2, '문의', '수고하십니다. 문의드릴게 있어서요~', '매칭 결과는 언제쯤 나올까요?', TO_DATE('2023-04-08 06:53', 'YYYY-MM-DD HH24:MI'), 42);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (3, '문의', '문의드립니다!', '입양 거절 사유가 있나요?', TO_DATE('2023-04-11 07:34', 'YYYY-MM-DD HH24:MI'), 18);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (4, '문의', '궁금한점 있습니다.', '임시보호 기간이 최소 1개월인 이유가 무엇인가요?', TO_DATE('2023-04-14 08:52', 'YYYY-MM-DD HH24:MI'), 21);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, CHECKPUBLIC, VIEWCOUNT)
+VALUES (5, '문의', '문의드려요', '임시보호 거절 기준은 어떻게되나요?', TO_DATE('2023-04-17 09:27', 'YYYY-MM-DD HH24:MI'), 'N', 2);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (6, '문의', '문의드립니다!', '보호소에 따로 후원을 할 수 있는 방법은 없나요?', TO_DATE('2023-04-21 20:45', 'YYYY-MM-DD HH24:MI'), 71);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (1, '문의', '파양 관련해서 문의드립니다ㅠ', '혹시 파양을 하게되면 받아주시나요?', TO_DATE('2023-04-29 11:47', 'YYYY-MM-DD HH24:MI'), 66);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (2, '문의', '문의드립니다!', '봉사하고 싶은데 방법을 모르겠어요', TO_DATE('2023-05-01 12:15', 'YYYY-MM-DD HH24:MI'), 88);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (3, '문의', '안녕하세요~ 문의드립니다!', '팻밀리는 봉사 단체인건가요?', TO_DATE('2023-05-05 13:30', 'YYYY-MM-DD HH24:MI'), 54);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, CHECKPUBLIC, VIEWCOUNT)
+VALUES (4, '문의', '궁금한 점 질문있습니다~', '입양한지 얼마 안됐는데 한마리 더 입양 가능할까요?', TO_DATE('2023-05-09 14:07', 'YYYY-MM-DD HH24:MI'), 'N', 4);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (5, '문의', '안녕하세요 문의드립니다!', '최대 동시에 임시보호 가능한 마릿수가 어떻게 되나요?', TO_DATE('2023-05-11 15:20', 'YYYY-MM-DD HH24:MI'), 32);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (6, '문의', '궁금한 사항이 있습니다~', '서울에 있는 보호소 지역을 알려주세요.', TO_DATE('2023-05-13 16:06', 'YYYY-MM-DD HH24:MI'), 54);
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, WRTIME, VIEWCOUNT)
+VALUES (1, '문의', '문의드립니다!', '임시보호 중입니다. 간식은 하루에 최대 몇번까지 줘도 되나요?', TO_DATE('2023-05-26 17:07', 'YYYY-MM-DD HH24:MI'), 155);
 
 -- 입양후기
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (3, '입양후기', '최고로 귀여운 수달, 우리 망고를 소개합니다~', '우리 망고에요. 집에서 헤엄도 잘칩니다. 이쁘게 키울게요. 사랑해 망고야!!', 'otter.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (4, '입양후기', '저희 가족이 된 별이를 소개해드릴게요', '처음엔 낯을 많이 가려 걱정했는데, 매일매일 애교가 넘치는 별이 덕분에 가정의 분위기도 화기애애해졌답니다~', 'pome.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '우리 수박이를 소개합니다~', '저희 수박이 이쁘게 키울게요. 사랑해 수박아!!', 'bedlington.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '저희 참외를 소개할게요!', '저희 참외 이쁘게 키울게요. 사랑해 참외야!!', 'hamster.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '우리 홍시를 입양하게 되서 너무 기뻐요', '저희 홍시 이쁘게 키울게요. 사랑해 홍시야!!', 'persian.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '저희 곶감이를 소개합니다~', '저희 곶감이 이쁘게 키울게요. 사랑해 곶감아!!', 'toypoodle.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '우리 머스캣을 소개합니다~', '저희 머스캣 이쁘게 키울게요. 사랑해 머스캣!!', 'jindo.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '저희 리자드를 소개합니다~', '저희 자드 이쁘게 키울게요. 사랑해 리자드!!', 'lizard.jpg');
-INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH)
-VALUES (0, '입양후기', '우리 블랙이를 소개합니다~', '저희 블랙이 이쁘게 키울게요. 사랑해 석블랙!!', 'russian_blue.jpg');
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (3, '입양후기', '최고로 귀여운 수달, 우리 망고를 소개합니다~', '우리 망고에요. 집에서 헤엄도 잘칩니다. 이쁘게 키울게요. 사랑해 망고야!!', 'otter.jpg', TO_DATE('2023-05-28 18:09', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (4, '입양후기', '저희 가족이 된 별이를 소개해드릴게요', '처음엔 낯을 많이 가려 걱정했는데, 매일매일 애교가 넘치는 별이 덕분에 가정의 분위기도 화기애애해졌답니다~', 'pome.jpg', TO_DATE('2023-06-04 19:20', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (1, '입양후기', '우리 수박이를 소개합니다~', '저희 수박이 이쁘게 키울게요. 사랑해 수박아!!', 'bedlington.jpg', TO_DATE('2023-06-06 20:24', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (2, '입양후기', '저희 참외를 소개할게요!', '저희 참외 이쁘게 키울게요. 사랑해 참외야!!', 'hamster.jpg', TO_DATE('2023-06-11 21:11', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (5, '입양후기', '우리 홍시를 입양하게 되서 너무 기뻐요', '저희 홍시 이쁘게 키울게요. 사랑해 홍시야!!', 'persian.jpg', TO_DATE('2023-06-13 22:24', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (6, '입양후기', '저희 곶감이를 소개합니다~', '저희 곶감이 이쁘게 키울게요. 사랑해 곶감아!!', 'toypoodle.jpg', TO_DATE('2023-06-16 23:55', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (1, '입양후기', '우리 머스캣을 소개합니다~', '저희 머스캣 이쁘게 키울게요. 사랑해 머스캣!!', 'jindo.jpg', TO_DATE('2023-06-17 00:13', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (2, '입양후기', '저희 리자드를 소개합니다~', '저희 자드 이쁘게 키울게요. 사랑해 리자드!!', 'lizard.jpg', TO_DATE('2023-06-20 01:34', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARD (MNUMBER, KINDOFBOARD, TITLE, CONTENT, IMGPATH, WRTIME)
+VALUES (3, '입양후기', '우리 블랙이를 소개합니다~', '저희 블랙이 이쁘게 키울게요. 사랑해 석블랙!!', 'russian_blue.jpg', TO_DATE('2023-06-22 02:01', 'YYYY-MM-DD HH24:MI'));
 
 
--- 후원
+-- DONATION INSERT
 INSERT INTO DONATION (ABNUMBER, MNUMBER, DONASUM, BANK, ACCOUNTHOLDER, ACCOUNTNUMBER)
 VALUES (1, 1, 30000, '카카오뱅크', '김지훈', '3333-19-1111111');
 INSERT INTO DONATION (ABNUMBER, MNUMBER, DONASUM, BANK, ACCOUNTHOLDER, ACCOUNTNUMBER)
 VALUES (2, 3, 100000, 'KEB하나은행', '김석훈', '015-512-5161222');
 INSERT INTO DONATION (ABNUMBER, MNUMBER, DONASUM, BANK, ACCOUNTHOLDER, ACCOUNTNUMBER)
 VALUES (2, 3, 10000, 'IBK기업은행', '김지석', '3331-51-215142');
+
+-- BOARDREPLY INSERT
+-- 문의 (관리자 답변)
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (14, 0, '입양신청서 작성 > 마이페이지 결과 확인 > 방문면담 > 입양동의서 작성 후 입양 순으로 진행됩니다.',TO_DATE('2023-04-02 10:52', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (18, 0, '이전에 거절 이력이 있거나, 회원의 상황을 고려해 진행됩니다. ',TO_DATE('2023-04-17 10:18', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (23, 0, '입양된 동물의 케어 상태나, 회원의 케어 가능 여부를 내부적으로 회의 후 결정됩니다.',TO_DATE('2023-05-09 15:34', 'YYYY-MM-DD HH24:MI'));
+
+-- 문의 (회원)
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (26, 5, '그건 견종마다 다르니 검색해보시는게 낫지 않을까요? :)',TO_DATE('2023-05-26 18:05', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (26, 4, '저도 밤숭이님의 댓글에 공감해요!!',TO_DATE('2023-05-26 18:16', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (20, 2, '무슨 일이신지는 모르겠지만 다시 생각해주세요 ㅠ 동물이 불쌍해요 !! ',TO_DATE('2023-05-01 11:42', 'YYYY-MM-DD HH24:MI'));
+
+-- 자유
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (12, 1, '군밤숭님도 새해 복 많이 받으세요~',TO_DATE('2023-03-30 15:34', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (12, 2, '새해 복 많이 받으세요!!',TO_DATE('2023-04-01 11:08', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (12, 3, '새해 복 많이 받으세요!! ㅎㅎ',TO_DATE('2023-04-02 16:24', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO BOARDREPLY (BNUMBER, MNUMBER, REPLY, WRTIME)
+VALUES (10, 3, '저도 여행 가고싶어요 ㅠㅠ',TO_DATE('2023-03-24 07:05', 'YYYY-MM-DD HH24:MI'));
 
 COMMIT;

@@ -169,6 +169,7 @@ public class LookBoardController {
         }
     }
 
+    // 이미지파일 불러오기
     @ResponseBody
     @GetMapping("/upload")
     public ResponseEntity<Resource> getImage(@RequestParam String filename, HttpServletRequest request) {
