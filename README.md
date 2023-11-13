@@ -17,8 +17,7 @@
 <img src="https://img.shields.io/badge/SpringBoot 2.7.2-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img width="98" src="https://github.com/younghoon211/petmily-younghoon-/assets/82747286/03e461e6-990b-4791-abb7-f597fa92210c">
 
 ### Front
-<img src="https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=Html5&logoColor=white"/> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"/> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"/> <img width="65" src="https://github.com/younghoon211/petmily-younghoon-/assets/82747286/01d3e947-e421-4627-b30d-3f1c8f2e1906">
-
+<img src="https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=Html5&logoColor=white"/> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"/> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"/> <img src="https://img.shields.io/badge/jsp-FF9900?style=for-the-badge&logoColor=white"> <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> <img src="https://img.shields.io/badge/ajax-ED1C24?style=for-the-badge&logoColor=white">
 
 ### DB
 <img src="https://img.shields.io/badge/Oracle-red?style=for-the-badge&logo=Oracle&logoColor=white"/>
