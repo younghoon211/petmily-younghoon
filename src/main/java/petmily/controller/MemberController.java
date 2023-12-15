@@ -15,10 +15,7 @@ import petmily.domain.find_board.form.FindBoardPageForm;
 import petmily.domain.look_board.LookBoard;
 import petmily.domain.look_board.form.LookBoardPageForm;
 import petmily.domain.member.Member;
-import petmily.domain.member.form.JoinForm;
-import petmily.domain.member.form.MemberInfoChangeForm;
-import petmily.domain.member.form.MemberPwChangeForm;
-import petmily.domain.member.form.ResetPwForm;
+import petmily.domain.member.form.*;
 import petmily.domain.temp.form.MypageTempPageForm;
 import petmily.service.*;
 
@@ -58,13 +55,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String id, @RequestParam String pw, Model model, HttpServletRequest request) {
-        Member authUser = memberService.login(id, pw);
+    public String login(@Validated @ModelAttribute LoginForm loginForm, Model model, HttpServletRequest request) {
+        Member authUser = memberService.login(loginForm.getId(), loginForm.getPw());
         log.info("authUser= {}", authUser);
 
         // 잘못된 아이디, 비밀번호 입력 시
         if (authUser == null) {
-            model.addAttribute("rejectedId", id);
+            model.addAttribute("rejectedId", loginForm.getId());
             return "/login/login";
         }
 
@@ -381,8 +378,8 @@ public class MemberController {
     // 기존 비번 입력값 틀릴 시
     @PostMapping("/member/auth/changePw/validOldPw")
     @ResponseBody
-    public String validOldPwAtChangePw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
-        String oldPw = requestBody.get("oldPw");
+    public String validOldPwAtChangePw(@RequestBody PwForm pwForm, HttpServletRequest request) {
+        String oldPw = pwForm.getOldPw();
         log.info("oldPw= {}", oldPw);
 
         String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
@@ -397,8 +394,8 @@ public class MemberController {
     // 새 비번에 기존 비번값 입력 시
     @PostMapping("/member/auth/changePw/validNewPw")
     @ResponseBody
-    public String validNewPwAtChangePw(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
-        String newPw = requestBody.get("newPw");
+    public String validNewPwAtChangePw(@RequestBody PwForm pwForm, HttpServletRequest request) {
+        String newPw = pwForm.getNewPw();
         log.info("newPw= {}", newPw);
 
         String pw = memberService.getMemberByPk(getAuthMNumber(request)).getPw();
@@ -526,8 +523,8 @@ public class MemberController {
     }
 
     @PostMapping("/member/auth/withdraw")
-    public String withdraw(@RequestParam String pw, HttpServletRequest request) {
-        log.info("POST pw = {}", pw);
+    public String withdraw(@ModelAttribute PwForm pwForm, HttpServletRequest request) {
+        log.info("POST pw = {}", pwForm.getPw());
 
         memberService.withdraw(getAuthMNumber(request));
         request.getSession().invalidate();
@@ -538,8 +535,8 @@ public class MemberController {
     // 비밀번호 검증
     @PostMapping("/member/auth/withdraw/validPw")
     @ResponseBody
-    public String withdrawValid(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
-        String pw = requestBody.get("pw");
+    public String withdrawValid(@RequestBody PwForm pwForm, HttpServletRequest request) {
+        String pw = pwForm.getPw();
         log.info("검증 pw = {}", pw);
 
         int mNumber = getAuthMNumber(request);
