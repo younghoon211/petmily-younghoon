@@ -1,4 +1,4 @@
-<img width="110" height="22" alt="image" src="https://github.com/user-attachments/assets/995b3486-6169-4689-8ac4-261262324fdd" /># 🐶 Petmily 🐶
+# 🐶 Petmily 🐶
 ## 🐱 사지 말고, 입양하세요! (Don,t buy, Do Adopt!) 🐱
 <br>
 
@@ -14,7 +14,7 @@
 <img src="https://img.shields.io/badge/Java(JDK 11)-orange?style=for-the-badge&logo=java"/>
 
 ### Framework
-<img width="110" height="22" alt="image" src="https://github.com/user-attachments/assets/21b5d13e-d7c0-47a3-b6d3-e4253afaed07" />
+<img width="110" alt="image" src="https://github.com/user-attachments/assets/21b5d13e-d7c0-47a3-b6d3-e4253afaed07" />
  <img width="98" src="https://github.com/younghoon211/petmily-younghoon-/assets/82747286/03e461e6-990b-4791-abb7-f597fa92210c">
 
 ### Front
