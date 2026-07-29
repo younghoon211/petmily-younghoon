@@ -71,7 +71,7 @@
 <br>
 
 # 🦊 1. 로그인 🦊
-<img width="300" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/37e94cea-ba7d-4ccf-8438-631cc6ed9ac9">☜ `Click here!`
+<img width="300" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/37e94cea-ba7d-4ccf-8438-631cc6ed9ac9">
 
 
 - 잘못된 아이디 또는 비밀번호 입력 시 경고 문구가 표시되고, 아이디 값은 유지된 채 비밀번호 입력창에 포커스됩니다.
@@ -91,7 +91,7 @@
 - 사용자의 편의성을 위해 입력과 동시에 값 검증이 이루어지는 ‘input’함수 방식을 채택했습니다.
 <br>
 
-<img width="400" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/f7ac5009-1926-4f52-b4ea-57e123bcc918">☜ `Click here!`
+<img width="400" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/f7ac5009-1926-4f52-b4ea-57e123bcc918">
 
 `아이디`
 - 3-15자 이내어야 합니다.
@@ -116,7 +116,7 @@
 
 <img width="850" src="https://github.com/younghoon211/petmily-younghoon/assets/82747286/e0127883-b62e-493e-ad6e-15be725cc577">
 
-↑ `Click here!` ↑
+
 
 <br>
 
