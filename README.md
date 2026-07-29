@@ -1,4 +1,4 @@
-# 🐶 Petmily 🐶
+<img width="110" height="22" alt="image" src="https://github.com/user-attachments/assets/995b3486-6169-4689-8ac4-261262324fdd" /># 🐶 Petmily 🐶
 ## 🐱 사지 말고, 입양하세요! (Don,t buy, Do Adopt!) 🐱
 <br>
 
@@ -14,7 +14,8 @@
 <img src="https://img.shields.io/badge/Java(JDK 11)-orange?style=for-the-badge&logo=java"/>
 
 ### Framework
-<img src="https://img.shields.io/badge/SpringBoot 2.7.2-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img width="98" src="https://github.com/younghoon211/petmily-younghoon-/assets/82747286/03e461e6-990b-4791-abb7-f597fa92210c">
+<img width="110" height="22" alt="image" src="https://github.com/user-attachments/assets/21b5d13e-d7c0-47a3-b6d3-e4253afaed07" />
+ <img width="98" src="https://github.com/younghoon211/petmily-younghoon-/assets/82747286/03e461e6-990b-4791-abb7-f597fa92210c">
 
 ### Front
 <img src="https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=Html5&logoColor=white"/> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"/> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"/> <img src="https://img.shields.io/badge/jsp-FF9900?style=for-the-badge&logoColor=white"> <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> <img src="https://img.shields.io/badge/ajax-ED1C24?style=for-the-badge&logoColor=white">
